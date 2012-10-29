@@ -63,4 +63,8 @@ set number
 " make the TCOmment toggle <leader>c
 map <leader>c gcc
 
-
+" vim pipe filetypes
+" screw local leader, just map it to regular leader
+map <leader>r <localleader>r
+map <leader>p <localleader>p
+autocmd FileType javascript let b:vimpipe_command='node <(cat)'
