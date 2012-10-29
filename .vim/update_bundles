@@ -22,6 +22,7 @@ git_bundles = %w{
   git://github.com/vim-scripts/IndexedSearch.git
   git://github.com/vim-scripts/jQuery.git
   git://github.com/Lokaltog/vim-powerline.git
+  git://github.com/tomtom/tcomment_vim.git
 }
 
 require 'fileutils'
