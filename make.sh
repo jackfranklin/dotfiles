@@ -12,11 +12,21 @@ echo "Changing to the $dir directory"
 cd $dir
 echo "...done"
 
-# move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
+#remove old files
+rm -r ~/.zsh
+rm ~/.zshrc
+rm ~/.zshenv
+rm -r ~/.vim
+rm ~/.vimrc
 
+#symlinks
 #zsh
 ln -s $dir/.zsh ~/.zsh
 ln -s $dir/.zshenv ~/.zshenv
 ln -s $dir/.zshrc ~/.zshrc
+
+#vim
+ln -s $dir/.vim ~/.vim
+ln -s $dir/.vimrc ~/.vimrc
 
 echo "Symlinked Yo"
