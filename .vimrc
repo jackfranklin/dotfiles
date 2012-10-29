@@ -49,3 +49,15 @@ let mapleader=","
 
 
 :set wildignore+=*.o,*.obj,.git
+
+" Make j/k move to next visual line instead of physical line
+" http://yubinkim.com/?p=6
+nnoremap k gk
+nnoremap j gj
+nnoremap gk k
+nnoremap gj j
+
+" I like line numbers
+set number
+
+
