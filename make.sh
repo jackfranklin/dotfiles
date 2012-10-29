@@ -22,5 +22,6 @@ ln -s $dir/.zshrc ~/.zshrc
 #vim
 ln -s $dir/.vim ~/.vim
 ln -s $dir/.vimrc ~/.vimrc
+ln -s $dir/.gvimrc ~/.gvimrc
 
 echo "Symlinked Yo"
