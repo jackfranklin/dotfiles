@@ -12,12 +12,6 @@ echo "Changing to the $dir directory"
 cd $dir
 echo "...done"
 
-#remove old files
-rm -r ~/.zsh
-rm ~/.zshrc
-rm ~/.zshenv
-rm -r ~/.vim
-rm ~/.vimrc
 
 #symlinks
 #zsh
