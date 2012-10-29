@@ -155,10 +155,10 @@ cd () {
   ls
 }
 
-function vim {
-  touch $*;
-  open -a MacVim $*
-}
+# function vim {
+#   touch $*;
+#   open -a MacVim $*
+# }
 
 #if [[ $HOSTNAME == "kamna" ]] {
 #	alias emacs='emacs -l ~/.emacs.kamna'

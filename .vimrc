@@ -60,4 +60,7 @@ nnoremap gj j
 " I like line numbers
 set number
 
+" make the TCOmment toggle <leader>c
+map <leader>c gcc
+
 
