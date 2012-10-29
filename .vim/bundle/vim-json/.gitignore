@@ -1,8 +1,0 @@
-/index.php
-
-# Ignore vim files
-*~
-*.swp
-*.swo
-*.fuse_hidden*
-*.pxm
