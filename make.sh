@@ -24,4 +24,7 @@ ln -s $dir/.vim ~/.vim
 ln -s $dir/.vimrc ~/.vimrc
 ln -s $dir/.gvimrc ~/.gvimrc
 
+#tmux
+ln -s $dir/.tmux.conf ~/.tmux.conf
+
 echo "Symlinked Yo"
