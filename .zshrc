@@ -176,8 +176,8 @@ bindkey "^[[3~" delete-char
 
 #chpwd
 
-autoload -U compinit
-compinit
+# autoload -U compinit
+# compinit
 bindkey '^r' history-incremental-search-backward
 bindkey "^[[5~" up-line-or-history
 bindkey "^[[6~" down-line-or-history
@@ -279,3 +279,4 @@ GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
 ### vim keybindings on the terminal
 bindkey -v
+skip_global_compinit=1
