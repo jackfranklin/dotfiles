@@ -70,8 +70,18 @@ map <leader>p <localleader>p
 autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 
 " highlight trailing whitespace
+" http://nvie.com/posts/how-i-boosted-my-vim/
 set list
 set listchars=trail:.,extends:#,nbsp:.
 
 " ruby path if you are using rbenv
+" http://stackoverflow.com/questions/9341768/vim-response-quite-slow
 let g:ruby_path = system('echo $HOME/.rbenv/shims')
+
+" Easy window navigation
+" http://nvie.com/posts/how-i-boosted-my-vim/
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
+
