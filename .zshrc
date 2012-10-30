@@ -144,12 +144,9 @@ alias offlineimap-tty='offlineimap -u TTY.TTYUI'
 alias hnb-partecs='hnb $HOME/partecs/partecs-hnb.xml'
 alias rest2html-css='rst2html --embed-stylesheet --stylesheet-path=/usr/share/python-docutils/s5_html/themes/default/print.css'
 alias dmesg="sudo dmesg"
-alias pd='cd ~/Dropbox/Sites/postdesk/pd'
-alias pdtheme='cd ~/Dropbox/Sites/postdesk/pd/wp-content/themes/postdesk'
 alias openpwd='open `pwd`'
 alias dropbox='cd ~/Dropbox/'
 alias editzshrc='vi ~/.zshrc'
-alias uniyear2='cd ~/Dropbox/Uni\ Year\ 2'
 cd () {
   builtin cd "$*"
   ls
@@ -259,14 +256,9 @@ zstyle '*' single-ignored show
 
 
 alias sites='cd ~/Dropbox/Sites'
-alias stewdent='cd ~/Dropbox/Sites/stewdent-ip'
-alias gitftpstewdent='git ftp push -s stewdent'
-alias burrstin='cd ~/Dropbox/Sites/burrstin/'
 alias tas='cd ~/Dropbox/Sites/tas'
 
-alias sshvps='ssh root@217.147.82.186'
 alias js='v8'
-alias tasdeploy='cap deploy && cap deploy:assets:upload'
 
 alias minecraftserver='java -Xmx2000M -Xms2000M -jar minecraft_server.jar'
 
