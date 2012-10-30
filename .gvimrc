@@ -12,6 +12,7 @@ colorscheme vividchalk
 
 "disable cursor blinking
 " set guicursor=a:blinkon0
+set guicursor+=n-v-c:ver96
 
 
 hi IncSearch    gui=underline guifg=yellow  guibg=blue
