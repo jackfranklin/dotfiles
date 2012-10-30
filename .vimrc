@@ -72,3 +72,6 @@ autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 " highlight trailing whitespace
 set list
 set listchars=trail:.,extends:#,nbsp:.
+
+" ruby path if you are using rbenv
+let g:ruby_path = system('echo $HOME/.rbenv/shims')
