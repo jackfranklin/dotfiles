@@ -282,3 +282,8 @@ alias pyserver='open http://localhost:8000 && python -m SimpleHTTPServer'
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
+GIT_MERGE_AUTOEDIT=no
+export GIT_MERGE_AUTOEDIT
+### vim keybindings on the terminal
+bindkey -v
