@@ -8,9 +8,15 @@
 
 dir=~/dotfiles                    # dotfiles directory
 # change to the dotfiles directory
-echo "Changing to the $dir directory"
-cd $dir
-echo "...done"
+
+echo "Updating bundles"
+$dir/.vim/update_bundles
+
+echo "Installing Command-T"
+cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
+
+echo "Bundles installed"
+
 
 
 #symlinks

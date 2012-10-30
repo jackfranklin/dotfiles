@@ -7,7 +7,7 @@ set guioptions-=r
 
 " themes and pretty stuff
 set guifont=Monaco:h15
-colorscheme vividchalk
+colorscheme solarized
 
 
 "disable cursor blinking

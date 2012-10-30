@@ -24,6 +24,7 @@ git_bundles = %w{
   git://github.com/Lokaltog/vim-powerline.git
   git://github.com/tomtom/tcomment_vim.git
   git://github.com/krisajenkins/vim-pipe.git
+  git://github.com/altercation/vim-colors-solarized.git
   git://git.wincent.com/command-t.git
 }
 
