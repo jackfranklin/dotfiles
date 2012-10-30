@@ -9,6 +9,11 @@ set guioptions-=r
 set guifont=Monaco:h15
 colorscheme vividchalk
 
+
+"disable cursor blinking
+" set guicursor=a:blinkon0
+
+
 hi IncSearch    gui=underline guifg=yellow  guibg=blue
 hi Search       gui=underline guifg=yellow  guibg=black
 hi Visual       gui=bold      guifg=black   guibg=#FFCC66
