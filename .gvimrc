@@ -1,7 +1,7 @@
 " command t use Command-T
 if has("gui_macvim")
   macmenu &File.New\ Tab key=<nop>
-  map <D-t> :CommandT<CR>
+  map <D-t> :CommandTFlush<cr>\|:CommandT<cr>
 endif
 
 " hide MacVim toolbar

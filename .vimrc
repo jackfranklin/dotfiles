@@ -20,7 +20,7 @@ set hlsearch
 set ignorecase smartcase
 " highlight current line
 set cursorline
-set showtabline=2
+" set showtabline=2
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
 set t_ti= t_te=
@@ -68,3 +68,7 @@ map <leader>c gcc
 map <leader>r <localleader>r
 map <leader>p <localleader>p
 autocmd FileType javascript let b:vimpipe_command='node <(cat)'
+
+" highlight trailing whitespace
+set list
+set listchars=tab:>.,trail:.,extends:#,nbsp:.
