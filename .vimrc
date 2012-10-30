@@ -71,4 +71,4 @@ autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 
 " highlight trailing whitespace
 set list
-set listchars=tab:>.,trail:.,extends:#,nbsp:.
+set listchars=trail:.,extends:#,nbsp:.
