@@ -20,7 +20,7 @@ hi IncSearch    gui=underline guifg=yellow  guibg=blue
 hi Search       gui=underline guifg=yellow  guibg=black
 hi Visual       gui=bold      guifg=black   guibg=#FFCC66
 hi CursorColumn                             guibg=#111111
-hi CursorLine                               guibg=#111111
+hi CursorLine                               guibg=#073642
 
 hi PmenuSel     gui=bold      guifg=yellow  guibg=#008080
 hi Pmenu                      guifg=#444444 guibg=#008080
