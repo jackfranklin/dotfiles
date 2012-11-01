@@ -104,3 +104,6 @@ inoremap <expr><C-e>  neocomplcache#cancel_popup()
 "folds
 set foldmethod=syntax
 set foldlevelstart=20
+
+" make it do . in visual mode
+:vnoremap . :norm.<CR>
