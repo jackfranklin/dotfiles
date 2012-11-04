@@ -48,7 +48,7 @@ set wildmenu
 let mapleader=","
 
 
-:set wildignore+=*.o,*.obj,.git
+:set wildignore+=*.o,*.obj,.git,node_modules
 
 " Make j/k move to next visual line instead of physical line
 " http://yubinkim.com/?p=6
