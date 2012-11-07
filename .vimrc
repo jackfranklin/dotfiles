@@ -91,3 +91,6 @@ set foldlevelstart=20
 
 " make it do . in visual mode
 :vnoremap . :norm.<CR>
+
+" auto load files if vim detects they have been changed outside of Vim
+set autoread

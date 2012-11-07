@@ -277,5 +277,3 @@ export PATH="/usr/local/heroku/bin:$PATH"
 
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
-### vim keybindings on the terminal
-skip_global_compinit=1
