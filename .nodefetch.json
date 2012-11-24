@@ -6,8 +6,8 @@
   "normalize": "https://raw.github.com/necolas/normalize.css/master/normalize.css",
   "raphael": "http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js",
   "reset": "http://meyerweb.com/eric/tools/css/reset/reset.css",
-  "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip"
+  "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip",
   "sets": {
-    "backbone": ["backbone", "jquery", "underscore"]
+    "backboneapp": ["backbone", "jquery", "underscore"]
   }
 }
