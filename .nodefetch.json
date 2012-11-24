@@ -1,0 +1,13 @@
+{
+  "backbone" : "http://backbonejs.org/backbone-min.js",
+  "underscore" : "http://underscorejs.org/underscore-min.js",
+  "jquery": "http://code.jquery.com/jquery.min.js",
+  "json2": "https://github.com/douglascrockford/JSON-js/raw/master/json2.js",
+  "normalize": "https://raw.github.com/necolas/normalize.css/master/normalize.css",
+  "raphael": "http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js",
+  "reset": "http://meyerweb.com/eric/tools/css/reset/reset.css",
+  "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip"
+  "packages": {
+    "backbone": ["backbone", "jquery", "underscore"]
+  }
+}

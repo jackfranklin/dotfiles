@@ -33,4 +33,7 @@ ln -s $dir/.gvimrc ~/.gvimrc
 #tmux
 ln -s $dir/.tmux.conf ~/.tmux.conf
 
+#nodefetch
+ln  -s $dir/.nodefetch.json ~/.nodefetch.json
+
 echo "Symlinked Yo"
