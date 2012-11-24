@@ -7,7 +7,7 @@
   "raphael": "http://github.com/DmitryBaranovskiy/raphael/raw/master/raphael-min.js",
   "reset": "http://meyerweb.com/eric/tools/css/reset/reset.css",
   "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip"
-  "packages": {
+  "sets": {
     "backbone": ["backbone", "jquery", "underscore"]
   }
 }
