@@ -9,5 +9,8 @@
   "bootstrap": "http://twitter.github.com/bootstrap/assets/bootstrap.zip",
   "sets": {
     "backboneapp": ["backbone", "jquery", "underscore"]
-  }
+  },
+  "requirejs": "http://requirejs.org/docs/release/2.1.1/minified/require.js",
+  "magnacharta": "https://raw.github.com/alphagov/magna-charta/master/dist/magna-charta.min.js",
+  "matchmedia": "https://raw.github.com/paulirish/matchMedia.js/master/matchMedia.js"
 }
