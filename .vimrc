@@ -94,3 +94,7 @@ set foldlevelstart=20
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
+
+
+" makes :W act like :w (which should be a default)
+command W w
