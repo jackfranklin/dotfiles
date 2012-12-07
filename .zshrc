@@ -277,3 +277,5 @@ export PATH="/usr/local/heroku/bin:$PATH"
 
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
+# for the Z plugin https://github.com/rupa/z
+. /usr/local/Cellar/z/1.4/etc/profile.d/z.sh

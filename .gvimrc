@@ -6,7 +6,7 @@ set guioptions=-t
 set guioptions-=r
 
 " themes and pretty stuff
-set guifont=Monaco:h15
+set guifont=Source\ Code\ Pro-Regular:h15
 colorscheme solarized
 set background=dark
 
