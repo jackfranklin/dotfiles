@@ -6,7 +6,7 @@
 
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
+dir=$(pwd)                    # dotfiles directory
 # change to the dotfiles directory
 
 echo "Updating bundles"
