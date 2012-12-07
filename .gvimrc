@@ -6,9 +6,9 @@ set guioptions=-t
 set guioptions-=r
 
 " themes and pretty stuff
-set guifont=Source\ Code\ Pro-Regular:h15
-colorscheme solarized
+set guifont=Source\ Code\ Pro:h15
 set background=dark
+colorscheme solarized
 
 
 "disable cursor blinking
