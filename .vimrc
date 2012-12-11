@@ -71,8 +71,22 @@ autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 
 " highlight trailing whitespace
 " http://nvie.com/posts/how-i-boosted-my-vim/
+" https://github.com/nickfletcher/vim/blob/master/vimrc
 set list
 set listchars=trail:.,extends:#,nbsp:.
+
+" https://github.com/nickfletcher/vim/blob/master/vimrc
+" toggle show invisibles with Space + l
+nmap <space>l :set list!<CR>
+" toggle git status with Space + s
+nnoremap <space>s :Gstatus<CR>
+
+"remove all trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
+
+" reselect visual block after indent/outdent
+vnoremap < <gv
+vnoremap > >gv
 
 " ruby path if you are using rbenv
 " http://stackoverflow.com/questions/9341768/vim-response-quite-slow
@@ -95,6 +109,3 @@ set foldlevelstart=20
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
 
-
-" makes :W act like :w (which should be a default)
-command W w

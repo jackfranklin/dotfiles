@@ -16,7 +16,6 @@ git_bundles = %w{
   git://github.com/tpope/vim-vividchalk.git
   git://github.com/tsaleh/vim-matchit.git
   git://github.com/tsaleh/vim-shoulda.git
-  git://github.com/tsaleh/vim-tmux.git
   git://github.com/vim-ruby/vim-ruby.git
   git://github.com/vim-scripts/Gist.vim.git
   git://github.com/vim-scripts/IndexedSearch.git
