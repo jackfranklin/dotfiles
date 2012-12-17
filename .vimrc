@@ -111,5 +111,8 @@ set autoread
 
 if has('gui_running')
 else
-  hi CursorLine cterm=NONE ctermbg=darkblue ctermfg=white
+  hi CursorLine   cterm=NONE ctermbg=black
 endif
+
+set t_Co=256 " 256 colors
+set background=dark
