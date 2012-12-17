@@ -19,61 +19,12 @@ git_custom_status() {
   fi
 }
 
-# Determine the time since last commit. If branch is clean,
-# use a neutral color, otherwise colors will vary according to time.
-function git_time_since_commit() {
-    if git rev-parse --git-dir > /dev/null 2>&1; then
-        # Only proceed if there is actually a commit.
-        if [[ $(git log 2>&1 > /dev/null | grep -c "^fatal: bad default revision") == 0 ]]; then
-            # Get the last commit.
-            last_commit=`git log --pretty=format:'%at' -1 2> /dev/null`
-            now=`date +%s`
-            seconds_since_last_commit=$((now-last_commit))
 
-            # Totals
-            MINUTES=$((seconds_since_last_commit / 60))
-            HOURS=$((seconds_since_last_commit/3600))
-
-            # Sub-hours and sub-minutes
-            DAYS=$((seconds_since_last_commit / 86400))
-            SUB_HOURS=$((HOURS % 24))
-            SUB_MINUTES=$((MINUTES % 60))
-
-            if [[ -n $(git status -s 2> /dev/null) ]]; then
-                if [ "$MINUTES" -gt 30 ]; then
-                    COLOR="$ZSH_THEME_GIT_TIME_SINCE_COMMIT_LONG"
-                elif [ "$MINUTES" -gt 10 ]; then
-                    COLOR="$ZSH_THEME_GIT_TIME_SHORT_COMMIT_MEDIUM"
-                else
-                    COLOR="$ZSH_THEME_GIT_TIME_SINCE_COMMIT_SHORT"
-                fi
-            else
-                COLOR="$ZSH_THEME_GIT_TIME_SINCE_COMMIT_NEUTRAL"
-            fi
-
-            if [ "$HOURS" -gt 24 ]; then
-                echo "($COLOR${DAYS}d${SUB_HOURS}h${SUB_MINUTES}m%{$reset_color%})"
-            elif [ "$MINUTES" -gt 60 ]; then
-                echo "($COLOR${HOURS}h${SUB_MINUTES}m%{$reset_color%})"
-            else
-                echo "($COLOR${MINUTES}m%{$reset_color%})"
-            fi
-        fi
-    fi
-}
-
-# next lets set some enviromental/shell pref stuff up
-# setopt NOHUP
-#setopt NOTIFY
-#setopt NO_FLOW_CONTROL
 setopt APPEND_HISTORY
 # setopt AUTO_LIST		# these two should be turned off
-# setopt AUTO_REMOVE_SLASH
-# setopt AUTO_RESUME		# tries to resume command of same name
 unsetopt BG_NICE		# do NOT nice bg commands
 setopt CORRECT			# command CORRECTION
 setopt EXTENDED_HISTORY		# puts timestamps in the history
-# setopt HASH_CMDS		# turns on hashing
 setopt HIST_ALLOW_CLOBBER
 setopt HIST_REDUCE_BLANKS
 setopt INC_APPEND_HISTORY SHARE_HISTORY
@@ -87,11 +38,6 @@ setopt   autoresume histignoredups pushdsilent noclobber
 setopt   autopushd pushdminus extendedglob rcquotes mailwarning
 unsetopt bgnice autoparamslash
 
-# Autoload zsh modules when they are referenced
-zmodload -a zsh/stat stat
-zmodload -a zsh/zpty zpty
-zmodload -a zsh/zprof zprof
-# zmodload -ap zsh/mapfile mapfile
 
 source ~/.zsh/git-prompt/zshrc.sh
 # an example prompt
@@ -114,21 +60,14 @@ EDITOR='vim'
    (( count = $count + 1 ))
     done
     PR_NO_COLOR="%{$terminfo[sgr0]%}"
-#PS1="[$PR_MAGENTA%n$PR_NO_COLOR@$PR_GREEN%U%m%u$PR_NO_COLOR:$PR_RED%2c$PR_NO_COLOR]%(!.#.$)$(git_super_status)  "
 RPS1=""
-PROMPT='$PR_RED%3c$PR_NO_COLOR $(git_super_status) $(git_time_since_commit)
+PROMPT='$PR_RED%3c$PR_NO_COLOR $(git_super_status)
 → '
 #LANGUAGE=
 LC_ALL='en_US.UTF-8'
 LANG='en_US.UTF-8'
 LC_CTYPE=C
 DISPLAY=:0
-
-if [ $SSH_TTY ]; then
-  MUTT_EDITOR=vim
-else
-  MUTT_EDITOR=emacsclient.emacs-snapshot
-fi
 
 unsetopt ALL_EXPORT
 # # --------------------------------------------------------------------
