@@ -109,3 +109,7 @@ set foldlevelstart=20
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
 
+if has('gui_running')
+else
+  hi CursorLine cterm=NONE ctermbg=darkblue ctermfg=white
+endif
