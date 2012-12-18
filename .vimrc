@@ -72,9 +72,10 @@ autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 " highlight trailing whitespace
 " http://nvie.com/posts/how-i-boosted-my-vim/
 " https://github.com/nickfletcher/vim/blob/master/vimrc
-set list
-set listchars=trail:.,extends:#,nbsp:.
-
+" set list
+" set listchars=tab:>-,trail:.,extends:#,nbsp:.
+highlight ExtraWhitespace ctermbg=red guibg=red
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 " https://github.com/nickfletcher/vim/blob/master/vimrc
 " toggle show invisibles with Space + l
 nmap <space>l :set list!<CR>
