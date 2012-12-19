@@ -120,4 +120,6 @@ endif
 
 set t_Co=256 " 256 colors
 
-
+" fix slight delay after pressing ESC then O
+" http://ksjoberg.com/vim-esckeys.html
+set noesckeys
