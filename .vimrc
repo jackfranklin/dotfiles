@@ -76,6 +76,7 @@ autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 " set listchars=tab:>-,trail:.,extends:#,nbsp:.
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+
 " https://github.com/nickfletcher/vim/blob/master/vimrc
 " toggle show invisibles with Space + l
 nmap <space>l :set list!<CR>
@@ -111,11 +112,12 @@ set foldlevelstart=20
 set autoread
 
 if has('gui_running')
+  " nicer gfx settings are set in .gvimrc
 else
   hi CursorLine   cterm=NONE ctermbg=234
+  set background=dark
 endif
 
 set t_Co=256 " 256 colors
-set background=dark
 
 

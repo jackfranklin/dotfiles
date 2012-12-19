@@ -11,11 +11,6 @@ git_bundles = %w{
   git://github.com/tpope/vim-markdown.git
   git://github.com/tpope/vim-rails.git
   git://github.com/tpope/vim-surround.git
-  git://github.com/tpope/vim-vividchalk.git
-  git://github.com/tsaleh/vim-matchit.git
-  git://github.com/tsaleh/vim-shoulda.git
-  git://github.com/vim-ruby/vim-ruby.git
-  git://github.com/vim-scripts/jQuery.git
   git://github.com/Lokaltog/vim-powerline.git
   git://github.com/tomtom/tcomment_vim.git
   git://github.com/krisajenkins/vim-pipe.git
