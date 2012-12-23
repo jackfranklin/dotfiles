@@ -13,7 +13,7 @@ colorscheme solarized
 
 "disable cursor blinking
 " set guicursor=a:blinkon0
-set guicursor+=n-v-c:ver96
+set guicursor+=n-v-c:ver100
 
 
 " hi IncSearch    gui=underline guifg=yellow  guibg=blue
