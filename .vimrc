@@ -122,4 +122,8 @@ set t_Co=256 " 256 colors
 
 " fix slight delay after pressing ESC then O
 " http://ksjoberg.com/vim-esckeys.html
-set noesckeys
+" set noesckeys
+set timeout timeoutlen=1000 ttimeoutlen=100
+
+" make CommandT always clear its cache
+map <leader>t :CommandTFlush<cr>\|:CommandT<cr>
