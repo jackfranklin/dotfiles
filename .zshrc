@@ -79,6 +79,7 @@ alias f=finger
 alias ll='ls -al'
 alias ls='ls -G'
 alias v=mvim --remote-silent
+alias vi='mvim -v'
 alias offlineimap-tty='offlineimap -u TTY.TTYUI'
 alias hnb-partecs='hnb $HOME/partecs/partecs-hnb.xml'
 alias rest2html-css='rst2html --embed-stylesheet --stylesheet-path=/usr/share/python-docutils/s5_html/themes/default/print.css'

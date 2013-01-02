@@ -36,4 +36,7 @@ ln -s $dir/.tmux.conf ~/.tmux.conf
 #nodefetch
 ln  -s $dir/.nodefetch.json ~/.nodefetch.json
 
+#git
+ln -s $dir/.gitconfig ~/.gitconfig
+
 echo "Symlinked Yo"

@@ -1,0 +1,16 @@
+[user]
+	name = Jack Franklin
+	email = jack@jackfranklin.net
+[diff]
+	tool = vimdiff
+[alias]
+	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
+  st = status
+  ci = commit
+  co = checkout
+  di = diff
+  amend = commit --amend
+  aa = add --all
+  fa = fetch --all
+  pom = push origin master
+  b = branch
