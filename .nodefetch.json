@@ -11,7 +11,7 @@
     "backboneapp": ["backbone", "jquery", "underscore"]
   },
   "requirejs": "http://requirejs.org/docs/release/2.1.2/minified/require.js",
-  "handlebars": "https://raw.github.com/wycats/handlebars.js/master/dist/handlebars.js"
+  "handlebars": "https://raw.github.com/wycats/handlebars.js/master/dist/handlebars.js",
   "magnacharta": "https://raw.github.com/alphagov/magna-charta/master/dist/magna-charta.min.js",
   "matchmedia": "https://raw.github.com/paulirish/matchMedia.js/master/matchMedia.js"
 }
