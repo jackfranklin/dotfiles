@@ -33,8 +33,8 @@ ln -s $dir/.gvimrc ~/.gvimrc
 #tmux
 ln -s $dir/.tmux.conf ~/.tmux.conf
 
-#nodefetch
-ln  -s $dir/.nodefetch.json ~/.nodefetch.json
+#pulldown
+ln -s $dir/.pulldown.json ~/.pulldown.json
 
 #git
 ln -s $dir/.gitconfig ~/.gitconfig
