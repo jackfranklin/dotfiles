@@ -130,9 +130,9 @@ map <leader>t :CommandTFlush<cr>\|:CommandT<cr>
 
 " status bar
 
-set statusline=%F%m%r%h%w\  "fullpath
-set statusline+=%m\                "modified flag
+set statusline=%F%m%r%h%w\  "fullpath and status modified sign
+" set statusline+=%m\                "modified flag
 set statusline+=%{fugitive#statusline()}\ "git
 set statusline+=[%{strlen(&fenc)?&fenc:&enc}] "utf8
 set statusline+=\ [line\ %l\/%L] "line number
-set statusline +=\ %v\             "virtual column number
+set statusline +=\ [col\ %v\]             "virtual column number
