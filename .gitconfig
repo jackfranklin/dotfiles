@@ -14,3 +14,5 @@
   fa = fetch --all
   pom = push origin master
   b = branch
+[push]
+	default = simple
