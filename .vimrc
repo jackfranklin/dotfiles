@@ -103,6 +103,8 @@ map <C-l> <C-w>l
 
 "folds
 set foldmethod=indent
+" make all folds be open by default
+autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,javascript,ruby,rails,eruby,php,css normal zR
 
 " make it do . in visual mode
 :vnoremap . :norm.<CR>
