@@ -125,7 +125,8 @@ set t_Co=256 " 256 colors
 set timeout timeoutlen=1000 ttimeoutlen=100
 
 " make CommandT always clear its cache
-map <leader>t :CommandTFlush<cr>\|:CommandT<cr>
+map <leader>t :CommandT<cr>
+map <leader>cf :CommandTFlush<cr>
 
 " status bar
 
