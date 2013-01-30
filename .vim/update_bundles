@@ -16,7 +16,6 @@ git_bundles = %w{
   git://git.wincent.com/command-t.git
   git://github.com/ervandew/supertab.git
   git://github.com/garbas/vim-snipmate.git
-  https://github.com/tomtom/tlib_vim.git
   https://github.com/MarcWeber/vim-addon-mw-utils.git
   https://github.com/honza/snipmate-snippets.git
   git@github.com:Lokaltog/vim-easymotion.git

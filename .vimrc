@@ -102,8 +102,7 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 "folds
-set foldmethod=syntax
-set foldlevelstart=20
+set foldmethod=indent
 
 " make it do . in visual mode
 :vnoremap . :norm.<CR>
