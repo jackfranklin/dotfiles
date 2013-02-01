@@ -16,3 +16,5 @@
   b = branch
 [push]
 	default = simple
+[color]
+	ui = true
