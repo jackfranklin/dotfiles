@@ -19,6 +19,7 @@ git_bundles = %w{
   https://github.com/MarcWeber/vim-addon-mw-utils.git
   https://github.com/honza/snipmate-snippets.git
   git@github.com:Lokaltog/vim-easymotion.git
+  git@github.com:Valloric/YouCompleteMe.git
 }
 
 require 'fileutils'
