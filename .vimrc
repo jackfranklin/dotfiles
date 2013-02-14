@@ -116,6 +116,7 @@ if has('gui_running')
   " nicer gfx settings are set in .gvimrc
 else
   hi CursorLine   cterm=NONE ctermbg=234
+  highlight CommandTSelection ctermbg=145
   set background=dark
 endif
 
