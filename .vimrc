@@ -70,21 +70,19 @@ map <leader>p <localleader>p
 autocmd FileType javascript let b:vimpipe_command='node <(cat)'
 
 " highlight trailing whitespace
-" http://nvie.com/posts/how-i-boosted-my-vim/
-" https://github.com/nickfletcher/vim/blob/master/vimrc
-" set list
-" set listchars=tab:>-,trail:.,extends:#,nbsp:.
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+autocmd BufWinLeave * call clearmatches()
+"remove all trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
-" https://github.com/nickfletcher/vim/blob/master/vimrc
-" toggle show invisibles with Space + l
-nmap <space>l :set list!<CR>
 " toggle git status with Space + s
 nnoremap <space>s :Gstatus<CR>
 
-"remove all trailing whitespace
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 " reselect visual block after indent/outdent
 vnoremap < <gv
