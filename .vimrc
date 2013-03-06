@@ -133,6 +133,5 @@ map <leader>cf :CommandTFlush<cr>
 
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 " set statusline+=%m\                "modified flag
-set statusline+=%{fugitive#statusline()}\ "git
-set statusline+=\ [line\ %l\/%L] "line number
+set statusline+=\ [LN\ %l\/%L] "line number
 set statusline +=\ [col\ %v\]             "virtual column number
