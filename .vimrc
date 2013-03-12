@@ -125,7 +125,7 @@ set t_Co=256 " 256 colors
 " set noesckeys
 set timeout timeoutlen=1000 ttimeoutlen=100
 
-" make CommandT always clear its cache
+" command T shortcuts
 map <leader>t :CommandT<cr>
 map <leader>cf :CommandTFlush<cr>
 
@@ -135,3 +135,13 @@ set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 " set statusline+=%m\                "modified flag
 set statusline+=\ [LN\ %l\/%L] "line number
 set statusline +=\ [col\ %v\]             "virtual column number
+
+" navigating tabs
+nnoremap th  :tabfirst<CR>
+nnoremap tj  :tabnext<CR>
+nnoremap tk  :tabprev<CR>
+nnoremap tl  :tablast<CR>
+nnoremap tt  :tabedit<Space>
+nnoremap tn  :tabnext<Space>
+nnoremap tm  :tabm<Space>
+nnoremap td  :tabclose<CR>
