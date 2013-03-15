@@ -200,9 +200,10 @@ alias tas='cd ~/Dropbox/Sites/tas'
 
 alias js='v8'
 
-alias minecraftserver='java -Xmx2000M -Xms2000M -jar minecraft_server.jar'
-
 alias sshwebfaction='ssh jackfranklin@jackfranklin.webfactional.com'
+
+# because bundle exec is loads of characters
+alias be="bundle exec "
 
 function mkdircd
 {
