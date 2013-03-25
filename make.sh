@@ -38,5 +38,6 @@ ln -s $dir/.pulldown.json ~/.pulldown.json
 
 #git
 ln -s $dir/.gitconfig ~/.gitconfig
+ln -s $dir/.gitignore_global ~/.gitignore_global
 
 echo "Symlinked Yo"
