@@ -6,7 +6,7 @@
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit --
   st = status
-  ci = commit
+  ci = commit -v
   co = checkout
   di = diff
   amend = commit --amend
@@ -20,3 +20,5 @@
 	ui = true
 [help]
 	autocorrect = 1
+[core]
+	excludesfile = /Users/jackfranklin/.gitignore_global
