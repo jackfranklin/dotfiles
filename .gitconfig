@@ -22,3 +22,4 @@
 	autocorrect = 1
 [core]
 	excludesfile = /Users/jackfranklin/.gitignore_global
+	pager = less -r
