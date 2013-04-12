@@ -40,4 +40,7 @@ ln -s $dir/.pulldown.json ~/.pulldown.json
 ln -s $dir/.gitconfig ~/.gitconfig
 ln -s $dir/.gitignore_global ~/.gitignore_global
 
+#bin
+ln -s $dir/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
+
 echo "Symlinked Yo"

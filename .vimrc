@@ -94,16 +94,48 @@ let g:ruby_path = system('echo $HOME/.rbenv/shims')
 
 " Easy window navigation
 " http://nvie.com/posts/how-i-boosted-my-vim/
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
+" Vim + Tmux splits integration
+" stolen from https://github.com/pengwynn/dotfiles/blob/master/vim/vim.symlink/tmux.vim
+
+au WinEnter * let g:tmux_is_last_pane = 0
+
+" Like `wincmd` but also change tmux panes instead of vim windows when needed.
+function TmuxWinCmd(direction)
+  let nr = winnr()
+  let tmux_last_pane = (a:direction == 'p' && g:tmux_is_last_pane)
+  if !tmux_last_pane
+    " try to switch windows within vim
+    exec 'wincmd ' . a:direction
+  endif
+  " Forward the switch panes command to tmux if:
+  " a) we're toggling between the last tmux pane;
+  " b) we tried switching windows in vim but it didn't have effect.
+  if tmux_last_pane || nr == winnr()
+    let cmd = 'tmux select-pane -' . tr(a:direction, 'phjkl', 'lLDUR')
+    call system(cmd)
+    redraw! " because `exec` fucked up the screen. why is this needed?? arrghh
+    let g:tmux_is_last_pane = 1
+  else
+    let g:tmux_is_last_pane = 0
+  endif
+endfunction
+
+
+" navigate between split windows/tmux panes
+nmap <C-j> :call TmuxWinCmd('j')<cr>
+nmap <C-k> :call TmuxWinCmd('k')<cr>
+nmap <C-h> :call TmuxWinCmd('h')<cr>
+nmap <C-l> :call TmuxWinCmd('l')<cr>
+
+" nmap <c-\> :call TmuxWinCmd('p')<cr>
+" map <C-h> <C-w>h
+" map <C-j> <C-w>j
+" map <C-k> <C-w>k
+" map <C-l> <C-w>l
 
 "folds
 " set foldmethod=indent
 set foldmethod=manual
-" make all folds be open by default
-" autocmd Syntax c,cpp,vim,xml,html,xhtml,perl,js,javascript,ruby,rails,eruby,php,css,yaml,yml,json normal zR
 
 " make it do . in visual mode
 :vnoremap . :norm.<CR>
