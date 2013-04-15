@@ -25,6 +25,7 @@ alias gcm="git ci -m"
 alias g='git st'
 alias gd='git diff'
 alias gpo='git pull origin'
+alias ga='git add'
 alias gaa='git aa'
 alias gpom='git pom'
 
