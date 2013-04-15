@@ -26,6 +26,8 @@ alias g='git st'
 alias gd='git diff'
 alias gpo='git pull origin'
 alias gaa='git aa'
+alias gpom='git pom'
+
 
 # ctags
 alias ctg="ctags -R ."
