@@ -1,0 +1,10 @@
+cd () {
+  builtin cd "$*"
+  ls
+}
+
+
+function mkdircd
+{
+    command mkdir $1 && cd $1
+}

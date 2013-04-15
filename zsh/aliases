@@ -1,0 +1,31 @@
+# editing and stuff
+alias vi='mvim -v'
+
+# misc
+alias slrn="slrn -n"
+alias man='LC_ALL=C LANG=C man'
+alias f=finger
+alias ll='ls -al'
+alias ls='ls -G'
+
+# some common folders I like to be in
+alias dropbox='cd ~/Dropbox/'
+alias sites='cd ~/Dropbox/Sites'
+
+# ssh
+alias sshwebfaction='ssh jackfranklin@jackfranklin.webfactional.com'
+
+
+# bundle and ruby rails stuff
+alias be="bundle exec"
+alias bi="bundle install"
+
+# git alises
+alias gcm="git ci -m"
+alias g='git st'
+alias gd='git diff'
+
+
+# dotfiles
+alias aliases='vi ~/dotfiles/zsh/aliases'
+alias dotfiles='vi ~/dotfiles'
