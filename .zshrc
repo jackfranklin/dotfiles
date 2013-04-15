@@ -87,3 +87,5 @@ export GIT_MERGE_AUTOEDIT
 . /usr/local/Cellar/z/1.4/etc/profile.d/z.sh
 
 export EDITOR='mvim -v'
+# But still use emacs-style zsh bindings
+bindkey -e
