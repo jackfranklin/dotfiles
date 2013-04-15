@@ -163,11 +163,10 @@ map <leader>t :CommandT<cr>
 map <leader>cf :CommandTFlush<cr>
 
 " status bar
-
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 " set statusline+=%m\                "modified flag
-set statusline+=\ [LN\ %l\/%L] "line number
-set statusline +=\ [col\ %v\]             "virtual column number
+set statusline+=\ [%l\/%L:\%v] "line number
+" set statusline +=\ [col\ %v\]             "virtual column number
 
 " navigating tabs
 nnoremap th  :tabfirst<CR>
@@ -178,3 +177,6 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
+
+"tagbar
+nnoremap <silent> <Leader>T :TagbarToggle<CR>
