@@ -24,6 +24,11 @@ alias bi="bundle install"
 alias gcm="git ci -m"
 alias g='git st'
 alias gd='git diff'
+alias gpo='git pull origin'
+alias gaa='git aa'
+
+# ctags
+alias ctg="ctags -R ."
 
 
 # dotfiles
