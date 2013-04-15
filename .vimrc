@@ -113,7 +113,7 @@ function TmuxWinCmd(direction)
   if tmux_last_pane || nr == winnr()
     let cmd = 'tmux select-pane -' . tr(a:direction, 'phjkl', 'lLDUR')
     call system(cmd)
-    redraw! " because `exec` fucked up the screen. why is this needed?? arrghh
+    " redraw! " because `exec` fucked up the screen. why is this needed?? arrghh
     let g:tmux_is_last_pane = 1
   else
     let g:tmux_is_last_pane = 0
