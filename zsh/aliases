@@ -31,6 +31,8 @@ alias gpom='git pom'
 alias gco='git co'
 alias gl='git log --pretty=format:\'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\' --abbrev-commit'
 alias ghp='git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master'
+alias gds='git diff --staged'
+alias gpu='git push'
 
 
 # ctags
