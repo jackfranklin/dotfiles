@@ -196,3 +196,17 @@ nmap K i<cr><esc>k$
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 " https://github.com/r00k/dotfiles/blob/master/vimrc
 set formatoptions-=or
+
+" rename the current file
+" https://github.com/r00k/dotfiles/blob/master/vimrc
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <Leader>n :call RenameFile()<cr>
+
