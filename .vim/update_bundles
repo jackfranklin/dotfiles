@@ -21,6 +21,8 @@ git_bundles = %w{
   git://github.com/ervandew/supertab.git
   git@github.com:Lokaltog/vim-easymotion.git
   git@github.com:majutsushi/tagbar.git
+  git@github.com:tpope/vim-abolish.git
+  git@github.com:tpope/vim-repeat.git
 }
 
 require 'fileutils'
