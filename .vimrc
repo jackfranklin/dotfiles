@@ -180,3 +180,11 @@ nnoremap td  :tabclose<CR>
 
 "tagbar
 nnoremap <silent> <Leader>T :TagbarToggle<CR>
+
+" always open help in a new tab
+" http://stackoverflow.com/questions/117150/can-i-re-map-commands-in-vim
+cnoreabbrev <expr> h getcmdtype() == ":" && getcmdline() == "h" ? "tab h" : "h"
+
+" :W to save, :Q to quit (should be default)
+:command W w
+:command Q q
