@@ -192,3 +192,7 @@ cnoreabbrev <expr> h getcmdtype() == ":" && getcmdline() == "h" ? "tab h" : "h"
 " make K split lines (opposite of J)
 " http://www.stanford.edu/~jacobm/vim.html
 nmap K i<cr><esc>k$
+
+" Don't add the comment prefix when I hit enter or o/O on a comment line.
+" https://github.com/r00k/dotfiles/blob/master/vimrc
+set formatoptions-=or
