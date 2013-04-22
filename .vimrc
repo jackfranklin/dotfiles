@@ -188,3 +188,7 @@ cnoreabbrev <expr> h getcmdtype() == ":" && getcmdline() == "h" ? "tab h" : "h"
 " :W to save, :Q to quit (should be default)
 :command W w
 :command Q q
+
+" make K split lines (opposite of J)
+" http://www.stanford.edu/~jacobm/vim.html
+nmap K i<cr><esc>k$
