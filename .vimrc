@@ -210,3 +210,6 @@ function! RenameFile()
 endfunction
 map <Leader>n :call RenameFile()<cr>
 
+" swap between paste mode or not with ,p
+nnoremap <Leader>p :set invpaste paste?<CR>
+set pastetoggle=<Leader>p
