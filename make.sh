@@ -7,8 +7,10 @@ dir=$(pwd) # dotfiles directory
 echo "Updating bundles"
 $dir/.vim/update_bundles $1
 
-echo "Installing Command-T (rbenv presumed)"
-cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
+if [ $# -eq 1 ]; then
+  echo "Installing Command-T (rbenv presumed)"
+  cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
+fi
 
 echo "Bundles installed"
 echo "Symlinking"
