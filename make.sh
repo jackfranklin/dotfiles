@@ -1,24 +1,17 @@
 #!/bin/bash
-############################
-# .make.sh
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
-############################
 
 ########## Variables
 
-dir=$(pwd)                    # dotfiles directory
-# change to the dotfiles directory
+dir=$(pwd) # dotfiles directory
 
 echo "Updating bundles"
-$dir/.vim/update_bundles
+$dir/.vim/update_bundles $1
 
 echo "Installing Command-T (rbenv presumed)"
 cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
 
 echo "Bundles installed"
 echo "Symlinking"
-
-
 
 #symlinks
 #zsh
