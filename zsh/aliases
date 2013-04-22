@@ -43,3 +43,4 @@ alias ctg="ctags -R ."
 # dotfiles
 alias aliases="vi ~/dotfiles/zsh/aliases"
 alias dotfiles="vi ~/dotfiles"
+alias srcz="source ~/.zshrc"
