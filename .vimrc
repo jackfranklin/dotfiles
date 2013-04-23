@@ -122,16 +122,16 @@ endfunction
 
 
 " navigate between split windows/tmux panes
-nmap <C-j> :call TmuxWinCmd('j')<cr>
-nmap <C-k> :call TmuxWinCmd('k')<cr>
-nmap <C-h> :call TmuxWinCmd('h')<cr>
-nmap <C-l> :call TmuxWinCmd('l')<cr>
+" nmap <C-j> :call TmuxWinCmd('j')<cr>
+" nmap <C-k> :call TmuxWinCmd('k')<cr>
+" nmap <C-h> :call TmuxWinCmd('h')<cr>
+" nmap <C-l> :call TmuxWinCmd('l')<cr>
 
 " nmap <c-\> :call TmuxWinCmd('p')<cr>
-" map <C-h> <C-w>h
-" map <C-j> <C-w>j
-" map <C-k> <C-w>k
-" map <C-l> <C-w>l
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-k> <C-w>k
+map <C-l> <C-w>l
 
 "folds
 " set foldmethod=indent
