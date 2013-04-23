@@ -34,6 +34,7 @@ alias gl="git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgre
 alias gds="git diff --staged"
 alias gpu="git push"
 alias ghp="git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master"
+alias grm="git rm"
 
 # vagrant
 alias vup="vagrant up"
