@@ -180,3 +180,36 @@ nnoremap td  :tabclose<CR>
 
 "tagbar
 nnoremap <silent> <Leader>T :TagbarToggle<CR>
+
+" always open help in a new tab
+" http://stackoverflow.com/questions/117150/can-i-re-map-commands-in-vim
+cnoreabbrev <expr> h getcmdtype() == ":" && getcmdline() == "h" ? "tab h" : "h"
+
+" :W to save, :Q to quit (should be default)
+:command W w
+:command Q q
+
+" make K split lines (opposite of J)
+" http://www.stanford.edu/~jacobm/vim.html
+nmap K i<cr><esc>k$
+
+" Don't add the comment prefix when I hit enter or o/O on a comment line.
+" https://github.com/r00k/dotfiles/blob/master/vimrc
+set formatoptions-=or
+
+" rename the current file
+" https://github.com/r00k/dotfiles/blob/master/vimrc
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+map <Leader>n :call RenameFile()<cr>
+
+" swap between paste mode or not with ,p
+nnoremap <Leader>p :set invpaste paste?<CR>
+set pastetoggle=<Leader>p
