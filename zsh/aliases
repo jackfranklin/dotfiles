@@ -35,11 +35,15 @@ alias gds="git diff --staged"
 alias gpu="git push"
 alias ghp="git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master"
 
+# vagrant
+alias vup="vagrant up"
+alias vhalt="vagrant halt"
+alias vssh="vagrant ssh"
 
 # ctags
 alias ctg="ctags -R ."
 
-
 # dotfiles
+alias wtfaliases="cat ~/dotfiles/zsh/aliases"
 alias aliases="vi ~/dotfiles/zsh/aliases"
 alias dotfiles="vi ~/dotfiles"
