@@ -100,7 +100,7 @@ let g:ruby_path = system('echo $HOME/.rbenv/shims')
 au WinEnter * let g:tmux_is_last_pane = 0
 
 " Like `wincmd` but also change tmux panes instead of vim windows when needed.
-function TmuxWinCmd(direction)
+function! TmuxWinCmd(direction)
   let nr = winnr()
   let tmux_last_pane = (a:direction == 'p' && g:tmux_is_last_pane)
   if !tmux_last_pane
