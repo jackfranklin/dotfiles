@@ -19,6 +19,7 @@ git_bundles = %w{
   git@github.com:majutsushi/tagbar.git
   git@github.com:tpope/vim-abolish.git
   git@github.com:tpope/vim-repeat.git
+  git@github.com:mhinz/vim-startify.git
 }
 
 require 'fileutils'
