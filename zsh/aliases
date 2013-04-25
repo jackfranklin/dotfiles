@@ -35,6 +35,10 @@ alias gds="git diff --staged"
 alias gpu="git push"
 alias ghp="git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master"
 alias grm="git rm"
+alias gcob="git co -b"
+
+# jekyll
+alias js="jekyll --server"
 
 # vagrant
 alias vup="vagrant up"
@@ -45,7 +49,5 @@ alias vssh="vagrant ssh"
 alias ctg="ctags -R ."
 
 # dotfiles
-alias wtfaliases="cat ~/dotfiles/zsh/aliases"
-alias aliases="vi ~/dotfiles/zsh/aliases"
-alias dotfiles="vi ~/dotfiles"
+alias df="cd ~/dotfiles"
 alias srcz="source ~/.zshrc"
