@@ -1,4 +1,6 @@
 #!/usr/bin/env ruby
+require 'fileutils'
+require 'open-uri'
 
 REINSTALL_ALL = ARGV[0] == "new"
 
@@ -23,9 +25,6 @@ git_bundles = %w{
   git@github.com:kien/ctrlp.vim.git
 }
 
-require 'fileutils'
-require 'open-uri'
-
 bundles_dir = File.join(File.dirname(__FILE__), "bundle")
 
 if REINSTALL_ALL
@@ -37,7 +36,7 @@ end
 FileUtils.cd(bundles_dir)
 
 git_bundles.each do |url|
-  name = url.split("/").last.split(".").first
+  name = url.split("/").last.gsub(".git", "")
   if REINSTALL_ALL
       puts "Installing #{name}"
       `git clone -q #{url}`
@@ -54,4 +53,19 @@ git_bundles.each do |url|
 end
 
 Dir["*/.git"].each {|f| FileUtils.rm_rf(f) }
+
+# check if any folders exist not in the list of bundles, and remove them
+bundle_names = git_bundles.map { |item|
+  item.split("/").last.gsub(".git", "")
+}
+
+folder_names = Dir.glob(File.expand_path("~/.vim/bundle/*")).map { |item|
+  item.split("/").last
+}
+
+to_uninstall = folder_names.select { |folder| !bundle_names.include?(folder) }
+to_uninstall.each do |folder|
+  puts "Uninstalling plugin: #{folder}"
+  FileUtils.rm_rf(File.expand_path("~/.vim/bundle/#{folder}"))
+end
 
