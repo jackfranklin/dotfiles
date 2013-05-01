@@ -162,7 +162,7 @@ set timeout timeoutlen=1000 ttimeoutlen=100
 " temporarily swapped to Ctrl P to try it out
 " map <leader>t :CommandT<cr>
 " map <leader>cf :CommandTFlush<cr>
-map <leader>t :CtrlPMixed<cr>
+map <leader>t :CtrlP<cr>
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
