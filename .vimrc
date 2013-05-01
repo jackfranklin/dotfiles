@@ -159,8 +159,10 @@ set t_Co=256 " 256 colors
 set timeout timeoutlen=1000 ttimeoutlen=100
 
 " command T shortcuts
-map <leader>t :CommandT<cr>
-map <leader>cf :CommandTFlush<cr>
+" temporarily swapped to Ctrl P to try it out
+" map <leader>t :CommandT<cr>
+" map <leader>cf :CommandTFlush<cr>
+map <leader>t :CtrlPMixed<cr>
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign

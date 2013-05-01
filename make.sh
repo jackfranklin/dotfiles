@@ -8,8 +8,9 @@ echo "Updating bundles"
 $dir/.vim/update_bundles $1
 
 if [ $# -eq 1 ]; then
-  echo "Installing Command-T (rbenv presumed)"
-  cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
+  # disabled this as right now I'm playing with Ctrl P instead (pure Vimscript!)
+  # echo "Installing Command-T (rbenv presumed)"
+  # cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
 fi
 
 echo "Bundles installed"
