@@ -8,3 +8,11 @@ function mkdircd
 {
     command mkdir $1 && cd $1
 }
+
+function g {
+  if [[ $# > 0 ]]; then
+    git $@
+  else
+    git status
+  fi
+}
