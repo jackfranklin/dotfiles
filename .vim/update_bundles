@@ -22,7 +22,6 @@ git_bundles = %w{
   git@github.com:tpope/vim-repeat.git
   git@github.com:duff/vim-scratch.git
   git@github.com:kien/ctrlp.vim.git
-  git@github.com:marijnh/tern_for_vim.git
 }
 
 bundles_dir = File.join(File.dirname(__FILE__), "bundle")
