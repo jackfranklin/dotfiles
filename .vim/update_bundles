@@ -15,7 +15,6 @@ git_bundles = %w{
   git://github.com/tpope/vim-rails.git
   git://github.com/tpope/vim-surround.git
   git://github.com/tomtom/tcomment_vim.git
-  git://git.wincent.com/command-t.git
   git://github.com/ervandew/supertab.git
   git@github.com:Lokaltog/vim-easymotion.git
   git@github.com:majutsushi/tagbar.git
@@ -23,6 +22,7 @@ git_bundles = %w{
   git@github.com:tpope/vim-repeat.git
   git@github.com:duff/vim-scratch.git
   git@github.com:kien/ctrlp.vim.git
+  git@github.com:marijnh/tern_for_vim.git
 }
 
 bundles_dir = File.join(File.dirname(__FILE__), "bundle")
