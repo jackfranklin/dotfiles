@@ -71,11 +71,13 @@ autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
-"remove all trailing whitespace
+
+"remove all trailing whitespace with ,W
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
-" toggle git status with Space + s
-nnoremap <space>s :Gstatus<CR>
+" make _ a word boundary when doing cw
+" http://superuser.com/questions/244040/how-do-i-change-until-the-next-underscore-in-vim
+set iskeyword-=_
 
 
 " reselect visual block after indent/outdent
@@ -128,7 +130,6 @@ map <C-k> <C-w>k
 map <C-l> <C-w>l
 
 "folds
-" set foldmethod=indent
 set foldmethod=manual
 
 " make it do . in visual mode
@@ -160,9 +161,7 @@ map <leader>t :CtrlP<cr>
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
-" set statusline+=%m\                "modified flag
-set statusline+=\ [%l\/%L:\%v] "line number
-" set statusline +=\ [col\ %v\]             "virtual column number
+set statusline+=\ [%l\/%L:\%v] "line number and column number
 
 " navigating tabs
 nnoremap th  :tabfirst<CR>
