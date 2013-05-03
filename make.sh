@@ -27,7 +27,6 @@ ln -s $dir/.zshrc ~/.zshrc
 echo "Symlinking Vim"
 ln -s $dir/.vim ~/.vim
 ln -s $dir/.vimrc ~/.vimrc
-ln -s $dir/.gvimrc ~/.gvimrc
 
 #tmux
 echo "Symlinking tmux"
