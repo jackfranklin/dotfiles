@@ -7,43 +7,39 @@ dir=$(pwd) # dotfiles directory
 echo "Updating bundles"
 $dir/.vim/update_bundles $1
 
-# if [ $# -eq 1 ]; then
-  # disabled this as right now I'm playing with Ctrl P instead (pure Vimscript!)
-  # echo "Installing Command-T (rbenv presumed)"
-  # cd $dir/.vim/bundle/command-t/ruby/command-t && rbenv local system && ruby extconf.rb && make
-# fi
 
-echo "Bundles installed"
+echo "~~~~~~~~~~~~~~~~~"
 echo "Symlinking"
 
 #symlinks
 #zsh
 echo "Symlinking ZSH"
-ln -s $dir/.zsh ~/.zsh
-ln -s $dir/.zshenv ~/.zshenv
-ln -s $dir/.zshrc ~/.zshrc
+ln -nsf $dir/.zsh ~/.zsh
+ln -sf $dir/.zshenv ~/.zshenv
+ln -sf $dir/.zshrc ~/.zshrc
 
 #vim
 echo "Symlinking Vim"
-ln -s $dir/.vim ~/.vim
-ln -s $dir/.vimrc ~/.vimrc
+ln -nsf $dir/.vim ~/.vim
+ln -sf $dir/.vimrc ~/.vimrc
 
 #tmux
 echo "Symlinking tmux"
-ln -s $dir/.tmux.conf ~/.tmux.conf
+ln -sf $dir/.tmux.conf ~/.tmux.conf
 
 #pulldown
 echo "Symlinking pulldown"
-ln -s $dir/.pulldown.json ~/.pulldown.json
+ln -sf $dir/.pulldown.json ~/.pulldown.json
 
 #git
 echo "Symlinking git"
-ln -s $dir/.gitconfig ~/.gitconfig
-ln -s $dir/.gitignore_global ~/.gitignore_global
+ln -sf $dir/.gitconfig ~/.gitconfig
+ln -sf $dir/.gitignore_global ~/.gitignore_global
 
 #bin
 echo "Symlinking tmux-vim-select-pane to /usr/bin"
-ln -s $dir/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
+sudo ln -sf $dir/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
 
+echo "~~~~~~~~~~~~~~~~~"
 echo "All done"
 
