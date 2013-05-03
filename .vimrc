@@ -63,12 +63,6 @@ set number
 " make the TCOmment toggle <leader>c
 map <leader>c gcc
 
-" vim pipe filetypes
-" screw local leader, just map it to regular leader
-map <leader>r <localleader>r
-map <leader>p <localleader>p
-autocmd FileType javascript let b:vimpipe_command='node <(cat)'
-
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
@@ -179,13 +173,6 @@ nnoremap tt  :tabedit<Space>
 nnoremap tn  :tabnext<Space>
 nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
-
-"tagbar
-nnoremap <silent> <Leader>T :TagbarToggle<CR>
-
-" always open help in a new tab
-" http://stackoverflow.com/questions/117150/can-i-re-map-commands-in-vim
-cnoreabbrev <expr> h getcmdtype() == ":" && getcmdline() == "h" ? "tab h" : "h"
 
 " :W to save, :Q to quit (should be default)
 :command W w
