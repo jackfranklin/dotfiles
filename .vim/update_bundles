@@ -6,7 +6,6 @@ REINSTALL_ALL = ARGV[0] == "new"
 
 # shamelessly stolen from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
 git_bundles = %w{
-  git://github.com/elzr/vim-json.git
   git://github.com/kchmck/vim-coffee-script.git
   git://github.com/pangloss/vim-javascript.git
   git://github.com/tpope/vim-endwise.git
