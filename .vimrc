@@ -18,8 +18,10 @@ set incsearch
 set hlsearch
 " make searches case-sensitive only if they contain upper-case characters
 set ignorecase smartcase
+
 " highlight current line
-set cursorline
+"set cursorline
+
 " set showtabline=2
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
@@ -141,8 +143,7 @@ set autoread
 if has('gui_running')
   " nicer gfx settings are set in .gvimrc
 else
-  hi CursorLine   cterm=NONE ctermbg=234
-  highlight CommandTSelection ctermbg=236
+  " hi CursorLine   cterm=NONE ctermbg=234
   set background=dark
 endif
 
