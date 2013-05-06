@@ -144,6 +144,7 @@ if has('gui_running')
   " nicer gfx settings are set in .gvimrc
 else
   " hi CursorLine   cterm=NONE ctermbg=234
+  colorscheme solarized
   set background=dark
 endif
 
