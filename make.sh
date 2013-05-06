@@ -27,10 +27,6 @@ ln -sf $dir/.vimrc ~/.vimrc
 echo "Symlinking tmux"
 ln -sf $dir/.tmux.conf ~/.tmux.conf
 
-#pulldown
-echo "Symlinking pulldown"
-ln -sf $dir/.pulldown.json ~/.pulldown.json
-
 #git
 echo "Symlinking git"
 ln -sf $dir/.gitconfig ~/.gitconfig
