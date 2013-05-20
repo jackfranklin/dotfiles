@@ -14,7 +14,7 @@ setopt HIST_REDUCE_BLANKS
 setopt INC_APPEND_HISTORY SHARE_HISTORY
 setopt ALL_EXPORT
 
-# setopt MENUCOMPLETE
+# setopt MENCOMPLETE
 # Set/unset  shell options
 # setopt   notify globdots correct pushdtohome cdablevars autolist
 # setopt   correctall autocd recexact longlistjobs
@@ -61,8 +61,9 @@ source $HOME/dotfiles/zsh/aliases
 source $HOME/dotfiles/zsh/functions
 
 
-# autoload -U compinit
-# compinit
+# get auto completes going
+autoload -U compinit
+compinit
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
 
