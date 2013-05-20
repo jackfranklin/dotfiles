@@ -77,11 +77,6 @@ autocmd BufWinLeave * call clearmatches()
 "remove all trailing whitespace with ,W
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
-" make _ a word boundary when doing cw
-" http://superuser.com/questions/244040/how-do-i-change-until-the-next-underscore-in-vim
-set iskeyword-=_
-
-
 " reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
