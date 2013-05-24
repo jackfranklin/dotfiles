@@ -37,6 +37,7 @@ alias gpo="git pull origin"
 alias gpom="git pom"
 alias gpu="git push"
 alias grm="git rm"
+alias gum="gco master && gpo"
 
 # jekyll
 alias js="jekyll --server"
