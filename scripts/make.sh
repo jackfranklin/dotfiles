@@ -36,7 +36,7 @@ ln -sf $dir/.gitignore_global ~/.gitignore_global
 
 #bin
 echo "Symlinking tmux-vim-select-pane to /usr/bin"
-sudo ln -sf $dir/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
+sudo ln -sf $dir/bin/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
 
 echo "~~~~~~~~~~~~~~~~~"
 echo "All done"
