@@ -1,6 +1,3 @@
-# editing and stuff
-alias vi="mvim -v"
-
 # misc
 alias slrn="slrn -n"
 alias man="LC_ALL=C LANG=C man"
