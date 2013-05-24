@@ -4,9 +4,11 @@
 
 dir=$(pwd) # dotfiles directory
 
-echo "Updating bundles"
-$dir/.vim/update_bundles $1
+echo "Brewing"
+ruby $dir/scripts/brewery.rb
 
+echo "Updating bundles"
+ruby $dir/scripts/vim_bundles.rb $1
 
 echo "~~~~~~~~~~~~~~~~~"
 echo "Symlinking"

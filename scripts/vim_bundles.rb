@@ -4,7 +4,7 @@ require 'open-uri'
 
 REINSTALL_ALL = ARGV[0] == "new"
 
-# shamelessly stolen from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
+# shamelessly stolen and altered from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
 git_bundles = %w{
   git://github.com/kchmck/vim-coffee-script.git
   git://github.com/pangloss/vim-javascript.git
@@ -24,7 +24,7 @@ git_bundles = %w{
   git@github.com:nono/vim-handlebars.git
 }
 
-bundles_dir = File.join(File.dirname(__FILE__), "bundle")
+bundles_dir = File.join(File.expand_path("~/dotfiles/.vim"), "bundle")
 
 if REINSTALL_ALL
   puts "Reinstalling all Vim plugins"
