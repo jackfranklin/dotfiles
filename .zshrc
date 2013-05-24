@@ -78,6 +78,6 @@ export GIT_MERGE_AUTOEDIT
 # for the Z plugin https://github.com/rupa/z
 . /usr/local/Cellar/z/1.4/etc/profile.d/z.sh
 
-export EDITOR='mvim -v'
+export EDITOR='vim'
 # But still use emacs-style zsh bindings
 bindkey -e
