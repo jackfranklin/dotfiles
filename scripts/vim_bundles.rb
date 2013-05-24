@@ -24,7 +24,7 @@ git_bundles = %w{
   git@github.com:nono/vim-handlebars.git
 }
 
-bundles_dir = File.join(File.expand_path("~/dotfiles/.vim"), "bundle")
+bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
 
 if REINSTALL_ALL
   puts "Reinstalling all Vim plugins"
