@@ -167,8 +167,8 @@ nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
 
 " :W to save, :Q to quit (should be default)
-:command W w
-:command Q q
+command! W w
+command! Q q
 
 " make K split lines (opposite of J)
 " http://www.stanford.edu/~jacobm/vim.html
