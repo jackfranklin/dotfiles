@@ -10,16 +10,16 @@ My dotfiles for Vim and ZSH. Shamelessly stolen from tonnes of dotfile repositor
 - `./make.sh NEW`
 
 # Adding new plugin
-- Add plugin to `~/dotfiles/.vim/update_bundles`
+- Add plugin to `~/dotfiles/scripts/vim_bundles`
 - Run `./make.sh`
+
+# Adding a new brew
+- add brew to `~/dotfiles/scripts/brewery.rb`
+- run that file or just run `./make.sh`.
 
 Running `make.sh` without arguments means it will only install new plugins and not do a fresh install of everything. Running it with an argument makes it do an entirely fresh install.
 
 The installer will also delete plugins that exist as folders but not in the `update_bundles` script.
-
-#Plugins
-
-Plugins are all managed with Pathogen, and added to the update_bundles script in `~/dotfiles/.vim/update_bundles`.
 
 # Requirements
 
