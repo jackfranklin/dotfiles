@@ -1,3 +1,6 @@
+# lazy
+alias vi="vim"
+
 # misc
 alias slrn="slrn -n"
 alias man="LC_ALL=C LANG=C man"
