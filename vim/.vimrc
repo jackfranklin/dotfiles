@@ -65,6 +65,11 @@ set number
 " make the TCOmment toggle <leader>c
 map <leader>c gcc
 
+colorscheme solarized
+set background=dark
+
+set t_Co=256 " 256 colors
+
 " highlight trailing whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
@@ -135,15 +140,6 @@ set foldmethod=manual
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
 
-if has('gui_running')
-  " nicer gfx settings are set in .gvimrc
-else
-  " hi CursorLine   cterm=NONE ctermbg=234
-  colorscheme solarized
-  set background=dark
-endif
-
-set t_Co=256 " 256 colors
 
 " fix slight delay after pressing ESC then O
 " http://ksjoberg.com/vim-esckeys.html
@@ -171,8 +167,8 @@ nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
 
 " :W to save, :Q to quit (should be default)
-:command W w
-:command Q q
+command! W w
+command! Q q
 
 " make K split lines (opposite of J)
 " http://www.stanford.edu/~jacobm/vim.html

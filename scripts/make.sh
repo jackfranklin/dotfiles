@@ -16,27 +16,27 @@ echo "Symlinking"
 #symlinks
 #zsh
 echo "Symlinking ZSH"
-ln -nsf $dir/.zsh ~/.zsh
-ln -sf $dir/.zshenv ~/.zshenv
-ln -sf $dir/.zshrc ~/.zshrc
+ln -nsf $dir/zsh/.zsh ~/.zsh
+ln -sf $dir/zsh/.zshenv ~/.zshenv
+ln -sf $dir/zsh/.zshrc ~/.zshrc
 
 #vim
 echo "Symlinking Vim"
-ln -nsf $dir/.vim ~/.vim
-ln -sf $dir/.vimrc ~/.vimrc
+ln -nsf $dir/vim/.vim ~/.vim
+ln -sf $dir/vim/.vimrc ~/.vimrc
 
 #tmux
 echo "Symlinking tmux"
-ln -sf $dir/.tmux.conf ~/.tmux.conf
+ln -sf $dir/tmux/.tmux.conf ~/.tmux.conf
 
 #git
 echo "Symlinking git"
-ln -sf $dir/.gitconfig ~/.gitconfig
-ln -sf $dir/.gitignore_global ~/.gitignore_global
+ln -sf $dir/git/.gitconfig ~/.gitconfig
+ln -sf $dir/git/.gitignore_global ~/.gitignore_global
 
 #bin
 echo "Symlinking tmux-vim-select-pane to /usr/bin"
-sudo ln -sf $dir/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
+sudo ln -sf $dir/bin/tmux-vim-select-pane /usr/bin/tmux-vim-select-pane
 
 echo "~~~~~~~~~~~~~~~~~"
 echo "All done"

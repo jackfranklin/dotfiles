@@ -1,4 +1,4 @@
-.vim/bundle
-.vim/.netrwhist
-.zsh/cache
+vim/.vim/bundle
+vim/.vim/.netrwhist
+vim/.zsh/cache
 .DS_Store

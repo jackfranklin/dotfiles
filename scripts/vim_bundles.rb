@@ -16,15 +16,16 @@ git_bundles = %w{
   git://github.com/tomtom/tcomment_vim.git
   git://github.com/ervandew/supertab.git
   git@github.com:Lokaltog/vim-easymotion.git
-  git@github.com:tpope/vim-abolish.git
-  git@github.com:tpope/vim-repeat.git
-  git@github.com:duff/vim-scratch.git
   git@github.com:kien/ctrlp.vim.git
   git://github.com/altercation/vim-colors-solarized.git
   git@github.com:nono/vim-handlebars.git
+  git@github.com:garbas/vim-snipmate.git
+  git@github.com:MarcWeber/vim-addon-mw-utils.git
+  git@github.com:tomtom/tlib_vim.git
+  git@github.com:honza/vim-snippets.git
 }
 
-bundles_dir = File.join(File.expand_path("~/dotfiles/.vim"), "bundle")
+bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
 
 if REINSTALL_ALL
   puts "Reinstalling all Vim plugins"
