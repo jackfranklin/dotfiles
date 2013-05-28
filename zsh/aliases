@@ -55,3 +55,6 @@ alias srcz="source ~/.zshrc"
 # tmux
 alias td="tmux detach"
 
+# thanks to @phuunet for this one
+# https://twitter.com/phuunet/status/339318973634052096
+alias topcmds='cat ~/.zsh_history | cut -d ";" -f 2 | sed "s, .*,," | sort | uniq -c | sort -n | tail -rn 30'
