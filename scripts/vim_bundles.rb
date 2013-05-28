@@ -33,7 +33,7 @@ if REINSTALL_ALL
 end
 
 # make sure the folder exists before writing
-FileUtils.mkdir(bundles_dir)
+FileUtils.mkdir_p(bundles_dir)
 
 FileUtils.cd(bundles_dir)
 
