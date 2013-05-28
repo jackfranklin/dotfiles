@@ -33,21 +33,30 @@ HISTSIZE=9999
 SAVEHIST=9999
 HOSTNAME="`hostname`"
 PAGER='less'
-    autoload colors zsh/terminfo
-    if [[ "$terminfo[colors]" -ge 8 ]]; then
-   colors
-    fi
-    for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-   eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
-   eval PR_LIGHT_$color='%{$fg[${(L)color}]%}'
-   (( count = $count + 1 ))
-    done
-    PR_NO_COLOR="%{$terminfo[sgr0]%}"
+
+# set up some colour variables for usage in prompt
+autoload colors zsh/terminfo
+if [[ "$terminfo[colors]" -ge 8 ]]; then
+  colors
+fi
+for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
+  eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
+  eval PR_LIGHT_$color='%{$fg[${(L)color}]%}'
+  (( count = $count + 1 ))
+done
+PR_NO_COLOR="%{$terminfo[sgr0]%}"
+
+
+# don't have a right hand prompt
 RPS1=""
+# main prompt
 PROMPT='$PR_RED%3c$PR_NO_COLOR $(git_super_status)
 → '
-#LANGUAGE=
-LC_ALL='en_US.UTF-8'
+
+
+
+# LC_ALL='en_US.UTF-8'
+LC_ALL=C
 LANG='en_US.UTF-8'
 LC_CTYPE=C
 DISPLAY=:0
@@ -65,9 +74,6 @@ source $HOME/dotfiles/zsh/functions
 autoload -U compinit
 compinit
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
-
-
-# because bundle exec is loads of characters
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
