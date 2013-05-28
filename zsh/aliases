@@ -46,7 +46,7 @@ alias vhalt="vagrant halt"
 alias vssh="vagrant ssh"
 
 # ctags
-alias ctg="ctags -R ."
+alias retag='ctags -R --exclude=.svn --exclude=.git --exclude=log --exclude=tmp *'
 
 # dotfiles
 alias df="cd ~/dotfiles"
