@@ -23,19 +23,14 @@ alias bi="bundle install"
 # git alises
 alias ga="git add"
 alias gaa="git aa"
-
 alias gci="git ci"
 alias gcm="git ci -m"
 alias gco="git co"
 alias gcob="git co -b"
-
 alias gd="git diff"
 alias gds="git diff --staged"
-
 alias ghp="git checkout gh-pages && git rebase master && git push origin gh-pages && git checkout master"
-
 alias gl="git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit"
-
 alias gpo="git pull origin"
 alias gpom="git pom"
 alias gpu="git push"
