@@ -27,14 +27,13 @@ git_bundles = %w{
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
 
-# make sure the folder exists
-FileUtils.mkdir(bundles_dir)
-
 if REINSTALL_ALL
   puts "Reinstalling all Vim plugins"
   FileUtils.rm_rf(bundles_dir)
-  FileUtils.mkdir(bundles_dir)
 end
+
+# make sure the folder exists before writing
+FileUtils.mkdir(bundles_dir)
 
 FileUtils.cd(bundles_dir)
 
