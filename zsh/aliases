@@ -51,3 +51,7 @@ alias retag='ctags -R --exclude=.svn --exclude=.git --exclude=log --exclude=tmp 
 # dotfiles
 alias df="cd ~/dotfiles"
 alias srcz="source ~/.zshrc"
+
+# tmux
+alias td="tmux detach"
+
