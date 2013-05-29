@@ -94,7 +94,7 @@ vnoremap > >gv
 
 " ruby path if you are using rbenv
 " http://stackoverflow.com/questions/9341768/vim-response-quite-slow
-let g:ruby_path = system('echo $HOME/.rbenv/shims')
+" let g:ruby_path = system('echo $HOME/.rbenv/shims')
 
 " Easy window navigation
 " http://nvie.com/posts/how-i-boosted-my-vim/
