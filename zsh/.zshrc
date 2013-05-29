@@ -50,8 +50,7 @@ PR_NO_COLOR="%{$terminfo[sgr0]%}"
 # don't have a right hand prompt
 RPS1=""
 # main prompt
-PROMPT='$PR_RED%3c$PR_NO_COLOR $(git_super_status)
-→ '
+PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status) '
 
 
 
