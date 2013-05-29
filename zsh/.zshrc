@@ -54,10 +54,11 @@ PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status) '
 
 
 
-LC_ALL="UTF8"
-LANG='en_US.UTF-8'
-LC_CTYPE=C
-DISPLAY=:0
+
+#LANGUAGE
+LC_ALL='en_US.UTF-8'
+# LC_CTYPE=C
+# DISPLAY=:0
 
 unsetopt ALL_EXPORT
 
