@@ -211,3 +211,4 @@ set pastetoggle=<Leader>p
 
 " easy vimrc editing
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+nnoremap <leader>sv :source $MYVIMRC<cr>
