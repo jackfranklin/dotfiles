@@ -4,6 +4,8 @@ call pathogen#helptags()
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
+set statusline+=\ %y "filetype
+set statusline+=%=
 set statusline+=\ [%l\/%L:\%v] "line number and column number
 
 " auto load files if vim detects they have been changed outside of Vim
@@ -212,3 +214,8 @@ set pastetoggle=<Leader>p
 " easy vimrc editing
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" better ESCing
+inoremap jk <esc>
+" force myself
+inoremap <esc> <nop>
