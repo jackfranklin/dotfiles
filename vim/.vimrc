@@ -215,3 +215,6 @@ set pastetoggle=<Leader>p
 " easy vimrc editing
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
+
+" scratchpad
+nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
