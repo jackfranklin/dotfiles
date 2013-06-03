@@ -54,6 +54,7 @@ alias srcz="source ~/.zshrc"
 
 # tmux
 alias td="tmux detach"
+alias tmuxnew="tmux new-session -s "
 
 # thanks to @phuunet for this one
 # https://twitter.com/phuunet/status/339318973634052096
