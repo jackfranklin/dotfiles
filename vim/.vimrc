@@ -211,11 +211,7 @@ map <Leader>n :call RenameFile()<cr>
 nnoremap <Leader>p :set invpaste paste?<CR>
 set pastetoggle=<Leader>p
 
+
 " easy vimrc editing
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 nnoremap <leader>sv :source $MYVIMRC<cr>
-
-" better ESCing
-inoremap jk <esc>
-" force myself
-inoremap <esc> <nop>
