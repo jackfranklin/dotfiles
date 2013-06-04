@@ -15,12 +15,14 @@ puts "Running Node version: #{`node --version`}"
 
 puts "Now we'll install the listed modules"
 npms = {
+  # module name => module command
+  # leave command blank if they are the same
   "serve" => "",
   "distra" => "",
   "gh" => "",
   "pulldown" => "",
   "coffee-script" => "coffee",
-  "grunt-cli" => "",
+  "grunt-cli" => "grunt",
   "express" => "",
 }
 
