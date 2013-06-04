@@ -218,3 +218,12 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 
 " scratchpad
 nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
+
+" project notes
+function! OpenProjectNotes()
+  let directory = getcwd()
+  let filename = '_projectnotes.txt'
+  exec ':vsplit ' . directory . '/' . filename
+endfunction
+
+nnoremap <leader>pn :call OpenProjectNotes()<cr>
