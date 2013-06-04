@@ -2,3 +2,15 @@ a quick place to note down ideas for things I want to fix in my dotfiles
 
 - better shortcuts for spell checking
 - leader command for nerdtree
+-add some stuff to ctrlp ignore
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
+
+- function to create new file in same directory as current file
+
+snippet like defi or something for def initialize
+
+method for deleting current file
+
+snippets for rspec
+
+project notes file (one per project, Vimscript to create file, put file in .gitignore global)
