@@ -15,8 +15,7 @@ My dotfiles for Vim and ZSH. Shamelessly stolen from tonnes of dotfile repositor
 
 # homebrew
 - add brew to `~/dotfiles/scripts/brewery.rb`
-- run that file or just run `./scripts/make.sh`.
-- 
+- run that file or just run `./scripts/make.sh`
 
 # node & npm
 - The latest Node is installed via homebrew.
