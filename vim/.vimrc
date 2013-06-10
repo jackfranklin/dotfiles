@@ -231,3 +231,8 @@ nnoremap <leader>pn :call OpenProjectNotes()<cr>
 
 map <leader>nt :NERDTreeToggle<cr>
 
+" bubble lines up and down
+" http://vimcasts.org/episodes/bubbling-text/
+nmap _ ddkP
+nmap - ddp
+
