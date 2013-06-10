@@ -7,7 +7,6 @@ if `which n` == "" || REINSTALL_ALL
   `npm install n -g --silent`
 end
 
-# n stable currently breaks, so hardcoded for now
 `n stable`
 
 puts "Running Node version: #{`node --version`}"
