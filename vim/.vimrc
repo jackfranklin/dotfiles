@@ -228,3 +228,6 @@ function! OpenProjectNotes()
 endfunction
 
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
+
+map <leader>nt :NERDTreeToggle<cr>
+
