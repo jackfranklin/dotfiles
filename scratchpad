@@ -1,9 +1,6 @@
 a quick place to note down ideas for things I want to fix in my dotfiles
 
 - better shortcuts for spell checking
-- leader command for nerdtree
--add some stuff to ctrlp ignore
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|git'
 
 - function to create new file in same directory as current file
 
@@ -16,6 +13,4 @@ snippets for rspec
 project notes file (one per project, Vimscript to create file, put file in .gitignore global)
 
 snippet for inserting blank line above or below
-
-leader for bubbling line up / down
 
