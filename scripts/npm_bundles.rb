@@ -8,8 +8,7 @@ if `which n` == "" || REINSTALL_ALL
 end
 
 # n stable currently breaks, so hardcoded for now
-# puts `n stable`
-`n 0.10.9`
+`n stable`
 
 puts "Running Node version: #{`node --version`}"
 
