@@ -177,6 +177,7 @@ vnoremap . :norm.<CR>
 " control P
 map <leader>t :CtrlP<cr>
 map <leader>cf :CtrlPClearCache<cr>
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
 
 " navigating tabs
 nnoremap th  :tabfirst<CR>
