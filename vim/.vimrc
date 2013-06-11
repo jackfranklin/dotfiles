@@ -36,6 +36,9 @@ set autoindent
 
 set laststatus=2
 
+" break properly, don't split words
+set linebreak
+
 "folds
 set foldmethod=manual
 
