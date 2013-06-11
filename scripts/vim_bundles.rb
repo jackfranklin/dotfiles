@@ -25,6 +25,7 @@ git_bundles = %w{
   git@github.com:honza/vim-snippets.git
   git@github.com:vim-ruby/vim-ruby.git
   git://github.com/scrooloose/nerdtree.git
+  git://github.com/othree/html5.vim.git
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
