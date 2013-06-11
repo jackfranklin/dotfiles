@@ -10,8 +10,4 @@ method for deleting current file
 
 snippets for rspec
 
-project notes file (one per project, Vimscript to create file, put file in .gitignore global)
-
-snippet for inserting blank line above or below
-
 console.log snippet
