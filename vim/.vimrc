@@ -39,6 +39,10 @@ set laststatus=2
 " break properly, don't split words
 set linebreak
 
+" use matchit plugin
+" required for rubyblocks plugin
+runtime macros/matchit.vim
+
 "folds
 set foldmethod=manual
 
