@@ -236,3 +236,7 @@ map <leader>nt :NERDTreeToggle<cr>
 nmap _ ddkP
 nmap - ddp
 
+" insert blank line above
+nmap <leader>bO O<Esc>j
+" insert blank line below
+nmap <leader>bo o<Esc>k
