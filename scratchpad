@@ -14,3 +14,4 @@ project notes file (one per project, Vimscript to create file, put file in .giti
 
 snippet for inserting blank line above or below
 
+console.log snippet
