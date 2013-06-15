@@ -14,6 +14,7 @@ brews = %w{
   vim
   tree
   tmux
+  reattach-to-user-namespace
 }
 
 puts "Before doing anything, going to update brew"
