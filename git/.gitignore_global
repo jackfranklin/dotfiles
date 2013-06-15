@@ -2,3 +2,4 @@
 .DS_Store
 tags
 _projectnotes.txt
+node_modules/
