@@ -13,6 +13,7 @@ brews = %w{
   wget
   vim
   tree
+  tmux
 }
 
 puts "Before doing anything, going to update brew"
