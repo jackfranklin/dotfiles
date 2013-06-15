@@ -12,6 +12,7 @@ brews = %w{
   ruby-build
   wget
   vim
+  tree
 }
 
 puts "Before doing anything, going to update brew"
