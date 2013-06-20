@@ -12,3 +12,4 @@ rbenv global 1.9.3-p429
 gem install bundler
 gem install rake
 gem install rails
+gem install jekyll
