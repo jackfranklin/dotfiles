@@ -52,9 +52,6 @@ RPS1=""
 # main prompt
 PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status) '
 
-
-
-
 #LANGUAGE
 LC_ALL='en_US.UTF-8'
 # LC_CTYPE=C
@@ -88,3 +85,6 @@ export EDITOR='vim'
 bindkey -e
 
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
+
+#clojure
+export VIMCLOJURE_SERVER_JAR="/usr/bin/nailgun-server.jar"

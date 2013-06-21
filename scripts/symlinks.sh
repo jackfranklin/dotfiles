@@ -4,5 +4,6 @@ do
   echo "Symlinking $file"
   # file is bin/filename
   # do something on "$file"
+  chmod +x ~/dotfiles/$file
   sudo ln -sf ~/dotfiles/$file /usr/$file
 done

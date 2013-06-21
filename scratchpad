@@ -11,3 +11,7 @@ method for deleting current file
 snippets for rspec
 
 console.log snippet
+
+leader for opening Gemfile (,gf) ?
+
+key to skip to private definition in Ruby files

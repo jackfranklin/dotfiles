@@ -1,0 +1,22 @@
+#! /bin/bash
+
+if [ -z $VIMCLOJURE_SERVER_JAR ]; then
+    echo "Error! Need to define location of VimClojure nailgun server jar with:"
+    echo "export VIMCLOJURE_SERVER_JAR="
+    exit 1
+fi
+
+if [ ! -f $VIMCLOJURE_SERVER_JAR ]; then
+    echo "Error! Unable to find VimClojure nailgun server jar at '$VIMCLOJURE_SERVER_JAR'"
+    exit 1
+fi
+
+LEIN_CLASSPATH=$(lein classpath)
+
+if [ ! $LEIN_CLASSPATH ]; then
+    echo "Warning! Unable to get classpath from lein, just using existing classpath, expecting clojure jars to be available"
+fi
+
+NG_CLASSPATH="$VIMCLOJURE_SERVER_JAR:$LEIN_CLASSPATH:$CLASSPATH"
+echo java -server -cp "$NG_CLASSPATH" vimclojure.nailgun.NGServer
+java -server -cp "$NG_CLASSPATH" vimclojure.nailgun.NGServer

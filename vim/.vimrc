@@ -145,6 +145,10 @@ let g:html_indent_tags = 'li\|p'
 set splitbelow
 set splitright
 
+" clojure settings
+let g:vimclojure#HighlightBuiltins = 1
+let g:vimclojure#ParenRainbow = 1
+let vimclojure#WantNailgun = 1
 
 " ~~~ MAPPINGS BELOW ~~~
 " Make j/k move to next visual line instead of physical line
@@ -264,3 +268,4 @@ nmap - ddp
 nmap <leader>bO O<Esc>j
 " insert blank line below
 nmap <leader>bo o<Esc>k
+
