@@ -169,19 +169,6 @@ vnoremap < <gv
 vnoremap > >gv
 
 
-
-" navigate between split windows/tmux panes
-" nmap <C-j> :call TmuxWinCmd('j')<cr>
-" nmap <C-k> :call TmuxWinCmd('k')<cr>
-" nmap <C-h> :call TmuxWinCmd('h')<cr>
-" nmap <C-l> :call TmuxWinCmd('l')<cr>
-" nmap <c-\> :call TmuxWinCmd('p')<cr>
-" above disabled as I don't use split Tmux much ATM
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-k> <C-w>k
-map <C-l> <C-w>l
-
 " make it do . in visual mode
 vnoremap . :norm.<CR>
 
