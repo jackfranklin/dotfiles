@@ -36,6 +36,7 @@ alias gpom="git pom"
 alias gpu="git push"
 alias grm="git rm"
 alias gum="gco master && gpo"
+alias gpuhe="git push heroku master"
 
 # jekyll
 alias js="jekyll --server"
