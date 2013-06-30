@@ -88,3 +88,6 @@ if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
 #clojure
 export VIMCLOJURE_SERVER_JAR="/usr/bin/nailgun-server.jar"
+
+# for pipe2eval plugin
+export PIP2EVAL_TMP_FILE_PATH=/tmp/shms
