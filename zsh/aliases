@@ -38,6 +38,7 @@ alias gpu="git push"
 alias grm="git rm"
 alias gum="gco master && gpo"
 alias gpuhe="git push heroku master"
+alias gput="git push --tags"
 
 # jekyll
 alias js="jekyll --server"
