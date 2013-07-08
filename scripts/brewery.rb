@@ -15,6 +15,7 @@ brews = %w{
   tree
   tmux
   reattach-to-user-namespace
+  leiningen
 }
 
 puts "Before doing anything, going to update brew"
