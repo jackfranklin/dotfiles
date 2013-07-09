@@ -134,7 +134,6 @@ function! TmuxWinCmd(direction)
 endfunction
 
 " :W to save, :Q to quit (should be default)
-command! W w
 command! Q q
 
 
@@ -206,23 +205,6 @@ function! RenameFile()
 endfunction
 map <Leader>n :call RenameFile()<cr>
 
-"create new file in CWD of current file
-function! NewFileInCurDir()
-  let old_name = expand('%')
-  let new_name = input('New file name: ', expand('%'), 'file')
-  if new_name != '' && new_name != old_name
-    " create new file
-    exec ':e ' . new_name
-    " clear it out (it uses the contents of the old file for an unknown
-    " reason)
-    exec 'normal! ggVGd'
-    " save it
-    exec ':saveas ' . new_name
-    redraw!
-  endif
-endfunction
-map <Leader>nf :call NewFileInCurDir()<cr>
-
 " swap between paste mode or not with ,p
 nnoremap <Leader>p :set invpaste paste?<CR>
 set pastetoggle=<Leader>p
@@ -246,20 +228,7 @@ nnoremap <leader>pn :call OpenProjectNotes()<cr>
 
 map <leader>nt :NERDTreeToggle<cr>
 
-" bubble lines up and down
-" http://vimcasts.org/episodes/bubbling-text/
-nmap _ ddkP
-nmap - ddp
-
 " insert blank line above
 nmap <leader>bO O<Esc>j
 " insert blank line below
 nmap <leader>bo o<Esc>k
-
-" for xmpfilter
-nmap <buffer> <F4> <Plug>(xmpfilter-run)
-xmap <buffer> <F4> <Plug>(xmpfilter-run)
-imap <buffer> <F4> <Plug>(xmpfilter-run)
-nmap <buffer> <F3> <Plug>(xmpfilter-mark)
-xmap <buffer> <F3> <Plug>(xmpfilter-mark)
-imap <buffer> <F3> <Plug>(xmpfilter-mark)

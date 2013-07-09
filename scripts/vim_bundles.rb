@@ -30,13 +30,13 @@ git_bundles = %w{
   git://github.com/nelstrom/vim-textobj-rubyblock.git
   git://github.com/vim-scripts/VimClojure.git
   git://github.com/christoomey/vim-tmux-navigator.git
-  git://github.com/t9md/vim-ruby-xmpfilter.git
   git://github.com/tpope/vim-rbenv.git
   git://github.com/zweifisch/pipe2eval.git
   git://github.com/jelera/vim-javascript-syntax.git
   git://github.com/nathanaelkane/vim-indent-guides.git
   git://github.com/bling/vim-airline.git
   git://github.com/tpope/vim-fugitive.git
+  git://github.com/tpope/vim-eunuch.git
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
