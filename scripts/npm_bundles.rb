@@ -22,7 +22,8 @@ npms = {
   "coffee-script" => "coffee",
   "grunt-cli" => "grunt",
   "express" => "",
-  "nodemon" => ""
+  "nodemon" => "",
+  "mocha" => ""
 }
 
 npms.each do |mod, command|
