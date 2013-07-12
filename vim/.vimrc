@@ -108,31 +108,6 @@ autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 autocmd BufWinLeave * call clearmatches()
 
-" TODO: maybe move this into its own file and source it?
-" Vim + Tmux splits integration
-" stolen from https://github.com/pengwynn/dotfiles/blob/master/vim/vim.symlink/tmux.vim
-au WinEnter * let g:tmux_is_last_pane = 0
-" Like `wincmd` but also change tmux panes instead of vim windows when needed.
-function! TmuxWinCmd(direction)
-  let nr = winnr()
-  let tmux_last_pane = (a:direction == 'p' && g:tmux_is_last_pane)
-  if !tmux_last_pane
-    " try to switch windows within vim
-    exec 'wincmd ' . a:direction
-  endif
-  " Forward the switch panes command to tmux if:
-  " a) we're toggling between the last tmux pane;
-  " b) we tried switching windows in vim but it didn't have effect.
-  if tmux_last_pane || nr == winnr()
-    let cmd = 'tmux select-pane -' . tr(a:direction, 'phjkl', 'lLDUR')
-    call system(cmd)
-    " redraw! " because `exec` fucked up the screen. why is this needed?? arrghh
-    let g:tmux_is_last_pane = 1
-  else
-    let g:tmux_is_last_pane = 0
-  endif
-endfunction
-
 " :W to save, :Q to quit (should be default)
 command! Q q
 
@@ -148,6 +123,14 @@ set splitright
 let g:vimclojure#HighlightBuiltins = 1
 let g:vimclojure#ParenRainbow = 1
 let vimclojure#WantNailgun = 1
+
+" set up the mouse
+" I know, mouse is bad, but this is useful purely for resizing splits visually
+" with mouse
+" http://usevim.com/2012/05/16/mouse/
+set ttyfast
+set mouse=a
+set ttymouse=xterm2
 
 " ~~~ MAPPINGS BELOW ~~~
 " Make j/k move to next visual line instead of physical line
@@ -232,3 +215,10 @@ map <leader>nt :NERDTreeToggle<cr>
 nmap <leader>bO O<Esc>j
 " insert blank line below
 nmap <leader>bo o<Esc>k
+
+" vim-rspec mappings
+
+map <Leader>rt :call RunCurrentSpecFile()<CR>
+map <Leader>rs :call RunNearestSpec()<CR>
+map <Leader>rl :call RunLastSpec()<CR>
+map <Leader>ra :call RunAllSpecs()<CR>

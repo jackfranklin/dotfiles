@@ -1,5 +1,6 @@
 a quick place to note down ideas for things I want to fix in my dotfiles
 
+
 - better shortcuts for spell checking
 
 - function to create new file in same directory as current file
@@ -10,7 +11,7 @@ method for deleting current file
 
 snippets for rspec
 
-console.log snippet
+console.log snippet (steal @phuus)
 
 leader for opening Gemfile (,gf) ?
 
