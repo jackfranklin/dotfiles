@@ -217,8 +217,10 @@ nmap <leader>bO O<Esc>j
 nmap <leader>bo o<Esc>k
 
 " vim-rspec mappings
-
 map <Leader>rt :call RunCurrentSpecFile()<CR>
 map <Leader>rs :call RunNearestSpec()<CR>
 map <Leader>rl :call RunLastSpec()<CR>
 map <Leader>ra :call RunAllSpecs()<CR>
+
+"swap BG
+map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
