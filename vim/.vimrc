@@ -224,3 +224,6 @@ map <Leader>ra :call RunAllSpecs()<CR>
 
 "swap BG
 map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+
+"tagbar
+map <leader>ct :TagbarToggle<CR>

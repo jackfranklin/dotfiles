@@ -38,6 +38,7 @@ git_bundles = %w{
   git://github.com/tpope/vim-fugitive.git
   git://github.com/tpope/vim-eunuch.git
   git@github.com:thoughtbot/vim-rspec.git
+  git://github.com/majutsushi/tagbar
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
