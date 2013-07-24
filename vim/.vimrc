@@ -227,3 +227,4 @@ map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR
 
 "tagbar
 map <leader>ct :TagbarToggle<CR>
+map <leader>ctp :TagbarTogglePause<CR>
