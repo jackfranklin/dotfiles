@@ -18,6 +18,10 @@ brews = %w{
   leiningen
 }
 
+after_commands = {
+  "mongo" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents"
+}
+
 puts "Before doing anything, going to update brew"
 `brew update`
 
@@ -29,5 +33,7 @@ brews.each do |brew|
   else
     puts "running brew install #{brew}"
     puts `brew install #{brew}`
+    puts "running after_commands for #{brew}"
+    puts `#{after_commands[brew]}` unless after_commands[brew].nil?
   end
 end
