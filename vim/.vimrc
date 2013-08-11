@@ -36,6 +36,11 @@ set autoindent
 
 set laststatus=2
 
+" make it 4 spaces when editing Markdown files
+autocmd FileType markdown set tabstop=4
+autocmd FileType markdown set shiftwidth=4
+autocmd FileType markdown set softtabstop=4
+
 " break properly, don't split words
 set linebreak
 
