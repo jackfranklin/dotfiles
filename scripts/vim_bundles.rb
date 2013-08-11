@@ -41,6 +41,7 @@ git_bundles = %w{
   git://github.com/majutsushi/tagbar
   git@github.com:michaeljsmith/vim-indent-object.git
   git://github.com/godlygeek/tabular.git
+  git://github.com/jackfranklin/kodery.vim.git
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/.vim"), "bundle")
