@@ -22,7 +22,6 @@ git_bundles = %w{
   git@github.com:garbas/vim-snipmate.git
   git@github.com:MarcWeber/vim-addon-mw-utils.git
   git@github.com:tomtom/tlib_vim.git
-  git://github.com/jackfranklin/vim-snippets.git
   git@github.com:vim-ruby/vim-ruby.git
   git://github.com/scrooloose/nerdtree.git
   git://github.com/othree/html5.vim.git
