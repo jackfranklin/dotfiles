@@ -81,7 +81,7 @@ bundle_names = git_bundles.map { |item|
 
 folder_names = Dir.glob(File.expand_path("~/.vim/bundle/*")).map { |item|
   item.split("/").last
-}
+}.select { |item| item != "vim-snippets" }
 
 to_uninstall = folder_names.select { |folder| !bundle_names.include?(folder) }
 to_uninstall.each do |folder|
