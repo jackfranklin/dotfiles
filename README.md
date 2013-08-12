@@ -2,6 +2,14 @@
 
 My dotfiles for Vim and ZSH. Shamelessly stolen from tonnes of dotfile repositories I found online.
 
+Files are symlinked into the proper location, and have the `.` added. For example:
+
+```
+~/dotfiles/vim/vim => ~/.vim
+~/dotfiles/vim/vimrc => ~/.vimrc
+~/dotfiles/zsh/zshrc => ~/.zshrc
+~/dotfiles/git/gitignore_global => ~/.gitignore_global
+```
 
 # Installing
 
