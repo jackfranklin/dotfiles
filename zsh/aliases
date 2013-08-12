@@ -16,7 +16,6 @@ alias sites="cd ~/Dropbox/Sites"
 # ssh
 alias sshwebfaction="ssh jackfranklin@jackfranklin.webfactional.com"
 
-
 # bundle and ruby rails stuff
 alias be="bundle exec"
 alias bi="bundle install"
@@ -39,6 +38,7 @@ alias grm="git rm"
 alias gum="gco master && gpo"
 alias gpuhe="git push heroku master"
 alias gput="git push --tags"
+alias gpuh="gpu && gput && gpuhe"
 
 # jekyll
 alias js="jekyll --server"
