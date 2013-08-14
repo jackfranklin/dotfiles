@@ -16,6 +16,7 @@ brews = %w{
   tmux
   reattach-to-user-namespace
   leiningen
+  powder
 }
 
 after_commands = {
@@ -37,3 +38,5 @@ brews.each do |brew|
     puts `#{after_commands[brew]}` unless after_commands[brew].nil?
   end
 end
+
+`rbenv rehash`
