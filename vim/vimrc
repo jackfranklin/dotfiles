@@ -96,7 +96,9 @@ let mapleader=","
 set wildignore+=*.o,*.obj,.git,node_modules,_site
 
 " I like line numbers
-set number
+" set number
+" gonna try relative for a bit
+set rnu
 
 " pretty colours
 colorscheme solarized
