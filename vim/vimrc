@@ -98,7 +98,8 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site
 " I like line numbers
 " set number
 " gonna try relative for a bit
-set rnu
+set number
+set relativenumber
 
 " pretty colours
 colorscheme solarized
