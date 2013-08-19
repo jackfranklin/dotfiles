@@ -16,10 +16,14 @@ echo "~~~~~~~~~~~~~~~~~"
 echo "Symlinking tmux"
 ln -sf $dir/tmux/tmux.conf ~/.tmux.conf
 echo "~~~~~~~~~~~~~~~~~"
+echo "Symlinking pow"
+ln -sf $dir/pow/powconfig ~/.powconfig
+echo "~~~~~~~~~~~~~~~~~"
 echo "Symlinking git"
 ln -sf $dir/git/gitconfig ~/.gitconfig
 ln -sf $dir/git/gitignore_global ~/.gitignore_global
 echo "~~~~~~~~~~~~~~~~~"
+
 sh $dir/scripts/symlinks.sh
 echo "~~~~~~~~~~~~~~~~~"
 
