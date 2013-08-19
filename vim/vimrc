@@ -36,11 +36,6 @@ set autoindent
 
 set laststatus=2
 
-" make it 4 spaces when editing Markdown files
-autocmd FileType markdown set tabstop=4
-autocmd FileType markdown set shiftwidth=4
-autocmd FileType markdown set softtabstop=4
-
 " break properly, don't split words
 set linebreak
 
@@ -84,7 +79,9 @@ syntax on
 filetype plugin indent on
 
 " use emacs-style tab completion when selecting files, etc
-set wildmode=longest,list
+" set wildmode=longest,list
+set wildmode=full
+set wildmenu
 
 " make tab completion for files/buffers act like bash
 set wildmenu
