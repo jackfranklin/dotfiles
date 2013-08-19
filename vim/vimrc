@@ -34,6 +34,9 @@ set softtabstop=2
 set expandtab
 set autoindent
 
+" for markdown, tabs should be 4 spaces
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
+
 set laststatus=2
 
 " break properly, don't split words
