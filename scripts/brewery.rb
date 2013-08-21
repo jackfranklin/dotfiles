@@ -16,7 +16,7 @@ brews = %w{
   tmux
   reattach-to-user-namespace
   leiningen
-  powder
+  cmake
 }
 
 after_commands = {
