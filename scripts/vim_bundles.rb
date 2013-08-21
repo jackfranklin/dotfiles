@@ -41,6 +41,11 @@ git_bundles = %w{
   git@github.com:michaeljsmith/vim-indent-object.git
   git://github.com/godlygeek/tabular.git
   git://github.com/jackfranklin/kodery.vim.git
+  git@github.com:Valloric/YouCompleteMe.git
+}
+
+after_instructions = {
+  "YouCompleteMe" => "cd ~/.vim/bundle/YouCompleteMe && ./install.sh"
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/vim"), "bundle")
@@ -68,6 +73,10 @@ git_bundles.each do |url|
     else
       puts "Installing #{name} as it doesn't exist"
       `git clone -q #{url}`
+      unless after_instructions[name].nil?
+        puts "Running after_instructions for #{name}"
+        puts `#{after_instructions[name]}`
+      end
     end
   end
 end
