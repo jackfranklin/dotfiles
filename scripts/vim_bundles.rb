@@ -42,10 +42,13 @@ git_bundles = %w{
   git://github.com/godlygeek/tabular.git
   git://github.com/jackfranklin/kodery.vim.git
   git@github.com:Valloric/YouCompleteMe.git
+  git@github.com:marijnh/tern_for_vim.git
 }
 
 after_instructions = {
-  "YouCompleteMe" => "cd ~/.vim/bundle/YouCompleteMe && ./install.sh"
+  "YouCompleteMe" => "cd ~/.vim/bundle/YouCompleteMe && ./install.sh",
+  "tern_for_vim" => "cd ~/.vim/bundle/tern_for_vim && npm install"
+
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/vim"), "bundle")
