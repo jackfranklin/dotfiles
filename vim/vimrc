@@ -137,6 +137,20 @@ set ttyfast
 set mouse=a
 set ttymouse=xterm2
 
+" YouCompleteMe Settings
+let g:ycm_filetype_blacklist = {
+      \ 'notes' : 1,
+      \ 'markdown' : 1,
+      \ 'text' : 1,
+      \ 'gitcommit' : 1,
+      \}
+let g:ycm_complete_in_strings = 0
+" ctags support
+let g:ycm_collect_identifiers_from_tags_files = 1
+" stop the annoying window at the bottom appearing
+set completeopt-=preview
+let g:ycm_add_preview_to_completeopt = 0
+
 " ~~~ MAPPINGS BELOW ~~~
 " Make j/k move to next visual line instead of physical line
 " http://yubinkim.com/?p=6
