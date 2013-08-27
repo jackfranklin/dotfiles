@@ -19,9 +19,7 @@ git_bundles = %w{
   git@github.com:kien/ctrlp.vim.git
   git://github.com/altercation/vim-colors-solarized.git
   git@github.com:nono/vim-handlebars.git
-  git@github.com:garbas/vim-snipmate.git
-  git@github.com:MarcWeber/vim-addon-mw-utils.git
-  git@github.com:tomtom/tlib_vim.git
+  git@github.com:SirVer/ultisnips.git
   git@github.com:vim-ruby/vim-ruby.git
   git://github.com/scrooloose/nerdtree.git
   git://github.com/othree/html5.vim.git
