@@ -177,6 +177,8 @@ vnoremap . :norm.<CR>
 map <leader>t :CtrlP<cr>
 map <leader>cf :CtrlPClearCache<cr>
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\'
+let g:ctrlp_clear_cache_on_exit = 0
+let g:ctrlp_extensions = ['tag']
 
 " navigating tabs
 nnoremap th  :tabfirst<CR>
