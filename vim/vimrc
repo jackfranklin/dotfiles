@@ -150,6 +150,7 @@ let g:ycm_collect_identifiers_from_tags_files = 1
 " stop the annoying window at the bottom appearing
 set completeopt-=preview
 let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_min_num_of_chars_for_completion = 3
 
 " ~~~ MAPPINGS BELOW ~~~
 " Make j/k move to next visual line instead of physical line
