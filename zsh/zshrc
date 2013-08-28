@@ -47,11 +47,19 @@ for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
 done
 PR_NO_COLOR="%{$terminfo[sgr0]%}"
 
+get_suspended_jobs() {
+  NUM_JOBS="`jobs | wc -l`"
+  if test $NUM_JOBS -lt 1 ; then
+    echo ""
+  else
+    echo "("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | tr '\n' ' ' | sed 's/\[\([^]]*\)\]/\1:/g'`")"
+  fi
+}
 
 # don't have a right hand prompt
 RPS1=""
 # main prompt
-PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status) '
+PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status)$(get_suspended_jobs) '
 
 #LANGUAGE
 LC_ALL='en_US.UTF-8'
@@ -74,6 +82,7 @@ bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
+
 
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
