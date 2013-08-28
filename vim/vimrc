@@ -248,8 +248,10 @@ map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR
 map <leader>ct :TagbarToggle<CR>
 map <leader>ctp :TagbarTogglePause<CR>
 
-" change snipmate binding
-imap <C-J> <Plug>snipMateNextOrTrigger
+" ultisnips settings so they don't compete with YCM
+let g:UltiSnipsExpandTrigger="<c-k>"
+let g:UltiSnipsJumpForwardTrigger="<c-k>"
+let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 
 " clear highlights just by hitting enter
 nnoremap <CR> :nohlsearch<cr>
