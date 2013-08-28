@@ -48,7 +48,6 @@ alias vup="vagrant up"
 alias vhalt="vagrant halt"
 alias vssh="vagrant ssh"
 
-# ctags
 # dotfiles
 alias df="cd ~/dotfiles"
 alias srcz="source ~/.zshrc"
@@ -63,4 +62,4 @@ alias tattach="tmux attach-session -t "
 alias topcmds='cat ~/.zsh_history | cut -d ";" -f 2 | sed "s, .*,," | sort | uniq -c | sort -n | tail -rn 30'
 
 # ctags
-alias retag='ctags --fields=+l -R --exclude=.svn --exclude=.git --exclude=log --exclude=tmp *'
+alias retag='ctags --fields=+l -R --exclude=.svn --exclude=.git --exclude=node_modules --exclude=log --exclude=tmp *'
