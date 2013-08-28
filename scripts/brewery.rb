@@ -17,10 +17,12 @@ brews = %w{
   reattach-to-user-namespace
   leiningen
   cmake
+  redis
 }
 
 after_commands = {
-  "mongo" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents"
+  "mongo" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents",
+  "redis" => "ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents && launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist"
 }
 
 puts "Before doing anything, going to update brew"
@@ -29,7 +31,7 @@ puts "Before doing anything, going to update brew"
 
 installed = `brew ls`
 brews.each do |brew|
-  if(installed.include? brew)
+  if installed.include?(brew)
     puts "#{brew} already installed"
   else
     puts "running brew install #{brew}"
