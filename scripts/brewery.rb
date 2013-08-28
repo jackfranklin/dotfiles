@@ -18,6 +18,7 @@ brews = %w{
   leiningen
   cmake
   redis
+  gnu-sed
 }
 
 after_commands = {
