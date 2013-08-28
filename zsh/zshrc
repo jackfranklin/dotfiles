@@ -48,11 +48,12 @@ done
 PR_NO_COLOR="%{$terminfo[sgr0]%}"
 
 get_suspended_jobs() {
+  # thanks to @mheap for his help
   NUM_JOBS="`jobs | wc -l`"
   if test $NUM_JOBS -lt 1 ; then
     echo ""
   else
-    echo "("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | tr '\n' ' ' | sed 's/\[\([^]]*\)\]/\1:/g'`")"
+    echo " ("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | sed 's/\[\([^]]*\)\]/\1:/g'`")"
   fi
 }
 
