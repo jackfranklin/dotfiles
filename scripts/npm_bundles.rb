@@ -4,9 +4,11 @@ REINSTALL_ALL = ARGV[0] == "new"
 
 puts "Making sure n exists"
 if `which n` == "" || REINSTALL_ALL
+  puts "Install n"
   `npm install n -g --silent`
 end
 
+puts "Installing the latest stable node"
 `n stable`
 
 puts "Running Node version: #{`node --version`}"
