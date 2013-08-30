@@ -38,7 +38,6 @@ git_bundles = %w{
   git://github.com/godlygeek/tabular.git
   git@github.com:Valloric/YouCompleteMe.git
   git@github.com:marijnh/tern_for_vim.git
-  git://github.com/PeterRincker/vim-argumentative.git
 }
 
 after_instructions = {
