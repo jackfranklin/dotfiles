@@ -1,0 +1,17 @@
+--ignore-dir=log
+--ignore-dir=tmp
+--ignore-dir=vendor
+--ignore-dir=public/generated
+--ignore-dir=node_modules/
+--ignore-dir=cache/
+--ignore-dir=.sass-cache
+--ignore-file=ext:bak
+--ignore-file=ext:htc
+--ignore-file=ext:pdf
+--ignore-file=ext:sql
+--ignore-file=match:.gitignore
+--ignore-file=match:.rbenv-version
+--ignore-file=match:.rspec
+--ignore-file=match:tags
+# vi/vim swap files
+--ignore-file=match:/[._].*\.swp$/
