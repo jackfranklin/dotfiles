@@ -16,6 +16,7 @@ ln -sf $dir/git/gitconfig ~/.gitconfig
 ln -sf $dir/git/gitignore_global ~/.gitignore_global
 sh $dir/scripts/symlinks.sh
 ln -sf $dir/ack/ackrc ~/.ackrc
+ln -sf $dir/ctags/ctags ~/.ctags
 echo "~~~~~~~~~~~~~~~~~"
 
 echo "Brewing"
