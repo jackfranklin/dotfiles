@@ -6,7 +6,6 @@ REINSTALL_ALL = ARGV[0] == "new"
 
 # shamelessly stolen and altered from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
 git_bundles = %w{
-  git://github.com/kchmck/vim-coffee-script.git
   git://github.com/pangloss/vim-javascript.git
   git://github.com/tpope/vim-endwise.git
   git://github.com/tpope/vim-git.git
@@ -14,7 +13,6 @@ git_bundles = %w{
   git://github.com/tpope/vim-rails.git
   git://github.com/tpope/vim-surround.git
   git://github.com/tomtom/tcomment_vim.git
-  git://github.com/ervandew/supertab.git
   git@github.com:Lokaltog/vim-easymotion.git
   git@github.com:kien/ctrlp.vim.git
   git://github.com/altercation/vim-colors-solarized.git
@@ -38,9 +36,9 @@ git_bundles = %w{
   git://github.com/majutsushi/tagbar
   git@github.com:michaeljsmith/vim-indent-object.git
   git://github.com/godlygeek/tabular.git
-  git://github.com/jackfranklin/kodery.vim.git
   git@github.com:Valloric/YouCompleteMe.git
   git@github.com:marijnh/tern_for_vim.git
+  git://github.com/PeterRincker/vim-argumentative.git
 }
 
 after_instructions = {
