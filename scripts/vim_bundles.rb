@@ -64,10 +64,9 @@ git_bundles.each do |url|
       puts "Installing #{name}"
       `git clone -q #{url}`
   else
-    puts "Checking for #{name} #{url}"
     folder_exists = File.directory? name
     if folder_exists
-      puts "Plugin already installed"
+      puts "Plugin #{name} already installed"
     else
       puts "Installing #{name} as it doesn't exist"
       `git clone -q #{url}`
@@ -88,7 +87,7 @@ bundle_names = git_bundles.map { |item|
 
 folder_names = Dir.glob(File.expand_path("~/.vim/bundle/*")).map { |item|
   item.split("/").last
-}.select { |item| item != "vim-snippets" }
+}
 
 to_uninstall = folder_names.select { |folder| !bundle_names.include?(folder) }
 to_uninstall.each do |folder|
