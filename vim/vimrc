@@ -99,9 +99,9 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site
 set number
 
 " pretty colours
-set background=dark
 set t_Co=256
-colorscheme Tomorrow-Night
+colorscheme solarized
+set background=dark
 
 
 " highlight trailing whitespace
