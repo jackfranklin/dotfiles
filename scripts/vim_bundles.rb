@@ -39,6 +39,7 @@ git_bundles = %w{
   git@github.com:Valloric/YouCompleteMe.git
   git@github.com:marijnh/tern_for_vim.git
   git@github.com:coryf/vim-pathogen-tomorrow-theme.git
+  git@github.com:digitaltoad/vim-jade.git
 }
 
 after_instructions = {

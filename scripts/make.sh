@@ -30,9 +30,3 @@ echo "~~~~~~~~~~~~~~~~~"
 echo "Updating Vim bundles"
 ruby $dir/scripts/vim_bundles.rb $1
 echo "~~~~~~~~~~~~~~~~~"
-
-echo "Symlinking snippets"
-ln -nsf ~/git/vim-snippets ~/.vim/bundle/
-echo "~~~~~~~~~~~~~~~~~"
-
-
