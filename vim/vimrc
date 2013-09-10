@@ -35,7 +35,7 @@ set expandtab
 set autoindent
 
 " for markdown, tabs should be 4 spaces
-autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 nonumber
 
 set laststatus=2
 
