@@ -6,28 +6,22 @@ REINSTALL_ALL = ARGV[0] == "new"
 
 # shamelessly stolen and altered from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
 git_bundles = %w{
-  git://github.com/pangloss/vim-javascript.git
+  git@github.com:sheerun/vim-polyglot.git
   git://github.com/tpope/vim-endwise.git
   git://github.com/tpope/vim-git.git
-  git://github.com/tpope/vim-markdown.git
   git://github.com/tpope/vim-rails.git
   git://github.com/tpope/vim-surround.git
   git://github.com/tomtom/tcomment_vim.git
   git@github.com:Lokaltog/vim-easymotion.git
   git@github.com:kien/ctrlp.vim.git
   git://github.com/altercation/vim-colors-solarized.git
-  git@github.com:nono/vim-handlebars.git
   git@github.com:SirVer/ultisnips.git
-  git@github.com:vim-ruby/vim-ruby.git
   git://github.com/scrooloose/nerdtree.git
-  git://github.com/othree/html5.vim.git
   git://github.com/kana/vim-textobj-user.git
   git://github.com/nelstrom/vim-textobj-rubyblock.git
-  git://github.com/vim-scripts/VimClojure.git
   git://github.com/christoomey/vim-tmux-navigator.git
   git://github.com/tpope/vim-rbenv.git
   git://github.com/zweifisch/pipe2eval.git
-  git://github.com/jelera/vim-javascript-syntax.git
   git://github.com/nathanaelkane/vim-indent-guides.git
   git://github.com/bling/vim-airline.git
   git://github.com/tpope/vim-fugitive.git
@@ -39,7 +33,6 @@ git_bundles = %w{
   git@github.com:Valloric/YouCompleteMe.git
   git@github.com:marijnh/tern_for_vim.git
   git@github.com:coryf/vim-pathogen-tomorrow-theme.git
-  git@github.com:digitaltoad/vim-jade.git
 }
 
 after_instructions = {
