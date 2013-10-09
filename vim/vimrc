@@ -93,7 +93,7 @@ set wildmenu
 let mapleader=","
 
 " ignore git, npm modules and jekyll _site
-set wildignore+=*.o,*.obj,.git,node_modules,_site
+set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip
 
 " I like line numbers
 set number
@@ -178,7 +178,7 @@ vnoremap . :norm.<CR>
 map <leader>t :CtrlP<cr>
 map <leader>cf :CtrlPClearCache<cr>
 map <leader>pt :CtrlPTag<cr>
-let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|bower_components\|.class\'
+let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|bower_components\'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_extensions = ['tag']
 
