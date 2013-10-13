@@ -101,7 +101,8 @@ set number
 " pretty colours
 set t_Co=256
 colorscheme solarized
-set background=dark
+" set background=dark
+let &background=$ITERM_PROFILE
 
 
 " highlight trailing whitespace
