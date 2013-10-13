@@ -10,13 +10,14 @@ ln -sf $dir/zsh/zshenv ~/.zshenv
 ln -sf $dir/zsh/zshrc ~/.zshrc
 ln -nsf $dir/vim/vim ~/.vim
 ln -sf $dir/vim/vimrc ~/.vimrc
+ln -nsf $dir/vim/plugin ~/.vim/plugin
 ln -sf $dir/tmux/tmux.conf ~/.tmux.conf
 ln -sf $dir/pow/powconfig ~/.powconfig
 ln -sf $dir/git/gitconfig ~/.gitconfig
 ln -sf $dir/git/gitignore_global ~/.gitignore_global
-sh $dir/scripts/symlinks.sh
 ln -sf $dir/ack/ackrc ~/.ackrc
 ln -sf $dir/ctags/ctags ~/.ctags
+sh $dir/scripts/symlinks.sh
 echo "~~~~~~~~~~~~~~~~~"
 
 echo "Setting up Ruby"
