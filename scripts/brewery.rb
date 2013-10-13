@@ -8,8 +8,6 @@ brews = %w{
   mongodb
   node
   phantomjs
-  rbenv
-  ruby-build
   wget
   vim
   tree
@@ -25,16 +23,6 @@ after_commands = {
   "mongo" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents",
   "redis" => "ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents && launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist"
 }
-
-puts "Making sure Homebrew exists"
-if `which brew` == ""
-  puts "Installing Homebrew"
-  `ruby -e "$(curl -fsSL https://raw.github.com/mxcl/homebrew/go)"`
-end
-
-puts "Before doing anything, going to update brew"
-`brew update`
-
 
 installed = `brew ls`
 brews.each do |brew|

@@ -19,6 +19,10 @@ ln -sf $dir/ack/ackrc ~/.ackrc
 ln -sf $dir/ctags/ctags ~/.ctags
 echo "~~~~~~~~~~~~~~~~~"
 
+echo "Setting up Ruby"
+ruby $dir/scripts/ruby_env.rb
+echo "~~~~~~~~~~~~~~~~~"
+
 echo "Brewing"
 ruby $dir/scripts/brewery.rb
 echo "~~~~~~~~~~~~~~~~~"
