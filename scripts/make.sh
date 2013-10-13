@@ -2,6 +2,17 @@
 
 ########## Variables
 
+# This stops the script being ran if they dont have Xcode & CLT installed
+echo "Pre-setup checks"
+if [[ -n $(pkgutil --pkg-info=com.apple.pkg.DeveloperToolsCLI) ]]; then
+  echo "Pre-checks complete, your ready to go!"
+else
+  echo "Please install the latest Xcode, then navigate to preferences->downloads and install command-line tools"
+  exit
+fi 
+
+echo "~~~~~~~~~~~~~~~~~"
+
 dir=$(pwd) # dotfiles directory
 
 echo "Symlinking Config Files"
@@ -12,7 +23,6 @@ ln -nsf $dir/vim/vim ~/.vim
 ln -sf $dir/vim/vimrc ~/.vimrc
 ln -nsf $dir/vim/plugin ~/.vim/plugin
 ln -sf $dir/tmux/tmux.conf ~/.tmux.conf
-ln -sf $dir/pow/powconfig ~/.powconfig
 ln -sf $dir/git/gitconfig ~/.gitconfig
 ln -sf $dir/git/gitignore_global ~/.gitignore_global
 ln -sf $dir/ack/ackrc ~/.ackrc
