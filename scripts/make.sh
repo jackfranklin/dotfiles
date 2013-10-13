@@ -2,6 +2,17 @@
 
 ########## Variables
 
+# This stops the script being ran if they dont have Xcode & CLT installed
+echo "Pre-setup checks"
+if [[ -n $(pkgutil --pkg-info=com.apple.pkg.DeveloperToolsCLI) ]]; then
+  echo "Pre-checks complete, your ready to go!"
+else
+  echo "Please install the latest Xcode, then navigate to preferences->downloads and install command-line tools"
+  exit
+fi 
+
+echo "~~~~~~~~~~~~~~~~~"
+
 dir=$(pwd) # dotfiles directory
 
 echo "Symlinking Config Files"
