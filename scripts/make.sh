@@ -24,6 +24,10 @@ echo "Setting up Ruby"
 ruby $dir/scripts/ruby_env.rb
 echo "~~~~~~~~~~~~~~~~~"
 
+echo "Installing Gems"
+ruby $dir/scripts/gems.rb
+echo "~~~~~~~~~~~~~~~~~"
+
 echo "Brewing"
 ruby $dir/scripts/brewery.rb
 echo "~~~~~~~~~~~~~~~~~"
