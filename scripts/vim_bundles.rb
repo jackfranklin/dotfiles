@@ -33,6 +33,7 @@ git_bundles = %w{
   git@github.com:Valloric/YouCompleteMe.git
   git@github.com:marijnh/tern_for_vim.git
   git@github.com:editorconfig/editorconfig-vim.git
+  git@github.com:Yggdroot/indentLine.git
 }
 
 after_instructions = {
