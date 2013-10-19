@@ -34,6 +34,8 @@ git_bundles = %w{
   git@github.com:marijnh/tern_for_vim.git
   git@github.com:editorconfig/editorconfig-vim.git
   git@github.com:Yggdroot/indentLine.git
+  git@github.com:mileszs/ack.vim.git
+  git@github.com:scrooloose/syntastic.git
 }
 
 after_instructions = {
