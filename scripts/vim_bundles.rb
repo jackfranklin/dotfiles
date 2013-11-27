@@ -33,6 +33,7 @@ git_bundles = %w{
   git@github.com:Yggdroot/indentLine.git
   git@github.com:mileszs/ack.vim.git
   git@github.com:osyo-manga/vim-over.git
+  git@github.com:elixir-lang/vim-elixir.git
 }
 
 after_instructions = {
