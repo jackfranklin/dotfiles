@@ -26,7 +26,7 @@ git_bundles = %w{
   git@github.com:thoughtbot/vim-rspec.git
   git://github.com/majutsushi/tagbar
   git@github.com:michaeljsmith/vim-indent-object.git
-  git://github.com/godlygeek/tabular.git
+  git@github.com:junegunn/vim-easy-align.git
   git@github.com:Valloric/YouCompleteMe.git
   git@github.com:marijnh/tern_for_vim.git
   git@github.com:editorconfig/editorconfig-vim.git
