@@ -267,5 +267,21 @@ let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 
-" clear highlights just by hitting enter
-nnoremap <CR> :nohlsearch<cr>
+"This unsets the 'last search pattern' register by hitting return
+nnoremap <CR> :noh<CR><CR>
+
+" The Silver Searcher
+" taken from: http://robots.thoughtbot.com/faster-grepping-in-vim/
+if executable('ag')
+  " Use ag over grep
+  set grepprg=ag\ --nogroup\ --nocolor
+
+  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+
+  " set up Ack.vim to actually use ag
+  let g:ackprg = 'ag --nogroup --nocolor --column'
+
+  " bind K to grep word under cursor
+  nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+endif
