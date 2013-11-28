@@ -18,10 +18,12 @@ brews = %w{
   redis
   gnu-sed
   the_silver_searcher
+  erlang
+  elixir
 }
 
 after_commands = {
-  "mongo" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents",
+  "mongodb" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents",
   "redis" => "ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents && launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist"
 }
 
