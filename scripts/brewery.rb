@@ -17,6 +17,7 @@ brews = %w{
   cmake
   redis
   gnu-sed
+  the_silver_searcher
 }
 
 after_commands = {
