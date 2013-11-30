@@ -4,3 +4,4 @@ tags
 _projectnotes.txt
 node_modules/
 .tern-port
+*.class
