@@ -5,3 +5,4 @@ _projectnotes.txt
 node_modules/
 .tern-port
 *.class
+*.jar
