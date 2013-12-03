@@ -43,7 +43,7 @@ set expandtab
 set autoindent
 
 " set some markdown specific things
-autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist spell spelllang=en_uk
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist spell spelllang=en_gb
 
 set laststatus=2
 
