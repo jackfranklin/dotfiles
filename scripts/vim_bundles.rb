@@ -15,6 +15,7 @@ git_bundles = %w{
   git@github.com:Lokaltog/vim-easymotion.git
   git@github.com:kien/ctrlp.vim.git
   git://github.com/altercation/vim-colors-solarized.git
+  git@github.com:junegunn/seoul256.vim.git
   git@github.com:SirVer/ultisnips.git
   git://github.com/scrooloose/nerdtree.git
   git://github.com/kana/vim-textobj-user.git

@@ -108,7 +108,7 @@ set number
 
 " pretty colours
 set t_Co=256
-colorscheme solarized
+colorscheme seoul256
 " set background=dark
 let &background=$ITERM_PROFILE
 
