@@ -43,7 +43,7 @@ set expandtab
 set autoindent
 
 " set some markdown specific things
-autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist spell spelllang=en_gb
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist spell spelllang=en_gb wrap lbr
 
 set laststatus=2
 
@@ -123,7 +123,7 @@ let &background=$ITERM_PROFILE
 " autocmd BufWinLeave * call clearmatches()
 set list listchars=tab:»·,trail:·
 
-" :W to save, :Q to quit (should be default)
+" :Q to quit (should be default)
 command! Q q
 
 
@@ -165,6 +165,18 @@ let g:ycm_min_num_of_chars_for_completion = 3
 let g:indentLine_enabled = 0
 
 " ~~~ MAPPINGS BELOW ~~~
+"
+
+map <leader>bb :!bundle install<cr>
+map <leader>n :!node %<cr>
+
+" make the TCOmment toggle <leader>c
+map <leader>c gcc
+
+"remove all trailing whitespace with ,W
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
+
+
 " Make j/k move to next visual line instead of physical line
 " http://yubinkim.com/?p=6
 nnoremap k gk
@@ -172,11 +184,6 @@ nnoremap j gj
 nnoremap gk k
 nnoremap gj j
 
-" make the TCOmment toggle <leader>c
-map <leader>c gcc
-
-"remove all trailing whitespace with ,W
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 " reselect visual block after indent/outdent
 vnoremap < <gv
@@ -206,8 +213,7 @@ nnoremap td  :tabclose<CR>
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 " https://github.com/r00k/dotfiles/blob/master/vimrc
-" TODO: doesn't seem to be working? - was this wrong?
-" set formatoptions-=or
+set formatoptions-=or
 
 " TODO: abstract big functions into own files?
 " rename the current file
