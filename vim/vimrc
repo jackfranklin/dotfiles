@@ -165,10 +165,14 @@ let g:ycm_min_num_of_chars_for_completion = 3
 let g:indentLine_enabled = 0
 
 " ~~~ MAPPINGS BELOW ~~~
-"
 
+" Ruby dev mappings
 map <leader>bb :!bundle install<cr>
+
+" some Node / JS Dev mappings
 map <leader>n :!node %<cr>
+map <leader>npmt :!npm test<cr>
+map <leader>nmc :!mocha %<cr>
 
 " make the TCOmment toggle <leader>c
 map <leader>c gcc
@@ -228,6 +232,7 @@ function! RenameFile()
     endif
 endfunction
 map <Leader>rn :call RenameFile()<cr>
+
 
 " swap between paste mode or not with ,p
 nnoremap <Leader>p :set invpaste paste?<CR>
