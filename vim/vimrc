@@ -166,12 +166,21 @@ let g:indentLine_enabled = 0
 
 " ~~~ MAPPINGS BELOW ~~~
 
+" CamelCase, better movement through vars
+" https://github.com/vim-scripts/camelcasemotion
+map <silent> w <Plug>CamelCaseMotion_w
+map <silent> b <Plug>CamelCaseMotion_b
+map <silent> e <Plug>CamelCaseMotion_e
+sunmap w
+sunmap b
+sunmap e
+
 " Ruby dev mappings
 map <leader>bb :!bundle install<cr>
 
 " some Node / JS Dev mappings
-map <leader>n :!node %<cr>
-map <leader>npmt :!npm test<cr>
+map <leader>ne :!node %<cr>
+map <leader>nt :!npm test<cr>
 map <leader>nmc :!mocha %<cr>
 
 " make the TCOmment toggle <leader>c
@@ -254,8 +263,6 @@ function! OpenProjectNotes()
 endfunction
 
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
-
-map <leader>nt :NERDTreeToggle<cr>
 
 " insert blank line above
 nmap <leader>bO O<Esc>j

@@ -17,7 +17,6 @@ git_bundles = %w{
   git://github.com/altercation/vim-colors-solarized.git
   git@github.com:junegunn/seoul256.vim.git
   git@github.com:SirVer/ultisnips.git
-  git://github.com/scrooloose/nerdtree.git
   git://github.com/kana/vim-textobj-user.git
   git://github.com/nelstrom/vim-textobj-rubyblock.git
   git://github.com/christoomey/vim-tmux-navigator.git
@@ -36,6 +35,7 @@ git_bundles = %w{
   git@github.com:osyo-manga/vim-over.git
   git@github.com:elixir-lang/vim-elixir.git
   git@github.com:benmills/vimux.git
+  git@github.com:vim-scripts/camelcasemotion.git
 }
 
 after_instructions = {
