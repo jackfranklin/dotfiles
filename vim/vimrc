@@ -64,6 +64,10 @@ set showmatch
 set incsearch
 set hlsearch
 
+" Don't wait so long for the next keypress (particularly in ambigious Leader
+" situations. (via @r00k dotfiles)
+set timeoutlen=500
+
 " make searches case-sensitive only if they contain upper-case characters
 set ignorecase smartcase
 
