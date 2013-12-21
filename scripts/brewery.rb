@@ -1,26 +1,6 @@
 #!/usr/bin/env ruby
 
-brews = %w{
-  ack
-  ctags
-  git
-  mercurial
-  mongodb
-  node
-  phantomjs
-  wget
-  vim
-  tree
-  tmux
-  reattach-to-user-namespace
-  leiningen
-  cmake
-  redis
-  gnu-sed
-  the_silver_searcher
-  erlang
-  elixir
-}
+brews = File.readlines("brews.txt").map(&:chomp)
 
 after_commands = {
   "mongodb" => "ln -sfv /usr/local/opt/mongodb/*.plist ~/Library/LaunchAgents",
@@ -34,9 +14,12 @@ brews.each do |brew|
   else
     puts "running brew install #{brew}"
     puts `brew install #{brew}`
-    puts "running after_commands for #{brew}"
-    puts `#{after_commands[brew]}` unless after_commands[brew].nil?
+    unless after_commands[brew].nil?
+      puts "running after_commands for #{brew}"
+      puts `#{after_commands[brew]}`
+    end
   end
 end
 
+puts "Rehashing rbenv"
 `rbenv rehash`

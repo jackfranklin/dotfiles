@@ -5,43 +5,11 @@ require 'open-uri'
 REINSTALL_ALL = ARGV[0] == "new"
 
 # shamelessly stolen and altered from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
-git_bundles = %w{
-  git@github.com:sheerun/vim-polyglot.git
-  git://github.com/tpope/vim-endwise.git
-  git://github.com/tpope/vim-git.git
-  git://github.com/tpope/vim-rails.git
-  git://github.com/tpope/vim-surround.git
-  git://github.com/tomtom/tcomment_vim.git
-  git@github.com:Lokaltog/vim-easymotion.git
-  git@github.com:kien/ctrlp.vim.git
-  git://github.com/altercation/vim-colors-solarized.git
-  git@github.com:junegunn/seoul256.vim.git
-  git@github.com:SirVer/ultisnips.git
-  git://github.com/kana/vim-textobj-user.git
-  git://github.com/nelstrom/vim-textobj-rubyblock.git
-  git://github.com/christoomey/vim-tmux-navigator.git
-  git://github.com/tpope/vim-rbenv.git
-  git://github.com/bling/vim-airline.git
-  git://github.com/tpope/vim-eunuch.git
-  git@github.com:thoughtbot/vim-rspec.git
-  git://github.com/majutsushi/tagbar
-  git@github.com:michaeljsmith/vim-indent-object.git
-  git@github.com:junegunn/vim-easy-align.git
-  git@github.com:Valloric/YouCompleteMe.git
-  git@github.com:marijnh/tern_for_vim.git
-  git@github.com:editorconfig/editorconfig-vim.git
-  git@github.com:Yggdroot/indentLine.git
-  git@github.com:mileszs/ack.vim.git
-  git@github.com:osyo-manga/vim-over.git
-  git@github.com:elixir-lang/vim-elixir.git
-  git@github.com:benmills/vimux.git
-  git@github.com:vim-scripts/camelcasemotion.git
-}
+git_bundles = File.readlines("vim_plugins.txt").map(&:chomp)
 
 after_instructions = {
   "YouCompleteMe" => "cd ~/.vim/bundle/YouCompleteMe && ./install.sh",
   "tern_for_vim" => "cd ~/.vim/bundle/tern_for_vim && npm install"
-
 }
 
 bundles_dir = File.join(File.expand_path("~/dotfiles/vim/vim"), "bundle")
