@@ -19,6 +19,9 @@ set statusline+=\ [%l\/%L] "line number and column number
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
 
+" assume the /g flag on :s substitutions to replace all matches in a line
+set gdefault
+
 " fix slight delay after pressing ESC then O
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
@@ -54,8 +57,7 @@ set linebreak
 " required for rubyblocks plugin
 runtime macros/matchit.vim
 
-"folds
-set foldmethod=manual
+set nofoldenable
 
 " show search matches as I type
 set showmatch
