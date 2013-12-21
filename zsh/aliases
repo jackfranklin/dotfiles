@@ -40,6 +40,13 @@ alias gpuhe="git push heroku master"
 alias gput="git push --tags"
 alias gpuh="gpu && gput && gpuhe"
 
+# npm
+alias ni="npm install"
+alias nis="npm install --save"
+alias nisd="npm install --save-dev"
+alias nig="npm install -g"
+alias nl="npm link"
+
 # jekyll
 alias js="jekyll --server"
 
