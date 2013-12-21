@@ -6,3 +6,4 @@ node_modules/
 .tern-port
 *.class
 *.jar
+npm-debug.log
