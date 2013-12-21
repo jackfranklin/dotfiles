@@ -12,11 +12,10 @@ git://github.com/tpope/vim-rbenv.git
 git://github.com/tpope/vim-eunuch.git
 git@github.com:thoughtbot/vim-rspec.git
 git@github.com:junegunn/vim-easy-align.git
-git@github.com:Valloric/YouCompleteMe.git
-git@github.com:marijnh/tern_for_vim.git
 git@github.com:editorconfig/editorconfig-vim.git
 git@github.com:Yggdroot/indentLine.git
 git@github.com:mileszs/ack.vim.git
 git@github.com:osyo-manga/vim-over.git
 git@github.com:elixir-lang/vim-elixir.git
 git@github.com:vim-scripts/camelcasemotion.git
+git@github.com:ervandew/supertab.git
