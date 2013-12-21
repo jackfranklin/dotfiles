@@ -184,6 +184,11 @@ map <leader>ne :!node %<cr>
 map <leader>nt :!npm test<cr>
 map <leader>nmc :!mocha %<cr>
 
+" map saving and tabs to Control-"
+map <C-s> <esc>:w<CR>
+imap <C-s> <esc>:w<CR>
+map <C-t> <esc>:tabnew<CR>
+
 " make the TCOmment toggle <leader>c
 map <leader>c gcc
 
