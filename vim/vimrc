@@ -177,6 +177,7 @@ sunmap e
 
 " Ruby dev mappings
 map <leader>bb :!bundle install<cr>
+map <leader>rb :!ruby %<cr>
 
 " some Node / JS Dev mappings
 map <leader>ne :!node %<cr>
