@@ -8,7 +8,7 @@ REINSTALL_ALL = ARGV[0] == "new"
 git_bundles = File.readlines("vim_plugins.txt").map(&:chomp)
 
 after_instructions = {
-  "YouCompleteMe" => "cd ~/.vim/bundle/YouCompleteMe && ./install.sh",
+  "YouCompleteMe" => "cd ~/.vim/bundle/YouCompleteMe && git submodule update --init --recursive && ./install.sh",
   "tern_for_vim" => "cd ~/.vim/bundle/tern_for_vim && npm install"
 }
 
