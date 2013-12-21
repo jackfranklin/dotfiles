@@ -14,7 +14,7 @@ vmap  <expr>  D        DVB_Duplicate()
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 set statusline+=%=
-set statusline+=\ [%l\/%L:\%v] "line number and column number
+set statusline+=\ [%l\/%L] "line number and column number
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
