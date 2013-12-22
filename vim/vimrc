@@ -195,13 +195,24 @@ sunmap b
 sunmap e
 
 " Ruby dev mappings
+" small func to find the private keyword
+" TODO: make this better
+function! JF_find_private()
+  execute "/private"
+endfunction
+
 map <leader>bb :!bundle install<cr>
 map <leader>rb :!ruby %<cr>
+map <leader>gf :e Gemfile<cr>
+map <leader>pv :call JF_find_private()<cr>
+
 
 " some Node / JS Dev mappings
 map <leader>ne :!node %<cr>
 map <leader>nt :!npm test<cr>
 map <leader>nmc :!mocha %<cr>
+map <leader>pj :e package.json<cr>
+map <leader>spj :vsplit package.json<cr>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
