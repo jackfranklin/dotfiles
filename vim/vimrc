@@ -335,6 +335,9 @@ let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 
+" useful for showing snippets if you're not sure
+map <leader>sp :echo UltiSnips_ListSnippets()<CR>
+
 "This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR><CR>
 
