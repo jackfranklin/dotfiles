@@ -16,15 +16,15 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 - Clone repository (I recommend `~/dotfiles`)
 - `cd ~/dotfiles`
-- `./scripts/make.sh`
+- `make`
 
 # Adding new vim plugin
 - Add plugin to `vim_plugins.json`
-- Run `ruby scripts/vim_bundles.rb`
+- Run `make vim`
 
 # homebrew
-- add brew to `brews.text`
-- `ruby scripts/brewery.rb`
+- Add brew to `brews.text`
+- Run `make brew`
 
 # node & npm
 - The latest Node is installed via homebrew.
@@ -32,10 +32,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 
 # Updating
-
-Running `make.sh` without arguments means it will only install new plugins and not do a fresh install of everything.
-
-The installer will also delete plugins that exist as folders but not in the `vim_bundles.rb` file.
+You can run `make` at any time to keep things nice and tidy. To update a Vim plugin, just remove its folder from `~/.vim/bundle`. When you run `make` again (or just `make vim`), it will download the latest version.
 
 # Requirements
 
