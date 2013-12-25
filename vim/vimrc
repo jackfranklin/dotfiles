@@ -154,6 +154,9 @@ let g:html_indent_tags = 'li\|p'
 set splitbelow
 set splitright
 
+map <leader>ssh <C-w>t<C-w>K<CR>
+map <leader>ssv <C-w>t<C-w>H<CR>
+
 " clojure settings
 let g:vimclojure#HighlightBuiltins = 1
 let g:vimclojure#ParenRainbow = 1
