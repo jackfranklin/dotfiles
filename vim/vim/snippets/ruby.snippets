@@ -1,0 +1,35 @@
+snippet "^#!" "#!/usr/bin/env ruby" r
+#!/usr/bin/env ruby
+$0
+endsnippet
+
+snippet if "if <condition> ... end"
+if ${1:condition}
+	${2:# TODO}
+end
+endsnippet
+
+snippet defi "def initialize ..."
+def initialize${1: ${2:*args}}
+	${0:# TODO}
+end
+endsnippet
+
+snippet "\b(de)?f" "def <name>..." r
+def ${1:function_name}${2: ${3:*args}}
+	${0:# TODO}
+end
+endsnippet
+
+snippet desc "describe"
+describe '$1' do
+	$0
+end
+endsnippet
+
+snippet it "it"
+it '$1' do
+	$0
+end
+endsnippet
+

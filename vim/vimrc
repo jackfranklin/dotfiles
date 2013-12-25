@@ -333,6 +333,7 @@ nnoremap <leader>mh5 :call MW_Heading(5)<CR>
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
+let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 
 "This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR><CR>
