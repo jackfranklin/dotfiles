@@ -9,10 +9,8 @@ after_commands = {
 
 installed = `brew ls`
 brews.each do |brew|
-  if installed.include?(brew)
-    puts "#{brew} already installed"
-  else
-    puts "running brew install #{brew}"
+  unless installed.include?(brew)
+    puts "Installing #{brew}"
     puts `brew install #{brew}`
     unless after_commands[brew].nil?
       puts "running after_commands for #{brew}"
@@ -21,5 +19,4 @@ brews.each do |brew|
   end
 end
 
-puts "Rehashing rbenv"
 `rbenv rehash`
