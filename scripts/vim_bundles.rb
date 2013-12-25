@@ -3,6 +3,10 @@ require 'fileutils'
 require 'open-uri'
 
 REINSTALL_ALL = ARGV[0] == "new"
+plugin_to_update = nil
+unless REINSTALL_ALL
+  plugin_to_update = ARGV[0]
+end
 
 # shamelessly stolen and altered from https://github.com/tsaleh/dotfiles/blob/master/vim/update_bundles
 git_bundles = File.readlines("vim_plugins.txt").map(&:chomp)
@@ -27,20 +31,27 @@ FileUtils.cd(bundles_dir)
 git_bundles.each do |url|
   name = url.split("/").last.gsub(".git", "")
   if REINSTALL_ALL
-      puts "Installing #{name}"
-      `git clone -q #{url}`
+    puts "Installing #{name}"
+    clone_and_install(url)
+  elsif !plugin_to_update.nil? && name.include?(plugin_to_update)
+    puts "Going to redownload #{name}"
+    FileUtils.rm_rf(name)
+    clone_and_install(url)
   else
     folder_exists = File.directory? name
-    if folder_exists
-      puts "Plugin #{name} already installed"
-    else
+    unless folder_exists
       puts "Installing #{name} as it doesn't exist"
-      `git clone -q #{url}`
-      unless after_instructions[name].nil?
-        puts "Running after_instructions for #{name}"
-        puts `#{after_instructions[name]}`
-      end
+      clone_and_install(url)
     end
+  end
+end
+
+def clone_and_install(url)
+  name = url.split("/").last.gsub(".git", "")
+  `git clone -q #{url}`
+  unless after_instructions[name].nil?
+    puts "Running after_instructions for #{name}"
+    puts `#{after_instructions[name]}`
   end
 end
 
