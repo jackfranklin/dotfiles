@@ -17,3 +17,4 @@ gnu-sed
 the_silver_searcher
 erlang
 elixir
+git-extras
