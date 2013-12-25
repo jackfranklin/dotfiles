@@ -318,6 +318,17 @@ map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR
 map <leader>ct :TagbarToggle<CR>
 map <leader>ctp :TagbarTogglePause<CR>
 
+" vim-markdown-writer
+nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
+nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
+nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
+nnoremap <leader>ml :call MW_MakeWordLink()<CR>
+nnoremap <leader>mh1 :call MW_Heading(1)<CR>
+nnoremap <leader>mh2 :call MW_Heading(2)<CR>
+nnoremap <leader>mh3 :call MW_Heading(3)<CR>
+nnoremap <leader>mh4 :call MW_Heading(4)<CR>
+nnoremap <leader>mh5 :call MW_Heading(5)<CR>
+
 " ultisnips settings so they don't compete with YCM
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
