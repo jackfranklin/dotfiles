@@ -9,6 +9,8 @@ gems = %w{
 }
 
 gems.each do |gem|
-  puts "Installing #{gem}"
-  `gem install #{gem} --no-rdoc --no-ri`
+  unless `gem list --local`.include?(gem)
+    puts "Installing #{gem}"
+    `gem install #{gem} --no-rdoc --no-ri`
+  end
 end
