@@ -1,9 +1,7 @@
 #!/usr/bin/env ruby
 #
-REINSTALL_ALL = ARGV[0] == "new"
-
 puts "Making sure n exists"
-if `which n` == "" || REINSTALL_ALL
+if `which n` == ""
   puts "Install n"
   `npm install n -g --silent`
 end
@@ -30,7 +28,7 @@ npms = {
 
 npms.each do |mod, command|
   cmd = (command == "" ? mod : command)
-  if `which #{cmd}` == "" || REINSTALL_ALL
+  if `which #{cmd}` == ""
     puts "Installing #{mod}"
     `npm install #{mod} -g --silent`
   else

@@ -32,9 +32,9 @@ ruby $dir/scripts/brewery.rb
 echo "~~~~~~~~~~~~~~~~~"
 
 echo "Setting up npm"
-ruby $dir/scripts/npm_bundles.rb $1
+ruby $dir/scripts/npm_bundles.rb
 echo "~~~~~~~~~~~~~~~~~"
 
 echo "Updating Vim bundles"
-ruby $dir/scripts/vim_bundles.rb $1
+ruby $dir/scripts/vim_bundles.rb
 echo "~~~~~~~~~~~~~~~~~"

@@ -9,21 +9,22 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ~/dotfiles/vim/vimrc => ~/.vimrc
 ~/dotfiles/zsh/zshrc => ~/.zshrc
 ~/dotfiles/git/gitignore_global => ~/.gitignore_global
+...and so on
 ```
 
 # Installing
 
 - Clone repository (I recommend `~/dotfiles`)
 - `cd ~/dotfiles`
-- `./scripts/make.sh NEW`
+- `./scripts/make.sh`
 
 # Adding new vim plugin
-- Add plugin to `~/dotfiles/scripts/vim_bundles.rb`
-- Run `./scripts/make.sh`
+- Add plugin to `vim_plugins.json`
+- Run `ruby scripts/vim_bundles.rb`
 
 # homebrew
-- add brew to `~/dotfiles/scripts/brewery.rb`
-- run that file or just run `./scripts/make.sh`
+- add brew to `brews.text`
+- `ruby scripts/brewery.rb`
 
 # node & npm
 - The latest Node is installed via homebrew.
@@ -32,7 +33,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 # Updating
 
-Running `make.sh` without arguments means it will only install new plugins and not do a fresh install of everything. Running it with an argument makes it do an entirely fresh install.
+Running `make.sh` without arguments means it will only install new plugins and not do a fresh install of everything.
 
 The installer will also delete plugins that exist as folders but not in the `vim_bundles.rb` file.
 
