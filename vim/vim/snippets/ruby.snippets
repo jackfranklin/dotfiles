@@ -3,10 +3,19 @@ snippet "^#!" "#!/usr/bin/env ruby" r
 $0
 endsnippet
 
+snippet rr "Require relative"
+require_relative '$1'
+$0
+endsnippet
+
 snippet if "if <condition> ... end"
 if ${1:condition}
 	$0
 end
+endsnippet
+
+snippet @ "set instance var"
+@$1 = ${2:$1}
 endsnippet
 
 snippet defi "def initialize ..."
