@@ -336,6 +336,10 @@ let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 
+" fugitive.vim mappings
+map <leader>gs :Gstatus<CR>
+map <leader>gc :Gcommit<CR>
+
 " useful for showing snippets if you're not sure
 map <leader>sp :echo UltiSnips_ListSnippets()<CR>
 
