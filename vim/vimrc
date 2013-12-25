@@ -344,9 +344,12 @@ map <leader>gs :Gstatus<CR>
 map <leader>gc :Gcommit<CR>
 
 " git gutter mappings
-map <leader>ggo :GitGutterEnable<CR>
-map <leader>ggf :GitGutterDisable<CR>
+map <leader>gge :GitGutterEnable<CR>
+map <leader>ggd :GitGutterDisable<CR>
 map <leader>ggt :GitGutterToggle<CR>
+
+" toggle spell checking easily
+map <leader>sc :setlocal spell!<CR>
 
 " useful for showing snippets if you're not sure
 map <leader>sp :echo UltiSnips_ListSnippets()<CR>
