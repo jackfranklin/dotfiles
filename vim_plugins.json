@@ -23,5 +23,6 @@
   "vim-ruby/vim-ruby",
   "tpope/vim-vinegar",
   "jackfranklin/vim-markdown-writer",
-  "tpope/vim-fugitive"
+  "tpope/vim-fugitive",
+  "airblade/vim-gitgutter"
 ]
