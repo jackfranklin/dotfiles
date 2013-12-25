@@ -75,7 +75,6 @@ class Vim
   end
 
   def get_bundles
-    p Dir.pwd
     JSON.parse(IO.read('vim_plugins.json'))
   end
 end
