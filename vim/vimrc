@@ -338,6 +338,7 @@ let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
+map <leader>use :UltiSnipsEdit<CR>
 
 " fugitive.vim mappings
 map <leader>gs :Gstatus<CR>
