@@ -28,25 +28,7 @@ FileUtils.mkdir_p(bundles_dir)
 
 FileUtils.cd(bundles_dir)
 
-git_bundles.each do |url|
-  name = url.split("/").last.gsub(".git", "")
-  if REINSTALL_ALL
-    puts "Installing #{name}"
-    clone_and_install(url)
-  elsif !plugin_to_update.nil? && name.include?(plugin_to_update)
-    puts "Going to redownload #{name}"
-    FileUtils.rm_rf(name)
-    clone_and_install(url)
-  else
-    folder_exists = File.directory? name
-    unless folder_exists
-      puts "Installing #{name} as it doesn't exist"
-      clone_and_install(url)
-    end
-  end
-end
-
-def clone_and_install(url)
+def clone_and_install(url, after_instructions)
   name = url.split("/").last.gsub(".git", "")
   `git clone -q #{url}`
   unless after_instructions[name].nil?
@@ -54,6 +36,25 @@ def clone_and_install(url)
     puts `#{after_instructions[name]}`
   end
 end
+
+git_bundles.each do |url|
+  name = url.split("/").last.gsub(".git", "")
+  if REINSTALL_ALL
+    puts "Installing #{name}"
+    clone_and_install(url, after_instructions)
+  elsif !plugin_to_update.nil? && name.include?(plugin_to_update)
+    puts "Going to redownload #{name}"
+    FileUtils.rm_rf(name)
+    clone_and_install(url, after_instructions)
+  else
+    folder_exists = File.directory? name
+    unless folder_exists
+      puts "Installing #{name} as it doesn't exist"
+      clone_and_install(url, after_instructions)
+    end
+  end
+end
+
 
 Dir["*/.git"].each {|f| FileUtils.rm_rf(f) }
 
