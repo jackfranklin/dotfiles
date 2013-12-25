@@ -6,7 +6,6 @@ class Vim
   def initialize(argv)
     @argv = argv
     @bundles_dir = File.join(File.expand_path("~/dotfiles/vim/vim"), "bundle")
-    @plugin_file = "vim_plugins.json"
     @bundles = get_bundles
     @reinstall_single = @argv[0]
   end
@@ -15,6 +14,7 @@ class Vim
     prepare_file_system
     FileUtils.cd(@bundles_dir)
     process_items
+    tidy_up
   end
 
   private
@@ -76,6 +76,6 @@ class Vim
 
   def get_bundles
     p Dir.pwd
-    JSON.parse(IO.read(@plugin_file))
+    JSON.parse(IO.read('vim_plugins.json'))
   end
 end
