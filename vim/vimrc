@@ -201,34 +201,73 @@ sunmap w
 sunmap b
 sunmap e
 
-" Ruby dev mappings
-" small func to find the private keyword
-" TODO: make this better
+" rename the current file
+" thanks Gary Bernhardt
+function! RenameFile()
+    let old_name = expand('%')
+    let new_name = input('New file name: ', expand('%'), 'file')
+    if new_name != '' && new_name != old_name
+        exec ':saveas ' . new_name
+        exec ':silent !rm ' . old_name
+        redraw!
+    endif
+endfunction
+
+" TODO: make this better, more intelligent
 function! JF_find_private()
   execute "/private"
 endfunction
 
+function! OpenProjectNotes()
+  let directory = getcwd()
+  let filename = '_projectnotes.txt'
+  exec ':vsplit ' . directory . '/' . filename
+endfunction
+
 map <leader>bb :!bundle install<cr>
+map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
+map <leader>c gcc
+map <leader>cf :CtrlPClearCache<cr>
+map <leader>ct :TagbarToggle<CR>
+map <leader>ctp :TagbarTogglePause<CR>
+map <leader>e :call JF_ExecuteCurrentFile()<CR>
+nnoremap <leader>ev :vsplit $MYVIMRC<cr>
+map <leader>gs :Gstatus<CR>
+map <leader>gc :Gcommit<CR>
+map <leader>gge :GitGutterEnable<CR>
+map <leader>ggd :GitGutterDisable<CR>
+map <leader>ggt :GitGutterToggle<CR>
 map <leader>gf :e Gemfile<cr>
-map <leader>pv :call JF_find_private()<cr>
-
-
-" some Node / JS Dev mappings
+map <leader>ls :echo UltiSnips_ListSnippets()<CR>
+nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
+nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
+nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
+nnoremap <leader>ml :call MW_MakeWordLink()<CR>
 map <leader>nt :!npm test<cr>
+nnoremap <Leader>p :set invpaste paste?<CR>
+map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
+map <leader>pt :CtrlPTag<cr>
+nnoremap <leader>pn :call OpenProjectNotes()<cr>
+map <Leader>rn :call RenameFile()<cr>
+map <Leader>rt :call RunCurrentSpecFile()<CR>
+map <Leader>rs :call RunNearestSpec()<CR>
+map <Leader>rl :call RunLastSpec()<CR>
+map <Leader>ra :call RunAllSpecs()<CR>
 map <leader>spj :vsplit package.json<cr>
+map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
+nnoremap <leader>sv :source $MYVIMRC<cr>
+nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
+map <leader>sc :setlocal spell!<CR>
+map <leader>ss :call JF_RunAllTests()<CR>
+map <leader>t :CtrlP<cr>
+map <leader>use :UltiSnipsEdit<CR>
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
 map <C-t> <esc>:tabnew<CR>
-
-" make the TCOmment toggle <leader>c
-map <leader>c gcc
-
-"remove all trailing whitespace with ,W
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
-
 
 " Make j/k move to next visual line instead of physical line
 " http://yubinkim.com/?p=6
@@ -247,9 +286,6 @@ vnoremap > >gv
 vnoremap . :norm.<CR>
 
 " control P
-map <leader>t :CtrlP<cr>
-map <leader>cf :CtrlPClearCache<cr>
-map <leader>pt :CtrlPTag<cr>
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|bower_components\'
 let g:ctrlp_clear_cache_on_exit = 0
 let g:ctrlp_extensions = ['tag']
@@ -268,92 +304,21 @@ nnoremap td  :tabclose<CR>
 " https://github.com/r00k/dotfiles/blob/master/vimrc
 set formatoptions-=or
 
-" TODO: abstract big functions into own files?
-" rename the current file
-" https://github.com/r00k/dotfiles/blob/master/vimrc
-function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-endfunction
-map <Leader>rn :call RenameFile()<cr>
 
 
 " swap between paste mode or not with ,p
-nnoremap <Leader>p :set invpaste paste?<CR>
 set pastetoggle=<Leader>p
 
 
-" easy vimrc editing
-nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-nnoremap <leader>sv :source $MYVIMRC<cr>
-
-" scratchpad
-nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
-
-" project notes
-function! OpenProjectNotes()
-  let directory = getcwd()
-  let filename = '_projectnotes.txt'
-  exec ':vsplit ' . directory . '/' . filename
-endfunction
-
-nnoremap <leader>pn :call OpenProjectNotes()<cr>
-
-" insert blank line above
-nmap <leader>bO O<Esc>j
-" insert blank line below
-nmap <leader>bo o<Esc>k
-
-" vim-rspec mappings
-map <Leader>rt :call RunCurrentSpecFile()<CR>
-map <Leader>rs :call RunNearestSpec()<CR>
-map <Leader>rl :call RunLastSpec()<CR>
-map <Leader>ra :call RunAllSpecs()<CR>
-
-"swap BG
-map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
-
 "tagbar
-map <leader>ct :TagbarToggle<CR>
-map <leader>ctp :TagbarTogglePause<CR>
 
 " vim-markdown-writer
-nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
-nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
-nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
-nnoremap <leader>ml :call MW_MakeWordLink()<CR>
-nnoremap <leader>mh1 :call MW_Heading(1)<CR>
-nnoremap <leader>mh2 :call MW_Heading(2)<CR>
-nnoremap <leader>mh3 :call MW_Heading(3)<CR>
-nnoremap <leader>mh4 :call MW_Heading(4)<CR>
-nnoremap <leader>mh5 :call MW_Heading(5)<CR>
 
 " ultisnips settings so they don't compete with YCM
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
-map <leader>use :UltiSnipsEdit<CR>
-
-" fugitive.vim mappings
-map <leader>gs :Gstatus<CR>
-map <leader>gc :Gcommit<CR>
-
-" git gutter mappings
-map <leader>gge :GitGutterEnable<CR>
-map <leader>ggd :GitGutterDisable<CR>
-map <leader>ggt :GitGutterToggle<CR>
-
-" toggle spell checking easily
-map <leader>sc :setlocal spell!<CR>
-
-" useful for showing snippets if you're not sure
-map <leader>sp :echo UltiSnips_ListSnippets()<CR>
 
 "This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR><CR>
@@ -373,10 +338,3 @@ if executable('ag')
   " bind K to grep word under cursor
   nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 endif
-
-" code for this in vim/plugin/execute_file.vim
-map <leader>e :call JF_ExecuteCurrentFile()<CR>
-
-" code for this stored in vim/plugin/execute_test.vim
-map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
-map <leader>ss :call JF_RunAllTests()<CR>
