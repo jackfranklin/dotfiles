@@ -13,6 +13,10 @@ function! JF_IsInTestFile()
   endif
 endfunction
 
+function! JF_RunAllTests()
+  exec g:jf_test_runner
+endfunction
+
 function! JF_StoreCurrentTestFile()
   let g:jf_test_file=expand('%')
 endfunction

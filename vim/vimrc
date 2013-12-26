@@ -379,3 +379,4 @@ map <leader>e :call JF_ExecuteCurrentFile()<CR>
 
 " code for this stored in vim/plugin/execute_test.vim
 map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
+map <leader>ss :call JF_RunAllTests()<CR>
