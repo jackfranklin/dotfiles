@@ -1,5 +1,5 @@
 function! JF_RunRelevantTest()
-  if g:jf_test_runner ==? '!npm test' || g:jf_test_runner ==? '!grunt test'
+  if g:jf_test_runner ==? '!npm test' || g:jf_test_runner ==? '!grunt test' || exists('g:jf_test_override')
     exec g:jf_test_runner
   else
     exec g:jf_test_runner g:jf_test_file
@@ -22,7 +22,18 @@ function! JF_StoreCurrentTestFile()
 endfunction
 
 function! JF_StoreTestRunner(runner)
+  if !exists('g:jf_test_override')
+    let g:jf_test_runner=a:runner
+  endif
+endfunction
+
+function! JF_OverrideTestRunner(runner)
+  let g:jf_test_override=1
   let g:jf_test_runner=a:runner
+endfunction
+
+function! JF_ClearTestOverride()
+  unlet g:jf_test_override
 endfunction
 
 " based on a similar script in Ben Orenstein's vimrc.
