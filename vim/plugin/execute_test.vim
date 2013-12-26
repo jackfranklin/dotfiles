@@ -1,5 +1,5 @@
 function! JF_RunRelevantTest()
-  if g:jf_test_runner ==? '!npm test'
+  if g:jf_test_runner ==? '!npm test' || g:jf_test_runner ==? '!grunt test'
     exec g:jf_test_runner
   else
     exec g:jf_test_runner g:jf_test_file
@@ -47,12 +47,12 @@ endfunction
 function! JF_ProcessJSTestFile()
   let fullpath = expand('%:p')
   let searchForPackageJsonOutput = system('find . -name "package.json" -depth 1 2>/dev/null')
-  if match(searchForPackageJsonOutput, './package.json') != -1
-    call JF_StoreTestRunner('!npm test')
+  let searchForGruntOutput = system('find . -name "Gruntfile.js" -depth 1 2>/dev/null')
+  if match(searchForGruntOutput, './Gruntfile.js') != -1
+    call JF_StoreTestRunner('!grunt test')
   else
-    let searchForGruntOutput = system('find . -name "Gruntfile.js" -depth 1 2>/dev/null')
-    if match(searchForGruntOutput, './Gruntfile.js') != -1
-      call JF_StoreTestRunner('!grunt test')
+    if match(searchForPackageJsonOutput, './package.json') != -1
+      call JF_StoreTestRunner('!npm test')
     else
       call JF_StoreTestRunner('!node')
     endif
