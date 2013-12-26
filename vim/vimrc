@@ -209,15 +209,12 @@ function! JF_find_private()
 endfunction
 
 map <leader>bb :!bundle install<cr>
-map <leader>rb :!ruby %<cr>
 map <leader>gf :e Gemfile<cr>
 map <leader>pv :call JF_find_private()<cr>
 
 
 " some Node / JS Dev mappings
-map <leader>ne :!node %<cr>
 map <leader>nt :!npm test<cr>
-map <leader>nmc :!mocha %<cr>
 map <leader>pj :e package.json<cr>
 map <leader>spj :vsplit package.json<cr>
 
@@ -376,3 +373,9 @@ if executable('ag')
   " bind K to grep word under cursor
   nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 endif
+
+" code for this in vim/plugin/execute_file.vim
+map <leader>e :call JF_ExecuteCurrentFile()<CR>
+
+" code for this stored in vim/plugin/execute_test.vim
+map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
