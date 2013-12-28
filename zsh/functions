@@ -16,3 +16,11 @@ function g {
     git status
   fi
 }
+
+function vi {
+  if jobs | grep "vi"; then
+    fg
+  else
+    vi
+  fi
+}

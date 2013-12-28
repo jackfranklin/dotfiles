@@ -58,7 +58,8 @@ get_suspended_jobs() {
 }
 
 # don't have a right hand prompt
-RPS1='$(get_suspended_jobs)'
+# RPS1='$(get_suspended_jobs)'
+RPS1=''
 # main prompt
 PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status) '
 
@@ -105,3 +106,5 @@ export PIP2EVAL_TMP_FILE_PATH=/tmp/shms
 
 # this allows Vim to use C-s as a mapping
 stty -ixon
+
+. <(pulldown completion)
