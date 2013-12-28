@@ -29,6 +29,10 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 - The latest Node is installed via homebrew.
 - packages are managed in `scripts/npm_bundles.rb`. Add a new package, and run `make node`.
 
+# gems
+- Add gem to `scripts/gems.rb`
+- `make gems`
+
 
 # Updating
 You can run `make` at any time to keep things nice and tidy.

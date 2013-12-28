@@ -1,6 +1,6 @@
 DIR=/Users/jackfranklin/dotfiles
 
-all: symlinks brew ruby_env ruby_gems node
+all: symlinks brew ruby_env gems node
 	@echo "Reminder: Vim plugins are managed within Vim with Vundle."
 
 symlinks:
@@ -15,11 +15,12 @@ symlinks:
 	@ln -sf $(DIR)/git/gitignore_global ~/.gitignore_global
 	@ln -sf $(DIR)/ack/ackrc ~/.ackrc
 	@ln -sf $(DIR)/ctags/ctags ~/.ctags
+	@ln -sf $(DIR)/gem/gemrc ~/.gemrc
 
 ruby_env:
 	ruby $(DIR)/scripts/ruby_env.rb
 
-ruby_gems:
+gems:
 	ruby $(DIR)/scripts/gems.rb
 
 brew:
