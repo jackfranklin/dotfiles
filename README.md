@@ -22,12 +22,12 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 - plugins are managed in `vim/vimrc` with [Vundle](https://github.com/gmarik/vundle). Add a plugin there, restart Vim and run `:BundleInstall`.
 
 # homebrew
-- Add brew to `brews.text`
+- Add line to `Brewfile`.
 - Run `make brew`
 
 # node & npm
 - The latest Node is installed via homebrew.
-- The `~/scripts/npm_bundles.rb` script installs `n` (Node version manager), then installs the latest Node through n, and then installs the npm modules defined in that file globally.
+- packages are managed in `scripts/npm_bundles.rb`. Add a new package, and run `make node`.
 
 
 # Updating
