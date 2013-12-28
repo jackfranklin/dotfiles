@@ -4,13 +4,8 @@ ZSH_THEME_GIT_TIME_SHORT_COMMIT_MEDIUM="%{$fg[yellow]%}"
 ZSH_THEME_GIT_TIME_SINCE_COMMIT_LONG="%{$fg[red]%}"
 ZSH_THEME_GIT_TIME_SINCE_COMMIT_NEUTRAL="%{$fg[cyan]%}"
 
-setopt APPEND_HISTORY
-# setopt AUTO_LIST		# these two should be turned off
 unsetopt BG_NICE		# do NOT nice bg commands
 setopt CORRECT			# command CORRECTION
-setopt EXTENDED_HISTORY		# puts timestamps in the history
-setopt HIST_ALLOW_CLOBBER
-setopt HIST_REDUCE_BLANKS
 setopt INC_APPEND_HISTORY SHARE_HISTORY
 setopt ALL_EXPORT
 
@@ -30,8 +25,8 @@ PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/us
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
-HISTSIZE=9999
-SAVEHIST=9999
+HISTSIZE=20000
+SAVEHIST=20000
 HOSTNAME="`hostname`"
 PAGER='less'
 
