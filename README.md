@@ -19,8 +19,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 - `make`
 
 # Adding new vim plugin
-- Add plugin to `vim_plugins.json`
-- Run `make vim`
+- plugins are managed in `vim/vimrc` with [Vundle](https://github.com/gmarik/vundle). Add a plugin there, restart Vim and run `:BundleInstall`.
 
 # homebrew
 - Add brew to `brews.text`
@@ -32,7 +31,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 
 # Updating
-You can run `make` at any time to keep things nice and tidy. To update a Vim plugin, just remove its folder from `~/.vim/bundle`. When you run `make` again (or just `make vim`), it will download the latest version.
+You can run `make` at any time to keep things nice and tidy.
 
 # Requirements
 
