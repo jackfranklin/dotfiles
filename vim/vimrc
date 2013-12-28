@@ -328,8 +328,7 @@ nnoremap tm  :tabm<Space>
 nnoremap td  :tabclose<CR>
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
-" https://github.com/r00k/dotfiles/blob/master/vimrc
-set formatoptions-=or
+autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
 
 
