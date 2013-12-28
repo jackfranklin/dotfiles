@@ -2,6 +2,8 @@ update
 
 upgrade
 
+install ruby-build
+install rbenv
 install ack
 install ctags
 install git
