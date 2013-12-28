@@ -1,14 +1,38 @@
-" pathogen plugins
-call pathogen#infect()
-call pathogen#helptags()
+set nocompatible
+filetype off
+set rtp+=~/.vim/bundle/vundle/
+call vundle#rc()
 
-" non-pathogen plugins
-runtime plugin/dragvisuals.vim
-vmap  <expr>  <LEFT>   DVB_Drag('left')
-vmap  <expr>  <RIGHT>  DVB_Drag('right')
-vmap  <expr>  <DOWN>   DVB_Drag('down')
-vmap  <expr>  <UP>     DVB_Drag('up')
-vmap  <expr>  D        DVB_Duplicate()
+Bundle 'gmarik/vundle'
+Bundle 'sheerun/vim-polyglot'
+Bundle 'tpope/vim-endwise'
+Bundle 'tpope/vim-git'
+Bundle 'tpope/vim-surround'
+Bundle 'tomtom/tcomment_vim'
+Bundle 'Lokaltog/vim-easymotion'
+Bundle 'kien/ctrlp.vim'
+Bundle 'junegunn/seoul256.vim'
+Bundle 'SirVer/ultisnips'
+Bundle 'christoomey/vim-tmux-navigator'
+Bundle 'tpope/vim-rbenv'
+Bundle 'tpope/vim-eunuch'
+Bundle 'thoughtbot/vim-rspec'
+Bundle 'junegunn/vim-easy-align'
+Bundle 'editorconfig/editorconfig-vim'
+Bundle 'Yggdroot/indentLine'
+Bundle 'mileszs/ack.vim'
+Bundle 'osyo-manga/vim-over'
+Bundle 'elixir-lang/vim-elixir'
+Bundle 'vim-scripts/camelcasemotion'
+Bundle 'ervandew/supertab'
+Bundle 'vim-ruby/vim-ruby'
+Bundle 'tpope/vim-vinegar'
+Bundle 'jackfranklin/vim-markdown-writer'
+Bundle 'tpope/vim-fugitive'
+Bundle 'airblade/vim-gitgutter'
+
+" Enable file type detection. Do this after Vundle calls.
+filetype plugin indent on
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
@@ -105,9 +129,6 @@ set showcmd
 
 " Enable highlighting for syntax
 syntax on
-
-" Enable file type detection.
-filetype plugin indent on
 
 " use emacs-style tab completion when selecting files, etc
 " set wildmode=longest,list

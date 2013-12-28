@@ -1,8 +1,7 @@
 DIR=/Users/jackfranklin/dotfiles
 
-all: symlinks ruby_env ruby_gems brew node vim
-
-update: brew node vim
+all: symlinks ruby_env ruby_gems brew node
+	echo "Vim plugins are managed within Vim with Vundle."
 
 symlinks:
 	ln -nsf $(DIR)/zsh/zsh ~/.zsh
@@ -29,6 +28,3 @@ brew: brews.txt
 
 node:
 	ruby $(DIR)/scripts/npm_bundles.rb
-
-vim: vim_plugins.json
-	ruby $(DIR)/scripts/vim_bundles.rb
