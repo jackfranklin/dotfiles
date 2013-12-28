@@ -1,17 +1,23 @@
+" Vundle needs these things
 set nocompatible
 filetype off
 set rtp+=~/.vim/bundle/vundle/
 call vundle#rc()
 
+" Vundle has to manage Vundle.
 Bundle 'gmarik/vundle'
+
+" Syntax, colour schemes and the line
 Bundle 'sheerun/vim-polyglot'
+Bundle 'junegunn/seoul256.vim'
+
+" Actual Plugins
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-surround'
 Bundle 'tomtom/tcomment_vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kien/ctrlp.vim'
-Bundle 'junegunn/seoul256.vim'
 Bundle 'SirVer/ultisnips'
 Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'tpope/vim-rbenv'
