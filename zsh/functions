@@ -4,7 +4,7 @@ cd () {
 }
 
 
-function mkdircd
+function ck
 {
     command mkdir $1 && cd $1
 }
@@ -14,13 +14,5 @@ function g {
     git $@
   else
     git status
-  fi
-}
-
-function vi {
-  if jobs | grep "vi"; then
-    fg
-  else
-    vi
   fi
 }
