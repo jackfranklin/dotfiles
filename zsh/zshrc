@@ -8,6 +8,7 @@ unsetopt BG_NICE		# do NOT nice bg commands
 setopt CORRECT			# command CORRECTION
 setopt INC_APPEND_HISTORY SHARE_HISTORY
 setopt ALL_EXPORT
+setopt AUTO_RESUME
 
 # setopt MENCOMPLETE
 # Set/unset  shell options
