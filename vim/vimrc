@@ -26,7 +26,7 @@ Bundle 'thoughtbot/vim-rspec'
 Bundle 'junegunn/vim-easy-align'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'Yggdroot/indentLine'
-Bundle 'mileszs/ack.vim'
+Bundle 'rking/ag.vim'
 Bundle 'osyo-manga/vim-over'
 Bundle 'elixir-lang/vim-elixir'
 Bundle 'vim-scripts/camelcasemotion'
@@ -356,9 +356,6 @@ if executable('ag')
 
   " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
   let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-  " set up Ack.vim to actually use ag
-  let g:ackprg = 'ag --nogroup --nocolor --column'
 
   " bind K to grep word under cursor
   nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
