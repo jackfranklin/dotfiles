@@ -24,3 +24,4 @@ install the_silver_searcher
 install erlang
 install elixir
 install git-extras
+install task
