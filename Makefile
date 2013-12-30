@@ -16,6 +16,7 @@ symlinks:
 	@ln -sf $(DIR)/ack/ackrc ~/.ackrc
 	@ln -sf $(DIR)/ctags/ctags ~/.ctags
 	@ln -sf $(DIR)/gem/gemrc ~/.gemrc
+	@ln -sf $(DIR)/task/taskrc ~/.taskrc
 
 ruby_env:
 	ruby $(DIR)/scripts/ruby_env.rb
