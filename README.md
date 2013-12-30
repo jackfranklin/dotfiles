@@ -14,9 +14,10 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 # Installing
 
-- Clone repository (I recommend `~/dotfiles`)
+- Clone repository (I recommend `~/dotfiles`). If you don't use `~/dotfiles`, you'll have to update a couple of the scripts to point them to the right place.
 - `cd ~/dotfiles`
 - `make`
+- That will set up everything, but you'll need to install the Vim plugins. Load up vim (you'll get some errors the first time, ignore them) and run `:BundleInstall`. Once that's done, restart Vim and you're all set to code.
 
 # Adding new vim plugin
 - plugins are managed in `vim/vimrc` with [Vundle](https://github.com/gmarik/vundle). Add a plugin there, restart Vim and run `:BundleInstall`.
@@ -32,7 +33,6 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 # gems
 - Add gem to `scripts/gems.rb`
 - `make gems`
-
 
 # Updating
 You can run `make` at any time to keep things nice and tidy.
