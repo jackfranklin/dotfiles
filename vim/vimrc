@@ -185,8 +185,6 @@ let g:html_indent_tags = 'li\|p'
 set splitbelow
 set splitright
 
-map <leader>ssh <C-w>t<C-w>K<CR>
-map <leader>ssv <C-w>t<C-w>H<CR>
 
 " clojure settings
 let g:vimclojure#HighlightBuiltins = 1
@@ -279,7 +277,9 @@ map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
 map <leader>sc :setlocal spell!<CR>
-map <leader>ss :call JF_RunAllTests()<CR>
+map <leader>sa :call JF_RunAllTests()<CR>
+map <leader>sh <C-w>t<C-w>K<CR>
+map <leader>sv <C-w>t<C-w>H<CR>
 map <leader>t :CtrlP<cr>
 map <leader>use :UltiSnipsEdit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
