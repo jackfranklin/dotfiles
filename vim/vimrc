@@ -33,7 +33,6 @@ Bundle 'vim-scripts/camelcasemotion'
 Bundle 'ervandew/supertab'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'jackfranklin/vim-markdown-writer'
-Bundle 'airblade/vim-gitgutter'
 Bundle 'xolox/vim-misc'
 " easytags depends on vim-misc
 Bundle 'xolox/vim-easytags'
@@ -252,9 +251,6 @@ map <leader>ct :TagbarToggle<CR>
 map <leader>ctp :TagbarTogglePause<CR>
 map <leader>e :call JF_ExecuteCurrentFile()<CR>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-map <leader>gge :GitGutterEnable<CR>
-map <leader>ggd :GitGutterDisable<CR>
-map <leader>ggt :GitGutterToggle<CR>
 map <leader>gf :e Gemfile<cr>
 map <leader>ls :echo UltiSnips_ListSnippets()<CR>
 nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
