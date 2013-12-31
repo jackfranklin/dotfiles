@@ -46,6 +46,7 @@ set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 let g:git_branch_status_text=' Git'
 let g:git_branch_status_head_current=1
+let g:git_branch_status_nogit=""
 set statusline+=\ %{GitBranchInfoString()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
