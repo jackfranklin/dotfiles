@@ -280,6 +280,7 @@ map <leader>spv <C-w>t<C-w>H<CR>
 map <leader>t :CtrlP<cr>
 map <leader>use :UltiSnipsEdit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
+" couple of commands just for one particular project"
 map <leader>cm :!make<CR>
 map <leader>cc :!./mycc<CR>
 
