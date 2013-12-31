@@ -274,11 +274,13 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
 map <leader>sc :setlocal spell!<CR>
 map <leader>sa :call JF_RunAllTests()<CR>
-map <leader>sh <C-w>t<C-w>K<CR>
-map <leader>sv <C-w>t<C-w>H<CR>
+map <leader>sph <C-w>t<C-w>K<CR>
+map <leader>spv <C-w>t<C-w>H<CR>
 map <leader>t :CtrlP<cr>
 map <leader>use :UltiSnipsEdit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
+map <leader>cm :!make<CR>
+map <leader>cc :!./mycc<CR>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
