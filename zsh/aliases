@@ -24,6 +24,7 @@ alias bi="bundle install"
 # git alises
 alias ga="git add"
 alias gaa="git aa"
+alias gap="git add -p"
 alias gci="git ci"
 alias gcm="git ci -m"
 alias gco="git co"
