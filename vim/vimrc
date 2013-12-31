@@ -33,7 +33,6 @@ Bundle 'vim-scripts/camelcasemotion'
 Bundle 'ervandew/supertab'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'jackfranklin/vim-markdown-writer'
-Bundle 'tpope/vim-fugitive'
 Bundle 'airblade/vim-gitgutter'
 
 " Enable file type detection. Do this after Vundle calls.
@@ -42,7 +41,6 @@ filetype plugin indent on
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
-set statusline+=\ %{fugitive#statusline()} "fugitive.vim
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
 
@@ -258,8 +256,6 @@ map <leader>ct :TagbarToggle<CR>
 map <leader>ctp :TagbarTogglePause<CR>
 map <leader>e :call JF_ExecuteCurrentFile()<CR>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
-map <leader>gs :Gstatus<CR>
-map <leader>gc :Gcommit<CR>
 map <leader>gge :GitGutterEnable<CR>
 map <leader>ggd :GitGutterDisable<CR>
 map <leader>ggt :GitGutterToggle<CR>
@@ -302,11 +298,9 @@ nnoremap j gj
 nnoremap gk k
 nnoremap gj j
 
-
 " reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
-
 
 " make it do . in visual mode
 vnoremap . :norm.<CR>
@@ -329,15 +323,8 @@ nnoremap td  :tabclose<CR>
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
-
-
 " swap between paste mode or not with ,p
 set pastetoggle=<Leader>p
-
-
-"tagbar
-
-" vim-markdown-writer
 
 " ultisnips settings so they don't compete with YCM
 let g:UltiSnipsExpandTrigger="<c-k>"
