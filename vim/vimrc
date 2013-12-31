@@ -34,6 +34,7 @@ Bundle 'ervandew/supertab'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'jackfranklin/vim-markdown-writer'
 Bundle 'airblade/vim-gitgutter'
+Bundle 'taq/vim-git-branch-info'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -41,6 +42,9 @@ filetype plugin indent on
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
+let g:git_branch_status_text=' Git'
+let g:git_branch_status_head_current=1
+set statusline+=\ %{GitBranchInfoString()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
 
