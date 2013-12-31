@@ -34,6 +34,9 @@ Bundle 'ervandew/supertab'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'jackfranklin/vim-markdown-writer'
 Bundle 'airblade/vim-gitgutter'
+Bundle 'xolox/vim-misc'
+" easytags depends on vim-misc
+Bundle 'xolox/vim-easytags'
 Bundle 'taq/vim-git-branch-info'
 
 " Enable file type detection. Do this after Vundle calls.
@@ -203,6 +206,11 @@ set ttymouse=xterm2
 
 " turn indentline off by default
 let g:indentLine_enabled = 0
+
+" settings for tags and vim-easytags
+set tags=./tags;
+" 2 = will use ./tags file, or create if it doesn't exist
+let g:easytags_dynamic_files = 2
 
 " ~~~ MAPPINGS BELOW ~~~
 
