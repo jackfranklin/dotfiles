@@ -1,6 +1,6 @@
 # lazy
 alias v="vim"
-alias vi="echo use v!! && vi"
+alias vi="echo use v!!"
 alias jspl="cd Dropbox/Sites/jsplayground-jekyll"
 
 # misc
