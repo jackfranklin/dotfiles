@@ -201,21 +201,7 @@ set ttyfast
 set mouse=a
 set ttymouse=xterm2
 
-" YouCompleteMe Settings
-let g:ycm_filetype_blacklist = {
-      \ 'notes' : 1,
-      \ 'markdown' : 1,
-      \ 'text' : 1,
-      \ 'gitcommit' : 1,
-      \}
-let g:ycm_complete_in_strings = 0
-" ctags support
-let g:ycm_collect_identifiers_from_tags_files = 1
-" stop the annoying window at the bottom appearing
-set completeopt-=preview
-let g:ycm_add_preview_to_completeopt = 0
-let g:ycm_min_num_of_chars_for_completion = 3
-
+" turn indentline off by default
 let g:indentLine_enabled = 0
 
 " ~~~ MAPPINGS BELOW ~~~
@@ -339,15 +325,12 @@ let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
 "This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR><CR>
 
-" The Silver Searcher
-" taken from: http://robots.thoughtbot.com/faster-grepping-in-vim/
-if executable('ag')
-  " Use ag over grep
-  set grepprg=ag\ --nogroup\ --nocolor
+" http://robots.thoughtbot.com/faster-grepping-in-vim/
+" Use ag over grep
+set grepprg=ag\ --nogroup\ --nocolor
 
-  " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-  let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
+" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
+let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
-  " bind K to grep word under cursor
-  nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
-endif
+" bind K to grep word under cursor
+nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
