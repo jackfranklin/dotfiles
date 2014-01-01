@@ -22,3 +22,6 @@ npms.each do |mod, command|
     `npm install #{mod} -g --silent`
   end
 end
+
+# always run the very latest npm, not just the one that was bundled into Node
+`npm install npm -g --silent`
