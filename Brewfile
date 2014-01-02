@@ -25,3 +25,4 @@ install erlang
 install elixir
 install git-extras
 install task
+install youtube-dl
