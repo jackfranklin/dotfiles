@@ -37,6 +37,7 @@ Bundle 'xolox/vim-misc'
 " easytags depends on vim-misc
 Bundle 'xolox/vim-easytags'
 Bundle 'taq/vim-git-branch-info'
+Bundle 'scrooloose/nerdtree'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -50,6 +51,8 @@ let g:git_branch_status_nogit=""
 set statusline+=\ %{GitBranchInfoString()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
+
+set colorcolumn=81
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
