@@ -159,6 +159,7 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip
 
 " I like line numbers
 set number
+set relativenumber
 
 " pretty colours
 set t_Co=256
