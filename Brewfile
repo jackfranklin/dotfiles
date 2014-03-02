@@ -9,7 +9,6 @@ install ctags
 install git
 install mercurial
 install mongodb
-install node
 install phantomjs
 install wget
 install vim
