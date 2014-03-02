@@ -24,6 +24,11 @@ source ~/.zsh/git-prompt/zshrc.sh
 # an example prompt
 PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+PATH="/Users/jackfranklin/lejos/bin:$PATH"
+
+export NXJ_HOME=/Users/jackfranklin/lejos
+export LEJOS_NXT_JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
+
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=20000
