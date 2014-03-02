@@ -4,21 +4,6 @@ ZSH_THEME_GIT_TIME_SHORT_COMMIT_MEDIUM="%{$fg[yellow]%}"
 ZSH_THEME_GIT_TIME_SINCE_COMMIT_LONG="%{$fg[red]%}"
 ZSH_THEME_GIT_TIME_SINCE_COMMIT_NEUTRAL="%{$fg[cyan]%}"
 
-unsetopt BG_NICE		# do NOT nice bg commands
-setopt CORRECT			# command CORRECTION
-setopt INC_APPEND_HISTORY SHARE_HISTORY
-setopt ALL_EXPORT
-setopt AUTO_RESUME
-
-# setopt MENCOMPLETE
-# Set/unset  shell options
-# setopt   notify globdots correct pushdtohome cdablevars autolist
-# setopt   correctall autocd recexact longlistjobs
-# setopt   autoresume histignoredups pushdsilent noclobber
-# setopt   autopushd pushdminus extendedglob rcquotes mailwarning
-# unsetopt bgnice autoparamslash
-
-
 source ~/.zsh/git-prompt/zshrc.sh
 
 # an example prompt
@@ -67,7 +52,6 @@ LC_ALL='en_US.UTF-8'
 # LC_CTYPE=C
 # DISPLAY=:0
 
-unsetopt ALL_EXPORT
 
 # load in aliases
 source $HOME/dotfiles/zsh/aliases
@@ -84,7 +68,6 @@ bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 ### Added by the Heroku Toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
 
@@ -97,13 +80,8 @@ bindkey -e
 
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
-#clojure
-export VIMCLOJURE_SERVER_JAR="/usr/bin/nailgun-server.jar"
-
 # for pipe2eval plugin
 export PIP2EVAL_TMP_FILE_PATH=/tmp/shms
 
 # this allows Vim to use C-s as a mapping
 stty -ixon
-
-. <(pulldown completion)
