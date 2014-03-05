@@ -27,7 +27,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 - Run `make brew`
 
 # node & npm
-- The latest Node is installed via homebrew.
+- Node is installed via the installer on nodejs.org.
 - packages are managed in `scripts/npm_bundles.rb`. Add a new package, and run `make node`.
 
 # gems
