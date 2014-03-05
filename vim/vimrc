@@ -164,8 +164,7 @@ set relativenumber
 " pretty colours
 set t_Co=256
 colorscheme seoul256
-" set background=dark
-let &background=$ITERM_PROFILE
+set background=dark
 
 
 " highlight trailing whitespace
