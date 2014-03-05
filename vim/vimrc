@@ -201,7 +201,7 @@ set ttymouse=xterm2
 let g:indentLine_enabled = 0
 
 " settings for tags and vim-easytags
-set tags=./tags;
+set tags=./.tags;
 " 2 = will use ./tags file, or create if it doesn't exist
 let g:easytags_dynamic_files = 2
 
