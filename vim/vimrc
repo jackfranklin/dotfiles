@@ -189,14 +189,6 @@ set splitbelow
 set splitright
 
 
-" clojure settings
-let g:vimclojure#HighlightBuiltins = 1
-let g:vimclojure#ParenRainbow = 1
-let vimclojure#WantNailgun = 1
-
-" vim gitgutter
-let g:gitgutter_enabled = 0
-
 " set up the mouse
 " I know, mouse is bad, but this is useful purely for resizing splits visually
 " with mouse
