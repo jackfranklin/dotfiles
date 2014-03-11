@@ -39,6 +39,7 @@ Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-easytags'
 Bundle 'taq/vim-git-branch-info'
 Bundle 'scrooloose/nerdtree'
+Bundle 'AndrewRadev/splitjoin.vim'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
