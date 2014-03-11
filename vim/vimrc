@@ -16,7 +16,6 @@ Bundle 'jordwalke/flatlandia'
 Bundle 'tpope/vim-endwise'
 Bundle 'tpope/vim-git'
 Bundle 'tpope/vim-surround'
-Bundle 'tomtom/tcomment_vim'
 Bundle 'Lokaltog/vim-easymotion'
 Bundle 'kien/ctrlp.vim'
 Bundle 'SirVer/ultisnips'
@@ -42,6 +41,8 @@ Bundle 'scrooloose/nerdtree'
 Bundle 'AndrewRadev/splitjoin.vim'
 Bundle 'regedarek/ZoomWin'
 Bundle 'tpope/vim-jdaddy'
+Bundle 'gcmt/wildfire.vim'
+Bundle 'tpope/vim-commentary'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -246,7 +247,6 @@ endfunction
 
 map <leader>bb :!bundle install<cr>
 map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
-map <leader>c gcc
 map <leader>cf :CtrlPClearCache<cr>
 map <leader>ct :TagbarToggle<CR>
 map <leader>ctp :TagbarTogglePause<CR>
@@ -291,6 +291,8 @@ map <C-q> <esc>:x<CR>
 imap <C-q> <esc>:x<CR>
 map <C-t> <esc>:tabnew<CR>
 
+let g:wildfire_fuel_map = "<SPACE>"
+
 " Make j/k move to next visual line instead of physical line
 " http://yubinkim.com/?p=6
 nnoremap k gk
@@ -298,12 +300,12 @@ nnoremap j gj
 nnoremap gk k
 nnoremap gj j
 
+nnoremap . :norm.<CR>
 " reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
 
 " make it do . in visual mode
-vnoremap . :norm.<CR>
 
 " control P
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|bower_components\'
