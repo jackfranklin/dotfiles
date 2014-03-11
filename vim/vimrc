@@ -341,3 +341,5 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
+
+let g:tex_flavor = "latex"
