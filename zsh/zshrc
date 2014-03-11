@@ -85,3 +85,8 @@ export PIP2EVAL_TMP_FILE_PATH=/tmp/shms
 
 # this allows Vim to use C-s as a mapping
 stty -ixon
+
+# better cding
+# http://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
+setopt auto_cd
+cdpath=($HOME/git $HOME/Dropbox $HOME/git/fyp)
