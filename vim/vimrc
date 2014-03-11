@@ -284,6 +284,8 @@ map <leader>cc :!./mycc<CR>
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
+map <C-q> <esc>:x<CR>
+imap <C-q> <esc>:x<CR>
 map <C-t> <esc>:tabnew<CR>
 
 " Make j/k move to next visual line instead of physical line
