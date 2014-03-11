@@ -10,6 +10,7 @@ Bundle 'gmarik/vundle'
 " Syntax, colour schemes and the line
 Bundle 'sheerun/vim-polyglot'
 Bundle 'junegunn/seoul256.vim'
+Bundle 'jordwalke/flatlandia'
 
 " Actual Plugins
 Bundle 'tpope/vim-endwise'
@@ -163,7 +164,8 @@ set relativenumber
 
 " pretty colours
 set t_Co=256
-colorscheme seoul256
+" colorscheme seoul256
+colorscheme flatlandia
 set background=dark
 
 
