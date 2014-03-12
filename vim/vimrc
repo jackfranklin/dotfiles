@@ -297,7 +297,7 @@ nnoremap j gj
 nnoremap gk k
 nnoremap gj j
 
-nnoremap . :norm.<CR>
+vnoremap . :norm.<CR>
 " reselect visual block after indent/outdent
 vnoremap < <gv
 vnoremap > >gv
