@@ -287,6 +287,8 @@ imap <C-s> <esc>:w<CR>
 map <C-q> <esc>:x<CR>
 imap <C-q> <esc>:x<CR>
 map <C-t> <esc>:tabnew<CR>
+map <C-n> <esc>:w<CR>:make<CR>
+imap <C-n> <esc>:w<CR>:make<CR>
 
 let g:wildfire_fuel_map = "<SPACE>"
 
