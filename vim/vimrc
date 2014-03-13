@@ -99,18 +99,17 @@ set softtabstop=2
 set expandtab
 set autoindent
 
+set spelllang=en_gb
 " set some markdown specific things
-autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist spell spelllang=en_gb wrap lbr
+autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
+autocmd FileType tex setlocal colorcolumn=0
 
 set laststatus=2
 
 " break properly, don't split words
 set linebreak
 
-" use matchit plugin
-" required for rubyblocks plugin
-runtime macros/matchit.vim
-
+" no folds
 set nofoldenable
 
 " show search matches as I type
@@ -146,15 +145,10 @@ set showcmd
 " Enable highlighting for syntax
 syntax on
 
-" use emacs-style tab completion when selecting files, etc
-" set wildmode=longest,list
 set wildmode=full
-set wildmenu
-
 " make tab completion for files/buffers act like bash
 set wildmenu
 
-" leader key
 let mapleader=","
 
 " ignore git, npm modules and jekyll _site
@@ -170,20 +164,10 @@ set t_Co=256
 colorscheme flatlandia
 set background=dark
 
-
-" highlight trailing whitespace
-" highlight ExtraWhitespace ctermbg=red guibg=red
-" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-" match ExtraWhitespace /\s\+$/
-" autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
-" autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
-" autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-" autocmd BufWinLeave * call clearmatches()
 set list listchars=tab:»·,trail:·
 
 " :Q to quit (should be default)
 command! Q q
-
 
 " Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
@@ -192,10 +176,8 @@ let g:html_indent_tags = 'li\|p'
 set splitbelow
 set splitright
 
-
 " set up the mouse
 " I know, mouse is bad, but this is useful purely for resizing splits visually
-" with mouse
 " http://usevim.com/2012/05/16/mouse/
 set ttyfast
 set mouse=a
@@ -219,18 +201,6 @@ map <silent> e <Plug>CamelCaseMotion_e
 sunmap w
 sunmap b
 sunmap e
-
-" rename the current file
-" thanks Gary Bernhardt
-function! RenameFile()
-    let old_name = expand('%')
-    let new_name = input('New file name: ', expand('%'), 'file')
-    if new_name != '' && new_name != old_name
-        exec ':saveas ' . new_name
-        exec ':silent !rm ' . old_name
-        redraw!
-    endif
-endfunction
 
 " TODO: make this better, more intelligent
 function! JF_find_private()
@@ -262,7 +232,7 @@ map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
-map <Leader>rn :call RenameFile()<cr>
+map <Leader>rn :Rename
 map <Leader>rt :call RunCurrentSpecFile()<CR>
 map <Leader>rs :call RunNearestSpec()<CR>
 map <Leader>rl :call RunLastSpec()<CR>
@@ -276,11 +246,9 @@ map <leader>sa :call JF_RunAllTests()<CR>
 map <leader>sph <C-w>t<C-w>K<CR>
 map <leader>spv <C-w>t<C-w>H<CR>
 map <leader>t :CtrlP<cr>
-map <leader>use :UltiSnipsEdit<CR>
+map <leader>us :UltiSnipsEdit<CR>
+" cleans up whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
-" couple of commands just for one particular project"
-map <leader>cm :!make<CR>
-map <leader>cc :!./mycc<CR>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
