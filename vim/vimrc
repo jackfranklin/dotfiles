@@ -40,6 +40,7 @@ Bundle 'regedarek/ZoomWin'
 Bundle 'tpope/vim-jdaddy'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'tpope/vim-commentary'
+Bundle 'tpope/vim-dispatch'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -56,6 +57,9 @@ set statusline+=\ [%l\/%L] "line number and column number
 
 set colorcolumn=81
 
+"make vim-rspec play nice with dispatch
+let g:rspec_command = "Dispatch rspec {spec}"
+
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
 
@@ -66,9 +70,6 @@ set gdefault
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
 set timeout timeoutlen=1000 ttimeoutlen=100
-
-" it's 2013 yo
-set nocompatible
 
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
@@ -287,8 +288,9 @@ imap <C-s> <esc>:w<CR>
 map <C-q> <esc>:x<CR>
 imap <C-q> <esc>:x<CR>
 map <C-t> <esc>:tabnew<CR>
-map <C-n> <esc>:w<CR>:make<CR>
-imap <C-n> <esc>:w<CR>:make<CR>
+" ctrl n to esc, save and then run Make (sends make but through vim dispatch)
+map <C-n> <esc>:w<CR>:Make<CR>
+imap <C-n> <esc>:w<CR>:Make<CR>
 
 let g:wildfire_fuel_map = "<SPACE>"
 
