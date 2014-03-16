@@ -14,8 +14,10 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 # Installing
 
+- Swap your shell to ZSH (System Prefs -> Users -> Right Click on 'Advanced Settings' -> select ZSH from dropdown).
 - Clone repository (I recommend `~/dotfiles`). If you don't use `~/dotfiles`, you'll have to update a couple of the scripts to point them to the right place.
 - `cd ~/dotfiles`
+- Install Node from [NodeJS.org](http://nodejs.org/). (The brew install causes problems with its different paths for node module installs, and it's easier to suck it up and install this way).
 - `make`
 - That will set up everything, but you'll need to install the Vim plugins. Load up vim (you'll get some errors the first time, ignore them) and run `:BundleInstall`. Once that's done, restart Vim and you're all set to code.
 
