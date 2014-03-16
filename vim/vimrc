@@ -322,3 +322,4 @@ let g:tex_flavor = "latex"
 "syntastic
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
+let g:syntastic_tex_checkers=['chktex']
