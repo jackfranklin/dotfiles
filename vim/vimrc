@@ -41,6 +41,7 @@ Bundle 'tpope/vim-jdaddy'
 Bundle 'gcmt/wildfire.vim'
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-dispatch'
+Bundle 'scrooloose/syntastic'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -317,3 +318,7 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 
 let g:tex_flavor = "latex"
+
+"syntastic
+let g:syntastic_error_symbol = '✗'
+let g:syntastic_warning_symbol = '⚠'
