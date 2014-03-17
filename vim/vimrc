@@ -247,6 +247,7 @@ map <leader>t :CtrlP<cr>
 map <leader>us :UltiSnipsEdit<CR>
 " cleans up whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
+map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
@@ -267,12 +268,8 @@ nnoremap j gj
 nnoremap gk k
 nnoremap gj j
 
-vnoremap . :norm.<CR>
-" reselect visual block after indent/outdent
-vnoremap < <gv
-vnoremap > >gv
-
 " make it do . in visual mode
+vnoremap . :norm.<CR>
 
 " control P
 let g:ctrlp_custom_ignore = 'node_modules\|DS_Store\|bower_components\'
@@ -291,9 +288,6 @@ nnoremap td  :tabclose<CR>
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
-
-" swap between paste mode or not with ,p
-set pastetoggle=<Leader>p
 
 " ultisnips settings so they don't compete with YCM
 let g:UltiSnipsExpandTrigger="<c-k>"
