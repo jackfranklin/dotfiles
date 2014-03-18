@@ -101,9 +101,10 @@ set expandtab
 set autoindent
 
 set spelllang=en_gb
+syntax spell toplevel
 " set some markdown specific things
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
-autocmd FileType tex setlocal colorcolumn=0
+autocmd FileType tex setlocal colorcolumn=0 wrap lbr linebreak spell
 
 set laststatus=2
 
@@ -143,6 +144,8 @@ set backspace=indent,eol,start
 " Enable highlighting for syntax
 syntax on
 
+syntax spell toplevel
+
 set wildmode=full
 " make tab completion for files/buffers act like bash
 set wildmenu
@@ -159,7 +162,7 @@ set relativenumber
 " pretty colours
 set t_Co=256
 " colorscheme seoul256
-colorscheme flatlandia
+" colorscheme flatlandia
 set background=dark
 
 set list listchars=tab:»·,trail:·
@@ -246,6 +249,7 @@ map <leader>spv <C-w>t<C-w>H<CR>
 map <leader>t :CtrlP<cr>
 map <leader>us :UltiSnipsEdit<CR>
 " cleans up whitespace
+" TODO extract this into FN which sets mark so it jumps back to where you were
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
 
