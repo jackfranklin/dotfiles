@@ -161,8 +161,7 @@ set relativenumber
 
 " pretty colours
 set t_Co=256
-" colorscheme seoul256
-" colorscheme flatlandia
+set term=xterm-256color
 set background=dark
 
 set list listchars=tab:»·,trail:·
@@ -318,3 +317,6 @@ let g:tex_flavor = "latex"
 let g:syntastic_error_symbol = '✗'
 let g:syntastic_warning_symbol = '⚠'
 let g:syntastic_tex_checkers=['chktex']
+let g:syntastic_mode_map={ 'mode': 'active',
+                     \ 'active_filetypes': [],
+                     \ 'passive_filetypes': ['html'] }
