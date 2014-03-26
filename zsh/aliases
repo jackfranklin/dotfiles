@@ -44,6 +44,7 @@ alias gpuh="gpu && gput && gpuhe"
 alias gt="git tag"
 
 # npm
+alias n="node"
 alias ni="npm install"
 alias nis="npm install --save"
 alias nisd="npm install --save-dev"
