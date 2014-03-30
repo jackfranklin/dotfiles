@@ -266,10 +266,11 @@ let g:wildfire_fuel_map = "<SPACE>"
 
 " Make j/k move to next visual line instead of physical line
 " http://yubinkim.com/?p=6
-nnoremap k gk
-nnoremap j gj
-nnoremap gk k
-nnoremap gj j
+" these are not so useful with rel num, so getting rid
+" nnoremap k gk
+" nnoremap j gj
+" nnoremap gk k
+" nnoremap gj j
 
 " make it do . in visual mode
 vnoremap . :norm.<CR>
