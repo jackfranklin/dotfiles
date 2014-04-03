@@ -9,8 +9,6 @@ Bundle 'gmarik/vundle'
 
 " Syntax, colour schemes and the line
 Bundle 'sheerun/vim-polyglot'
-Bundle 'junegunn/seoul256.vim'
-Bundle 'jordwalke/flatlandia'
 
 " Actual Plugins
 Bundle 'tpope/vim-endwise'
@@ -23,25 +21,21 @@ Bundle 'christoomey/vim-tmux-navigator'
 Bundle 'tpope/vim-rbenv'
 Bundle 'tpope/vim-eunuch'
 Bundle 'thoughtbot/vim-rspec'
-Bundle 'junegunn/vim-easy-align'
 Bundle 'editorconfig/editorconfig-vim'
-Bundle 'Yggdroot/indentLine'
 Bundle 'rking/ag.vim'
-Bundle 'osyo-manga/vim-over'
 Bundle 'elixir-lang/vim-elixir'
-Bundle 'vim-scripts/camelcasemotion'
 Bundle 'ervandew/supertab'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'jackfranklin/vim-markdown-writer'
 Bundle 'taq/vim-git-branch-info'
 Bundle 'scrooloose/nerdtree'
 Bundle 'AndrewRadev/splitjoin.vim'
-Bundle 'regedarek/ZoomWin'
-Bundle 'tpope/vim-jdaddy'
-Bundle 'gcmt/wildfire.vim'
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/syntastic'
+
+Bundle 'xolox/vim-misc'
+Bundle 'xolox/vim-easytags'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -193,15 +187,6 @@ let g:easytags_dynamic_files = 2
 
 " ~~~ MAPPINGS BELOW ~~~
 
-" CamelCase, better movement through vars
-" https://github.com/vim-scripts/camelcasemotion
-map <silent> w <Plug>CamelCaseMotion_w
-map <silent> b <Plug>CamelCaseMotion_b
-map <silent> e <Plug>CamelCaseMotion_e
-sunmap w
-sunmap b
-sunmap e
-
 " TODO: make this better, more intelligent
 function! JF_find_private()
   execute "/private"
@@ -214,7 +199,6 @@ function! OpenProjectNotes()
 endfunction
 
 map <leader>bb :!bundle install<cr>
-map <Leader>bg :let &background = ( &background == "dark"? "light" : "dark" )<CR>
 map <leader>cf :CtrlPClearCache<cr>
 map <leader>ct :TagbarToggle<CR>
 map <leader>ctp :TagbarTogglePause<CR>
@@ -262,16 +246,6 @@ map <C-t> <esc>:tabnew<CR>
 map <C-n> <esc>:w<CR>:Make<CR>
 imap <C-n> <esc>:w<CR>:Make<CR>
 
-let g:wildfire_fuel_map = "<SPACE>"
-
-" Make j/k move to next visual line instead of physical line
-" http://yubinkim.com/?p=6
-" these are not so useful with rel num, so getting rid
-" nnoremap k gk
-" nnoremap j gj
-" nnoremap gk k
-" nnoremap gj j
-
 " make it do . in visual mode
 vnoremap . :norm.<CR>
 
@@ -297,7 +271,7 @@ autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
-let g:UltiSnipsSnippetDirectories=["UltiSnips", "snippets"]
+let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
 "This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR><CR>
@@ -321,3 +295,6 @@ let g:syntastic_tex_checkers=['chktex']
 let g:syntastic_mode_map={ 'mode': 'active',
                      \ 'active_filetypes': [],
                      \ 'passive_filetypes': ['html'] }
+
+set omnifunc=syntaxcomplete#Complete
+let g:SuperTabDefaultCompletionType = "context"
