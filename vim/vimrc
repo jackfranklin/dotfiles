@@ -199,11 +199,6 @@ let g:syntastic_mode_map={ 'mode': 'active',
 set omnifunc=syntaxcomplete#Complete
 let g:SuperTabDefaultCompletionType = "context"
 
-au VimEnter * RainbowParenthesesToggle
-au Syntax * RainbowParenthesesLoadRound
-au Syntax * RainbowParenthesesLoadSquare
-au Syntax * RainbowParenthesesLoadBraces
-
 " ~~~ MAPPINGS BELOW ~~~
 
 " TODO: make this better, more intelligent
