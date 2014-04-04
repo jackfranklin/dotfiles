@@ -119,9 +119,6 @@ set timeoutlen=500
 " make searches case-sensitive only if they contain upper-case characters
 set ignorecase smartcase
 
-" Prevent Vim from clobbering the scrollback buffer. See
-" http://www.shallowsky.com/linux/noaltscreen.html
-set t_ti= t_te=
 
 " keep more context when scrolling off the end of a buffer
 set scrolloff=5
@@ -300,3 +297,6 @@ let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 " bind K to grep word under cursor
 nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 
+" Prevent Vim from clobbering the scrollback buffer. See
+" http://www.shallowsky.com/linux/noaltscreen.html
+set t_ti= t_te=
