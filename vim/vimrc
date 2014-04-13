@@ -48,8 +48,6 @@ set statusline+=\ %{GitBranchInfoString()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
 
-set colorcolumn=81
-
 "make vim-rspec play nice with dispatch
 let g:rspec_command = "Dispatch rspec {spec}"
 
