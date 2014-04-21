@@ -189,10 +189,6 @@ let g:syntastic_mode_map={ 'mode': 'active',
                      \ 'active_filetypes': [],
                      \ 'passive_filetypes': ['html'] }
 
-" enable omnifunc and let supertab use it when it can
-set omnifunc=syntaxcomplete#Complete
-let g:SuperTabDefaultCompletionType = "context"
-
 " ~~~ MAPPINGS BELOW ~~~
 
 " TODO: make this better, more intelligent
