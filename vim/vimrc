@@ -33,6 +33,7 @@ Bundle 'tpope/vim-dispatch'
 Bundle 'scrooloose/syntastic'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-easytags'
+Bundle 'terryma/vim-multiple-cursors'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
