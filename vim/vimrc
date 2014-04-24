@@ -23,17 +23,16 @@ Bundle 'thoughtbot/vim-rspec'
 Bundle 'editorconfig/editorconfig-vim'
 Bundle 'rking/ag.vim'
 Bundle 'elixir-lang/vim-elixir'
-Bundle 'ervandew/supertab'
 Bundle 'vim-ruby/vim-ruby'
 Bundle 'jackfranklin/vim-markdown-writer'
 Bundle 'taq/vim-git-branch-info'
 Bundle 'scrooloose/nerdtree'
 Bundle 'tpope/vim-commentary'
 Bundle 'tpope/vim-dispatch'
-Bundle 'scrooloose/syntastic'
 Bundle 'xolox/vim-misc'
 Bundle 'xolox/vim-easytags'
 Bundle 'terryma/vim-multiple-cursors'
+Bundle 'Valloric/YouCompleteMe'
 
 " Enable file type detection. Do this after Vundle calls.
 filetype plugin indent on
@@ -53,6 +52,12 @@ let g:rspec_command = "Dispatch bundle exec rspec {spec}"
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
+
+" YCM settings
+let g:ycm_min_num_of_chars_for_completion = 3
+let g:ycm_collect_identifiers_from_tags_files = 1
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_autoclose_preview_window_after_insertion = 1
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
@@ -175,19 +180,11 @@ let g:indentLine_enabled = 0
 
 " settings for tags and vim-easytags
 set tags=./.tags;
-" 2 = will use ./tags file, or create if it doesn't exist
+" 2 = will use ./.tags file, or create if it doesn't exist
 let g:easytags_dynamic_files = 2
 
 
 let g:tex_flavor = "latex"
-
-"syntastic
-let g:syntastic_error_symbol = '✗'
-let g:syntastic_warning_symbol = '⚠'
-let g:syntastic_tex_checkers=['chktex']
-let g:syntastic_mode_map={ 'mode': 'active',
-                     \ 'active_filetypes': [],
-                     \ 'passive_filetypes': ['html'] }
 
 " ~~~ MAPPINGS BELOW ~~~
 
