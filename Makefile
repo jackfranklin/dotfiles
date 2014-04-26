@@ -34,3 +34,6 @@ node:
 
 ycm:
 	cd ~/.vim/bundle/YouCompleteMe && ./install.sh
+
+tern:
+	cd ~/.vim/bundle/tern_for_vim && npm install
