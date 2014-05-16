@@ -36,6 +36,7 @@ Plugin 'marijnh/tern_for_vim'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'benmills/vimux'
 Plugin 'tpope/vim-projectionist'
+Plugin 'tpope/vim-fugitive'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
@@ -44,6 +45,7 @@ filetype plugin indent on
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
+set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
 
