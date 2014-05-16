@@ -25,7 +25,6 @@ Plugin 'rking/ag.vim'
 Plugin 'elixir-lang/vim-elixir'
 Plugin 'vim-ruby/vim-ruby'
 Plugin 'jackfranklin/vim-markdown-writer'
-Plugin 'taq/vim-git-branch-info'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-dispatch'
@@ -45,10 +44,6 @@ filetype plugin indent on
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
-let g:git_branch_status_text=' Git'
-let g:git_branch_status_head_current=1
-let g:git_branch_status_nogit=""
-set statusline+=\ %{GitBranchInfoString()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
 
