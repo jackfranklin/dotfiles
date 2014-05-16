@@ -1,44 +1,45 @@
 " Vundle needs these things
 set nocompatible
 filetype off
-set rtp+=~/.vim/bundle/vundle/
-call vundle#rc()
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
 
 " Vundle has to manage Vundle.
-Bundle 'gmarik/vundle'
+Plugin 'gmarik/Vundle.vim'
 
 " Syntax, colour schemes and the line
-Bundle 'sheerun/vim-polyglot'
+Plugin 'sheerun/vim-polyglot'
 
 " Actual Plugins
-Bundle 'tpope/vim-endwise'
-Bundle 'tpope/vim-git'
-Bundle 'tpope/vim-surround'
-Bundle 'kien/ctrlp.vim'
-Bundle 'SirVer/ultisnips'
-Bundle 'christoomey/vim-tmux-navigator'
-Bundle 'tpope/vim-rbenv'
-Bundle 'tpope/vim-eunuch'
-Bundle 'thoughtbot/vim-rspec'
-Bundle 'editorconfig/editorconfig-vim'
-Bundle 'rking/ag.vim'
-Bundle 'elixir-lang/vim-elixir'
-Bundle 'vim-ruby/vim-ruby'
-Bundle 'jackfranklin/vim-markdown-writer'
-Bundle 'taq/vim-git-branch-info'
-Bundle 'scrooloose/nerdtree'
-Bundle 'tpope/vim-commentary'
-Bundle 'tpope/vim-dispatch'
-Bundle 'xolox/vim-misc'
-Bundle 'xolox/vim-easytags'
-Bundle 'terryma/vim-multiple-cursors'
-Bundle 'Valloric/YouCompleteMe'
-Bundle 'marijnh/tern_for_vim'
-Bundle 'flazz/vim-colorschemes'
-Bundle 'benmills/vimux'
-Bundle 'tpope/vim-projectionist'
+Plugin 'tpope/vim-endwise'
+Plugin 'tpope/vim-git'
+Plugin 'tpope/vim-surround'
+Plugin 'kien/ctrlp.vim'
+Plugin 'SirVer/ultisnips'
+Plugin 'christoomey/vim-tmux-navigator'
+Plugin 'tpope/vim-rbenv'
+Plugin 'tpope/vim-eunuch'
+Plugin 'thoughtbot/vim-rspec'
+Plugin 'editorconfig/editorconfig-vim'
+Plugin 'rking/ag.vim'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'jackfranklin/vim-markdown-writer'
+Plugin 'taq/vim-git-branch-info'
+Plugin 'scrooloose/nerdtree'
+Plugin 'tpope/vim-commentary'
+Plugin 'tpope/vim-dispatch'
+Plugin 'xolox/vim-misc'
+Plugin 'xolox/vim-easytags'
+Plugin 'terryma/vim-multiple-cursors'
+Plugin 'Valloric/YouCompleteMe'
+Plugin 'marijnh/tern_for_vim'
+Plugin 'flazz/vim-colorschemes'
+Plugin 'benmills/vimux'
+Plugin 'tpope/vim-projectionist'
 
 " Enable file type detection. Do this after Vundle calls.
+call vundle#end()
 filetype plugin indent on
 
 " status bar
