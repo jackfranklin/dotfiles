@@ -149,6 +149,8 @@ set relativenumber
 set t_Co=256
 set term=xterm-256color
 set background=dark
+" highlight the cursor line and don't underscore it
+hi CursorLine   cterm=NONE ctermbg=234 ctermfg=NONE
 
 set list listchars=tab:»·,trail:·
 
