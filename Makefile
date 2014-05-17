@@ -35,8 +35,3 @@ brew: Brewfile
 node:
 	ruby $(DIR)/scripts/npm_bundles.rb
 
-ycm:
-	cd ~/.vim/bundle/YouCompleteMe && ./install.sh
-
-tern:
-	cd ~/.vim/bundle/tern_for_vim && npm install

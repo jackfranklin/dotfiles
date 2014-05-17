@@ -31,8 +31,7 @@ Plugin 'tpope/vim-dispatch'
 Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'terryma/vim-multiple-cursors'
-Plugin 'Valloric/YouCompleteMe'
-Plugin 'marijnh/tern_for_vim'
+Plugin 'ervandew/supertab'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'benmills/vimux'
 Plugin 'tpope/vim-projectionist'
@@ -54,13 +53,6 @@ let g:rspec_command = 'call VimuxRunCommand("clear; bundle exec rspec {spec}")'
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
-
-" YCM settings
-let g:ycm_min_num_of_chars_for_completion = 3
-let g:ycm_collect_identifiers_from_tags_files = 1
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_autoclose_preview_window_after_insertion = 1
-let g:ycm_allow_changing_updatetime = 0
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
@@ -269,7 +261,7 @@ nnoremap td  :tabclose<CR>
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
-" ultisnips settings so they don't compete with YCM
+" ultisnips settings
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
