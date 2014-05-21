@@ -1,7 +1,6 @@
 # lazy
 alias v="vim"
 alias vi="echo use v!!"
-alias jspl="cd Dropbox/Sites/jsplayground-jekyll"
 
 # misc
 alias slrn="slrn -n"
@@ -9,13 +8,6 @@ alias man="LC_ALL=C LANG=C man"
 alias f=finger
 alias ll="ls -al"
 alias ls="ls -G"
-
-# some common folders I like to be in
-alias dropbox="cd ~/Dropbox/"
-alias sites="cd ~/Dropbox/Sites"
-
-# ssh
-alias sshwebfaction="ssh jackfranklin@jackfranklin.webfactional.com"
 
 # bundle and ruby rails stuff
 alias be="bundle exec"
@@ -50,6 +42,7 @@ alias nis="npm install --save"
 alias nisd="npm install --save-dev"
 alias nig="npm install -g"
 alias nl="npm link"
+alias nr="npm run"
 
 # jekyll
 alias js="jekyll --server"
@@ -64,9 +57,10 @@ alias df="cd ~/dotfiles"
 alias srcz="source ~/.zshrc"
 
 # tmux
+alias tls="tmux ls"
 alias td="tmux detach"
 alias tnew="tmux new-session -s "
-alias tattach="tmux attach-session -t "
+alias tatt="tmux attach-session -t "
 
 # thanks to @phuunet for this one
 # https://twitter.com/phuunet/status/339318973634052096
