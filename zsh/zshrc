@@ -1,18 +1,15 @@
-# Colors vary depending on time lapsed.
-ZSH_THEME_GIT_TIME_SINCE_COMMIT_SHORT="%{$fg[green]%}"
-ZSH_THEME_GIT_TIME_SHORT_COMMIT_MEDIUM="%{$fg[yellow]%}"
-ZSH_THEME_GIT_TIME_SINCE_COMMIT_LONG="%{$fg[red]%}"
-ZSH_THEME_GIT_TIME_SINCE_COMMIT_NEUTRAL="%{$fg[cyan]%}"
+# get auto completes going
+autoload -U compinit
+compinit
+bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
-source ~/.zsh/git-prompt/zshrc.sh
+source $HOME/dotfiles/zsh/aliases
+source $HOME/dotfiles/zsh/prompt
+source $HOME/dotfiles/zsh/functions
 
-# an example prompt
 PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-PATH="/Users/jackfranklin/lejos/bin:$PATH"
-
-export NXJ_HOME=/Users/jackfranklin/lejos
-export LEJOS_NXT_JAVA_HOME=/System/Library/Frameworks/JavaVM.framework/Versions/1.6.0/Home
+export PATH="/usr/local/heroku/bin:$PATH"
 
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
@@ -22,67 +19,23 @@ setopt HIST_IGNORE_SPACE
 HOSTNAME="`hostname`"
 PAGER='less'
 
-# set up some colour variables for usage in prompt
-autoload colors zsh/terminfo
-if [[ "$terminfo[colors]" -ge 8 ]]; then
-  colors
-fi
-for color in RED GREEN YELLOW BLUE MAGENTA CYAN WHITE; do
-  eval PR_$color='%{$terminfo[bold]$fg[${(L)color}]%}'
-  eval PR_LIGHT_$color='%{$fg[${(L)color}]%}'
-  (( count = $count + 1 ))
-done
-PR_NO_COLOR="%{$terminfo[sgr0]%}"
-
-get_suspended_jobs() {
-  # thanks to @mheap for his help
-  NUM_JOBS="`jobs | wc -l`"
-  if test $NUM_JOBS -lt 1 ; then
-    echo ""
-  else
-    echo " ("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | sed 's/\[\([^]]*\)\]/\1:/g' | sed 's/\: /\:/g'`")"
-  fi
-}
-
+# set right prompt
 RPS1='$(get_suspended_jobs)'
-# main prompt
-PROMPT='$PR_RED%3c$PR_NO_COLOR$(git_super_status) '
 
 #LANGUAGE
 LC_ALL='en_US.UTF-8'
 # LC_CTYPE=C
 # DISPLAY=:0
 
-
-# load in aliases
-source $HOME/dotfiles/zsh/aliases
-
-# load in some functions
-source $HOME/dotfiles/zsh/functions
-
-
-# get auto completes going
-autoload -U compinit
-compinit
-bindkey '^I' complete-word # complete on tab, leave expansion to _expand
-
-### Added by the Heroku Toolbelt
-export PATH="/usr/local/heroku/bin:$PATH"
-
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
 
-# for the Z plugin https://github.com/rupa/z
-. /usr/local/Cellar/z/1.6/etc/profile.d/z.sh
-
 export EDITOR='vim'
+
 # But still use emacs-style zsh bindings
 bindkey -e
 
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
-
-# for pipe2eval plugin
-export PIP2EVAL_TMP_FILE_PATH=/tmp/shms
 
 # this allows Vim to use C-s as a mapping
 stty -ixon

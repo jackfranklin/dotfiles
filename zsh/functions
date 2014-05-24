@@ -16,3 +16,24 @@ function g {
     git status
   fi
 }
+
+get_suspended_jobs() {
+  # thanks to @mheap for his help
+  NUM_JOBS="`jobs | wc -l`"
+  if test $NUM_JOBS -lt 1 ; then
+    echo ""
+  else
+    echo " ("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | sed 's/\[\([^]]*\)\]/\1:/g' | sed 's/\: /\:/g'`")"
+  fi
+}
+
+# taken from https://github.com/r00k/dotfiles/blob/master/zsh/functions
+function git-new-remote-tracking {
+  git checkout -b $1 && git push -u origin $1
+}
+
+function git-nuke {
+  git branch -D $1 && git push origin :$1
+}
+
+compdef _git git-nuke=git-checkout
