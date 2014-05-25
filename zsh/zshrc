@@ -4,8 +4,8 @@ compinit
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
 source $HOME/dotfiles/zsh/aliases
-source $HOME/dotfiles/zsh/prompt
 source $HOME/dotfiles/zsh/functions
+source $HOME/dotfiles/zsh/prompt
 
 PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
@@ -19,8 +19,6 @@ setopt HIST_IGNORE_SPACE
 HOSTNAME="`hostname`"
 PAGER='less'
 
-# set right prompt
-RPS1='$(get_suspended_jobs)'
 
 #LANGUAGE
 LC_ALL='en_US.UTF-8'

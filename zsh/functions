@@ -23,7 +23,7 @@ get_suspended_jobs() {
   if test $NUM_JOBS -lt 1 ; then
     echo ""
   else
-    echo " ("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | sed 's/\[\([^]]*\)\]/\1:/g' | sed 's/\: /\:/g'`")"
+    echo "("`jobs | sed -r 's/ .*suspended (\(signal\))?//' | tr -s ' ' | sed 's/\[\([^]]*\)\]/\1:/g' | sed 's/\: /\:/g'`")"
   fi
 }
 
