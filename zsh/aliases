@@ -1,11 +1,12 @@
 # lazy
 alias v="vim"
 alias vi="echo use v!!"
+alias f="fg"
+alias l="ls"
 
 # misc
 alias slrn="slrn -n"
 alias man="LC_ALL=C LANG=C man"
-alias f=finger
 alias ll="ls -al"
 alias ls="ls -G"
 
