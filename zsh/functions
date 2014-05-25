@@ -37,3 +37,15 @@ function git-nuke {
 }
 
 compdef _git git-nuke=git-checkout
+
+function git_branch_name {
+  val=`git branch 2>/dev/null | grep '^*' | colrm 1 2`
+  echo "$val"
+}
+
+function git-merge-into {
+  branch=`git_branch_name`
+  git checkout $1
+  git pull origin $1
+  git merge $branch
+}
