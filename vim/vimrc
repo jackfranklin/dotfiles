@@ -199,6 +199,11 @@ function! OpenProjectNotes()
   exec ':vsplit ' . directory . '/' . filename
 endfunction
 
+function! VimuxRake()
+  let cmd = input('Rake command: ')
+  call VimuxRunCommand('bundle exec rake '.cmd)
+endfunction
+
 map <leader>bb :!bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
 map <leader>ct :TagbarToggle<CR>
@@ -221,6 +226,7 @@ map <Leader>rt :call RunCurrentSpecFile()<CR>
 map <Leader>rs :call RunNearestSpec()<CR>
 map <Leader>rl :call RunLastSpec()<CR>
 map <Leader>ra :call RunAllSpecs()<CR>
+map <Leader>rk :call VimuxRake()<CR>
 map <leader>spj :vsplit package.json<cr>
 map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
 nnoremap <leader>sv :source $MYVIMRC<cr>
