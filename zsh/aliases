@@ -13,6 +13,8 @@ alias ls="ls -G"
 # bundle and ruby rails stuff
 alias be="bundle exec"
 alias bi="bundle install"
+alias rk="rake"
+alias ber="bundle exec rake"
 
 # git alises
 alias ga="git add"
