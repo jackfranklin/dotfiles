@@ -151,6 +151,7 @@ set term=xterm-256color
 set background=dark
 
 " highlight the cursor line and don't underscore it
+set cursorline
 hi CursorLine   cterm=NONE ctermbg=234 ctermfg=NONE
 
 " make paren match clearer (stolen from r00k dotfiles!)
