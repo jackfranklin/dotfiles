@@ -53,3 +53,31 @@ module $1
 end
 endsnippet
 
+snippet cont
+context "$1" do
+	$0
+end
+endsnippet
+
+snippet rsh
+require 'spec_helper'
+endsnippet
+
+snippet let
+let(:$1) { $0 }
+endsnippet
+
+snippet let!
+let!(:$1) { $0 }
+endsnippet
+
+snippet ex
+expect($1).to $0
+endsnippet
+
+snippet descf
+describe "$1", :type => :feature do
+	$0
+end
+endsnippet
+
