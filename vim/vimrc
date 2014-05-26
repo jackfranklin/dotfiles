@@ -36,10 +36,14 @@ Plugin 'flazz/vim-colorschemes'
 Plugin 'benmills/vimux'
 Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-fugitive'
+Plugin 'kana/vim-textobj-user'
+Plugin 'nelstrom/vim-textobj-rubyblock'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
 filetype plugin indent on
+
+runtime macros/matchit.vim
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
