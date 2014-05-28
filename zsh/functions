@@ -49,3 +49,12 @@ function git-merge-into {
   git pull origin $1
   git merge $branch
 }
+
+function git-merge-branch-into-current {
+  branch=`git_branch_name`
+  git pull origin $branch
+  git checkout $1
+  git pull origin $1
+  git checkout $branch
+  git merge $1
+}
