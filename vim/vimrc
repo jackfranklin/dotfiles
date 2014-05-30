@@ -141,6 +141,7 @@ set wildmode=full
 set wildmenu
 
 let mapleader=","
+noremap \ ,
 
 " ignore git, npm modules and jekyll _site
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
@@ -211,8 +212,6 @@ endfunction
 
 map <leader>bb :!bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
-map <leader>ct :TagbarToggle<CR>
-map <leader>ctp :TagbarTogglePause<CR>
 map <leader>e :call JF_ExecuteCurrentFile()<CR>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 map <leader>gf :e Gemfile<cr>
@@ -221,7 +220,6 @@ nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
 nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
 nnoremap <leader>ml :call MW_MakeWordLink()<CR>
 map <leader>nt :!npm test<cr>
-nnoremap <Leader>p :set invpaste paste?<CR>
 map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
@@ -238,10 +236,13 @@ nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
 map <leader>sc :setlocal spell!<CR>
 map <leader>sa :call JF_RunAllTests()<CR>
+" if you have 2 splits open, the above toggle them between
+" being vertical and horizontal
 map <leader>sph <C-w>t<C-w>K<CR>
 map <leader>spv <C-w>t<C-w>H<CR>
 map <leader>t :CtrlP<cr>
 map <leader>us :UltiSnipsEdit<CR>
+map <leader>v :vsplit<CR>
 " cleans up whitespace
 " TODO extract this into FN which sets mark so it jumps back to where you were
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
