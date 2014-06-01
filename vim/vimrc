@@ -151,8 +151,8 @@ set number
 set relativenumber
 
 " pretty colours
-set t_Co=256
-set term=xterm-256color
+" set t_Co=256
+" set term=xterm-256color
 color base16-railscasts
 set background=dark
 
