@@ -153,11 +153,11 @@ set relativenumber
 " pretty colours
 set t_Co=256
 set term=xterm-256color
+color base16-railscasts
 set background=dark
 
 " highlight the cursor line and don't underscore it
 set cursorline
-hi CursorLine   cterm=NONE ctermbg=234 ctermfg=NONE
 
 " make paren match clearer (stolen from r00k dotfiles!)
 hi MatchParen cterm=none ctermbg=black ctermfg=yellow
