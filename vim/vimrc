@@ -75,7 +75,7 @@ set gdefault
 " fix slight delay after pressing ESC then O
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
-set timeout timeoutlen=1000 ttimeoutlen=100
+set timeout timeoutlen=500 ttimeoutlen=100
 
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
@@ -123,10 +123,6 @@ set nofoldenable
 set showmatch
 set incsearch
 set hlsearch
-
-" Don't wait so long for the next keypress (particularly in ambigious Leader
-" situations. (via @r00k dotfiles)
-set timeoutlen=500
 
 " make searches case-sensitive only if they contain upper-case characters
 set ignorecase smartcase
@@ -188,7 +184,6 @@ set splitright
 " set up the mouse
 " I know, mouse is bad, but this is useful purely for resizing splits visually
 " http://usevim.com/2012/05/16/mouse/
-set ttyfast
 set mouse=a
 set ttymouse=xterm2
 
