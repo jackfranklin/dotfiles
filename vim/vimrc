@@ -7,12 +7,19 @@ call vundle#begin()
 " Vundle has to manage Vundle.
 Plugin 'gmarik/Vundle.vim'
 
-" Syntax, colour schemes and the line
-Plugin 'sheerun/vim-polyglot'
+" Syntax
+Plugin 'tpope/vim-git'
+Plugin 'vim-ruby/vim-ruby'
+Plugin 'elixir-lang/vim-elixir'
+Plugin 'jelera/vim-javascript-syntax'
+Plugin 'moll/vim-node'
+Plugin 'pangloss/vim-javascript'
+
+" Colour
+Plugin 'flazz/vim-colorschemes'
 
 " Actual Plugins
 Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-git'
 Plugin 'tpope/vim-surround'
 Plugin 'kien/ctrlp.vim'
 Plugin 'SirVer/ultisnips'
@@ -22,8 +29,6 @@ Plugin 'tpope/vim-eunuch'
 Plugin 'thoughtbot/vim-rspec'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'vim-ruby/vim-ruby'
 Plugin 'jackfranklin/vim-markdown-writer'
 Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-commentary'
@@ -32,7 +37,6 @@ Plugin 'xolox/vim-misc'
 Plugin 'xolox/vim-easytags'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'ervandew/supertab'
-Plugin 'flazz/vim-colorschemes'
 Plugin 'benmills/vimux'
 Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-fugitive'
