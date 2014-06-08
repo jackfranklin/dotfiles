@@ -60,3 +60,8 @@ function git-merge-branch-into-current {
   git checkout $branch
   git merge $1
 }
+
+function git-checkout-remote-branch {
+  git fetch
+  git checkout -b $1 "origin/$1"
+}
