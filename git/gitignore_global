@@ -8,3 +8,5 @@ node_modules/
 *.class
 *.jar
 npm-debug.log
+_site/
+.sass-cache/
