@@ -42,3 +42,6 @@ stty -ixon
 # http://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
 setopt auto_cd
 cdpath=($HOME/git $HOME/Dropbox $HOME/git/fyp $HOME/Dropbox/Sites)
+
+export NVM_DIR="/Users/jackfranklin/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
