@@ -65,3 +65,7 @@ function git-checkout-remote-branch {
   git fetch
   git checkout -b $1 "origin/$1"
 }
+
+function new-tmux-from-dir-name {
+  tmux new-session -As `basename $PWD`
+}
