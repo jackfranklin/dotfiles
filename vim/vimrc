@@ -21,6 +21,8 @@ Plugin 'chrisbra/csv.vim'
 Plugin 'leshill/vim-json'
 Plugin 'tpope/vim-markdown'
 Plugin 'andersoncustodio/vim-tmux'
+Plugin '1995eaton/vim-better-css-completion'
+Plugin '1995eaton/vim-better-javascript-completion'
 
 " Colour
 Plugin 'flazz/vim-colorschemes'
