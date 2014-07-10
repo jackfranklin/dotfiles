@@ -51,6 +51,7 @@ Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-fugitive'
 Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
+Plugin 'mattn/emmet-vim'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
