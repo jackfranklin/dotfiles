@@ -228,7 +228,7 @@ nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
 nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
 nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
 nnoremap <leader>ml :call MW_MakeWordLink()<CR>
-map <leader>nt :!npm test<cr>
+map <leader>nt :call VimuxRunCommand("clear; npm test")<CR>
 map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
