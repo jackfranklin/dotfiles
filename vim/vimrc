@@ -108,11 +108,30 @@ set softtabstop=2
 set expandtab
 set autoindent
 
+" word count, taken from
+" http://stackoverflow.com/questions/114431/fast-word-count-function-in-vim
+function! WordCount()
+  let s:old_status = v:statusmsg
+  let position = getpos(".")
+  exe ":silent normal g\<c-g>"
+  let stat = v:statusmsg
+  let s:word_count = 0
+  if stat != '--No lines in buffer--'
+    let s:word_count = str2nr(split(v:statusmsg)[11])
+    let v:statusmsg = s:old_status
+  end
+  call setpos('.', position)
+  return s:word_count
+endfunction
+
 set spelllang=en_gb
 syntax spell toplevel
+
 " set some markdown specific things
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
+autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
 autocmd FileType tex setlocal colorcolumn=0 wrap lbr linebreak spell
+
 
 set laststatus=2
 

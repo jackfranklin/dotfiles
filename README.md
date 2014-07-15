@@ -11,7 +11,6 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ~/dotfiles/git/gitignore_global => ~/.gitignore_global
 ...and so on
 ```
-
 # Installing
 
 - Swap your shell to ZSH (System Prefs -> Users -> Right Click on 'Advanced Settings' -> select ZSH from dropdown).
