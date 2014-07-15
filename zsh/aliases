@@ -40,6 +40,9 @@ alias gpuh="gpu && gput && gpuhe"
 alias gpl="git pull"
 alias gt="git tag"
 alias gnrt="git-new-remote-tracking"
+alias hpr="hub pull-request"
+alias gmbic="git-merge-branch-into-current"
+alias gmi="git-merge-into"
 
 # npm
 alias n="node"
