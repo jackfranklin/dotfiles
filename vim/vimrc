@@ -277,6 +277,7 @@ map <leader>v :vsplit<CR>
 " TODO extract this into FN which sets mark so it jumps back to where you were
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
+map <leader>x :VimuxPromptCommand<CR>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
