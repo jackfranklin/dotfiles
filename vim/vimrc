@@ -240,15 +240,16 @@ function! VimuxRake()
   call VimuxRunCommand('bundle exec rake '.cmd)
 endfunction
 
+
 map <leader>bb :!bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
-map <leader>e :call JF_ExecuteCurrentFile()<CR>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 map <leader>gf :e Gemfile<cr>
 nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
 nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
 nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
 nnoremap <leader>ml :call MW_MakeWordLink()<CR>
+map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>nt :call VimuxRunCommand("clear; npm test")<CR>
 map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
