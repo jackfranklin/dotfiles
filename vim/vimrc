@@ -219,6 +219,7 @@ let g:indentLine_enabled = 0
 set tags=./.tags;
 " 2 = will use ./.tags file, or create if it doesn't exist
 let g:easytags_dynamic_files = 2
+let g:easytags_async = 1
 
 
 let g:tex_flavor = "latex"
