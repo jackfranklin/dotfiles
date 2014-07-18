@@ -48,3 +48,6 @@ export NVM_DIR="/Users/jackfranklin/.nvm"
 
 # added by travis gem
 [ -f /Users/jackfranklin/.travis/travis.sh ] && source /Users/jackfranklin/.travis/travis.sh
+
+# this has to be done after rbenv is inited
+export PATH="./.bundle/bin:$PATH"

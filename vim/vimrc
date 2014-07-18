@@ -69,7 +69,7 @@ set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
 
 "make vim-rspec play nice with tslime
-let g:rspec_command = 'call VimuxRunCommand("clear; bundle exec rspec {spec}")'
+let g:rspec_command = 'call VimuxRunCommand("clear; rspec {spec}")'
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
@@ -237,7 +237,7 @@ endfunction
 
 function! VimuxRake()
   let cmd = input('Rake command: ')
-  call VimuxRunCommand('bundle exec rake '.cmd)
+  call VimuxRunCommand('rake '.cmd)
 endfunction
 
 
