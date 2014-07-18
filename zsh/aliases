@@ -12,10 +12,8 @@ alias ls="ls -G"
 
 # bundle and ruby rails stuff
 alias be="bundle exec"
-alias bi="bundle install --binstubs .bundle/bin"
-alias binb="bundle install"
+alias bi="bundle install"
 alias rk="rake"
-alias ber="bundle exec rake"
 
 # git alises
 alias ga="git add"
@@ -53,6 +51,7 @@ alias nisd="npm install --save-dev"
 alias nig="npm install -g"
 alias nl="npm link"
 alias nr="npm run"
+alias nt="npm test"
 
 # jekyll
 alias js="jekyll --server"

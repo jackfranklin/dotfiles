@@ -54,6 +54,7 @@ Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'mattn/emmet-vim'
 Plugin 'ahw/vim-pbcopy'
 Plugin 'wellle/tmux-complete.vim'
+Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()

@@ -16,6 +16,7 @@ symlinks:
 	@ln -sf $(DIR)/ctags/ctags ~/.ctags
 	@ln -sf $(DIR)/gem/gemrc ~/.gemrc
 	@ln -sf $(DIR)/task/taskrc ~/.taskrc
+	@ln -nsf $(DIR)/bundle ~/.bundle
 
 ensure_brew:
 	ruby $(DIR)/scripts/ensure_homebrew.rb
