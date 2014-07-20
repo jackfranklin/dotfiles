@@ -243,6 +243,10 @@ function! VimuxRake()
 endfunction
 
 
+"gtfo ex mode
+map Q <Nop>
+
+
 map <leader>bb :!bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
