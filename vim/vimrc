@@ -43,7 +43,6 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-dispatch'
 Plugin 'xolox/vim-misc'
-Plugin 'xolox/vim-easytags'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'ervandew/supertab'
 Plugin 'benmills/vimux'
@@ -215,12 +214,8 @@ set ttymouse=xterm2
 " turn indentline off by default
 let g:indentLine_enabled = 0
 
-" settings for tags and vim-easytags
+" settings for tags
 set tags=./.tags;
-" 2 = will use ./.tags file, or create if it doesn't exist
-let g:easytags_dynamic_files = 2
-let g:easytags_async = 1
-
 
 let g:tex_flavor = "latex"
 
