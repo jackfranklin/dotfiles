@@ -69,3 +69,7 @@ function git-checkout-remote-branch {
 function new-tmux-from-dir-name {
   tmux new-session -As `basename $PWD`
 }
+
+function mkv-to-mp4 {
+  ffmpeg -i $1 -c:v copy -c:a copy $2
+}
