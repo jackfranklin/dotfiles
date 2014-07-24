@@ -55,6 +55,7 @@ Plugin 'ahw/vim-pbcopy'
 Plugin 'wellle/tmux-complete.vim'
 Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 Plugin 'tpope/vim-ragtag'
+Plugin 'wikitopian/hardmode'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
