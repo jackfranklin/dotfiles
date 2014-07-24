@@ -55,7 +55,7 @@ Plugin 'ahw/vim-pbcopy'
 Plugin 'wellle/tmux-complete.vim'
 Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 Plugin 'tpope/vim-ragtag'
-Plugin 'wikitopian/hardmode'
+Plugin 'takac/vim-hardtime'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
@@ -69,6 +69,8 @@ set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
+
+let g:hardtime_default_on = 1
 
 "make vim-rspec play nice with tslime
 let g:rspec_command = 'call VimuxRunCommand("clear; rspec {spec}")'
@@ -248,6 +250,7 @@ map <leader>bb :!bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 map <leader>gf :e Gemfile<cr>
+nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
 nnoremap <leader>mt :call MW_MakeTwitterReferenceLink()<CR>
 nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
 nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
