@@ -144,9 +144,6 @@ set laststatus=2
 " break properly, don't split words
 set linebreak
 
-" no folds
-set nofoldenable
-
 " show search matches as I type
 set showmatch
 set incsearch
