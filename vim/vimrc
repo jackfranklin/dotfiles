@@ -56,6 +56,8 @@ Plugin 'wellle/tmux-complete.vim'
 Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 Plugin 'tpope/vim-ragtag'
 Plugin 'takac/vim-hardtime'
+Plugin 'tommcdo/vim-exchange'
+Plugin 'AndrewRadev/switch.vim'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
@@ -241,6 +243,8 @@ endfunction
 
 "gtfo ex mode
 map Q <Nop>
+
+nnoremap - :Switch<cr>
 
 
 map <leader>bb :!bundle install<cr>
