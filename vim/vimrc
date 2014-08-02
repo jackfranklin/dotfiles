@@ -193,6 +193,7 @@ set relativenumber
 " set background=dark
 color github
 hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
+hi Visual   cterm=NONE ctermbg=254 ctermfg=NONE
 
 " highlight the cursor line and don't underscore it
 set cursorline
