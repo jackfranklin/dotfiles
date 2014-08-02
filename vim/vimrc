@@ -189,8 +189,10 @@ set relativenumber
 " pretty colours
 " set t_Co=256
 " set term=xterm-256color
-color base16-railscasts
-set background=dark
+" color base16-railscasts
+" set background=dark
+color github
+hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
 
 " highlight the cursor line and don't underscore it
 set cursorline
