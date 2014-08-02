@@ -23,6 +23,7 @@ Plugin 'tpope/vim-markdown'
 Plugin 'andersoncustodio/vim-tmux'
 Plugin '1995eaton/vim-better-css-completion'
 Plugin '1995eaton/vim-better-javascript-completion'
+Plugin 'mustache/vim-mustache-handlebars'
 
 " Colour
 Plugin 'flazz/vim-colorschemes'
