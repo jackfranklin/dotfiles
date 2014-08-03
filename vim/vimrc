@@ -28,6 +28,8 @@ Plugin 'tpope/vim-cucumber'
 
 " Colour
 Plugin 'flazz/vim-colorschemes'
+Plugin 'john2x/flatui.vim'
+Plugin 'altercation/vim-colors-solarized'
 
 " Actual Plugins
 Plugin 'tpope/vim-endwise'
@@ -192,9 +194,18 @@ set relativenumber
 " set term=xterm-256color
 " color base16-railscasts
 " set background=dark
-color github
-hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
-hi Visual   cterm=NONE ctermbg=254 ctermfg=NONE
+
+" used with default iTerm 2 light theme
+" colorscheme flatui
+
+" for using the Solarized light theme
+set background=light
+colorscheme solarized
+
+" for using the GitHub iTerm theme, uncomment the 3 lines below
+" color github
+" hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
+" hi Visual   cterm=NONE ctermbg=254 ctermfg=NONE
 
 " highlight the cursor line and don't underscore it
 set cursorline
