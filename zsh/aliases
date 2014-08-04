@@ -71,6 +71,8 @@ alias td="tmux detach"
 alias tnew="new-tmux-from-dir-name"
 alias tatt="tmux attach-session -t "
 
+# rails
+alias rup="(bundle check || bundle install) && rake db:migrate db:test:prepare"
 # thanks to @phuunet for this one
 # https://twitter.com/phuunet/status/339318973634052096
 alias topcmds='cat ~/.zhistory | cut -d ";" -f 2 | sed "s, .*,," | sort | uniq -c | sort -n | tail -rn 30'

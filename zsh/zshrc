@@ -51,3 +51,6 @@ export NVM_DIR="/Users/jackfranklin/.nvm"
 
 # this has to be done after rbenv is inited
 export PATH="./.bundle/binstubs:$PATH"
+
+# for elastic search
+export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
