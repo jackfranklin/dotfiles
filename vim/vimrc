@@ -62,6 +62,7 @@ Plugin 'takac/vim-hardtime'
 Plugin 'tommcdo/vim-exchange'
 Plugin 'AndrewRadev/switch.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
+Plugin 'tpope/vim-rails'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
