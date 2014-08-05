@@ -13,7 +13,8 @@ npms = {
   "grunt-cli" => "grunt",
   "express" => "",
   "nodemon" => "",
-  "mocha" => ""
+  "mocha" => "",
+  "gulp" => ""
 }
 
 npms.each do |mod, command|
