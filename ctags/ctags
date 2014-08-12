@@ -1,3 +1,4 @@
+-f .tags
 -R
 --fields=+l
 --exclude=.svn

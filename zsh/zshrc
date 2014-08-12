@@ -9,7 +9,6 @@ source $HOME/dotfiles/zsh/prompt
 
 PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
 PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-export PATH="/usr/local/heroku/bin:$PATH"
 
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
@@ -58,3 +57,6 @@ export PATH="./bin:$PATH"
 
 # for elastic search
 export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+
+### Added by the Heroku Toolbelt
+export PATH="/usr/local/heroku/bin:$PATH"
