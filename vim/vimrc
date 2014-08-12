@@ -96,6 +96,10 @@ set timeout timeoutlen=500 ttimeoutlen=100
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
 
+" folding
+nnoremap <Space> za
+set foldmethod=indent
+
 " taken from https://github.com/dduponchel/dotfiles/blob/master/vim/vimrc
 " Indicates a fast terminal connection.  More characters will be sent to
 " the screen for redrawing, instead of using insert/delete line
