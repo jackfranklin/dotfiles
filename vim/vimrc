@@ -57,7 +57,6 @@ Plugin 'ahw/vim-pbcopy'
 Plugin 'wellle/tmux-complete.vim'
 Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 Plugin 'tpope/vim-ragtag'
-Plugin 'takac/vim-hardtime'
 Plugin 'tommcdo/vim-exchange'
 Plugin 'AndrewRadev/switch.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
@@ -75,8 +74,6 @@ set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and column number
-
-let g:hardtime_default_on = 1
 
 "make vim-rspec play nice with tslime
 let g:rspec_command = 'call VimuxRunCommand("clear; rspec {spec}")'
