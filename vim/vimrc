@@ -62,6 +62,7 @@ Plugin 'AndrewRadev/switch.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-rails'
 Plugin 'wellle/targets.vim'
+Plugin 'chrisbra/NrrwRgn'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()

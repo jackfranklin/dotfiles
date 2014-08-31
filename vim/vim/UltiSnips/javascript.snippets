@@ -4,9 +4,8 @@ var $1 = function($2) {
 }
 endsnippet
 
-snippet clog
-console.log($1);
-$0
+snippet cl
+console.log($1);$0
 endsnippet
 
 snippet clogargs
@@ -44,4 +43,12 @@ endsnippet
 
 snippet shebang
 #!/usr/bin/env node
+endsnippet
+
+snippet $inj
+$1 = $injector.get('${2:$1}');$0
+endsnippet
+
+snippet exp
+expect($1).$0
 endsnippet
