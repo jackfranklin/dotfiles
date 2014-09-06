@@ -73,3 +73,9 @@ function new-tmux-from-dir-name {
 function mkv-to-mp4 {
   ffmpeg -i $1 -c:v copy -c:a copy $2
 }
+
+function rbenv_prompt_info() {
+  local ruby_version
+  ruby_version=$(rbenv version 2> /dev/null) || return
+  echo "‹$ruby_version" | sed 's/[ \t].*$/›/'
+}
