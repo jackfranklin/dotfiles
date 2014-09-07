@@ -79,3 +79,9 @@ function rbenv_prompt_info() {
   ruby_version=$(rbenv version 2> /dev/null) || return
   echo "‹$ruby_version" | sed 's/[ \t].*$/›/'
 }
+
+function nvm_prompt_info() {
+  local node_version
+  node_version=$(nvm current 2> /dev/null) || return
+  echo "‹$node_version›"
+}
