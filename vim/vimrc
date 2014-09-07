@@ -25,6 +25,7 @@ Plugin '1995eaton/vim-better-css-completion'
 Plugin '1995eaton/vim-better-javascript-completion'
 Plugin 'mustache/vim-mustache-handlebars'
 Plugin 'tpope/vim-cucumber'
+Plugin 'mxw/vim-jsx'
 
 " Colour
 Plugin 'flazz/vim-colorschemes'
