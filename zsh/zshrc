@@ -1,6 +1,9 @@
+fpath=(~/dotfiles/zsh/completion $fpath)
+
 # get auto completes going
 autoload -U compinit
 compinit
+
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
 
 source $HOME/dotfiles/zsh/aliases
