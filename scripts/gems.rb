@@ -7,6 +7,7 @@ gems = %w{
   jekyll
   shotgun
   travis
+  tmuxinator
 }
 
 gems.each do |gem|
