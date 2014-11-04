@@ -60,7 +60,6 @@ Plugin 'wellle/tmux-complete.vim'
 Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 Plugin 'tpope/vim-ragtag'
 Plugin 'tommcdo/vim-exchange'
-Plugin 'AndrewRadev/switch.vim'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-rails'
 Plugin 'wellle/targets.vim'
@@ -265,9 +264,6 @@ endfunction
 
 "gtfo ex mode
 map Q <Nop>
-
-nnoremap - :Switch<cr>
-
 
 map <leader>bb :!bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
