@@ -235,6 +235,11 @@ set splitright
 set mouse=a
 set ttymouse=xterm2
 
+" per project vimrc
+" http://andrew.stwrt.ca/posts/project-specific-vimrc
+set exrc
+set secure
+
 " turn indentline off by default
 let g:indentLine_enabled = 0
 
