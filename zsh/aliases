@@ -43,6 +43,7 @@ alias hpr="hub pull-request"
 alias hb="hub browse"
 alias gmbic="git-merge-branch-into-current"
 alias gmi="git-merge-into"
+alias gca="git commit --amend"
 
 # npm
 alias n="node"
