@@ -13,6 +13,7 @@
   fa = fetch --all
   pom = push origin master
   b = branch
+  ignored = !git ls-files -v | grep "^[[:lower:]]"
 [push]
 	default = simple
 [color]
