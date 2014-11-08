@@ -384,6 +384,9 @@ vnoremap L g_
 " continue happily on your way:
 inoremap <C-u> <esc>mzgUiw`za
 
+" dont need the default ctrlp
+let g:ctrlp_map = ''
+
 " http://stackoverflow.com/questions/11042920/how-to-copy-and-paste-between-different-tmux-panes-running-vim-instances
 " copy to buffer
 vmap <C-c> :w! ~/.vimbuffer<CR>
