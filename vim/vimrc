@@ -383,3 +383,10 @@ vnoremap L g_
 " cursor is at the end of the word, press <c-u> to uppercase it, and then
 " continue happily on your way:
 inoremap <C-u> <esc>mzgUiw`za
+
+" http://stackoverflow.com/questions/11042920/how-to-copy-and-paste-between-different-tmux-panes-running-vim-instances
+" copy to buffer
+vmap <C-c> :w! ~/.vimbuffer<CR>
+nmap <C-c> :.w! ~/.vimbuffer<CR>
+" paste from buffer
+map <C-p> :r ~/.vimbuffer<CR>
