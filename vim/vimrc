@@ -63,7 +63,7 @@ Plugin 'tommcdo/vim-exchange'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-rails'
 Plugin 'wellle/targets.vim'
-Plugin 'Konfekt/FastFold'
+Plugin 'tpope/vim-unimpaired'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
