@@ -76,7 +76,7 @@ set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
-set statusline+=\ [%l\/%L] "line number and column number
+set statusline+=\ [%l\/%L] "line number and total line number
 
 "make vim-rspec play nice with tslime
 let g:rspec_command = 'call VimuxRunCommand("clear; rspec {spec}")'
