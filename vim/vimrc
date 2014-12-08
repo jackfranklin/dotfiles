@@ -28,6 +28,16 @@ Plugin 'tpope/vim-cucumber'
 Plugin 'mxw/vim-jsx'
 Plugin 'digitaltoad/vim-jade'
 
+"Clojure plugins from Jamie
+Plugin 'guns/vim-sexp'
+Plugin 'tpope/vim-sexp-mappings-for-regular-people'
+Plugin 'tpope/vim-leiningen'
+Plugin 'tpope/vim-classpath'
+Plugin 'tpope/vim-fireplace'
+Plugin 'guns/vim-clojure-static'
+Plugin 'guns/vim-clojure-highlight'
+Plugin 'luochen1990/rainbow'
+
 " Colour
 Plugin 'flazz/vim-colorschemes'
 Plugin 'john2x/flatui.vim'
@@ -49,7 +59,6 @@ Plugin 'tpope/vim-commentary'
 Plugin 'tpope/vim-dispatch'
 Plugin 'xolox/vim-misc'
 Plugin 'ervandew/supertab'
-Plugin 'benmills/vimux'
 Plugin 'tpope/vim-projectionist'
 Plugin 'tpope/vim-fugitive'
 Plugin 'kana/vim-textobj-user'
@@ -78,8 +87,8 @@ set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and total line number
 
-"make vim-rspec play nice with tslime
-let g:rspec_command = 'call VimuxRunCommand("clear; rspec {spec}")'
+"make vim-rspec play nice with Dispatch
+let g:rspec_command = "Dispatch rspec {spec}"
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
@@ -261,11 +270,6 @@ function! OpenProjectNotes()
   exec ':vsplit ' . directory . '/' . filename
 endfunction
 
-function! VimuxRake()
-  let cmd = input('Rake command: ')
-  call VimuxRunCommand('rake '.cmd)
-endfunction
-
 
 "gtfo ex mode
 map Q <Nop>
@@ -280,7 +284,6 @@ nnoremap <leader>mfi :call MW_ConvertFencedToIndent()<CR>
 nnoremap <leader>my :call MW_YamlFrontMatter()<CR>
 nnoremap <leader>ml :call MW_MakeWordLink()<CR>
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>nt :call VimuxRunCommand("clear; npm test")<CR>
 map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
@@ -290,7 +293,6 @@ map <Leader>rt :call RunCurrentSpecFile()<CR>
 map <Leader>rs :call RunNearestSpec()<CR>
 map <Leader>rl :call RunLastSpec()<CR>
 map <Leader>ra :call RunAllSpecs()<CR>
-map <Leader>rk :call VimuxRake()<CR>
 map <leader>spj :vsplit package.json<cr>
 map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
 nnoremap <leader>sv :source $MYVIMRC<cr>
@@ -308,7 +310,6 @@ map <leader>v :vsplit<CR>
 " TODO extract this into FN which sets mark so it jumps back to where you were
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
-map <leader>x :VimuxPromptCommand<CR>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
@@ -358,7 +359,7 @@ set grepprg=ag\ --nogroup\ --nocolor
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " bind K to grep word under cursor
-nnoremap K :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
+nnoremap <C-k> :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
@@ -393,3 +394,5 @@ vmap <C-c> :w! ~/.vimbuffer<CR>
 nmap <C-c> :.w! ~/.vimbuffer<CR>
 " paste from buffer
 map <C-p> :r ~/.vimbuffer<CR>
+
+map <leader>jamie :!ruby -e "require 'json'; puts JSON.pretty_generate(instance_eval(STDIN.read))"<CR>

@@ -45,6 +45,7 @@ alias gmbic="git-merge-branch-into-current"
 alias gmi="git-merge-into"
 alias gca="git commit --amend"
 alias gcan="git commit --amend --no-edit"
+alias gsp="git stash pop"
 
 # npm
 alias n="node"
