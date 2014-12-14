@@ -70,6 +70,7 @@ Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/syntastic'
+Plugin 'gorkunov/smartpairs.vim'
 Plugin 'davidpdrsn/vim-spectacular'
 
 " Enable file type detection. Do this after Vundle calls.
