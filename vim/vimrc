@@ -51,7 +51,6 @@ Plugin 'SirVer/ultisnips'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'tpope/vim-rbenv'
 Plugin 'tpope/vim-eunuch'
-Plugin 'thoughtbot/vim-rspec'
 Plugin 'editorconfig/editorconfig-vim'
 Plugin 'rking/ag.vim'
 Plugin 'jackfranklin/vim-markdown-writer'
@@ -71,6 +70,7 @@ Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/syntastic'
+Plugin 'davidpdrsn/vim-spectacular'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
@@ -85,8 +85,13 @@ set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and total line number
 
-"make vim-rspec play nice with Dispatch
-let g:rspec_command = "Dispatch rspec {spec}"
+let g:spectacular_integrate_with_dispatch = 1
+call spectacular#add_test_runner('ruby', 'rspec {spec}', '_spec')
+call spectacular#add_test_runner('javascript', 'karma run', '.spec.js')
+call spectacular#add_test_runner('javascript', 'npm test', '')
+" spectacular config
+" can pass functions which can be used to do custom validations
+" call spectacular#add_test_runner('ruby, javascript, coffee, eruby', 'bin/rspec {spec}', '_spec.rb', function("InRailsApp"), function("TestsRequireRails"))
 
 " passive = does not run on save
 let g:syntastic_mode_map = { "mode": "passive",
@@ -277,7 +282,7 @@ endfunction
 "gtfo ex mode
 map Q <Nop>
 
-map <leader>bb :!bundle install<cr>
+map <leader>bb :Dispatch bundle install<cr>
 map <leader>cf :CtrlPClearCache<cr>
 nnoremap <leader>ev :vsplit $MYVIMRC<cr>
 map <leader>gf :e Gemfile<cr>
@@ -291,17 +296,13 @@ map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
+map <leader>e :call spectacular#run_tests()<cr>
 map <Leader>rn :Rename
-map <Leader>rt :call RunCurrentSpecFile()<CR>
-map <Leader>rs :call RunNearestSpec()<CR>
-map <Leader>rl :call RunLastSpec()<CR>
-map <Leader>ra :call RunAllSpecs()<CR>
 map <leader>spj :vsplit package.json<cr>
 map <leader>s :SyntasticCheck<CR>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
 map <leader>sc :setlocal spell!<CR>
-map <leader>sa :call JF_RunAllTests()<CR>
 " if you have 2 splits open, the above toggle them between
 " being vertical and horizontal
 map <leader>sph <C-w>t<C-w>K<CR>
