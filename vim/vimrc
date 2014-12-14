@@ -65,14 +65,12 @@ Plugin 'kana/vim-textobj-user'
 Plugin 'nelstrom/vim-textobj-rubyblock'
 Plugin 'mattn/emmet-vim'
 Plugin 'ahw/vim-pbcopy'
-Plugin 'wellle/tmux-complete.vim'
 Plugin 'file:///Users/jackfranklin/git/codecube.vim'
 Plugin 'tpope/vim-ragtag'
-Plugin 'tommcdo/vim-exchange'
 Plugin 'AndrewRadev/splitjoin.vim'
 Plugin 'tpope/vim-rails'
-Plugin 'wellle/targets.vim'
 Plugin 'tpope/vim-unimpaired'
+Plugin 'scrooloose/syntastic'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
@@ -89,6 +87,11 @@ set statusline+=\ [%l\/%L] "line number and total line number
 
 "make vim-rspec play nice with Dispatch
 let g:rspec_command = "Dispatch rspec {spec}"
+
+" passive = does not run on save
+let g:syntastic_mode_map = { "mode": "passive",
+                           \ "active_filetypes": [],
+                           \ "passive_filetypes": [] }
 
 " auto load files if vim detects they have been changed outside of Vim
 set autoread
@@ -294,7 +297,7 @@ map <Leader>rs :call RunNearestSpec()<CR>
 map <Leader>rl :call RunLastSpec()<CR>
 map <Leader>ra :call RunAllSpecs()<CR>
 map <leader>spj :vsplit package.json<cr>
-map <leader>s :call JF_ExecuteRelevantTestFile()<CR>
+map <leader>s :SyntasticCheck<CR>
 nnoremap <leader>sv :source $MYVIMRC<cr>
 nnoremap <leader>sp :vsplit ~/dotfiles/scratchpad<cr>
 map <leader>sc :setlocal spell!<CR>
