@@ -72,6 +72,7 @@ Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/syntastic'
 Plugin 'gorkunov/smartpairs.vim'
 Plugin 'davidpdrsn/vim-spectacular'
+Plugin 'thinca/vim-visualstar'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
