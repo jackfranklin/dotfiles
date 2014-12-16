@@ -88,9 +88,11 @@ set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and total line number
 
 let g:spectacular_integrate_with_dispatch = 1
-call spectacular#add_test_runner('ruby', 'rspec {spec}', '_spec')
+call spectacular#add_test_runner('ruby', 'rspec {spec}', '_spec.rb')
+call spectacular#add_test_runner('ruby', 'rspec {spec}:{line-number}', '_spec.rb')
 call spectacular#add_test_runner('javascript', 'karma run', '.spec.js')
 call spectacular#add_test_runner('javascript', 'npm test', '.js')
+
 " spectacular config
 " can pass functions which can be used to do custom validations
 " call spectacular#add_test_runner('ruby, javascript, coffee, eruby', 'bin/rspec {spec}', '_spec.rb', function("InRailsApp"), function("TestsRequireRails"))
@@ -299,6 +301,7 @@ map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
 map <leader>e :call spectacular#run_tests()<cr>
+map <leader>l :call spectacular#run_tests_with_current_line()<cr>
 map <Leader>rn :Rename
 map <leader>spj :vsplit package.json<cr>
 map <leader>s :SyntasticCheck<CR>
