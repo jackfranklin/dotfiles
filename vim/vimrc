@@ -71,7 +71,7 @@ Plugin 'tpope/vim-rails'
 Plugin 'tpope/vim-unimpaired'
 Plugin 'scrooloose/syntastic'
 Plugin 'gorkunov/smartpairs.vim'
-Plugin 'davidpdrsn/vim-spectacular'
+Plugin 'janko-m/vim-test'
 Plugin 'thinca/vim-visualstar'
 
 " Enable file type detection. Do this after Vundle calls.
@@ -87,15 +87,9 @@ set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and total line number
 
-let g:spectacular_integrate_with_dispatch = 1
-call spectacular#add_test_runner('ruby', 'rspec {spec}', '_spec.rb')
-call spectacular#add_test_runner('ruby', 'rspec {spec}:{line-number}', '_spec.rb')
-call spectacular#add_test_runner('javascript', 'karma run', '.spec.js')
-call spectacular#add_test_runner('javascript', 'npm test', '.js')
 
-" spectacular config
-" can pass functions which can be used to do custom validations
-" call spectacular#add_test_runner('ruby, javascript, coffee, eruby', 'bin/rspec {spec}', '_spec.rb', function("InRailsApp"), function("TestsRequireRails"))
+" vim test config
+let g:test#strategy = 'dispatch'
 
 " passive = does not run on save
 let g:syntastic_mode_map = { "mode": "passive",
@@ -300,8 +294,9 @@ map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
-map <leader>e :call spectacular#run_tests()<cr>
-map <leader>l :call spectacular#run_tests_with_current_line()<cr>
+nmap <silent> <leader>n :TestNearest<CR>
+nmap <silent> <leader>e :TestFile<CR>
+nmap <silent> <leader>l :TestLast<CR>
 map <Leader>rn :Rename
 map <leader>spj :vsplit package.json<cr>
 map <leader>s :SyntasticCheck<CR>
