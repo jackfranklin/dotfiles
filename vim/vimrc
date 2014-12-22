@@ -91,7 +91,7 @@ let g:spectacular_integrate_with_dispatch = 1
 call spectacular#add_test_runner('ruby', 'rspec {spec}', '_spec.rb')
 call spectacular#add_test_runner('ruby', 'rspec {spec}:{line-number}', '_spec.rb')
 call spectacular#add_test_runner('javascript', 'karma run', '.spec.js')
-call spectacular#add_test_runner('javascript', 'npm test', '.js')
+call spectacular#add_test_runner('javascript', 'npm test', 'test.js')
 
 " spectacular config
 " can pass functions which can be used to do custom validations
@@ -326,9 +326,6 @@ imap <C-s> <esc>:w<CR>
 map <C-q> <esc>:x<CR>
 imap <C-q> <esc>:x<CR>
 map <C-t> <esc>:tabnew<CR>
-" ctrl n to esc, save and then run Make (sends make but through vim dispatch)
-map <C-n> <esc>:w<CR>:Make<CR>
-imap <C-n> <esc>:w<CR>:Make<CR>
 
 " make it do . in visual mode
 vnoremap . :norm.<CR>
@@ -366,9 +363,6 @@ set grepprg=ag\ --nogroup\ --nocolor
 
 " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
 let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
-
-" bind K to grep word under cursor
-nnoremap <C-k> :grep! "\b<C-R><C-W>\b"<CR>:cw<CR><CR>
 
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
