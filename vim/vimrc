@@ -42,6 +42,7 @@ Plugin 'luochen1990/rainbow'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'john2x/flatui.vim'
 Plugin 'altercation/vim-colors-solarized'
+Plugin 'junegunn/seoul256.vim'
 
 " Actual Plugins
 Plugin 'tpope/vim-endwise'
@@ -73,6 +74,7 @@ Plugin 'scrooloose/syntastic'
 Plugin 'gorkunov/smartpairs.vim'
 Plugin 'janko-m/vim-test'
 Plugin 'thinca/vim-visualstar'
+Plugin 'junegunn/vim-github-dashboard'
 
 " Enable file type detection. Do this after Vundle calls.
 call vundle#end()
@@ -106,6 +108,9 @@ set gdefault
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
 set timeout timeoutlen=500 ttimeoutlen=100
+
+"github dashboard
+let g:github_dashboard = { 'username': 'jackfranklin', 'password': $GHDASHBOARD_TOKEN }
 
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
@@ -218,8 +223,7 @@ set relativenumber
 
 " for using the Solarized light theme
 set background=light
-colorscheme solarized
-
+color seoul256-light
 " for using the GitHub iTerm theme, uncomment the 3 lines below
 " color github
 " hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
