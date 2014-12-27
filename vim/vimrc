@@ -32,11 +32,7 @@ Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
 Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 
 " Colour
-Plug 'flazz/vim-colorschemes'
-Plug 'john2x/flatui.vim'
 Plug 'altercation/vim-colors-solarized'
-Plug 'junegunn/seoul256.vim'
-Plug 'chriskempson/vim-tomorrow-theme'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
@@ -208,21 +204,9 @@ set number
 set relativenumber
 
 " pretty colours
-" set t_Co=256
-" set term=xterm-256color
-" color base16-railscasts
-" set background=dark
-
-" used with default iTerm 2 light theme
-" colorscheme flatui
-
-" for using the Solarized light theme
+set t_Co=256
 set background=light
-color tomorrow
-" for using the GitHub iTerm theme, uncomment the 3 lines below
-" color github
-" hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
-" hi Visual   cterm=NONE ctermbg=254 ctermfg=NONE
+color solarized
 
 " highlight the cursor line and don't underscore it
 set cursorline
