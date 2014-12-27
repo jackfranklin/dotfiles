@@ -36,6 +36,7 @@ Plug 'flazz/vim-colorschemes'
 Plug 'john2x/flatui.vim'
 Plug 'altercation/vim-colors-solarized'
 Plug 'junegunn/seoul256.vim'
+Plug 'chriskempson/vim-tomorrow-theme'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
@@ -58,7 +59,6 @@ Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'mattn/emmet-vim'
 Plug 'ahw/vim-pbcopy'
-Plug 'file:///Users/jackfranklin/git/codecube.vim'
 Plug 'tpope/vim-ragtag'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-rails'
@@ -218,7 +218,7 @@ set relativenumber
 
 " for using the Solarized light theme
 set background=light
-color seoul256-light
+color tomorrow
 " for using the GitHub iTerm theme, uncomment the 3 lines below
 " color github
 " hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
