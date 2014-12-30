@@ -1,5 +1,6 @@
 vim/vim/bundle
 vim/vim/plugin
+vim/vim/plugged
 vim/vim/.netrwhist
 vim/zsh/cache
 vim/vim/spell

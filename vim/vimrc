@@ -1,81 +1,74 @@
-" Vundle needs these things
-set nocompatible
-filetype off
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-
-" Vundle has to manage Vundle.
-Plugin 'gmarik/Vundle.vim'
+call plug#begin('~/.vim/plugged')
 
 " Syntax
-Plugin 'tpope/vim-git'
-Plugin 'vim-ruby/vim-ruby'
-Plugin 'elixir-lang/vim-elixir'
-Plugin 'jelera/vim-javascript-syntax'
-Plugin 'moll/vim-node'
-Plugin 'pangloss/vim-javascript'
-Plugin 'othree/html5.vim'
+Plug 'tpope/vim-git'
+Plug 'vim-ruby/vim-ruby'
+Plug 'elixir-lang/vim-elixir'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'moll/vim-node'
+Plug 'pangloss/vim-javascript'
+Plug 'othree/html5.vim'
 " haml also does Sass and SCSS
-Plugin 'tpope/vim-haml'
-Plugin 'chrisbra/csv.vim'
-Plugin 'leshill/vim-json'
-Plugin 'tpope/vim-markdown'
-Plugin 'andersoncustodio/vim-tmux'
-Plugin '1995eaton/vim-better-css-completion'
-Plugin '1995eaton/vim-better-javascript-completion'
-Plugin 'mustache/vim-mustache-handlebars'
-Plugin 'tpope/vim-cucumber'
-Plugin 'mxw/vim-jsx'
-Plugin 'digitaltoad/vim-jade'
+Plug 'tpope/vim-haml'
+Plug 'chrisbra/csv.vim'
+Plug 'leshill/vim-json'
+Plug 'tpope/vim-markdown'
+Plug 'andersoncustodio/vim-tmux'
+Plug '1995eaton/vim-better-css-completion'
+Plug '1995eaton/vim-better-javascript-completion'
+Plug 'mustache/vim-mustache-handlebars'
+Plug 'tpope/vim-cucumber'
+Plug 'mxw/vim-jsx'
+Plug 'digitaltoad/vim-jade'
 
 "Clojure plugins from Jamie
-Plugin 'guns/vim-sexp'
-Plugin 'tpope/vim-sexp-mappings-for-regular-people'
-Plugin 'tpope/vim-leiningen'
-Plugin 'tpope/vim-classpath'
-Plugin 'tpope/vim-fireplace'
-Plugin 'guns/vim-clojure-static'
-Plugin 'guns/vim-clojure-highlight'
-Plugin 'luochen1990/rainbow'
+Plug 'guns/vim-sexp', { 'for': 'clojure' }
+Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
+Plug 'tpope/vim-leiningen', { 'for': 'clojure' }
+Plug 'tpope/vim-classpath', { 'for': 'clojure' }
+Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
+Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
+Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
+Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 
 " Colour
-Plugin 'flazz/vim-colorschemes'
-Plugin 'john2x/flatui.vim'
-Plugin 'altercation/vim-colors-solarized'
+Plug 'altercation/vim-colors-solarized'
 
-" Actual Plugins
-Plugin 'tpope/vim-endwise'
-Plugin 'tpope/vim-surround'
-Plugin 'kien/ctrlp.vim'
-Plugin 'SirVer/ultisnips'
-Plugin 'christoomey/vim-tmux-navigator'
-Plugin 'tpope/vim-rbenv'
-Plugin 'tpope/vim-eunuch'
-Plugin 'editorconfig/editorconfig-vim'
-Plugin 'rking/ag.vim'
-Plugin 'jackfranklin/vim-markdown-writer'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-dispatch'
-Plugin 'xolox/vim-misc'
-Plugin 'ervandew/supertab'
-Plugin 'tpope/vim-projectionist'
-Plugin 'tpope/vim-fugitive'
-Plugin 'kana/vim-textobj-user'
-Plugin 'nelstrom/vim-textobj-rubyblock'
-Plugin 'mattn/emmet-vim'
-Plugin 'ahw/vim-pbcopy'
-Plugin 'file:///Users/jackfranklin/git/codecube.vim'
-Plugin 'tpope/vim-ragtag'
-Plugin 'AndrewRadev/splitjoin.vim'
-Plugin 'tpope/vim-rails'
-Plugin 'tpope/vim-unimpaired'
-Plugin 'scrooloose/syntastic'
-Plugin 'gorkunov/smartpairs.vim'
-Plugin 'davidpdrsn/vim-spectacular'
-Plugin 'thinca/vim-visualstar'
+" Actual Plugs
+Plug 'tpope/vim-endwise'
+Plug 'tpope/vim-surround'
+Plug 'kien/ctrlp.vim'
+Plug 'SirVer/ultisnips'
+Plug 'christoomey/vim-tmux-navigator'
+Plug 'tpope/vim-rbenv'
+Plug 'tpope/vim-eunuch'
+Plug 'editorconfig/editorconfig-vim'
+Plug 'rking/ag.vim'
+Plug 'jackfranklin/vim-markdown-writer'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-dispatch'
+Plug 'xolox/vim-misc'
+Plug 'ervandew/supertab'
+Plug 'tpope/vim-projectionist'
+Plug 'tpope/vim-fugitive'
+Plug 'kana/vim-textobj-user'
+Plug 'nelstrom/vim-textobj-rubyblock'
+Plug 'mattn/emmet-vim'
+Plug 'ahw/vim-pbcopy'
+Plug 'tpope/vim-ragtag'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'tpope/vim-rails'
+Plug 'tpope/vim-unimpaired'
+Plug 'scrooloose/syntastic'
+Plug 'gorkunov/smartpairs.vim'
+Plug 'janko-m/vim-test'
+Plug 'thinca/vim-visualstar'
+Plug 'junegunn/vim-github-dashboard'
 
 " Enable file type detection. Do this after Vundle calls.
-call vundle#end()
+call plug#end()
+
+set nocompatible
 filetype plugin indent on
 
 runtime macros/matchit.vim
@@ -87,15 +80,8 @@ set statusline+=\ %{fugitive#statusline()}
 set statusline+=%= " this line bumps the line number to RHS
 set statusline+=\ [%l\/%L] "line number and total line number
 
-let g:spectacular_integrate_with_dispatch = 1
-call spectacular#add_test_runner('ruby', 'rspec {spec}', '_spec.rb')
-call spectacular#add_test_runner('ruby', 'rspec {spec}:{line-number}', '_spec.rb')
-call spectacular#add_test_runner('javascript', 'karma run', '.spec.js')
-call spectacular#add_test_runner('javascript', 'npm test', 'test.js')
-
-" spectacular config
-" can pass functions which can be used to do custom validations
-" call spectacular#add_test_runner('ruby, javascript, coffee, eruby', 'bin/rspec {spec}', '_spec.rb', function("InRailsApp"), function("TestsRequireRails"))
+" vim test config
+let g:test#strategy = 'dispatch'
 
 " passive = does not run on save
 let g:syntastic_mode_map = { "mode": "passive",
@@ -112,6 +98,9 @@ set gdefault
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
 set timeout timeoutlen=500 ttimeoutlen=100
+
+"github dashboard
+let g:github_dashboard = { 'username': 'jackfranklin', 'password': $GHDASHBOARD_TOKEN }
 
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
@@ -214,22 +203,9 @@ set number
 set relativenumber
 
 " pretty colours
-" set t_Co=256
-" set term=xterm-256color
-" color base16-railscasts
-" set background=dark
-
-" used with default iTerm 2 light theme
-" colorscheme flatui
-
-" for using the Solarized light theme
+set t_Co=256
 set background=light
-colorscheme solarized
-
-" for using the GitHub iTerm theme, uncomment the 3 lines below
-" color github
-" hi CursorLine   cterm=NONE ctermbg=254 ctermfg=NONE
-" hi Visual   cterm=NONE ctermbg=254 ctermfg=NONE
+color solarized
 
 " highlight the cursor line and don't underscore it
 set cursorline
@@ -300,8 +276,9 @@ map <leader>pv :call JF_find_private()<cr>
 map <leader>pj :e package.json<cr>
 map <leader>pt :CtrlPTag<cr>
 nnoremap <leader>pn :call OpenProjectNotes()<cr>
-map <leader>e :call spectacular#run_tests()<cr>
-map <leader>l :call spectacular#run_tests_with_current_line()<cr>
+nmap <silent> <leader>n :TestNearest<CR>
+nmap <silent> <leader>e :TestFile<CR>
+nmap <silent> <leader>l :TestLast<CR>
 map <Leader>rn :Rename
 map <leader>spj :vsplit package.json<cr>
 map <leader>s :SyntasticCheck<CR>
