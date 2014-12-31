@@ -27,3 +27,4 @@ install task
 install youtube-dl
 install hub
 install z
+install macvim

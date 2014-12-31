@@ -107,7 +107,8 @@ set hidden
 
 " folding
 nnoremap <Space> za
-set foldmethod=indent
+set nofoldenable
+" set foldmethod=indent
 
 " taken from https://github.com/dduponchel/dotfiles/blob/master/vim/vimrc
 " Indicates a fast terminal connection.  More characters will be sent to
@@ -201,6 +202,7 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 " I like line numbers
 set number
 set relativenumber
+set lazyredraw
 
 " pretty colours
 set t_Co=256
@@ -208,7 +210,7 @@ set background=light
 color solarized
 
 " highlight the cursor line and don't underscore it
-set cursorline
+" set cursorline
 set colorcolumn=80
 
 " make paren match clearer (stolen from r00k dotfiles!)

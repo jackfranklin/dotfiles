@@ -1,5 +1,5 @@
 # lazy
-alias v="vim"
+alias v="mvim -v"
 alias vi="echo use v!!"
 alias f="fg"
 alias l="ls"
