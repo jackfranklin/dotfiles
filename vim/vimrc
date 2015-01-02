@@ -201,7 +201,7 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
 " I like line numbers
 set number
-set relativenumber
+" set relativenumber
 set lazyredraw
 
 " pretty colours
@@ -209,12 +209,7 @@ set t_Co=256
 set background=light
 color solarized
 
-" highlight the cursor line and don't underscore it
-" set cursorline
 set colorcolumn=80
-
-" make paren match clearer (stolen from r00k dotfiles!)
-hi MatchParen cterm=none ctermbg=black ctermfg=yellow
 
 set list listchars=tab:»·,trail:·
 
