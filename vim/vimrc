@@ -64,9 +64,11 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'janko-m/vim-test'
 Plug 'thinca/vim-visualstar'
 Plug 'junegunn/vim-github-dashboard'
+Plug 'takac/vim-hardtime'
 
-" Enable file type detection. Do this after Vundle calls.
 call plug#end()
+
+let g:hardtime_default_on = 1
 
 set nocompatible
 filetype plugin indent on
@@ -201,7 +203,7 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
 " I like line numbers
 set number
-" set relativenumber
+set relativenumber
 set lazyredraw
 
 " pretty colours
