@@ -30,8 +30,8 @@ ruby_env:
 gems:
 	ruby $(DIR)/scripts/gems.rb
 
-brew: Brewfile
-	brew bundle Brewfile
+brew:
+	ruby $(DIR)/scripts/install_brews.rb
 
 nvm:
 	curl https://raw.githubusercontent.com/creationix/nvm/v0.8.0/install.sh | sh
