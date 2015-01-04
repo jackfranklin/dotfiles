@@ -79,8 +79,6 @@ runtime macros/matchit.vim
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
-set statusline+=%= " this line bumps the line number to RHS
-set statusline+=\ [%l\/%L] "line number and total line number
 
 " vim test config
 let g:test#strategy = 'dispatch'
