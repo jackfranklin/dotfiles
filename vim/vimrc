@@ -177,9 +177,9 @@ set ignorecase smartcase
 set scrolloff=5
 
 " Store temporary files in a central spot
-set backup
-set backupdir=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
-set directory=~/.vim-tmp,~/.tmp,~/tmp,/var/tmp,/tmp
+set nobackup
+set nowritebackup
+set noswapfile
 
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
