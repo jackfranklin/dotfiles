@@ -44,7 +44,6 @@ Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-eunuch'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
-Plug 'jackfranklin/vim-markdown-writer'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
 Plug 'xolox/vim-misc'
@@ -53,7 +52,6 @@ Plug 'tpope/vim-projectionist'
 Plug 'tpope/vim-fugitive'
 Plug 'kana/vim-textobj-user'
 Plug 'nelstrom/vim-textobj-rubyblock'
-Plug 'mattn/emmet-vim'
 Plug 'ahw/vim-pbcopy'
 Plug 'tpope/vim-ragtag'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -367,12 +365,5 @@ inoremap <C-u> <esc>mzgUiw`za
 
 " dont need the default ctrlp
 let g:ctrlp_map = ''
-
-" http://stackoverflow.com/questions/11042920/how-to-copy-and-paste-between-different-tmux-panes-running-vim-instances
-" copy to buffer
-vmap <C-c> :w! ~/.vimbuffer<CR>
-nmap <C-c> :.w! ~/.vimbuffer<CR>
-" paste from buffer
-map <C-p> :r ~/.vimbuffer<CR>
 
 let g:ruby_path = system('echo $HOME/.rbenv/shims')
