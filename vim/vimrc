@@ -75,6 +75,7 @@ set nocompatible
 filetype plugin indent on
 
 runtime macros/matchit.vim
+let loaded_matchparen = 1
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
@@ -208,7 +209,8 @@ set lazyredraw
 " pretty colours
 set t_Co=256
 set background=light
-color solarized
+" color solarized
+color default
 
 set colorcolumn=80
 
@@ -373,4 +375,4 @@ nmap <C-c> :.w! ~/.vimbuffer<CR>
 " paste from buffer
 map <C-p> :r ~/.vimbuffer<CR>
 
-map <leader>jamie :!ruby -e "require 'json'; puts JSON.pretty_generate(instance_eval(STDIN.read))"<CR>
+let g:ruby_path = system('echo $HOME/.rbenv/shims')
