@@ -20,6 +20,8 @@ Plug 'tpope/vim-cucumber'
 Plug 'mxw/vim-jsx'
 Plug 'digitaltoad/vim-jade'
 
+Plug 'altercation/vim-colors-solarized'
+
 "Clojure plugins from Jamie
 Plug 'guns/vim-sexp', { 'for': 'clojure' }
 Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
@@ -69,6 +71,8 @@ filetype plugin indent on
 
 runtime macros/matchit.vim
 let loaded_matchparen = 1
+
+color solarized
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
