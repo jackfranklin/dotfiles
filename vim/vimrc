@@ -72,7 +72,6 @@ filetype plugin indent on
 runtime macros/matchit.vim
 let loaded_matchparen = 1
 
-color solarized
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
@@ -179,7 +178,7 @@ set lazyredraw
 " pretty colours
 set t_Co=256
 set background=light
-color default
+colorscheme solarized
 
 set colorcolumn=80
 
