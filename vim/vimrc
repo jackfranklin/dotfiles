@@ -110,6 +110,8 @@ set softtabstop=2
 set expandtab
 set autoindent
 
+set ignorecase smartcase
+
 " word count, taken from
 " http://stackoverflow.com/questions/114431/fast-word-count-function-in-vim
 function! WordCount()
