@@ -25,6 +25,7 @@ brews = %w{
   hub
   z
   macvim
+  python
 }
 
 INSTALLED_BREWS = `brew list`.split("\n")

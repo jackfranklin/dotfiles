@@ -1,5 +1,6 @@
 # lazy
-alias v="mvim -v"
+# try using neovim for a bit just to see
+alias v="nvim"
 alias vi="echo use v!!"
 alias f="fg"
 alias l="ls"
