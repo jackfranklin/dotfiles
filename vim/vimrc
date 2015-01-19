@@ -59,8 +59,6 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'janko-m/vim-test'
 Plug 'thinca/vim-visualstar'
 Plug 'junegunn/vim-github-dashboard'
-Plug 'takac/vim-hardtime'
-Plug 'rhysd/committia.vim'
 
 call plug#end()
 
