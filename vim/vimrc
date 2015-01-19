@@ -68,8 +68,6 @@ set nocompatible
 filetype plugin indent on
 
 runtime macros/matchit.vim
-let loaded_matchparen = 1
-
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
@@ -140,7 +138,6 @@ set laststatus=2
 set linebreak
 
 " show search matches as I type
-set showmatch
 set incsearch
 set hlsearch
 
