@@ -58,7 +58,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'janko-m/vim-test'
 Plug 'thinca/vim-visualstar'
-Plug 'junegunn/vim-github-dashboard'
 
 call plug#end()
 
@@ -87,9 +86,6 @@ set gdefault
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
 set timeout timeoutlen=500 ttimeoutlen=100
-
-"github dashboard
-let g:github_dashboard = { 'username': 'jackfranklin', 'password': $GHDASHBOARD_TOKEN }
 
 " allow unsaved background buffers and remember marks/undo for them
 set hidden
@@ -127,10 +123,8 @@ endfunction
 set spelllang=en_gb
 syntax spell toplevel
 
-" set some markdown specific things
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
 autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
-autocmd FileType tex setlocal colorcolumn=0 wrap lbr linebreak spell
 
 set laststatus=2
 
@@ -173,7 +167,6 @@ set relativenumber
 set lazyredraw
 
 " pretty colours
-set t_Co=256
 set background=light
 colorscheme solarized
 
