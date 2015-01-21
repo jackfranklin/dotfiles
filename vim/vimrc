@@ -144,6 +144,8 @@ set splitright
 
 set tags=./.tags;
 
+set lazyredraw
+
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
