@@ -61,6 +61,10 @@ filetype plugin indent on
 
 runtime macros/matchit.vim
 
+"used by vim completes me
+let g:vcm_direction = 'p'
+
+
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
@@ -95,6 +99,9 @@ set spelllang=en_gb
 syntax spell toplevel
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
+
+" ruby syntax highlighting is slower with the newer engine
+autocmd FileType ruby setlocal regexpengine=1
 
 set laststatus=2
 
