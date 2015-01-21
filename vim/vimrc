@@ -44,12 +44,8 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
-Plug 'xolox/vim-misc'
-Plug 'ervandew/supertab'
-Plug 'tpope/vim-projectionist'
+Plug 'ajh17/VimCompletesMe'
 Plug 'tpope/vim-fugitive'
-Plug 'kana/vim-textobj-user'
-Plug 'nelstrom/vim-textobj-rubyblock'
 Plug 'ahw/vim-pbcopy'
 Plug 'tpope/vim-ragtag'
 Plug 'AndrewRadev/splitjoin.vim'
@@ -61,9 +57,6 @@ Plug 'thinca/vim-visualstar'
 
 call plug#end()
 
-" let g:hardtime_default_on = 1
-
-set nocompatible
 filetype plugin indent on
 
 runtime macros/matchit.vim
@@ -76,9 +69,6 @@ set statusline+=\ %{fugitive#statusline()}
 " vim test config
 let g:test#strategy = 'dispatch'
 
-" auto load files if vim detects they have been changed outside of Vim
-set autoread
-
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
 
@@ -86,9 +76,6 @@ set gdefault
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
 set timeout timeoutlen=500 ttimeoutlen=100
-
-" allow unsaved background buffers and remember marks/undo for them
-set hidden
 
 set nofoldenable
 
@@ -104,27 +91,10 @@ set autoindent
 
 set ignorecase smartcase
 
-" word count, taken from
-" http://stackoverflow.com/questions/114431/fast-word-count-function-in-vim
-function! WordCount()
-  let s:old_status = v:statusmsg
-  let position = getpos(".")
-  exe ":silent normal g\<c-g>"
-  let stat = v:statusmsg
-  let s:word_count = 0
-  if stat != '--No lines in buffer--'
-    let s:word_count = str2nr(split(v:statusmsg)[11])
-    let v:statusmsg = s:old_status
-  end
-  call setpos('.', position)
-  return s:word_count
-endfunction
-
 set spelllang=en_gb
 syntax spell toplevel
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
-autocmd FileType markdown setlocal statusline+=\ %{WordCount()}
 
 set laststatus=2
 
@@ -136,7 +106,7 @@ set incsearch
 set hlsearch
 
 " keep more context when scrolling off the end of a buffer
-set scrolloff=5
+set scrolloff=10
 
 " Store temporary files in a central spot
 set nobackup
@@ -146,28 +116,20 @@ set noswapfile
 " allow backspacing over everything in insert mode
 set backspace=indent,eol,start
 
-" Enable highlighting for syntax
-syntax on
-
-syntax spell toplevel
-
 set wildmode=full
-" make tab completion for files/buffers act like bash
 set wildmenu
 
 let mapleader=","
 noremap \ ,
 
-" ignore git, npm modules and jekyll _site
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
-" I like line numbers
 set number
 set relativenumber
-set lazyredraw
 
 " pretty colours
 set background=light
+
 colorscheme solarized
 
 set colorcolumn=80
@@ -177,40 +139,26 @@ set list listchars=tab:»·,trail:·
 " :Q to quit (should be default)
 command! Q q
 
-" Treat <li> and <p> tags like the block tags they are
-let g:html_indent_tags = 'li\|p'
-
-" Open new split panes to right and bottom, which feels more natural
 set splitbelow
 set splitright
 
-" settings for tags
 set tags=./.tags;
 
 " ~~~ MAPPINGS BELOW ~~~
 
-" TODO: make this better, more intelligent
-function! JF_find_private()
-  execute "/private"
-endfunction
-
 "gtfo ex mode
 map Q <Nop>
 
-map <leader>cf :CtrlPClearCache<cr>
-map <leader>gf :e Gemfile<cr>
-nnoremap <leader>h <Esc>:call ToggleHardMode()<CR>
-map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
-map <leader>pv :call JF_find_private()<cr>
-map <leader>pj :e package.json<cr>
-map <leader>pt :CtrlPTag<cr>
+" vim test
 nmap <silent> <leader>n :TestNearest<CR>
 nmap <silent> <leader>e :TestFile<CR>
 nmap <silent> <leader>l :TestLast<CR>
-map <Leader>rn :Rename
+
+map <leader>cf :CtrlPClearCache<cr>
+map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>sc :setlocal spell!<CR>
+
 map <leader>t :CtrlP<cr>
-map <leader>us :UltiSnipsEdit<CR>
 map <leader>v :vsplit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
@@ -223,18 +171,8 @@ imap <C-s> <esc>:w<CR>
 vnoremap . :norm.<CR>
 
 " control P
-let g:ctrlp_clear_cache_on_exit = 0
-let g:ctrlp_extensions = ['tag']
-
-" navigating tabs
-nnoremap th  :tabfirst<CR>
-nnoremap tj  :tabnext<CR>
-nnoremap tk  :tabprev<CR>
-nnoremap tl  :tablast<CR>
-nnoremap tt  :tabedit<Space>
-nnoremap tn  :tabnext<Space>
-nnoremap tm  :tabm<Space>
-nnoremap td  :tabclose<CR>
+let g:ctrlp_map = ''
+let g:ctrlp_clear_cache_on_exit = 1
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
@@ -267,6 +205,3 @@ nnoremap N Nzzzv
 noremap H ^
 noremap L $
 vnoremap L g_
-
-" dont need the default ctrlp
-let g:ctrlp_map = ''
