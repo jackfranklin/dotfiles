@@ -44,7 +44,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-dispatch'
-Plug 'ajh17/VimCompletesMe'
 Plug 'tpope/vim-fugitive'
 Plug 'ahw/vim-pbcopy'
 Plug 'tpope/vim-ragtag'
@@ -60,10 +59,6 @@ call plug#end()
 filetype plugin indent on
 
 runtime macros/matchit.vim
-
-"used by vim completes me
-let g:vcm_direction = 'p'
-
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
