@@ -97,7 +97,6 @@ autocmd FileType ruby setlocal regexpengine=1
 set laststatus=2
 
 set linebreak
-set breakindent
 
 set incsearch
 set hlsearch
