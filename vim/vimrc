@@ -3,14 +3,12 @@ call plug#begin('~/.vim/plugged')
 " Syntax
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
-Plug 'elixir-lang/vim-elixir'
 Plug 'jelera/vim-javascript-syntax'
 Plug 'moll/vim-node'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/html5.vim'
 " haml also does Sass and SCSS
 Plug 'tpope/vim-haml'
-Plug 'chrisbra/csv.vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'andersoncustodio/vim-tmux'
@@ -63,7 +61,6 @@ runtime macros/matchit.vim
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
-set statusline+=\ %{fugitive#statusline()}
 
 " vim test config
 let g:test#strategy = 'dispatch'
@@ -78,7 +75,6 @@ set timeout timeoutlen=500 ttimeoutlen=100
 
 set nofoldenable
 
-" remember more commands and search history
 set history=10000
 
 set expandtab
@@ -100,22 +96,19 @@ autocmd FileType ruby setlocal regexpengine=1
 
 set laststatus=2
 
-" break properly, don't split words
 set linebreak
+set breakindent
 
-" show search matches as I type
 set incsearch
 set hlsearch
 
-" keep more context when scrolling off the end of a buffer
 set scrolloff=10
 
-" Store temporary files in a central spot
 set nobackup
 set nowritebackup
 set noswapfile
 
-" allow backspacing over everything in insert mode
+
 set backspace=indent,eol,start
 
 set wildmode=full
@@ -138,7 +131,6 @@ set colorcolumn=80
 
 set list listchars=tab:»·,trail:·
 
-" :Q to quit (should be default)
 command! Q q
 
 set splitbelow
@@ -171,27 +163,22 @@ map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
 
-" make it do . in visual mode
 vnoremap . :norm.<CR>
 
-" control P
 let g:ctrlp_map = ''
 let g:ctrlp_clear_cache_on_exit = 1
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
-" ultisnips settings
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsJumpForwardTrigger="<c-k>"
 let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
 let g:UltiSnipsSnippetDirectories=["UltiSnips"]
 
-"This unsets the 'last search pattern' register by hitting return
 nnoremap <CR> :noh<CR><CR>
 
 " http://robots.thoughtbot.com/faster-grepping-in-vim/
-" Use ag over grep
 set grepprg=ag\ --nogroup\ --nocolor
 
 " Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
