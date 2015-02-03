@@ -71,6 +71,8 @@ let g:test#strategy = 'dispatch'
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
 
+set autoread
+
 " fix slight delay after pressing ESC then O
 " http://ksjoberg.com/vim-esckeys.html
 " set noesckeys
