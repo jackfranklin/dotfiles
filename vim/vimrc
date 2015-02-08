@@ -52,6 +52,7 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'janko-m/vim-test'
 Plug 'thinca/vim-visualstar'
 Plug 'takac/vim-hardtime'
+Plug 'tpope/vim-vinegar'
 
 call plug#end()
 
