@@ -11,6 +11,10 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ~/dotfiles/git/gitignore_global => ~/.gitignore_global
 ...and so on
 ```
+# Credit
+
+Most of the ZSH prompt was taken from: http://www.anishathalye.com/2015/02/07/an-asynchronous-shell-prompt/
+
 # Installing
 
 - Swap your shell to ZSH (System Prefs -> Users -> Right Click on 'Advanced Settings' -> select ZSH from dropdown).
