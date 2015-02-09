@@ -51,7 +51,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'janko-m/vim-test'
 Plug 'thinca/vim-visualstar'
-Plug 'takac/vim-hardtime'
 Plug 'tpope/vim-vinegar'
 Plug 'junegunn/vim-peekaboo'
 
@@ -59,7 +58,6 @@ call plug#end()
 
 filetype plugin indent on
 
-let g:hardtime_default_on = 1
 
 runtime macros/matchit.vim
 
