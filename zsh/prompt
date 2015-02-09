@@ -112,7 +112,7 @@ function RPR_AT() {
 
 # Build the rhs prompt
 function RPR_INFO() {
-    echo "$(get_suspended_jobs) $(rbenv_prompt_info) $(nvm_prompt_info)$(RPR_USER)$(RPR_AT)$(RPR_HOST)"
+    echo "$(get_suspended_jobs)$(RPR_USER)$(RPR_AT)$(RPR_HOST)"
 }
 
 # Set RHS prompt for git repositories
