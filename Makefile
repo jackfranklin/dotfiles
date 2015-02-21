@@ -21,9 +21,6 @@ symlinks:
 ensure_brew:
 	ruby $(DIR)/scripts/ensure_homebrew.rb
 
-clone_vundle: symlinks
-	git clone https://github.com/gmarik/Vundle.vim.git ~/.vim/bundle/Vundle.vim
-
 ruby_env:
 	ruby $(DIR)/scripts/ruby_env.rb
 
