@@ -1,5 +1,7 @@
 fpath=(~/dotfiles/zsh/completion $fpath)
 
+source /usr/local/opt/autoenv/activate.sh
+
 # get auto completes going
 autoload -U compinit
 compinit
