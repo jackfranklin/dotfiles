@@ -9,12 +9,11 @@ npms = {
   "distra" => "",
   "gh" => "",
   "pulldown" => "",
-  "coffee-script" => "coffee",
-  "grunt-cli" => "grunt",
   "express" => "",
   "nodemon" => "",
   "mocha" => "",
-  "gulp" => ""
+  "gulp" => "",
+  "karma-cli" => ""
 }
 
 npms.each do |mod, command|

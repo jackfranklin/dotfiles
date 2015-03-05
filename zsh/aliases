@@ -57,6 +57,13 @@ alias nig="npm install -g"
 alias nl="npm link"
 alias nr="npm run"
 alias nt="npm test"
+alias ns="npm start"
+
+# karma
+alias ks="karma start --no-auto-watch --no-single-run"
+alias kr="karma run"
+
+
 
 # jekyll
 alias js="jekyll --server"
