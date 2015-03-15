@@ -62,6 +62,9 @@ filetype plugin indent on
 
 runtime macros/matchit.vim
 
+" wrap quickfix window
+autocmd FileType qf setlocal wrap linebreak
+
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
