@@ -17,6 +17,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'tpope/vim-cucumber'
 Plug 'mxw/vim-jsx'
 Plug 'digitaltoad/vim-jade'
+Plug 'elixir-lang/vim-elixir'
 
 Plug 'altercation/vim-colors-solarized'
 
