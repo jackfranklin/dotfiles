@@ -133,7 +133,7 @@ set relativenumber
 " pretty colours
 set background=light
 
-" colorscheme solarized
+colorscheme solarized
 
 set colorcolumn=80
 
