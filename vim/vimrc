@@ -17,6 +17,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'tpope/vim-cucumber'
 Plug 'mxw/vim-jsx'
 Plug 'digitaltoad/vim-jade'
+Plug 'elixir-lang/vim-elixir'
 
 Plug 'altercation/vim-colors-solarized'
 
@@ -60,6 +61,9 @@ filetype plugin indent on
 
 
 runtime macros/matchit.vim
+
+" wrap quickfix window
+autocmd FileType qf setlocal wrap linebreak
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
