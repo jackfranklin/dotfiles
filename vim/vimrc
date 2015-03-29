@@ -7,14 +7,11 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'moll/vim-node'
 Plug 'pangloss/vim-javascript'
 Plug 'othree/html5.vim'
-" haml also does Sass and SCSS
-Plug 'tpope/vim-haml'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'andersoncustodio/vim-tmux'
 Plug '1995eaton/vim-better-javascript-completion'
 Plug 'mustache/vim-mustache-handlebars'
-Plug 'tpope/vim-cucumber'
 Plug 'mxw/vim-jsx'
 Plug 'digitaltoad/vim-jade'
 Plug 'elixir-lang/vim-elixir'
@@ -53,7 +50,8 @@ Plug 'thinca/vim-visualstar'
 Plug 'tpope/vim-vinegar'
 Plug 'junegunn/vim-peekaboo'
 Plug 'christoomey/vim-tmux-runner'
-Plug 'janko-m/vim-test'
+Plug 'thoughtbot/vim-rspec'
+Plug 'haya14busa/incsearch.vim'
 
 call plug#end()
 
@@ -155,10 +153,11 @@ set lazyredraw
 "gtfo ex mode
 map Q <Nop>
 
-" vim test
-nmap <silent> <leader>n :TestNearest<CR>
-nmap <silent> <leader>e :TestFile<CR>
-nmap <silent> <leader>l :TestLast<CR>
+" Rspec.vim
+let g:rspec_command = "call VtrSendCommand('rspec {spec}', 1)"
+map <Leader>e :call RunCurrentSpecFile()<CR>
+map <Leader>n :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
 
 map <leader>cf :CtrlPClearCache<cr>
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -167,7 +166,6 @@ map <leader>sc :setlocal spell!<CR>
 map <leader>t :CtrlP<cr>
 map <leader>v :vsplit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
-map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
 
 " zoom a vim pane, <C-w>= to re-balance
 nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
@@ -219,3 +217,6 @@ let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascr
 
 " nvim terminal
 " tnoremap <Esc> <c-\><c-n>
+
+map /  <Plug>(incsearch-forward)
+map ?  <Plug>(incsearch-backward)
