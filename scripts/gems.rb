@@ -6,8 +6,7 @@ gems = %w{
   bundler
   jekyll
   shotgun
-  travis
-  tmuxinator
+  rcodetools
 }
 
 gems.each do |gem|

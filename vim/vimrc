@@ -36,6 +36,7 @@ Plug 'SirVer/ultisnips'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-rbenv'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-repeat'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-commentary'
@@ -172,6 +173,7 @@ nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
 nnoremap <leader>= :wincmd =<cr>
 
 nnoremap <leader>fr :VtrFocusRunner<cr>
+nnoremap <leader>kr :VtrKillRunner<cr>
 
 nnoremap <leader>railsc :VtrOpenRunner {'orientation': 'h', 'percentage': 40, 'cmd': 'rails c'}<cr>
 
