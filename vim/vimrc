@@ -53,8 +53,7 @@ Plug 'thinca/vim-visualstar'
 Plug 'tpope/vim-vinegar'
 Plug 'junegunn/vim-peekaboo'
 Plug 'christoomey/vim-tmux-runner'
-" until https://github.com/janko-m/vim-test/pull/22 is merged
-Plug 'jackfranklin/vim-test'
+Plug 'janko-m/vim-test'
 
 call plug#end()
 
