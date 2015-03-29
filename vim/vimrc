@@ -42,7 +42,6 @@ Plug 'tpope/vim-eunuch'
 Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-dispatch'
 Plug 'tpope/vim-fugitive'
 Plug 'ahw/vim-pbcopy'
 Plug 'tpope/vim-ragtag'
@@ -50,15 +49,19 @@ Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-rails'
 Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
-Plug 'janko-m/vim-test'
 Plug 'thinca/vim-visualstar'
 Plug 'tpope/vim-vinegar'
 Plug 'junegunn/vim-peekaboo'
+Plug 'christoomey/vim-tmux-runner'
+" until https://github.com/janko-m/vim-test/pull/22 is merged
+Plug 'jackfranklin/vim-test'
 
 call plug#end()
 
 filetype plugin indent on
 
+" automatically rebalance windows on vim resize
+autocmd VimResized * :wincmd =
 
 runtime macros/matchit.vim
 
@@ -70,7 +73,7 @@ set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 
 " vim test config
-let g:test#strategy = 'dispatch'
+let g:test#strategy = 'vtr'
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
@@ -166,6 +169,14 @@ map <leader>t :CtrlP<cr>
 map <leader>v :vsplit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 map <Leader>p :set paste<CR>o<esc>"*]p:set nopaste<cr>
+
+" zoom a vim pane, <C-w>= to re-balance
+nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
+nnoremap <leader>= :wincmd =<cr>
+
+nnoremap <leader>fr :VtrFocusRunner
+
+nnoremap <leader>railsc :VtrOpenRunner {'orientation': 'h', 'percentage': 40, 'cmd': 'rails c'}<cr>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
