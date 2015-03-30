@@ -23,3 +23,5 @@
 [core]
 	excludesfile = /Users/jackfranklin/.gitignore_global
 	pager = less -r
+[url "git@github.com:"]
+	insteadOf = https://github.com/

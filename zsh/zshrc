@@ -76,3 +76,6 @@ export GC_GIT=$HOME/git/gocardless
 [ -f $GC_GIT/scripts/dev_env/env_setup.sh ] && . $GC_GIT/scripts/dev_env/env_setup.sh
 
 # source ~/.xsh
+
+export GOPATH=$HOME/git/go
+export PATH="$GOPATH/bin:$PATH"
