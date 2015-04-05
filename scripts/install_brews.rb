@@ -27,6 +27,7 @@ brews = %w{
   macvim
   python
   autoenv
+  watchman
 }
 
 INSTALLED_BREWS = `brew list`.split("\n")
