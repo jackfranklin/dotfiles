@@ -215,8 +215,14 @@ vnoremap L g_
 
 let g:markdown_fenced_languages = ['css', 'erb=eruby', 'javascript', 'js=javascript', 'json=javascript', 'ruby', 'sass', 'xml', 'html']
 
-" nvim terminal
-" tnoremap <Esc> <c-\><c-n>
-
 map /  <Plug>(incsearch-forward)
 map ?  <Plug>(incsearch-backward)
+
+ if has('nvim')
+   " horrible Ctrl-H not being detected in neovim problem. Good job I don't
+   " use backspace...
+   nmap <BS> <C-W>h
+
+   " make <Esc> exit insert mode in a terminal buffer
+   tnoremap <Esc> <c-\><c-n>
+ endif
