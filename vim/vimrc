@@ -53,6 +53,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'junegunn/vim-peekaboo'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
+Plug 'rizzatti/dash.vim'
 
 call plug#end()
 
