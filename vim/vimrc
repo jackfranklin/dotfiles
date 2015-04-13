@@ -158,6 +158,7 @@ map Q <Nop>
 " Rspec.vim
 let g:rspec_command = "call VtrSendCommand('rspec {spec}', 1)"
 map <Leader>d :Dash<CR>
+" trailing space is on purpose!
 map <Leader>dd :Dash 
 map <Leader>e :call RunCurrentSpecFile()<CR>
 map <Leader>n :call RunNearestSpec()<CR>
