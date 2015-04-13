@@ -157,6 +157,8 @@ map Q <Nop>
 
 " Rspec.vim
 let g:rspec_command = "call VtrSendCommand('rspec {spec}', 1)"
+map <Leader>d :Dash<CR>
+map <Leader>dd :Dash 
 map <Leader>e :call RunCurrentSpecFile()<CR>
 map <Leader>n :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
