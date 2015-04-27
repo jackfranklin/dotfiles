@@ -54,6 +54,7 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'rizzatti/dash.vim'
+Plug 'jeetsukumaran/vim-buffergator'
 
 call plug#end()
 
@@ -169,6 +170,7 @@ map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>sc :setlocal spell!<CR>
 
 map <leader>t :CtrlP<cr>
+map <leader>b :CtrlPBuffer<cr>
 map <leader>v :vsplit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
@@ -227,3 +229,10 @@ if has('nvim')
   " make <Esc> exit insert mode in a terminal buffer
   tnoremap <Esc> <c-\><c-n>
 endif
+
+let g:buffergator_viewport_split_policy = 'R'
+let g:buffergator_suppress_keymaps = 1
+let g:buffergator_autodismiss_on_select=1
+nmap <leader>bl :BuffergatorOpen<cr>
+
+
