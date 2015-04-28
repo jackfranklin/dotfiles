@@ -180,6 +180,9 @@ nnoremap <leader>= :wincmd =<cr>
 
 nnoremap <leader>fr :VtrFocusRunner<cr>
 nnoremap <leader>kr :VtrKillRunner<cr>
+nnoremap <leader>rr :VtrSendLinesToRunner<cr>
+nnoremap <leader>dr :VtrSendCtrlD<cr>
+nnoremap <leader>ar :VtrAttachToPane<cr>
 
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
