@@ -13,8 +13,9 @@ source $HOME/dotfiles/zsh/functions
 source $HOME/dotfiles/zsh/prompt
 source $HOME/dotfiles/zsh/secret
 
-PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
-PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
+# TODO: delete these if, after a few days with them commented, nothing breaks!
+# PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
+# PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
 
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
@@ -24,11 +25,7 @@ setopt HIST_IGNORE_SPACE
 HOSTNAME="`hostname`"
 PAGER='less'
 
-
-#LANGUAGE
 LC_ALL='en_US.UTF-8'
-# LC_CTYPE=C
-# DISPLAY=:0
 
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
@@ -46,7 +43,7 @@ stty -ixon
 # better cding
 # http://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
 setopt auto_cd
-cdpath=($HOME/git $HOME/Dropbox $HOME/git/fyp $HOME/Dropbox/Sites)
+cdpath=($HOME/git $HOME/Dropbox $HOME/Dropbox/Sites)
 
 export NVM_DIR="/Users/jackfranklin/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -75,8 +72,18 @@ export GC_GIT=$HOME/git/gocardless
 
 [ -f $GC_GIT/scripts/dev_env/env_setup.sh ] && . $GC_GIT/scripts/dev_env/env_setup.sh
 
-# source ~/.xsh
-
 export GOPATH=$HOME/git/go
 export PATH="$GOPATH/bin:$PATH"
 export PATH="./node_modules/.bin:$PATH"
+
+# always fire up inside tmux
+# tat is defined in aliases
+_not_inside_tmux() { [[ -z "$TMUX" ]] }
+
+ensure_tmux_is_running() {
+  if _not_inside_tmux; then
+    tat
+  fi
+}
+
+ensure_tmux_is_running
