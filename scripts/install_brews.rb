@@ -6,21 +6,15 @@ brews = %w{
   ack
   ctags
   git
-  mercurial
   mongodb
-  phantomjs
   wget
   vim
   tree
   tmux
   reattach-to-user-namespace
   leiningen
-  cmake
-  redis
   gnu-sed
   the_silver_searcher
-  erlang
-  elixir
   youtube-dl
   hub
   z
@@ -28,6 +22,7 @@ brews = %w{
   python
   autoenv
   watchman
+  fzf
 }
 
 INSTALLED_BREWS = `brew list`.split("\n")
