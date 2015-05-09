@@ -75,15 +75,3 @@ export GC_GIT=$HOME/git/gocardless
 export GOPATH=$HOME/git/go
 export PATH="$GOPATH/bin:$PATH"
 export PATH="./node_modules/.bin:$PATH"
-
-# always fire up inside tmux
-# tat is defined in aliases
-_not_inside_tmux() { [[ -z "$TMUX" ]] }
-
-ensure_tmux_is_running() {
-  if _not_inside_tmux; then
-    tat
-  fi
-}
-
-ensure_tmux_is_running
