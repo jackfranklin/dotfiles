@@ -3,9 +3,12 @@ call plug#begin('~/.vim/plugged')
 " Syntax
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
-Plug 'jelera/vim-javascript-syntax'
 Plug 'moll/vim-node'
-Plug 'pangloss/vim-javascript'
+
+" Plug 'jelera/vim-javascript-syntax'
+" Plug 'pangloss/vim-javascript'
+Plug 'othree/yajs.vim'
+
 Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
