@@ -154,6 +154,9 @@ set tags=./.tags;
 
 set lazyredraw
 
+" Stop Vim dying if there's massively long lines.
+set synmaxcol=100
+
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
