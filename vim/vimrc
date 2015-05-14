@@ -4,19 +4,13 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
-
-" Plug 'jelera/vim-javascript-syntax'
-" Plug 'pangloss/vim-javascript'
-Plug 'othree/yajs.vim'
-
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
 Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
-Plug 'andersoncustodio/vim-tmux'
-Plug '1995eaton/vim-better-javascript-completion'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'digitaltoad/vim-jade'
 Plug 'elixir-lang/vim-elixir'
 Plug 'fatih/vim-go'
 
@@ -45,7 +39,6 @@ Plug 'editorconfig/editorconfig-vim'
 Plug 'rking/ag.vim'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
-Plug 'ahw/vim-pbcopy'
 Plug 'tpope/vim-ragtag'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'tpope/vim-rails'
@@ -57,7 +50,6 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'rizzatti/dash.vim'
-Plug 'jeetsukumaran/vim-buffergator'
 
 call plug#end()
 
@@ -238,10 +230,3 @@ if has('nvim')
   " make <Esc> exit insert mode in a terminal buffer
   tnoremap <Esc> <c-\><c-n>
 endif
-
-let g:buffergator_viewport_split_policy = 'R'
-let g:buffergator_suppress_keymaps = 1
-let g:buffergator_autodismiss_on_select=1
-nmap <leader>bl :BuffergatorOpen<cr>
-
-
