@@ -356,7 +356,9 @@ function! plug#load(...)
   for name in a:000
     call s:lod([name], ['ftdetect', 'after/ftdetect', 'plugin', 'after/plugin'])
   endfor
-  doautocmd BufRead
+  if exists('#BufRead')
+    doautocmd BufRead
+  endif
   return 1
 endfunction
 
@@ -386,14 +388,21 @@ function! s:lod(names, types)
     for dir in a:types
       call s:source(rtp, dir.'/**/*.vim')
     endfor
+    if exists('#User#'.name)
+      execute 'doautocmd User' name
+    endif
   endfor
 endfunction
 
 function! s:lod_ft(pat, names)
   call s:lod(a:names, ['plugin', 'after/plugin'])
   execute 'autocmd! PlugLOD FileType' a:pat
-  doautocmd filetypeplugin FileType
-  doautocmd filetypeindent FileType
+  if exists('#filetypeplugin#FileType')
+    doautocmd filetypeplugin FileType
+  endif
+  if exists('#filetypeindent#FileType')
+    doautocmd filetypeindent FileType
+  endif
 endfunction
 
 function! s:lod_cmd(cmd, bang, l1, l2, args, names)
@@ -1665,14 +1674,14 @@ endfunction
 
 function! s:system(cmd, ...)
   try
-    let sh = &shell
+    let [sh, shrd] = [&shell, &shellredir]
     if !s:is_win
-      set shell=sh
+      set shell=sh shellredir=>%s\ 2>&1
     endif
     let cmd = a:0 > 0 ? s:with_cd(a:cmd, a:1) : a:cmd
     return system(s:is_win ? '('.cmd.')' : cmd)
   finally
-    let &shell = sh
+    let [&shell, &shellredir] = [sh, shrd]
   endtry
 endfunction
 
