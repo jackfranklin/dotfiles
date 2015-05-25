@@ -14,9 +14,6 @@ Plug 'mxw/vim-jsx'
 Plug 'elixir-lang/vim-elixir'
 Plug 'fatih/vim-go'
 
-Plug 'altercation/vim-colors-solarized'
-Plug 'NLKNguyen/papercolor-theme'
-
 "Clojure plugins from Jamie
 Plug 'guns/vim-sexp', { 'for': 'clojure' }
 Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
@@ -115,7 +112,6 @@ set nobackup
 set nowritebackup
 set noswapfile
 
-
 set backspace=indent,eol,start
 
 set wildmode=full
@@ -129,11 +125,7 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 set number
 set relativenumber
 
-" pretty colours
 set background=light
-colorscheme PaperColor
-
-
 set colorcolumn=80
 
 set list listchars=tab:»·,trail:·
@@ -148,7 +140,7 @@ set tags=./.tags;
 set lazyredraw
 
 " Stop Vim dying if there's massively long lines.
-set synmaxcol=100
+set synmaxcol=120
 
 " ~~~ MAPPINGS BELOW ~~~
 
