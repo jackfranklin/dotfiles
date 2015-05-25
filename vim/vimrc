@@ -15,6 +15,7 @@ Plug 'elixir-lang/vim-elixir'
 Plug 'fatih/vim-go'
 
 Plug 'altercation/vim-colors-solarized'
+Plug 'NLKNguyen/papercolor-theme'
 
 "Clojure plugins from Jamie
 Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -130,8 +131,8 @@ set relativenumber
 
 " pretty colours
 set background=light
+colorscheme PaperColor
 
-colorscheme solarized
 
 set colorcolumn=80
 
