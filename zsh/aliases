@@ -62,6 +62,7 @@ alias tls="tmux ls"
 alias td="tmux detach"
 alias tnew="echo use tat!!"
 alias tat="new-tmux-from-dir-name"
+alias tj="tmux attach-session -t"
 
 # rails
 alias rup="git pull && (bundle check || bundle install) && rake db:migrate db:test:prepare"
