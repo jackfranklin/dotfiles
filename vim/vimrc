@@ -49,6 +49,9 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'rizzatti/dash.vim'
 
+" Plugs for writing
+Plug 'junegunn/goyo.vim'
+
 call plug#end()
 
 filetype plugin indent on
