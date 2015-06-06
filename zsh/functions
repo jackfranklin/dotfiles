@@ -9,6 +9,10 @@ cd () {
 
 function ck { command mkdir $1 && cd $1 }
 
+function tj {
+  tmux attach-session -t `tmux list-sessions | sed -E 's/:.*$//' | fzf --reverse`
+}
+
 function g {
   if [[ $# > 0 ]]; then
     git $@
