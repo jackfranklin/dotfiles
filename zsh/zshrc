@@ -1,6 +1,7 @@
 fpath=(~/dotfiles/zsh/completion $fpath)
 
 source /usr/local/opt/autoenv/activate.sh
+cd . #so autoenv runs all the time, even when you open a tmux split
 
 # get auto completes going
 autoload -U compinit
