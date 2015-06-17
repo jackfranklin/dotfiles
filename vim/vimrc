@@ -166,6 +166,7 @@ map <leader>sc :setlocal spell!<CR>
 map <leader>t :CtrlP<cr>
 map <leader>b :CtrlPBuffer<cr>
 map <leader>v :vsplit<CR>
+nnoremap <space> :
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 " zoom a vim pane, <C-w>= to re-balance
