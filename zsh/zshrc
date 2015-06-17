@@ -13,10 +13,6 @@ source $HOME/dotfiles/zsh/functions
 source $HOME/dotfiles/zsh/prompt
 source $HOME/dotfiles/zsh/secret
 
-# TODO: delete these if, after a few days with them commented, nothing breaks!
-# PATH="/usr/local/share/npm/bin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/local/sbin:/usr/local/mysql/bin:$PATH"
-# PATH="/usr/local/opt/gnu-sed/libexec/gnubin:$PATH"
-
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
 HISTSIZE=20000
