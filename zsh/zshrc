@@ -72,3 +72,4 @@ export GC_GIT=$HOME/git/gocardless
 export GOPATH=$HOME/git/go
 export PATH="$GOPATH/bin:$PATH"
 export PATH="./node_modules/.bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
