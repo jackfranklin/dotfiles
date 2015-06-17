@@ -66,6 +66,7 @@ alias tat="new-tmux-from-dir-name"
 
 # rails
 alias rup="git pull && (bundle check || bundle install) && rake db:migrate db:test:prepare"
+alias sprung="spring stop"
 alias springstub="bundle exec spring binstub --all"
 
 alias updev="git checkout dev && git pull origin dev && rup"
