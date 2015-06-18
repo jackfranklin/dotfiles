@@ -27,7 +27,6 @@ Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 " Actual Plugs
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
-Plug 'kien/ctrlp.vim'
 Plug 'SirVer/ultisnips'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-rbenv'
@@ -159,12 +158,9 @@ map <Leader>e :call RunCurrentSpecFile()<CR>
 map <Leader>n :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 
-map <leader>cf :CtrlPClearCache<cr>
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>sc :setlocal spell!<CR>
 
-map <leader>t :CtrlP<cr>
-map <leader>b :CtrlPBuffer<cr>
 map <leader>v :vsplit<CR>
 nnoremap <space> :
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
@@ -185,8 +181,6 @@ imap <C-s> <esc>:w<CR>
 
 vnoremap . :norm.<CR>
 
-let g:ctrlp_map = ''
-let g:ctrlp_clear_cache_on_exit = 1
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
@@ -200,9 +194,6 @@ nnoremap <CR> :noh<CR><CR>
 
 " http://robots.thoughtbot.com/faster-grepping-in-vim/
 set grepprg=ag\ --nogroup\ --nocolor
-
-" Use ag in CtrlP for listing files. Lightning fast and respects .gitignore
-let g:ctrlp_user_command = 'ag %s -l --nocolor -g ""'
 
 " Prevent Vim from clobbering the scrollback buffer. See
 " http://www.shallowsky.com/linux/noaltscreen.html
@@ -227,3 +218,25 @@ if has('nvim')
   " make <Esc> exit insert mode in a terminal buffer
   tnoremap <Esc> <c-\><c-n>
 endif
+
+" Run a given vim command on the results of fuzzy selecting from a given shell
+" command. See usage below.
+function! SelectaCommand(choice_command, selecta_args, vim_command)
+
+  try
+    let selection = system(a:choice_command . " | selecta " . a:selecta_args)
+  catch /Vim:Interrupt/
+    " Swallow the ^C so that the redraw below happens; otherwise there will be
+    " leftovers from selecta on the screen
+    redraw!
+    return
+  endtry
+  redraw!
+  exec a:vim_command . " " . selection
+
+endfunction
+
+" Find all files in all non-dot directories starting in the working directory.
+" Fuzzy select one of those. Open the selected file with :e.
+nnoremap <leader>t :call SelectaCommand("ag -l --nocolor", "", ":e")<cr>
+

@@ -23,6 +23,7 @@ brews = %w{
   autoenv
   watchman
   fzf
+  selecta
 }
 
 INSTALLED_BREWS = `brew list`.split("\n")
