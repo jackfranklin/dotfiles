@@ -139,8 +139,6 @@ set splitright
 
 set tags=./.tags;
 
-set lazyredraw
-
 " Stop Vim dying if there's massively long lines.
 set synmaxcol=120
 
@@ -238,5 +236,5 @@ endfunction
 
 " Find all files in all non-dot directories starting in the working directory.
 " Fuzzy select one of those. Open the selected file with :e.
-nnoremap <leader>t :call SelectaCommand("ag -l --nocolor", "", ":e")<cr>
+nnoremap <leader>t :call SelectaCommand("ag -l", "", ":e")<cr>
 
