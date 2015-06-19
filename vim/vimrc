@@ -140,7 +140,7 @@ set splitright
 set tags=./.tags;
 
 " Stop Vim dying if there's massively long lines.
-set synmaxcol=120
+set synmaxcol=250
 
 " ~~~ MAPPINGS BELOW ~~~
 
