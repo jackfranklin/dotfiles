@@ -11,18 +11,7 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'elixir-lang/vim-elixir'
 Plug 'fatih/vim-go'
-
-"Clojure plugins from Jamie
-Plug 'guns/vim-sexp', { 'for': 'clojure' }
-Plug 'tpope/vim-sexp-mappings-for-regular-people', { 'for': 'clojure' }
-Plug 'tpope/vim-leiningen', { 'for': 'clojure' }
-Plug 'tpope/vim-classpath', { 'for': 'clojure' }
-Plug 'tpope/vim-fireplace', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-static', { 'for': 'clojure' }
-Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
-Plug 'luochen1990/rainbow', { 'for': 'clojure' }
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
@@ -67,17 +56,12 @@ autocmd FileType qf setlocal wrap linebreak
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 
-" vim test config
-let g:test#strategy = 'vtr'
-
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
 
 set autoread
 
-" fix slight delay after pressing ESC then O
-" http://ksjoberg.com/vim-esckeys.html
-" set noesckeys
+" fix slight delay after pressing ESC then O http://ksjoberg.com/vim-esckeys.html
 set timeout timeoutlen=500 ttimeoutlen=100
 
 set nofoldenable
@@ -97,6 +81,7 @@ set spelllang=en_gb
 syntax spell toplevel
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0
+au BufRead,BufNewFile *.md setlocal textwidth=80
 
 " ruby syntax highlighting is slower with the newer engine
 autocmd FileType ruby setlocal regexpengine=1
@@ -108,7 +93,7 @@ set linebreak
 set incsearch
 set hlsearch
 
-set scrolloff=10
+set scrolloff=5
 
 set nobackup
 set nowritebackup
@@ -142,6 +127,30 @@ set tags=./.tags;
 " Stop Vim dying if there's massively long lines.
 set synmaxcol=250
 
+" --------------- Folding! ----------------------------------------------------
+
+set fdm=indent
+
+" Map space to toggle current fold
+noremap <Space> za
+
+hi Folded ctermbg=254
+
+" Configure fold status text
+if has("folding")
+  function! NeatFoldText()
+    let line = ' ' . substitute(getline(v:foldstart), '^\s*"\?\s*\|\s*"\?\s*{{' . '{\d*\s*', '', 'g') . ' '
+    let lines_count = v:foldend - v:foldstart + 1
+    let lines_count_text = '| ' . printf("%10s", lines_count . ' lines') . ' |'
+    let foldchar = matchstr(&fillchars, 'fold:\zs.')
+    let foldtextstart = strpart('+' . repeat(foldchar, v:foldlevel*2) . line, 0, (winwidth(0)*2)/3)
+    let foldtextend = lines_count_text . repeat(foldchar, 8)
+    let foldtextlength = strlen(substitute(foldtextstart . foldtextend, '.', 'x', 'g')) + &foldcolumn
+    return foldtextstart . repeat(foldchar, winwidth(0)-foldtextlength) . foldtextend
+  endfunction
+  set foldtext=NeatFoldText()
+endif
+
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
@@ -149,23 +158,20 @@ map Q <Nop>
 
 " Rspec.vim
 let g:rspec_command = "call VtrSendCommand('rspec {spec}', 1)"
-map <Leader>d :Dash<CR>
-" trailing space is on purpose!
-map <Leader>dd :Dash 
 map <Leader>e :call RunCurrentSpecFile()<CR>
 map <Leader>n :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 
+" new file in current directory
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
+
+" toggle spellcheck
 map <leader>sc :setlocal spell!<CR>
 
 map <leader>v :vsplit<CR>
-nnoremap <space> :
-nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
-" zoom a vim pane, <C-w>= to re-balance
-nnoremap <leader>- :wincmd _<cr>:wincmd \|<cr>
-nnoremap <leader>= :wincmd =<cr>
+" clean up any trailing whitespace
+nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 nnoremap <leader>fr :VtrFocusRunner<cr>
 nnoremap <leader>kr :VtrKillRunner<cr>
@@ -176,9 +182,6 @@ nnoremap <leader>ar :VtrAttachToPane<cr>
 " map saving and tabs to Control-"
 map <C-s> <esc>:w<CR>
 imap <C-s> <esc>:w<CR>
-
-vnoremap . :norm.<CR>
-
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
@@ -204,23 +207,10 @@ nnoremap N Nzzzv
 
 noremap H ^
 noremap L $
-vnoremap L g_
-
-au BufRead,BufNewFile *.md setlocal textwidth=80
-
-if has('nvim')
-  " horrible Ctrl-H not being detected in neovim problem. Good job I don't
-  " use backspace...
-  nmap <BS> <C-W>h
-
-  " make <Esc> exit insert mode in a terminal buffer
-  tnoremap <Esc> <c-\><c-n>
-endif
 
 " Run a given vim command on the results of fuzzy selecting from a given shell
 " command. See usage below.
 function! SelectaCommand(choice_command, selecta_args, vim_command)
-
   try
     let selection = system(a:choice_command . " | selecta " . a:selecta_args)
   catch /Vim:Interrupt/
