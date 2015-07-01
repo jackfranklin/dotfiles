@@ -31,7 +31,7 @@ brew:
 nvm:
 	curl https://raw.githubusercontent.com/creationix/nvm/v0.8.0/install.sh | sh
 	source ~/.nvm/nvm.sh && nvm install 0.10
-	source ~/.nvm/nvm.sh && nvm install 0.8
+	source ~/.nvm/nvm.sh && nvm install 0.12
 	source ~/.nvm/nvm.sh && nvm alias default 0.10
 
 node: nvm
