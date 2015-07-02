@@ -1,6 +1,9 @@
 fpath=(~/dotfiles/zsh/completion $fpath)
 
 source /usr/local/opt/autoenv/activate.sh
+export NVM_DIR="/Users/jackfranklin/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
+
 cd . #so autoenv runs all the time, even when you open a tmux split
 
 # get auto completes going
@@ -41,9 +44,6 @@ stty -ixon
 # http://robots.thoughtbot.com/cding-to-frequently-used-directories-in-zsh
 setopt auto_cd
 cdpath=($HOME/git $HOME/Dropbox $HOME/Dropbox/Sites)
-
-export NVM_DIR="/Users/jackfranklin/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
 
 # added by travis gem
 [ -f /Users/jackfranklin/.travis/travis.sh ] && source /Users/jackfranklin/.travis/travis.sh
