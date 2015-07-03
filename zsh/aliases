@@ -72,3 +72,6 @@ alias springstub="bundle exec spring binstub --all"
 alias updev="git checkout dev && git pull origin dev && rup"
 
 alias kill-last-bg="kill -9 %1"
+
+
+alias diffocop="git diff \$(git-parent-branch) --name-only --diff-filter=ACMRTUXB | grep '\.rb$' | tr '\n' ' ' | xargs bundle exec rubocop"

@@ -13,6 +13,18 @@ function tj {
   tmux attach-session -t `tmux list-sessions | sed -E 's/:.*$//' | fzf --reverse`
 }
 
+git-current-branch() {
+  git rev-parse --abbrev-ref HEAD
+}
+
+git-parent-branch() {
+  git show-branch -a 2&>/dev/null \
+  | ack '\*' \
+  | ack -v "$(git-current-branch)" \
+  | head -n1 \
+  | perl -wnl -e '/\[([^\^\]]*)/ and print $1;'
+}
+
 function g {
   if [[ $# > 0 ]]; then
     git $@
