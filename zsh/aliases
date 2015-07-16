@@ -25,6 +25,7 @@ alias gd="git diff"
 alias gds="git diff --staged"
 alias gl="git log --pretty=format:\"%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset\" --abbrev-commit"
 alias gpu="git push"
+alias gpcb='git push origin $(git rev-parse --abbrev-ref HEAD)'
 alias grm="git rm"
 alias grh="git reset HEAD"
 alias gput="git push --tags"
