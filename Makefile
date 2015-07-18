@@ -15,7 +15,6 @@ symlinks:
 	@ln -sf $(DIR)/git/gitignore_global ~/.gitignore_global
 	@ln -sf $(DIR)/ctags/ctags ~/.ctags
 	@ln -sf $(DIR)/gem/gemrc ~/.gemrc
-	@ln -sf $(DIR)/task/taskrc ~/.taskrc
 	@ln -sf $(DIR)/bin ~/.bin
 	@ln -nsf $(DIR)/bundle ~/.bundle
 
