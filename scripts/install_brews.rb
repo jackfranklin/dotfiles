@@ -6,7 +6,6 @@ brews = %w{
   ack
   ctags
   git
-  mongodb
   wget
   vim
   tree
@@ -18,7 +17,6 @@ brews = %w{
   youtube-dl
   hub
   z
-  macvim
   python
   autoenv
   watchman
