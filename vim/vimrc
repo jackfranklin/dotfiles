@@ -12,6 +12,7 @@ Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
 Plug 'fatih/vim-go'
+Plug 'leafgarland/typescript-vim'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
