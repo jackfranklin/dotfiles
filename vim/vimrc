@@ -91,7 +91,6 @@ set spelllang=en_gb
 syntax spell toplevel
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
-au BufRead,BufNewFile *.md setlocal textwidth=80
 
 " ruby syntax highlighting is slower with the newer engine
 autocmd FileType ruby setlocal regexpengine=1
