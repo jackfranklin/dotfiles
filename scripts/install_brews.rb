@@ -20,7 +20,6 @@ brews = %w{
   python
   autoenv
   watchman
-  fzf
   selecta
 }
 
