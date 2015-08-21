@@ -99,3 +99,7 @@ function nvm_prompt_info() {
   node_version=$(nvm current 2> /dev/null) || return
   echo "‹$node_version›"
 }
+
+function kill_springs() {
+  ps -ef | grep spring | grep -v grep | awk '{ print $2 }' | xargs kill
+}
