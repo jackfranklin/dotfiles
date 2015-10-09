@@ -1,6 +1,6 @@
 DIR=/Users/jackfranklin/dotfiles
 
-all: symlinks brew ruby_env gems node clone_vundle
+all: symlinks brew ruby_env gems node
 	@echo "Reminder: Vim plugins are managed within Vim with Vundle."
 
 symlinks:
@@ -24,20 +24,18 @@ ruby_env:
 gems:
 	ruby $(DIR)/scripts/gems.rb
 
-brew:
-	ruby $(DIR)/scripts/install_brews.rb
+install_homebrew:
+	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+
+install_brews: install_homebrew
+	brew tap Homebrew/bundle
+	brew bundle
 
 nvm:
-	curl https://raw.githubusercontent.com/creationix/nvm/v0.8.0/install.sh | sh
-	source ~/.nvm/nvm.sh && nvm install 0.10
+	curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | sh
 	source ~/.nvm/nvm.sh && nvm install 0.12
-	source ~/.nvm/nvm.sh && nvm alias default 0.10
+	source ~/.nvm/nvm.sh && nvm install 4
+	source ~/.nvm/nvm.sh && nvm alias default 4
 
 node: nvm
 	ruby $(DIR)/scripts/npm_bundles.rb
-
-neovim: brew
-	brew tap neovim/homebrew-neovim
-	brew install --HEAD neovim
-	pip install neovim
-

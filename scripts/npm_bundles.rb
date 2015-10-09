@@ -6,14 +6,9 @@ npms = {
   # module name => module command
   # leave command blank if they are the same
   "serve" => "",
-  "distra" => "",
-  "gh" => "",
   "pulldown" => "",
   "express" => "",
   "nodemon" => "",
-  "mocha" => "",
-  "gulp" => "",
-  "karma-cli" => ""
 }
 
 npms.each do |mod, command|
@@ -23,6 +18,3 @@ npms.each do |mod, command|
     `npm install #{mod} -g --silent`
   end
 end
-
-# always run the very latest npm, not just the one that was bundled into Node
-`npm install npm -g --silent`
