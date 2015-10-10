@@ -24,10 +24,7 @@ ruby_env:
 gems:
 	ruby $(DIR)/scripts/gems.rb
 
-install_homebrew:
-	ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-
-install_brews: install_homebrew
+install_brews:
 	brew tap Homebrew/bundle
 	brew bundle
 
