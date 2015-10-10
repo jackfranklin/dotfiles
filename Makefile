@@ -17,12 +17,13 @@ symlinks:
 	@ln -sf $(DIR)/gem/gemrc ~/.gemrc
 	@ln -sf $(DIR)/bin ~/.bin
 	@ln -nsf $(DIR)/bundle ~/.bundle
+	@ln -sf $(DIR)/rbenv/default-gems ~/.rbenv/default-gems
 
-ruby_env:
-	ruby $(DIR)/scripts/ruby_env.rb
 
-gems:
-	ruby $(DIR)/scripts/gems.rb
+LATEST_RUBY="2.2.3"
+ruby:
+	[ -d ~/.rbenv/versions/$(LATEST_RUBY) ] || rbenv install $(LATEST_RUBY)
+	rbenv global $(LATEST_RUBY)
 
 install_brews:
 	brew tap Homebrew/bundle
