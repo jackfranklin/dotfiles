@@ -11,7 +11,7 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'leafgarland/typescript-vim'
+Plug 'lambdatoast/elm.vim'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
