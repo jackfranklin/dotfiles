@@ -26,4 +26,5 @@ cask 'spotify'
 cask 'vlc'
 cask 'seil'
 cask 'skype'
+cask 'dropbox'
 
