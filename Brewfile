@@ -28,4 +28,5 @@ cask 'skype'
 cask 'dropbox'
 cask 'elm-platform'
 cask 'slack'
+cask 'alfred'
 

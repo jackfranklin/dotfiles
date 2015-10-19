@@ -17,7 +17,7 @@ symlinks:
 	@ln -sf $(DIR)/gem/gemrc ~/.gemrc
 	@ln -sf $(DIR)/bin ~/.bin
 	@ln -nsf $(DIR)/bundle ~/.bundle
-	@ln -sf $(DIR)/rbenv/default-gems ~/.rbenv/default-gems
+	@ln -sf $(DIR)/rbenv ~/.rbenv
 
 
 LATEST_RUBY="2.2.3"
