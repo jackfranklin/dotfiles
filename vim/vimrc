@@ -11,7 +11,11 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'lambdatoast/elm.vim'
+
+" commented out whilst I try ElmCast/elm-vim instead
+" Plug 'lambdatoast/elm.vim'
+Plug 'ElmCast/elm-vim'
+
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
