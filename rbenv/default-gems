@@ -3,3 +3,4 @@ rails
 pry
 shotgun
 jekyll
+foreman
