@@ -16,6 +16,7 @@ brew 'z'
 brew 'selecta'
 brew 'autoenv'
 brew 'rbenv-default-gems'
+brew 'fzf'
 
 brew 'caskroom/cask/brew-cask'
 cask 'dashlane'
