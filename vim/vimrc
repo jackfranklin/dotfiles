@@ -50,6 +50,9 @@ Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'clojure' }
 " Plugs for writing
 Plug 'junegunn/goyo.vim'
 
+" Colours
+Plug 'altercation/vim-colors-solarized'
+
 call plug#end()
 
 filetype plugin indent on
@@ -125,6 +128,7 @@ set number
 set relativenumber
 
 set background=dark
+colorscheme solarized
 set colorcolumn=80
 
 set list listchars=tab:»·,trail:·
