@@ -32,3 +32,24 @@ snippet jspm
 	</body>
 </html>
 endsnippet
+
+snippet ng2
+<html>
+  <head>
+    <title>Angular 2 QuickStart</title>
+    <link rel="stylesheet" type="text/css" href="style.css" />
+    <script src="../node_modules/systemjs/dist/system.src.js"></script>
+    <script src="../node_modules/angular2/bundles/angular2.dev.js"></script>
+    <script src="https://js.pusher.com/3.0/pusher.min.js"></script>
+    <script>
+      System.config({
+        packages: {'app': {defaultExtension: 'js'}}
+      });
+      System.import('app/app');
+    </script>
+  </head>
+  <body>
+    <my-app></my-app>
+  </body>
+</html>
+endsnippet
