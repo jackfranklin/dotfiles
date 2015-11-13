@@ -27,6 +27,7 @@ ruby:
 
 install_brews:
 	brew tap Homebrew/bundle
+	brew tap caskroom/versions
 	brew bundle
 
 nvm:

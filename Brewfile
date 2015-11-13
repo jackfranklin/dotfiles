@@ -30,4 +30,5 @@ cask 'dropbox'
 cask 'elm-platform'
 cask 'slack'
 cask 'alfred'
+cask 'google-chrome-canary'
 
