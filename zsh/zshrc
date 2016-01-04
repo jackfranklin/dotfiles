@@ -49,9 +49,10 @@ export PATH="$HOME/.bin:$PATH"
 
 source $HOME/antigen/antigen.zsh
 
-antigen bundle zsh-users/zsh-syntax-highlighting
 antigen bundle kennethreitz/autoenv
 antigen bundle robbyrussell/oh-my-zsh plugins/z
+antigen bundle robbyrussell/oh-my-zsh plugins/npm
+antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply
 
 # used so Ag can tab complete from ctags file
