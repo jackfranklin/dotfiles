@@ -32,8 +32,9 @@ install_brews:
 	brew tap caskroom/versions
 	brew bundle
 
-neovim_python:
+python_modules:
 	pip install neovim
+	pip install Pygments
 
 nvm:
 	curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | sh

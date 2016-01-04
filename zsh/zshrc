@@ -52,6 +52,7 @@ source $HOME/antigen/antigen.zsh
 antigen bundle kennethreitz/autoenv
 antigen bundle robbyrussell/oh-my-zsh plugins/z
 antigen bundle robbyrussell/oh-my-zsh plugins/npm
+antigen bundle robbyrussell/oh-my-zsh plugins/colorize
 antigen bundle zsh-users/zsh-syntax-highlighting
 antigen apply
 
