@@ -17,6 +17,8 @@ brew 'selecta'
 brew 'autoenv'
 brew 'rbenv-default-gems'
 brew 'fzf'
+brew 'neovim/neovim/neovim'
+brew 'python'
 
 brew 'caskroom/cask/brew-cask'
 cask 'dashlane'

@@ -9,6 +9,8 @@ symlinks:
 	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
 	@ln -nsf $(DIR)/vim/vim ~/.vim
 	@ln -sf $(DIR)/vim/vimrc ~/.vimrc
+	@mkdir -p ~/.config/nvim
+	@ln -nsf $(DIR)/vim/vim ~/.config/nvim
 	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
 	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
 	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
@@ -29,6 +31,9 @@ install_brews:
 	brew tap Homebrew/bundle
 	brew tap caskroom/versions
 	brew bundle
+
+neovim_python:
+	pip install neovim
 
 nvm:
 	curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | sh
