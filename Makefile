@@ -43,3 +43,6 @@ nvm:
 
 node: nvm
 	ruby $(DIR)/scripts/npm_bundles.rb
+
+antigen:
+	cd ~ && git clone https://github.com/zsh-users/antigen.git

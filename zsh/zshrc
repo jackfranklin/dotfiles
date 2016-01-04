@@ -1,21 +1,8 @@
-fpath=(~/dotfiles/zsh/completion $fpath)
-
-source /usr/local/opt/autoenv/activate.sh
-export NVM_DIR="/Users/jackfranklin/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"  # This loads nvm
-
-cd . #so autoenv runs all the time, even when you open a tmux split
-
 # get auto completes going
 autoload -U compinit
 compinit
 
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
-
-source $HOME/dotfiles/zsh/aliases
-source $HOME/dotfiles/zsh/functions
-source $HOME/dotfiles/zsh/prompt
-source $HOME/dotfiles/zsh/secret
 
 TZ="Europe/London"
 HISTFILE=$HOME/.zhistory
@@ -30,41 +17,58 @@ LC_ALL='en_US.UTF-8'
 GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
 
+# the one true way
 export EDITOR='vim'
 
-# But still use emacs-style zsh bindings
+# emacs style bindings
 bindkey -e
 
+# load rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
 # this allows Vim to use C-s as a mapping
 stty -ixon
 
-# added by travis gem
-[ -f /Users/jackfranklin/.travis/travis.sh ] && source /Users/jackfranklin/.travis/travis.sh
-
-# this has to be done after rbenv is inited
+# execute binstubs by default
 export PATH="./.bundle/binstubs:$PATH"
 
-# probably a bit unsafe but yolo
-
+# execute things in the ./bin directory
 export PATH="./bin:$PATH"
 
 # for elastic search
 export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
 
-### Added by the Heroku Toolbelt
+# heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-source `brew --prefix`/etc/profile.d/z.sh
+# execute locally installed npm modules
+export PATH="./node_modules/.bin:$PATH"
 
+# put things in ~/.bin into my $PATH
+export PATH="$HOME/.bin:$PATH"
+
+source $HOME/antigen/antigen.zsh
+
+antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle kennethreitz/autoenv
+antigen bundle robbyrussell/oh-my-zsh plugins/z
+antigen apply
+
+# used so Ag can tab complete from ctags file
+fpath=(~/dotfiles/zsh/completion $fpath)
+
+# load nvm
+export NVM_DIR="/Users/jackfranklin/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+
+
+# z plugin gets aliased to `j`
 alias j="z"
 
-export GC_GIT=$HOME/git/gocardless
+# so autoenv runs all the time, even when you open a tmux split
+cd .
 
-[ -f $GC_GIT/scripts/dev_env/env_setup.sh ] && . $GC_GIT/scripts/dev_env/env_setup.sh
-
-export GOPATH=$HOME/git/go
-export PATH="$GOPATH/bin:$PATH"
-export PATH="./node_modules/.bin:$PATH"
-export PATH="$HOME/.bin:$PATH"
+source $HOME/dotfiles/zsh/aliases
+source $HOME/dotfiles/zsh/functions
+source $HOME/dotfiles/zsh/prompt
+source $HOME/dotfiles/zsh/secret
