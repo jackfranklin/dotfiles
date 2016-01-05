@@ -75,3 +75,7 @@ source $HOME/dotfiles/zsh/aliases
 source $HOME/dotfiles/zsh/functions
 source $HOME/dotfiles/zsh/prompt
 source $HOME/dotfiles/zsh/secret
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+export FZF_DEFAULT_COMMAND='ag -g ""'
