@@ -47,9 +47,10 @@ export PATH="./node_modules/.bin:$PATH"
 # put things in ~/.bin into my $PATH
 export PATH="$HOME/.bin:$PATH"
 
+export AUTOENV_FILE_ENTER=".env"
 source $HOME/antigen/antigen.zsh
 
-antigen bundle kennethreitz/autoenv
+antigen bundle Tarrasch/zsh-autoenv
 antigen bundle robbyrussell/oh-my-zsh plugins/z
 antigen bundle robbyrussell/oh-my-zsh plugins/npm
 antigen bundle robbyrussell/oh-my-zsh plugins/colorize

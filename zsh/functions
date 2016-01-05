@@ -2,7 +2,6 @@
 
 cd () {
   builtin cd "$*"
-  autoenv_init
   ls
 }
 
