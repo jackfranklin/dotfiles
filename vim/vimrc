@@ -39,6 +39,7 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'tpope/vim-sleuth'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
