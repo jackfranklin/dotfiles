@@ -230,4 +230,6 @@ let g:fzf_layout = {}
 " nicely?
 autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
 
-autocmd BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+" reset cursor position on files, if it's remembered
+" but don't do it for gitcommit file types
+autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
