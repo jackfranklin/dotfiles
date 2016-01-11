@@ -9,6 +9,7 @@ npms = {
   "pulldown" => "",
   "express" => "",
   "nodemon" => "",
+  "jsctags" => ""
 }
 
 npms.each do |mod, command|
