@@ -33,7 +33,6 @@ Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'tpope/vim-vinegar'
-Plug 'junegunn/vim-peekaboo'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
