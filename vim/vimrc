@@ -73,6 +73,9 @@ runtime macros/matchit.vim
 " wrap quickfix window
 autocmd FileType qf setlocal wrap linebreak
 
+autocmd BufNewFile,BufRead .babelrc setlocal filetype=json
+autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
+
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
