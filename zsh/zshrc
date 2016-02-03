@@ -35,8 +35,7 @@ export PATH="./.bundle/binstubs:$PATH"
 # execute things in the ./bin directory
 export PATH="./bin:$PATH"
 
-# for elastic search
-export JAVA_HOME="/Library/Internet Plug-Ins/JavaAppletPlugin.plugin/Contents/Home"
+export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_72.jdk/Contents/Home"
 
 # heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
