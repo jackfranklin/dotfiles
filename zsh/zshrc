@@ -80,4 +80,3 @@ source $HOME/dotfiles/zsh/secret
 
 export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_TMUX=0
-export NPM_CONFIG_PROGRESS=false
