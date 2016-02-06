@@ -13,6 +13,8 @@ Plug 'mxw/vim-jsx'
 Plug 'lambdatoast/elm.vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'gavocanov/vim-js-indent'
+" does EJS files
+Plug 'briancollins/vim-jst'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
