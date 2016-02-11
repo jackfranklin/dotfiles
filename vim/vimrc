@@ -16,6 +16,8 @@ Plug 'lambdatoast/elm.vim'
 Plug 'leafgarland/typescript-vim'
 " does EJS files
 Plug 'briancollins/vim-jst'
+Plug 'fatih/vim-go'
+Plug 'elixir-lang/vim-elixir'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
