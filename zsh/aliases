@@ -2,6 +2,7 @@
 alias v="vim"
 alias f="fg"
 alias l="ls"
+alias ..="cd .."
 
 # misc
 alias slrn="slrn -n"
