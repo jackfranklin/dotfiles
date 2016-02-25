@@ -18,6 +18,7 @@ brew 'fzf'
 brew 'neovim/neovim/neovim'
 brew 'python'
 brew 'go'
+brew 'flow'
 
 brew 'caskroom/cask/brew-cask'
 cask 'dashlane'
