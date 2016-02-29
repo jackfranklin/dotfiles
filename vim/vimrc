@@ -12,7 +12,11 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'lambdatoast/elm.vim'
+
+" Plug 'lambdatoast/elm.vim'
+" commented out whilst I try elm-vim:
+Plug 'ElmCast/elm-vim'
+
 Plug 'leafgarland/typescript-vim'
 " does EJS files
 Plug 'briancollins/vim-jst'
@@ -80,6 +84,7 @@ autocmd FileType qf setlocal wrap linebreak
 
 autocmd BufNewFile,BufRead .babelrc setlocal filetype=json
 autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
+
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
@@ -234,7 +239,11 @@ let g:fzf_layout = {}
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
-autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
+" autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
+" TODO: keep either the above or below depending on which Elm vim plugin I
+" like best
+let g:elm_format_autosave = 1
+
 
 " reset cursor position on files, if it's remembered
 " but don't do it for gitcommit file types
