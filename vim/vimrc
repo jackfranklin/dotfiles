@@ -12,11 +12,7 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-
-" Plug 'lambdatoast/elm.vim'
-" commented out whilst I try elm-vim:
-Plug 'ElmCast/elm-vim'
-
+Plug 'lambdatoast/elm.vim'
 Plug 'leafgarland/typescript-vim'
 " does EJS files
 Plug 'briancollins/vim-jst'
@@ -239,10 +235,7 @@ let g:fzf_layout = {}
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
-" autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
-" TODO: keep either the above or below depending on which Elm vim plugin I
-" like best
-let g:elm_format_autosave = 1
+autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
 
 
 " reset cursor position on files, if it's remembered
