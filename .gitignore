@@ -9,4 +9,5 @@ zsh/secret
 rbenv/shims
 rbenv/version
 rbenv/versions
+vim/vim/autoload/plug.vim.old
 
