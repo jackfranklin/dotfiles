@@ -4,9 +4,9 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
-Plug 'othree/yajs.vim'
-Plug 'othree/javascript-libraries-syntax.vim'
+Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
+
 Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
@@ -66,9 +66,6 @@ filetype plugin indent on
 
 " Allow JSX in normal JS files
 let g:jsx_ext_required = 0
-
-" special highlighting for React and Lodash
-let g:used_javascript_libs = 'react,lodash'
 
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
