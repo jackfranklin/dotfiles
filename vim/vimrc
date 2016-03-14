@@ -59,6 +59,7 @@ Plug 'junegunn/goyo.vim'
 
 " Colours
 Plug 'altercation/vim-colors-solarized'
+Plug 'ajh17/Spacegray.vim'
 
 call plug#end()
 
@@ -139,7 +140,7 @@ set number
 set relativenumber
 
 set background=dark
-colorscheme solarized
+colorscheme spacegray
 set colorcolumn=80
 
 set list listchars=tab:»·,trail:·
