@@ -4,7 +4,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
-Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
 
 Plug 'othree/html5.vim'
