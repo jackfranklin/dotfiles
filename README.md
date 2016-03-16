@@ -25,3 +25,7 @@ Most of the ZSH prompt was taken from: http://www.anishathalye.com/2015/02/07/an
 
 # Adding new vim plugin
 - plugins are managed in `vim/vimrc` with [Vundle](https://github.com/gmarik/vundle). Add a plugin there, restart Vim and run `:PlugInstall`.
+
+# Setting up offline npm
+
+[Follow these instructions](https://github.com/nolanlawson/local-npm-launch-agent) (soon I'll add them to the Makefile).
