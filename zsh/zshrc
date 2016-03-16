@@ -41,12 +41,6 @@ export PATH=/opt/apache-maven-3.3.9/bin:$PATH
 # heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
 
-# execute locally installed npm modules
-export PATH="./node_modules/.bin:$PATH"
-
-# put things in ~/.bin into my $PATH
-export PATH="$HOME/.bin:$PATH"
-
 export AUTOENV_FILE_ENTER=".env"
 source $HOME/antigen/antigen.zsh
 
@@ -82,3 +76,10 @@ export FZF_DEFAULT_COMMAND='ag -g ""'
 export FZF_TMUX=0
 
 export GOPATH=$HOME/git/go
+
+# execute locally installed npm modules
+export PATH="./node_modules/.bin:$PATH"
+
+# put things in ~/.bin into my $PATH
+export PATH="$HOME/.bin:$PATH"
+
