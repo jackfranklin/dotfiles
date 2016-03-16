@@ -18,12 +18,24 @@
 [push]
 	default = simple
 [color]
-	ui = true
+	ui = always
+[color "diff-highlight"]
+  oldNormal = red
+  oldHighlight = red 52
+  newNormal = green
+  newHighlight = green 22
+[color "diff"]
+  commit = green
+  meta = yellow
+  frag = cyan
+  old = red
+  new = green
+  whitespace = red reverse
 [help]
 	autocorrect = 1
 [core]
 	excludesfile = /Users/jackfranklin/.gitignore_global
-	pager = less -r
+	pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less -r
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [pull]
