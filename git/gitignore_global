@@ -12,3 +12,4 @@ _site/
 .sass-cache/
 .bundle/
 .env
+.venv
