@@ -75,5 +75,8 @@ alias updev="git checkout dev && git pull origin dev && rup"
 
 alias kill-last-bg="kill -9 %1"
 
+# python
+alias newvenv="virtualenv .venv && source .venv/bin/activate"
+
 
 alias diffocop="git diff dev --name-only --diff-filter=ACMRTUXB | grep '\.rb$' | tr '\n' ' ' | xargs bundle exec rubocop"
