@@ -7,12 +7,6 @@ virtualenv_auto_activate() {
       echo "Activating virtualenv ..."
       source .venv/bin/activate
     fi
-  else
-    # if we don't have .venv but VIRTUAL_ENV is active, deactivate
-    if [ "$VIRTUAL_ENV" != "" ]; then
-      echo "Deactivating virtualenv ..."
-      deactivate
-    fi
   fi
 }
 
