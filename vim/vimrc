@@ -222,19 +222,19 @@ omap <leader><tab> <plug>(fzf-maps-o)
 " Insert mode completion
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
 
 "makes fzf never use tmux
 "https://github.com/junegunn/fzf.vim/issues/66#issuecomment-169362556
 let g:fzf_layout = {}
-
 
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
 autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
 
-
 " reset cursor position on files, if it's remembered
 " but don't do it for gitcommit file types
 autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+" open in Marked
+map <leader>m :!open -a Marked\ 2 %<CR>
