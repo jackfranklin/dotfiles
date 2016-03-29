@@ -1,8 +1,25 @@
 # vim: set filetype=sh:
 
+virtualenv_auto_activate() {
+  if [ -e ".venv" ]; then
+    # Check to see if already activated to avoid redundant activating
+    if [ "$VIRTUAL_ENV" != "$(pwd -P)/.venv" ]; then
+      echo "Activating virtualenv ..."
+      source .venv/bin/activate
+    fi
+  else
+    # if we don't have .venv but VIRTUAL_ENV is active, deactivate
+    if [ "$VIRTUAL_ENV" != "" ]; then
+      echo "Deactivating virtualenv ..."
+      deactivate
+    fi
+  fi
+}
+
 cd () {
   builtin cd "$*"
   ls
+  virtualenv_auto_activate
 }
 
 
@@ -102,3 +119,4 @@ function nvm_prompt_info() {
 function kill_springs() {
   ps -ef | grep spring | grep -v grep | awk '{ print $2 }' | xargs kill
 }
+
