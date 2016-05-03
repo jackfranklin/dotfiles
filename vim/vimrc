@@ -4,8 +4,6 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
-" because https://github.com/pangloss/vim-javascript/issues/378 really
-" annoys me!
 Plug 'https://github.com/pangloss/vim-javascript.git', { 'branch': 'develop' }
 
 Plug 'othree/html5.vim'
@@ -55,11 +53,7 @@ Plug 'tpope/vim-sleuth'
 " Plug 'guns/vim-clojure-highlight', { 'for': 'clojure' }
 " Plug 'junegunn/rainbow_parentheses.vim', { 'for': 'clojure' }
 
-" Plugs for writing
-Plug 'junegunn/goyo.vim'
-
 " Colours
-Plug 'altercation/vim-colors-solarized'
 Plug 'ajh17/Spacegray.vim'
 
 call plug#end()
