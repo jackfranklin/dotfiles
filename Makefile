@@ -47,3 +47,6 @@ node: nvm
 
 antigen:
 	cd ~ && git clone https://github.com/zsh-users/antigen.git
+
+tmux:
+	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
