@@ -234,3 +234,8 @@ autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\
 
 " open in Marked
 map <leader>m :!open -a Marked\ 2 %<CR>
+
+" make copy/paste from system clip easier
+vnoremap 8 "*y
+nnoremap 8 "*p
+
