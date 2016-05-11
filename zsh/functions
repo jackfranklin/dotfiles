@@ -114,3 +114,11 @@ function kill_springs() {
   ps -ef | grep spring | grep -v grep | awk '{ print $2 }' | xargs kill
 }
 
+function git-set-origin() {
+  git remote set-url origin $1
+}
+
+function git-set-origin-and-push-master() {
+  git remote set-url origin $1 && git push -u origin master
+}
+
