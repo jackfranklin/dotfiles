@@ -33,4 +33,6 @@ cask 'elm-platform'
 cask 'slack'
 cask 'alfred'
 cask 'google-chrome-canary'
+cask 'bartender'
+cask 'whatsapp'
 
