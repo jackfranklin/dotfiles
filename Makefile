@@ -20,6 +20,8 @@ symlinks:
 	@ln -sf $(DIR)/bin ~/.bin
 	@ln -nsf $(DIR)/bundle ~/.bundle
 	@ln -sf $(DIR)/rbenv ~/.rbenv
+	@ln -nsf $(DIR)/npmrc/npmrcs ~/.npmrcs
+	@ln -sf $(DIR)/npmrc/npmrc ~/.npmrc
 
 
 LATEST_RUBY="2.2.3"
