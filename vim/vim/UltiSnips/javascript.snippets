@@ -27,12 +27,6 @@ snippet nreq
 var ${1} = require('${2:$1}');$0
 endsnippet
 
-snippet iife
-(function ($1) {
-	$0
-}(${2:$1}));
-endsnippet
-
 snippet desc
 describe('$1', function() {
 	$0
@@ -68,4 +62,24 @@ endsnippet
 
 snippet i
 import $1 from '$0';
+endsnippet
+
+snippet fe
+function($1) {
+	$0
+}
+endsnippet
+
+snippet f
+function($1) { $0 }
+endsnippet
+
+snippet af
+($1) => $0
+endsnippet
+
+snippet afe
+($1) => {
+	$0
+}
 endsnippet
