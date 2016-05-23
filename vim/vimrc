@@ -11,7 +11,7 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'lambdatoast/elm.vim'
+Plug 'ElmCast/elm-vim'
 Plug 'leafgarland/typescript-vim'
 " does EJS files
 Plug 'briancollins/vim-jst'
@@ -231,7 +231,10 @@ let g:fzf_layout = {}
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
-autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
+" autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
+
+let g:elm_format_autosave = 1
+let g:elm_setup_keybindings = 0
 
 " reset cursor position on files, if it's remembered
 " but don't do it for gitcommit file types
