@@ -27,6 +27,10 @@ snippet nreq
 var ${1} = require('${2:$1}');$0
 endsnippet
 
+snippet cnreq
+const ${1} = require('${2:$1}');$0
+endsnippet
+
 snippet desc
 describe('$1', function() {
 	$0
@@ -62,6 +66,12 @@ endsnippet
 
 snippet i
 import $1 from '$0';
+endsnippet
+
+snippet (fe
+(function($1) {
+	$0
+})
 endsnippet
 
 snippet fe
