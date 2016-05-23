@@ -1,0 +1,3 @@
+#!/usr/bin/env sh
+
+git clone --depth=1 --branch=master git@github.com:jackfranklin/express-server-boilerplate.git $1 && cd $1 && rm -rf .git && git init && git add -A && git commit -m "Initial commit" && touch .env && npm install
