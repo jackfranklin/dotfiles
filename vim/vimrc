@@ -42,6 +42,7 @@ Plug 'thoughtbot/vim-rspec'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sleuth'
+Plug 'mattn/emmet-vim'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -148,7 +149,7 @@ set splitright
 set tags=./.tags;
 
 " Stop Vim dying if there's massively long lines.
-set synmaxcol=250
+set synmaxcol=500
 
 " ~~~ MAPPINGS BELOW ~~~
 
