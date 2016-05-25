@@ -19,6 +19,8 @@ brew 'neovim/neovim/neovim'
 brew 'python'
 brew 'go'
 brew 'flow'
+brew 'mongo'
+brew 'watchman'
 
 brew 'caskroom/cask/brew-cask'
 cask 'dashlane'
