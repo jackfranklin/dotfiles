@@ -155,6 +155,8 @@ set synmaxcol=500
 " has to go after all theme declarations
 highlight Comment cterm=italic
 
+let g:elm_classic_highlighting = 1
+
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
@@ -236,9 +238,9 @@ let g:fzf_layout = {}
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
-" autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
+autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
 
-let g:elm_format_autosave = 1
+let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
 
 " reset cursor position on files, if it's remembered
@@ -250,5 +252,5 @@ map <leader>m :!open -a Marked\ 2 %<CR>
 
 " make copy/paste from system clip easier
 vnoremap 8 "*y
+vnoremap 9 "*y
 nnoremap 8 "*p
-
