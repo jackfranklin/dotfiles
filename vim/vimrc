@@ -183,10 +183,6 @@ nnoremap <leader>rr :VtrSendLinesToRunner<cr>
 nnoremap <leader>dr :VtrSendCtrlD<cr>
 nnoremap <leader>ar :VtrAttachToPane<cr>
 
-" map saving and tabs to Control-"
-map <C-s> <esc>:w<CR>
-imap <C-s> <esc>:w<CR>
-
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
