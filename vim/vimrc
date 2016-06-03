@@ -155,8 +155,6 @@ set synmaxcol=500
 " has to go after all theme declarations
 highlight Comment cterm=italic
 
-let g:elm_classic_highlighting = 1
-
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
