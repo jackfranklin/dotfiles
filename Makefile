@@ -52,3 +52,7 @@ antigen:
 
 tmux:
 	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+
+term_info:
+	tic term-config/xterm-256color-italic.terminfo
+	tic -x term-config/tmux-256color.terminfo
