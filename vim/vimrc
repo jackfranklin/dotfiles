@@ -11,7 +11,7 @@ Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
-Plug 'ElmCast/elm-vim'
+Plug 'jackfranklin/elm-vim'
 Plug 'leafgarland/typescript-vim'
 " does EJS files
 Plug 'briancollins/vim-jst'
