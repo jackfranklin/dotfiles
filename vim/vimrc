@@ -244,5 +244,5 @@ autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\
 
 " make copy/paste from system clip easier
 vnoremap 8 "*y
-vnoremap 9 "*y
+vnoremap 9 "*p
 nnoremap 8 "*p
