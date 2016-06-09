@@ -75,9 +75,9 @@ autocmd FileType qf setlocal wrap linebreak
 autocmd BufNewFile,BufRead .babelrc setlocal filetype=json
 autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
 " status bar
-set statusline=%{fugitive#statusline()}
-set statusline+=\ %F%m%r%h%w\  "fullpath and status modified sign
+set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
+set statusline+=\ %{fugitive#statusline()}
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
