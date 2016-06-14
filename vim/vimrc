@@ -4,7 +4,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
-Plug 'https://github.com/pangloss/vim-javascript.git', { 'branch': 'develop' }
+Plug 'pangloss/vim-javascript'
 
 Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
