@@ -3,6 +3,7 @@
 	email = jack@jackfranklin.net
 [diff]
 	tool = vimdiff
+	compactionHeuristic = true
 [alias]
   st = status
   ci = commit -v
