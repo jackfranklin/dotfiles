@@ -43,6 +43,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'mattn/emmet-vim'
+Plug 'junegunn/vim-emoji'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -249,3 +250,6 @@ autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\
 vnoremap 8 "*y
 vnoremap 9 "*p
 nnoremap 8 "*p
+
+" easier emojis!
+set completefunc=emoji#complete
