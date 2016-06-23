@@ -44,6 +44,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sleuth'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-emoji'
+Plug 'neomake/neomake'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -252,3 +253,21 @@ set completefunc=emoji#complete
  
  " open in Marked
  map <leader>m :!open -a Marked\ 2 %<CR>
+
+ " lots of the below taken from github.com/alexbooker/dotfiles
+ if has('nvim')
+   function! ResolveESLint()
+     let l:npm_bin = ''
+     let l:eslint = 'eslint'
+     if executable('npm')
+       let l:npm_bin = split(system('npm bin'), '\n')[0]
+     endif
+     if strlen(l:npm_bin) && executable(l:npm_bin . '/eslint')
+       let l:eslint = l:npm_bin . '/eslint'
+     endif
+     let b:neomake_javascript_eslint_exe = l:eslint
+   endfunction
+   autocmd FileType javascript :call ResolveESLint()
+   autocmd! BufWritePost,BufReadPost * Neomake
+   let g:neomake_javascript_enabled_makers = ['eslint']
+ endif
