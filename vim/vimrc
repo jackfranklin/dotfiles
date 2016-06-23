@@ -45,6 +45,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-emoji'
 Plug 'neomake/neomake'
+Plug 'jiangmiao/auto-pairs'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -252,19 +253,32 @@ map <leader>m :!open -a Marked\ 2 %<CR>
 
 if has('nvim')
   " lots of the below taken from github.com/alexbooker/dotfiles
-  function! ResolveESLint()
-     let l:npm_bin = ''
-     let l:eslint = 'eslint'
-     if executable('npm')
-        let l:npm_bin = split(system('npm bin'), '\n')[0]
-     endif
-     if strlen(l:npm_bin) && executable(l:npm_bin . '/eslint')
-        let l:eslint = l:npm_bin . '/eslint'
-     endif
-     let b:neomake_javascript_eslint_exe = l:eslint
+  let g:has_local_eslint = 0
+  let g:eslint_executable = 'eslint'
+
+  function! FindEsLintOnLoad()
+    if g:has_local_eslint == 1
+      return
+    endif
+
+    let l:npm_bin = ''
+    if executable('npm')
+       let l:npm_bin = split(system('npm bin'), '\n')[0]
+    endif
+    if strlen(l:npm_bin) && executable(l:npm_bin . '/eslint')
+      let g:has_local_eslint = 1
+      let g:eslint_executable = l:npm_bin . '/eslint'
+    endif
   endfunction
-  autocmd FileType javascript :call ResolveESLint()
-  autocmd! BufWritePost * Neomake
-  let g:neomake_javascript_enabled_makers = ['eslint']
+
+  function! ConfigNeoMakeEsLint()
+    call FindEsLintOnLoad()
+    if g:has_local_eslint == 1
+      let g:neomake_javascript_eslint_exe = g:eslint_executable
+      let g:neomake_javascript_enabled_makers = ['eslint']
+      autocmd! BufWritePost *.js Neomake
+    endif
+  endfunction
+  autocmd FileType javascript :call ConfigNeoMakeEsLint()
 endif
 
