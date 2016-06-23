@@ -227,10 +227,6 @@ omap <leader><tab> <plug>(fzf-maps-o)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 
-"makes fzf never use tmux
-"https://github.com/junegunn/fzf.vim/issues/66#issuecomment-169362556
-let g:fzf_layout = {}
-
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
@@ -250,24 +246,25 @@ nnoremap 8 "*p
 
 " easier emojis!
 set completefunc=emoji#complete
- 
- " open in Marked
- map <leader>m :!open -a Marked\ 2 %<CR>
 
- " lots of the below taken from github.com/alexbooker/dotfiles
- if has('nvim')
-   function! ResolveESLint()
+" open in Marked
+map <leader>m :!open -a Marked\ 2 %<CR>
+
+if has('nvim')
+  " lots of the below taken from github.com/alexbooker/dotfiles
+  function! ResolveESLint()
      let l:npm_bin = ''
      let l:eslint = 'eslint'
      if executable('npm')
-       let l:npm_bin = split(system('npm bin'), '\n')[0]
+        let l:npm_bin = split(system('npm bin'), '\n')[0]
      endif
      if strlen(l:npm_bin) && executable(l:npm_bin . '/eslint')
-       let l:eslint = l:npm_bin . '/eslint'
+        let l:eslint = l:npm_bin . '/eslint'
      endif
      let b:neomake_javascript_eslint_exe = l:eslint
-   endfunction
-   autocmd FileType javascript :call ResolveESLint()
-   autocmd! BufWritePost,BufReadPost * Neomake
-   let g:neomake_javascript_enabled_makers = ['eslint']
- endif
+  endfunction
+  autocmd FileType javascript :call ResolveESLint()
+  autocmd! BufWritePost * Neomake
+  let g:neomake_javascript_enabled_makers = ['eslint']
+endif
+
