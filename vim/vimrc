@@ -201,10 +201,6 @@ nnoremap <CR> :noh<CR><CR>
 " http://robots.thoughtbot.com/faster-grepping-in-vim/
 set grepprg=ag\ --nogroup\ --nocolor
 
-" Prevent Vim from clobbering the scrollback buffer. See
-" http://www.shallowsky.com/linux/noaltscreen.html
-set t_ti= t_te=
-
 " stolen from https://bitbucket.org/sjl/dotfiles/src/tip/vim/vimrc
 " Keep search matches in the middle of the window.
 nnoremap n nzzzv
