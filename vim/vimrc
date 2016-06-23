@@ -253,3 +253,6 @@ nnoremap 8 "*p
 
 " easier emojis!
 set completefunc=emoji#complete
+ 
+ " open in Marked
+ map <leader>m :!open -a Marked\ 2 %<CR>
