@@ -233,6 +233,7 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 " nicely?
 autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
 
+
 let g:elm_format_autosave = 0
 let g:elm_setup_keybindings = 0
 
@@ -282,3 +283,10 @@ if has('nvim')
   autocmd FileType javascript :call ConfigNeoMakeEsLint()
 endif
 
+function ESLintFix()
+  silent execute "!./node_modules/.bin/eslint --fix %"
+  edit! %
+  Neomake
+endfunction
+
+nnoremap <leader>el :call ESLintFix()<CR>
