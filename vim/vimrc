@@ -36,16 +36,16 @@ Plug 'tpope/vim-rails'
 Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'thinca/vim-visualstar'
-Plug 'tpope/vim-vinegar'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'tpope/vim-sleuth'
-Plug 'mattn/emmet-vim'
 Plug 'junegunn/vim-emoji'
 Plug 'neomake/neomake'
 Plug 'jiangmiao/auto-pairs'
+Plug 'Shougo/unite.vim'
+Plug 'Shougo/vimfiler.vim'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -294,3 +294,17 @@ function ESLintFix()
 endfunction
 
 nnoremap <leader>el :call ESLintFix()<CR>
+
+" VimFiler configuration
+let g:vimfiler_as_default_explorer = 1
+nnoremap - :VimFiler<CR>
+let g:vimfiler_ignore_pattern = ['^\.git$', '^\.DS_Store$']
+let g:vimfiler_safe_mode_by_default = 0
+
+function! s:apply_vimfiler_win_settings()
+  setlocal nonumber norelativenumber
+
+  nmap <buffer> e <Plug>(vimfiler_expand_or_edit)
+  nmap <buffer> - <Plug>(vimfiler_switch_to_parent_directory)
+endfunction
+autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
