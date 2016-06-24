@@ -228,6 +228,8 @@ omap <leader><tab> <plug>(fzf-maps-o)
 imap <c-x><c-f> <plug>(fzf-complete-path)
 imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 
+let g:fzf_prefer_tmux = 1
+
 " run elm-format on every elm file save
 " TODO: this silences any formatting errors - should instead display them
 " nicely?
