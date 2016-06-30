@@ -21,6 +21,7 @@ brew 'go'
 brew 'flow'
 brew 'mongo'
 brew 'watchman'
+brew 'highlight'
 
 brew 'caskroom/cask/brew-cask'
 cask 'dashlane'
