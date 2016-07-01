@@ -42,7 +42,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'junegunn/vim-emoji'
 Plug 'neomake/neomake'
-Plug 'jiangmiao/auto-pairs'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
 
