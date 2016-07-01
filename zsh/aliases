@@ -78,5 +78,6 @@ alias kill-last-bg="kill -9 %1"
 # python
 alias newvenv="virtualenv .venv && source .venv/bin/activate"
 
-
-alias diffocop="git diff dev --name-only --diff-filter=ACMRTUXB | grep '\.rb$' | tr '\n' ' ' | xargs bundle exec rubocop"
+# highlight pasting
+# https://gist.github.com/jimbojsb/1630790
+alias jshigh="pbpaste | highlight --syntax=js -O rtf | pbcopy"

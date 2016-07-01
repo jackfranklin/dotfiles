@@ -122,3 +122,7 @@ function git-set-origin-and-push-master() {
   git remote set-url origin $1 && git push -u origin master
 }
 
+function js-highlight() {
+  highlight -O rtf $1 --line-numbers -W -j 3 --font-size 40 --font Monaco -W  --syntax js | pbcopy
+}
+
