@@ -1,7 +1,7 @@
 DIR=/Users/jackfranklin/dotfiles
 
-all: symlinks brew ruby_env gems node
-	@echo "Reminder: Vim plugins are managed within Vim with Vundle."
+all:
+	@echo "Run things individually!"
 
 symlinks:
 	@ln -nsf $(DIR)/zsh/zsh ~/.zsh
@@ -37,16 +37,11 @@ install_brews:
 
 python_modules:
 	pip install neovim
-	pip install Pygments
 
 nvm:
-	curl https://raw.githubusercontent.com/creationix/nvm/v0.29.0/install.sh | sh
-	source ~/.nvm/nvm.sh && nvm install 0.12
-	source ~/.nvm/nvm.sh && nvm install 4
-	source ~/.nvm/nvm.sh && nvm alias default 4
-
-node: nvm
-	ruby $(DIR)/scripts/npm_bundles.rb
+	curl https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | sh
+	source ~/.nvm/nvm.sh && nvm install 6
+	source ~/.nvm/nvm.sh && nvm alias default 6
 
 antigen:
 	cd ~ && git clone https://github.com/zsh-users/antigen.git
