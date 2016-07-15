@@ -9,8 +9,6 @@ symlinks:
 	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
 	@ln -nsf $(DIR)/vim/vim ~/.vim
 	@ln -sf $(DIR)/vim/vimrc ~/.vimrc
-	@mkdir -p ~/.config/nvim
-	@ln -nsf $(DIR)/vim/vim ~/.config/nvim
 	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
 	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
 	@ln -sf $(DIR)/ag/agignore ~/.agignore
@@ -21,8 +19,9 @@ symlinks:
 	@ln -sf $(DIR)/bin ~/.bin
 	@ln -nsf $(DIR)/bundle ~/.bundle
 	@ln -sf $(DIR)/rbenv ~/.rbenv
-	@ln -nsf $(DIR)/npmrc/npmrcs ~/.npmrcs
 	@ln -sf $(DIR)/npmrc/npmrc ~/.npmrc
+	@mkdir -p ~/.config/nvim
+	@ln -s ~/.vim ~/.config/nvim
 
 
 LATEST_RUBY="2.2.3"
