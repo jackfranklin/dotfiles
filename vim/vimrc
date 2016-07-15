@@ -138,8 +138,9 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 set number
 set relativenumber
 
-set background=light
-colorscheme PaperColor
+set background=dark
+" colorscheme PaperColor
+colorscheme spacegray
 
 set colorcolumn=80
 
