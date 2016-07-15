@@ -1,6 +1,5 @@
 bundler
 rails
-pry
 shotgun
 jekyll
 foreman
