@@ -51,3 +51,8 @@ tmux:
 term_info:
 	tic term-config/xterm-256color-italic.terminfo
 	tic -x term-config/tmux-256color.terminfo
+
+# See https://github.com/neovim/neovim/issues/2048#issuecomment-78045837 for info
+fix_neovim_ctrl_h:
+	infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
+	tic $TERM.ti
