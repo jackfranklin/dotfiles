@@ -126,7 +126,7 @@ function js-highlight() {
   highlight -O rtf $1 --line-numbers -W -j 3 --font-size 40 --font Monaco -W  --syntax js | pbcopy
 }
 
-function files_in_last_commit() {
+function git-files-in-last-commit() {
   git diff-tree --no-commit-id --name-only -r HEAD
 }
 
