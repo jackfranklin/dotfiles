@@ -22,6 +22,7 @@ symlinks:
 	@ln -sf $(DIR)/npmrc/npmrc ~/.npmrc
 	@mkdir -p ~/.config/nvim
 	@ln -s ~/.vim ~/.config/nvim
+	@ln -s ~/dotfiles/vim/vimrc ~/.config/nvim/init.vim
 
 
 LATEST_RUBY="2.2.3"
