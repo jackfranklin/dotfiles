@@ -296,14 +296,14 @@ nnoremap <leader>el :call ESLintFix()<CR>
 
 " VimFiler configuration
 let g:vimfiler_as_default_explorer = 1
-nnoremap - :VimFiler<CR>
+nnoremap - :VimFilerBufferDir<CR>
 let g:vimfiler_ignore_pattern = ['^\.git$', '^\.DS_Store$']
 let g:vimfiler_safe_mode_by_default = 0
 let g:vimfiler_no_default_key_mappings = 1
 
 function! s:apply_vimfiler_win_settings()
   setlocal nonumber norelativenumber
-  nmap <buffer> - <Plug>(vimfiler_switch_to_parent_directory)
+  nmap <buffer> - <Plug>(vimfiler_smart_h)
   nmap <buffer> j <Plug>(vimfiler_loop_cursor_down)
   nmap <buffer> k <Plug>(vimfiler_loop_cursor_up)
   nmap <buffer> gg <Plug>(vimfiler_cursor_top)
