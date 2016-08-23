@@ -243,9 +243,9 @@ let g:elm_setup_keybindings = 0
 autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 " make copy/paste from system clip easier
-vnoremap 8 "*y
-vnoremap 9 "*p
-nnoremap 8 "*p
+vnoremap <leader>8 "*y
+vnoremap <leader>9 "*p
+nnoremap <leader>8 "*p
 
 " easier emojis!
 set completefunc=emoji#complete
