@@ -193,9 +193,7 @@ nnoremap <leader>ar :VtrAttachToPane<cr>
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
 let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsJumpForwardTrigger="<c-k>"
-let g:UltiSnipsJumpBackwardTrigger="<s-c-j>"
-let g:UltiSnipsSnippetDirectories=["UltiSnips"]
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 nnoremap <CR> :noh<CR><CR>
 

@@ -23,6 +23,7 @@ symlinks:
 	@mkdir -p ~/.config/nvim
 	@ln -s ~/.vim ~/.config/nvim
 	@ln -s ~/dotfiles/vim/vimrc ~/.config/nvim/init.vim
+	@ln -s ~/dotfiles/vim/vim/UltiSnips ~/.config/nvim/UltiSnips
 
 
 LATEST_RUBY="2.2.3"
