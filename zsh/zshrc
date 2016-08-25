@@ -75,6 +75,7 @@ source $HOME/dotfiles/zsh/secret
 export FZF_DEFAULT_COMMAND='ag -g "" --hidden'
 
 export GOPATH=$HOME/git/go
+export PATH="$GOPATH/bin:$PATH"
 
 # execute locally installed npm modules
 export PATH="./node_modules/.bin:$PATH"
