@@ -280,9 +280,6 @@ if has('nvim')
     endif
   endfunction
   autocmd FileType javascript :call ConfigNeoMakeEsLint()
-
-  let g:neomake_open_list = 2
-  let g:neomake_list_height = 5
 endif
 
 function ESLintFix()
