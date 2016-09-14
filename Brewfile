@@ -33,4 +33,6 @@ cask 'opera'
 cask 'slack'
 cask 'alfred'
 cask 'bartender'
+cask 'itsycal'
+cask 'tunnelbear'
 
