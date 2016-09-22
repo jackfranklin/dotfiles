@@ -18,10 +18,6 @@ Plug 'briancollins/vim-jst'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir'
 
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-endif
-
 " Actual Plugs
 Plug 'tpope/vim-endwise'
 Plug 'tpope/vim-surround'
@@ -257,8 +253,6 @@ set completefunc=emoji#complete
 map <leader>m :!open -a Marked\ 2 %<CR>
 
 if has('nvim')
-  let g:deoplete#enable_at_startup = 1
-
   " lots of the below taken from github.com/alexbooker/dotfiles
   let g:has_local_eslint = 0
   let g:found_no_eslint = 0
