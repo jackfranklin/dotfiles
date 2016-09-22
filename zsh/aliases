@@ -81,3 +81,6 @@ alias newvenv="virtualenv .venv && source .venv/bin/activate"
 # highlight pasting
 # https://gist.github.com/jimbojsb/1630790
 alias jshigh="pbpaste | highlight --syntax=js -O rtf | pbcopy"
+
+#Elm
+alias epi="elm package install"
