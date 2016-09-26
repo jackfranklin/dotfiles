@@ -20,7 +20,7 @@ cd () {
 function ck { command mkdir $1 && cd $1 }
 
 function tj {
-  tmux attach-session -t `tmux list-sessions | sed -E 's/:.*$//' | selecta`
+  tmux attach-session -t `tmux list-sessions | sed -E 's/:.*$//' | fzf`
 }
 
 git-current-branch() {
