@@ -35,4 +35,5 @@ cask 'alfred'
 cask 'bartender'
 cask 'itsycal'
 cask 'tunnelbear'
+cask 'dash'
 
