@@ -46,6 +46,7 @@ Plug 'neomake/neomake'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
 Plug 'jiangmiao/auto-pairs'
+Plug 'jordwalke/VimAutoMakeDirectory'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
