@@ -17,6 +17,7 @@ Plug 'leafgarland/typescript-vim'
 Plug 'briancollins/vim-jst'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir'
+Plug 'posva/vim-vue'
 
 " Actual Plugs
 Plug 'tpope/vim-endwise'
