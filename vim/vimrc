@@ -141,7 +141,6 @@ set number
 set relativenumber
 
 set background=dark
-" colorscheme PaperColor
 colorscheme spacegray
 
 set colorcolumn=80
@@ -229,12 +228,7 @@ imap <c-x><c-j> <plug>(fzf-complete-file-ag)
 
 let g:fzf_prefer_tmux = 1
 
-" run elm-format on every elm file save
-" TODO: this silences any formatting errors - should instead display them
-" nicely?
-" autocmd BufWritePost *.elm silent execute "!elm-format --yes % &> /dev/null" | edit! | set filetype=elm
-
-
+" Elm.vim settings
 let g:elm_format_autosave = 1
 let g:elm_setup_keybindings = 0
 
@@ -249,9 +243,6 @@ nnoremap <leader>8 "*p
 
 " easier emojis!
 set completefunc=emoji#complete
-
-" open in Marked
-map <leader>m :!open -a Marked\ 2 %<CR>
 
 if has('nvim')
   " lots of the below taken from github.com/alexbooker/dotfiles
