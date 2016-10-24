@@ -45,6 +45,7 @@ Plug 'junegunn/vim-emoji'
 Plug 'neomake/neomake'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
+Plug 'jiangmiao/auto-pairs'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
