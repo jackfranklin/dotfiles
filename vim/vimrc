@@ -45,8 +45,8 @@ Plug 'junegunn/vim-emoji'
 Plug 'neomake/neomake'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
-Plug 'jiangmiao/auto-pairs'
 Plug 'jordwalke/VimAutoMakeDirectory'
+Plug 'cohama/lexima.vim'
 
 " Clojure / ClojureScript
 " Plug 'guns/vim-sexp', { 'for': 'clojure' }
@@ -318,5 +318,3 @@ function! s:apply_vimfiler_win_settings()
   nmap <buffer> D <Plug>(vimfiler_new_directory)
 endfunction
 autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
-
-let g:AutoPairsMultilineClose = 0
