@@ -318,3 +318,5 @@ function! s:apply_vimfiler_win_settings()
   nmap <buffer> D <Plug>(vimfiler_new_directory)
 endfunction
 autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
+
+let g:AutoPairsMultilineClose = 0
