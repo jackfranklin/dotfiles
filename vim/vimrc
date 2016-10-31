@@ -145,6 +145,11 @@ set background=dark
 colorscheme spacegray
 
 set colorcolumn=80
+set cursorline
+hi cursorline cterm=none term=none
+autocmd WinEnter * setlocal cursorline
+autocmd WinLeave * setlocal nocursorline
+highlight CursorLine ctermbg=235
 
 set list listchars=tab:»·,trail:·
 
