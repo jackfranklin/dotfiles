@@ -151,6 +151,9 @@ autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 highlight CursorLine ctermbg=235
 
+" clear highlights by hitting ESC
+nnoremap <esc> :noh<return><esc>
+
 set list listchars=tab:»·,trail:·
 
 command! Q q
