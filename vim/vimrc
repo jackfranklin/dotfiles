@@ -152,7 +152,9 @@ autocmd WinLeave * setlocal nocursorline
 highlight CursorLine ctermbg=235
 
 " clear highlights by hitting ESC
+" or by hitting enter in normal mode
 nnoremap <esc> :noh<return><esc>
+nnoremap <CR> :noh<CR><CR>
 
 set list listchars=tab:»·,trail:·
 
