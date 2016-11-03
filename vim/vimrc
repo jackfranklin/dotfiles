@@ -329,4 +329,5 @@ autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
 let g:delimitMate_expand_cr = 1
 let g:delimitMate_expand_space = 1
 let g:delimitMate_balance_matchpairs = 1
+let delimitMate_nesting_quotes = ['"','`']
 
