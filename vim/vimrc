@@ -60,6 +60,7 @@ Plug 'jordwalke/VimAutoMakeDirectory'
 " Colours
 Plug 'ajh17/Spacegray.vim'
 Plug 'altercation/vim-colors-solarized'
+Plug 'trusktr/seti.vim'
 
 call plug#end()
 
@@ -141,7 +142,8 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 set number
 set relativenumber
 
-colorscheme spacegray
+colorscheme seti
+set background=dark
 
 set colorcolumn=80
 set cursorline
