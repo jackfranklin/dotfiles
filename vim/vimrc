@@ -59,6 +59,7 @@ Plug 'jordwalke/VimAutoMakeDirectory'
 
 " Colours
 Plug 'ajh17/Spacegray.vim'
+Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 
@@ -142,13 +143,16 @@ set relativenumber
 
 set background=dark
 
+colorscheme solarized
+
 set colorcolumn=80
 set cursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
-highlight CursorLine ctermbg=235
-highlight ColorColumn ctermbg=235
+" not needed for solarized
+" highlight CursorLine ctermbg=235
+" highlight ColorColumn ctermbg=235
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
