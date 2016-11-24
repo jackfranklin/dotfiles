@@ -141,18 +141,15 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 set number
 set relativenumber
 
-set background=dark
-
-colorscheme solarized
+colorscheme spacegray
 
 set colorcolumn=80
 set cursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
-" not needed for solarized
-" highlight CursorLine ctermbg=235
-" highlight ColorColumn ctermbg=235
+highlight CursorLine ctermbg=235
+highlight ColorColumn ctermbg=235
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
