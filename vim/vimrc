@@ -44,7 +44,6 @@ Plug 'junegunn/vim-emoji'
 Plug 'neomake/neomake'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
-Plug 'Raimondi/delimitMate'
 Plug 'jordwalke/VimAutoMakeDirectory'
 
 " Clojure / ClojureScript
@@ -327,9 +326,3 @@ function! s:apply_vimfiler_win_settings()
   nmap <buffer> D <Plug>(vimfiler_new_directory)
 endfunction
 autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
-
-let g:delimitMate_expand_cr = 1
-let g:delimitMate_expand_space = 1
-let g:delimitMate_balance_matchpairs = 1
-let delimitMate_nesting_quotes = ['"','`']
-
