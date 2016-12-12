@@ -1,95 +1,47 @@
 snippet func
-var $1 = function($2) {
-	$0
-}
-endsnippet
+  var ${1} = function(${2}) {
+    ${0:TARGET}
+  }
 
 snippet cl
-console.log($1)$0
-endsnippet
+  console.log(${0})
 
 snippet react
-import React from 'react'
+  import React, { Component, PropTypes } from 'react'
 
-export default class $1 extends React.Component {
-	render() {
-		$0
-	}
-}
-endsnippet
-
-snippet clogargs
-console.log.apply(console, arguments)
-$0
-endsnippet
+  export default class ${1} extends Component {
+    ${0}
+    render() {
+      return (
+        <p>Hello World</p>
+      )
+    }
+  }
 
 snippet nreq
-var ${1} = require('${2:$1}')$0
-endsnippet
-
-snippet cnreq
-const ${1} = require('${2:$1}')$0
-endsnippet
+  const ${1:default} = require('${0:$1}')
 
 snippet desc
-describe('$1', function() {
-	$0
-})
-endsnippet
+  describe('${1}', function() {
+    ${0:test}
+  })
 
 snippet test
-test('$1', function() {
-	$0
-})
-endsnippet
+  test('${1}', function() {
+    ${0}
+  })
+
 snippet it
-it('$1', function() {
-	$0
-})
-endsnippet
-
-snippet shebang
-#!/usr/bin/env node
-endsnippet
-
-snippet $inj
-$1 = $injector.get('${2:$1}')$0
-endsnippet
+  it('${1}', function() {
+    ${0}
+  })
 
 snippet exp
-expect($1).$0
-endsnippet
+  expect(${1}).${0}
 
 snippet i{
-import { $1 } from '$0'
-endsnippet
+  import { ${1} } from '${0}'
 
 snippet i
-import $1 from '$0'
-endsnippet
+  import ${1} from '${0}'
 
-snippet (fe
-(function($1) {
-	$0
-})
-endsnippet
-
-snippet fe
-function($1) {
-	$0
-}
-endsnippet
-
-snippet f
-function($1) { $0 }
-endsnippet
-
-snippet af
-($1) => $0
-endsnippet
-
-snippet afe
-($1) => {
-	$0
-}
-endsnippet
