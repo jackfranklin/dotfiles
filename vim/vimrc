@@ -286,6 +286,8 @@ if has('nvim')
     if g:has_local_eslint == 1
       let g:neomake_javascript_eslint_exe = g:eslint_executable
       let g:neomake_javascript_enabled_makers = ['eslint']
+      let g:neomake_highlight_columns=0
+
       autocmd! BufWritePost *.js Neomake
       autocmd! BufWritePost *.jsx Neomake
     endif
