@@ -124,6 +124,9 @@ set backspace=indent,eol,start
 set wildmode=full
 set wildmenu
 
+set foldmethod=syntax
+set nofoldenable
+
 let mapleader=","
 noremap \ ,
 
