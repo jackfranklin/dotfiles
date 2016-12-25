@@ -256,44 +256,6 @@ set completefunc=emoji#complete
 if has('nvim')
   let g:neomake_javascript_enabled_makers = []
 
-  let g:has_local_flow = 0
-  let g:found_no_flow = 0
-  let g:flow_executable = 'flow'
-
-  function! FindFlowBinOnLoad()
-    if g:has_local_flow == 1
-      return
-    endif
-
-    if g:found_no_flow == 1
-      " we checked for flow, but it's not configured for this project
-      " so no point checking again
-      return
-    endif
-
-    let l:npm_bin = ''
-    if executable('npm')
-       let l:npm_bin = split(system('npm bin'), '\n')[0]
-    endif
-    if strlen(l:npm_bin) && executable(l:npm_bin . '/flow')
-      let g:has_local_flow = 1
-      let g:eslint_executable = l:npm_bin . '/flow'
-    else
-      let g:found_no_flow = 1
-    endif
-  endfunction
-
-  function! ConfigNeoMakeFlow()
-    call FindFlowBinOnLoad()
-    if g:has_local_flow == 1
-      let g:neomake_javascript_flow_exe = g:flow_executable
-      call add(g:neomake_javascript_enabled_makers, 'flow')
-      autocmd! BufWritePost *.js Neomake
-      autocmd! BufWritePost *.jsx Neomake
-    endif
-  endfunction
-  autocmd FileType javascript :call ConfigNeoMakeFlow()
-
   " lots of the below taken from github.com/alexbooker/dotfiles
   let g:has_local_eslint = 0
   let g:found_no_eslint = 0
@@ -329,21 +291,54 @@ if has('nvim')
       let g:neomake_javascript_eslint_exe = g:eslint_executable
       call add(g:neomake_javascript_enabled_makers, 'eslint')
       let g:neomake_highlight_columns=0
-
-      autocmd! BufWritePost *.js Neomake
-      autocmd! BufWritePost *.jsx Neomake
     endif
   endfunction
-  autocmd FileType javascript :call ConfigNeoMakeEsLint()
+
+  let g:has_local_flow = 0
+  let g:found_no_flow = 0
+  let g:flow_executable = 'flow'
+
+  function! FindFlowBinOnLoad()
+    if g:has_local_flow == 1
+      return
+    endif
+
+    if g:found_no_flow == 1
+      " we checked for flow, but it's not configured for this project
+      " so no point checking again
+      return
+    endif
+
+    let l:npm_bin = ''
+    if executable('npm')
+       let l:npm_bin = split(system('npm bin'), '\n')[0]
+    endif
+    if strlen(l:npm_bin) && executable(l:npm_bin . '/flow')
+      let g:has_local_flow = 1
+      let g:flow_executable = l:npm_bin . '/flow'
+    else
+      let g:found_no_flow = 1
+    endif
+  endfunction
+
+  function! ConfigNeoMakeFlow()
+    call FindFlowBinOnLoad()
+    if g:has_local_flow == 1
+      let g:neomake_javascript_flow_exe = g:flow_executable
+      call add(g:neomake_javascript_enabled_makers, 'flow')
+    endif
+  endfunction
+
+  function! ConfigNeomake()
+    call ConfigNeoMakeEsLint()
+    call ConfigNeoMakeFlow()
+    let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
+    autocmd! BufWritePost *.js Neomake
+    autocmd! BufWritePost *.jsx Neomake
+  endfunction
+
+  autocmd FileType javascript :call ConfigNeomake()
 endif
-
-function ESLintFix()
-  silent execute "!./node_modules/.bin/eslint --fix %"
-  edit! %
-  Neomake
-endfunction
-
-nnoremap <leader>el :call ESLintFix()<CR>
 
 " VimFiler configuration
 let g:vimfiler_as_default_explorer = 1
