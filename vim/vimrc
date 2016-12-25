@@ -255,6 +255,7 @@ set completefunc=emoji#complete
 
 if has('nvim')
   let g:neomake_javascript_enabled_makers = []
+  let g:has_setup_makers = 0
 
   " lots of the below taken from github.com/alexbooker/dotfiles
   let g:has_local_eslint = 0
@@ -330,11 +331,15 @@ if has('nvim')
   endfunction
 
   function! ConfigNeomake()
+    if g:has_setup_makers == 1
+      return
+    endif
     call ConfigNeoMakeEsLint()
     call ConfigNeoMakeFlow()
     let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
     autocmd! BufWritePost *.js Neomake
     autocmd! BufWritePost *.jsx Neomake
+    let g:has_setup_makers = 1
   endfunction
 
   autocmd FileType javascript :call ConfigNeomake()
@@ -368,6 +373,7 @@ autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 set foldlevel=99999
+let g:javascript_plugin_flow = 1
 
 " expand all folds when entering a file
 autocmd BufWinEnter * silent! :%foldopen!
