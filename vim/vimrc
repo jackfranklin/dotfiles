@@ -256,6 +256,7 @@ set completefunc=emoji#complete
 if has('nvim')
   let g:neomake_javascript_enabled_makers = []
   let g:has_setup_makers = 0
+  let g:neomake_highlight_columns=0
 
   " lots of the below taken from github.com/alexbooker/dotfiles
   let g:has_local_eslint = 0
@@ -291,43 +292,30 @@ if has('nvim')
     if g:has_local_eslint == 1
       let g:neomake_javascript_eslint_exe = g:eslint_executable
       call add(g:neomake_javascript_enabled_makers, 'eslint')
-      let g:neomake_highlight_columns=0
     endif
   endfunction
 
-  let g:has_local_flow = 0
-  let g:found_no_flow = 0
-  let g:flow_executable = 'flow'
-
-  function! FindFlowBinOnLoad()
-    if g:has_local_flow == 1
-      return
-    endif
-
-    if g:found_no_flow == 1
-      " we checked for flow, but it's not configured for this project
-      " so no point checking again
-      return
-    endif
-
-    let l:npm_bin = ''
-    if executable('npm')
-       let l:npm_bin = split(system('npm bin'), '\n')[0]
-    endif
-    if strlen(l:npm_bin) && executable(l:npm_bin . '/flow')
-      let g:has_local_flow = 1
-      let g:flow_executable = l:npm_bin . '/flow'
-    else
-      let g:found_no_flow = 1
-    endif
+  function! StrTrim(txt)
+    return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
   endfunction
 
+  let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
+
+  " from https://github.com/ryyppy/flow-vim-quickfix
   function! ConfigNeoMakeFlow()
-    call FindFlowBinOnLoad()
-    if g:has_local_flow == 1
-      let g:neomake_javascript_flow_exe = g:flow_executable
-      call add(g:neomake_javascript_enabled_makers, 'flow')
-    endif
+    if findfile('.flowconfig', '.;') !=# ''
+      let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
+      if g:flow_path != 'flow not found'
+        let g:neomake_javascript_flow_maker = {
+              \ 'exe': 'sh',
+              \ 'args': ['-c', g:flow_path.' --json 2> /dev/null | flow-vim-quickfix'],
+              \ 'errorformat': '%E%f:%l:%c\,%n: %m',
+              \ 'cwd': '%:p:h' 
+              \ }
+        let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
+      endif
+  endif
+
   endfunction
 
   function! ConfigNeomake()
@@ -337,8 +325,11 @@ if has('nvim')
     call ConfigNeoMakeEsLint()
     call ConfigNeoMakeFlow()
     let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
-    autocmd! BufWritePost *.js Neomake
-    autocmd! BufWritePost *.jsx Neomake
+  " This is kinda useful to prevent Neomake from unnecessary runs
+    if !empty(g:neomake_javascript_enabled_makers)
+      autocmd! BufWritePost * Neomake
+      autocmd! BufWritePost *.jsx Neomake
+    endif
     let g:has_setup_makers = 1
   endfunction
 
