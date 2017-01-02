@@ -58,3 +58,6 @@ term_info:
 fix_neovim_ctrl_h:
 	infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
 	tic $TERM.ti
+
+install-global-npms:
+	npm install --global flow-vim-quickfix
