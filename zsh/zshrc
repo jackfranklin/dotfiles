@@ -103,3 +103,6 @@ export PATH="./node_modules/.bin:$PATH"
 # put things in ~/.bin into my $PATH
 export PATH="$HOME/.bin:$PATH"
 
+# yarn
+export PATH="$PATH:`yarn global bin`"
+
