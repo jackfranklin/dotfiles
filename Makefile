@@ -60,4 +60,4 @@ fix_neovim_ctrl_h:
 	tic $TERM.ti
 
 install-global-npms:
-	npm install --global flow-vim-quickfix
+	npm install --global flow-vim-quickfix yarn
