@@ -327,7 +327,7 @@ if has('nvim')
     let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
   " This is kinda useful to prevent Neomake from unnecessary runs
     if !empty(g:neomake_javascript_enabled_makers)
-      autocmd! BufWritePost * Neomake
+      autocmd! BufWritePost *.jx Neomake
       autocmd! BufWritePost *.jsx Neomake
     endif
     let g:has_setup_makers = 1
