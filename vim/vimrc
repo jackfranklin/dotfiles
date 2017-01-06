@@ -325,11 +325,7 @@ if has('nvim')
     call ConfigNeoMakeEsLint()
     call ConfigNeoMakeFlow()
     let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
-  " This is kinda useful to prevent Neomake from unnecessary runs
-    if !empty(g:neomake_javascript_enabled_makers)
-      autocmd! BufWritePost *.jx Neomake
-      autocmd! BufWritePost *.jsx Neomake
-    endif
+    autocmd BufWritePost,BufEnter * Neomake
     let g:has_setup_makers = 1
   endfunction
 
