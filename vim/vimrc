@@ -299,8 +299,6 @@ if has('nvim')
     return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
   endfunction
 
-  let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-
   " from https://github.com/ryyppy/flow-vim-quickfix
   function! ConfigNeoMakeFlow()
     if findfile('.flowconfig', '.;') !=# ''
@@ -329,8 +327,9 @@ if has('nvim')
     let g:has_setup_makers = 1
   endfunction
 
-  autocmd FileType javascript :call ConfigNeomake()
+  call ConfigNeomake()
 endif
+
 
 " VimFiler configuration
 let g:vimfiler_as_default_explorer = 1
