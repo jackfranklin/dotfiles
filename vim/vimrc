@@ -39,18 +39,12 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'thoughtbot/vim-rspec'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'junegunn/vim-emoji'
-Plug 'neomake/neomake'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimfiler.vim'
 Plug 'jordwalke/VimAutoMakeDirectory'
-
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neosnippet'
+Plug 'w0rp/ale'
+Plug 'tpope/vim-vinegar'
 
 " Colours
 Plug 'ajh17/Spacegray.vim'
-Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 
@@ -250,116 +244,12 @@ vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
-" easier emojis!
-set completefunc=emoji#complete
-
-if has('nvim')
-  let g:neomake_javascript_enabled_makers = []
-  let g:has_setup_makers = 0
-  let g:neomake_highlight_columns=0
-
-  " lots of the below taken from github.com/alexbooker/dotfiles
-  let g:has_local_eslint = 0
-  let g:found_no_eslint = 0
-  let g:eslint_executable = 'eslint'
-
-  function! FindEsLintOnLoad()
-    if g:has_local_eslint == 1
-      return
-    endif
-
-    if g:found_no_eslint == 1
-      " we checked for eslint, but it's not configured for this project
-      " so no point checking again
-      return
-    endif
-
-    let l:npm_bin = ''
-    if executable('npm')
-       let l:npm_bin = split(system('npm bin'), '\n')[0]
-    endif
-    if strlen(l:npm_bin) && executable(l:npm_bin . '/eslint')
-      let g:has_local_eslint = 1
-      let g:eslint_executable = l:npm_bin . '/eslint'
-    else
-      let g:found_no_eslint = 1
-    endif
-  endfunction
-
-
-  function! ConfigNeoMakeEsLint()
-    call FindEsLintOnLoad()
-    if g:has_local_eslint == 1
-      let g:neomake_javascript_eslint_exe = g:eslint_executable
-      call add(g:neomake_javascript_enabled_makers, 'eslint')
-    endif
-  endfunction
-
-  function! StrTrim(txt)
-    return substitute(a:txt, '^\n*\s*\(.\{-}\)\n*\s*$', '\1', '')
-  endfunction
-
-  " from https://github.com/ryyppy/flow-vim-quickfix
-  function! ConfigNeoMakeFlow()
-    if findfile('.flowconfig', '.;') !=# ''
-      let g:flow_path = StrTrim(system('PATH=$(npm bin):$PATH && which flow'))
-      if g:flow_path != 'flow not found'
-        let g:neomake_javascript_flow_maker = {
-              \ 'exe': 'sh',
-              \ 'args': ['-c', g:flow_path.' --json 2> /dev/null | flow-vim-quickfix'],
-              \ 'errorformat': '%E%f:%l:%c\,%n: %m',
-              \ 'cwd': '%:p:h' 
-              \ }
-        let g:neomake_javascript_enabled_makers = g:neomake_javascript_enabled_makers + [ 'flow']
-      endif
-  endif
-
-  endfunction
-
-  function! ConfigNeomake()
-    if g:has_setup_makers == 1
-      return
-    endif
-    call ConfigNeoMakeEsLint()
-    call ConfigNeoMakeFlow()
-    let g:neomake_jsx_enabled_makers = g:neomake_javascript_enabled_makers
-    autocmd BufWritePost,BufEnter * Neomake
-    let g:has_setup_makers = 1
-  endfunction
-
-  call ConfigNeomake()
-endif
-
-
-" VimFiler configuration
-let g:vimfiler_as_default_explorer = 1
-nnoremap - :VimFilerBufferDir<CR>
-let g:vimfiler_ignore_pattern = ['^\.git$', '^\.DS_Store$']
-let g:vimfiler_safe_mode_by_default = 0
-let g:vimfiler_no_default_key_mappings = 1
-
-function! s:apply_vimfiler_win_settings()
-  setlocal nonumber norelativenumber
-  nmap <buffer> - <Plug>(vimfiler_smart_h)
-  nmap <buffer> j <Plug>(vimfiler_loop_cursor_down)
-  nmap <buffer> k <Plug>(vimfiler_loop_cursor_up)
-  nmap <buffer> gg <Plug>(vimfiler_cursor_top)
-  nmap <buffer> <Enter> <Plug>(vimfiler_cd_or_edit)
-  nmap <buffer> q <Plug>(vimfiler_exit)
-  nmap <buffer> d <Plug>(vimfiler_delete_file)
-  nmap <buffer> c <Plug>(vimfiler_copy_file)
-  nmap <buffer> m <Plug>(vimfiler_move_file)
-  nmap <buffer> r <Plug>(vimfiler_rename_file)
-  nmap <buffer> n <Plug>(vimfiler_new_file)
-  nmap <buffer> D <Plug>(vimfiler_new_directory)
-endfunction
-autocmd FileType vimfiler call s:apply_vimfiler_win_settings()
+let g:javascript_plugin_flow = 1
 
 " toggle folds with space
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
 vnoremap <Space> zf
 set foldlevel=99999
-let g:javascript_plugin_flow = 1
 
 " expand all folds when entering a file
 autocmd BufWinEnter * silent! :%foldopen!
