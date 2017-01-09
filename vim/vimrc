@@ -42,13 +42,19 @@ Plug 'junegunn/fzf.vim'
 Plug 'jordwalke/VimAutoMakeDirectory'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
+Plug 'SirVer/ultisnips'
 
 " Colours
 Plug 'ajh17/Spacegray.vim'
 
 call plug#end()
 
+set nocompatible
+
 filetype plugin indent on
+
+let g:UltiSnipsExpandTrigger="<c-k>"
+let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
 " Allow JSX in normal JS files
 let g:jsx_ext_required = 0
@@ -253,3 +259,5 @@ set foldlevel=99999
 
 " expand all folds when entering a file
 autocmd BufWinEnter * silent! :%foldopen!
+let g:ale_lint_on_save = 1
+let g:ale_lint_on_text_changed = 0
