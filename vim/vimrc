@@ -261,3 +261,7 @@ set foldlevel=99999
 autocmd BufWinEnter * silent! :%foldopen!
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
+" disable the Ale HTML linters
+let g:ale_linters = {
+\   'html': [],
+\}
