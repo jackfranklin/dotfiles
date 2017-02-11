@@ -46,6 +46,7 @@ Plug 'SirVer/ultisnips'
 
 " Colours
 Plug 'ajh17/Spacegray.vim'
+Plug 'altercation/vim-colors-solarized'
 
 call plug#end()
 
@@ -133,15 +134,17 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 set number
 set relativenumber
 
-colorscheme spacegray
+" colorscheme spacegray
+set background=light
+colorscheme solarized
 
 set colorcolumn=80
 set cursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
-highlight CursorLine ctermbg=235
-highlight ColorColumn ctermbg=235
+" highlight CursorLine ctermbg=235
+" highlight ColorColumn ctermbg=235
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
