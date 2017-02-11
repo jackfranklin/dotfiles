@@ -134,18 +134,22 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 set number
 set relativenumber
 
-" colorscheme spacegray
-set background=light
-colorscheme solarized
+let vimTheme=$VIM_THEME
+
+if vimTheme == 'solarized'
+  set background=light
+  colorscheme solarized
+else
+  colorscheme spacegray
+  highlight CursorLine ctermbg=235
+  highlight ColorColumn ctermbg=235
+endif
 
 set colorcolumn=80
 set cursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
-" highlight CursorLine ctermbg=235
-" highlight ColorColumn ctermbg=235
-
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
 nnoremap <esc> :noh<return><esc>
