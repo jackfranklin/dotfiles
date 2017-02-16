@@ -109,3 +109,5 @@ export PATH="$HOME/.bin:$PATH"
 # yarn
 export PATH="$PATH:`yarn global bin`"
 
+source ~/.songkickrc
+export ORGNAME=crowdsurge
