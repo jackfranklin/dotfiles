@@ -263,4 +263,4 @@ let g:ale_linters = {
 \}
 
 " stop Elm.vim trying to show compiler erorrs in Vim
-let g:elm_format_fail_silently = 0
+let g:elm_format_fail_silently = 1
