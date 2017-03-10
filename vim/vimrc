@@ -261,3 +261,6 @@ let g:ale_lint_on_text_changed = 0
 let g:ale_linters = {
 \   'html': [],
 \}
+
+" stop Elm.vim trying to show compiler erorrs in Vim
+let g:elm_format_fail_silently = 0
