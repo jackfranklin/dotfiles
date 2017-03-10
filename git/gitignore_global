@@ -13,3 +13,4 @@ _site/
 .bundle/
 .env
 .venv
+JACK_NOTES.txt
