@@ -47,6 +47,7 @@ Plug 'SirVer/ultisnips'
 " Colours
 Plug 'ajh17/Spacegray.vim'
 Plug 'altercation/vim-colors-solarized'
+Plug 'jackfranklin/Smyck-Color-Scheme'
 
 call plug#end()
 
@@ -139,6 +140,9 @@ let vimTheme=$VIM_THEME
 if vimTheme == 'solarized'
   set background=light
   colorscheme solarized
+elseif vimTheme == 'smyck'
+  set background=dark
+  colorscheme smyck
 else
   colorscheme spacegray
   highlight CursorLine ctermbg=235

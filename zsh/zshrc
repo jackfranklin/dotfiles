@@ -2,7 +2,7 @@
 autoload -U compinit
 compinit
 
-VIM_THEME="solarized"
+VIM_THEME="smyck"
 export VIM_THEME
 
 bindkey '^I' complete-word # complete on tab, leave expansion to _expand
