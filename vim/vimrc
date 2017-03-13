@@ -149,7 +149,7 @@ else
   highlight ColorColumn ctermbg=235
 endif
 
-set colorcolumn=80
+set colorcolumn=120
 set cursorline
 hi cursorline cterm=none term=none
 autocmd WinEnter * setlocal cursorline
