@@ -13,6 +13,7 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
 Plug 'ElmCast/elm-vim'
 Plug 'leafgarland/typescript-vim'
+Plug 'peitalin/vim-jsx-typescript'
 " does EJS files
 Plug 'briancollins/vim-jst'
 Plug 'fatih/vim-go'
@@ -175,7 +176,8 @@ set synmaxcol=500
 " has to go after all theme declarations
 highlight Comment cterm=italic
 autocmd FileType javascript.jsx highlight xmlAttrib cterm=italic
-
+autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.jsx
+autocmd FileType typescript.jsx highlight xmlAttrib cterm=italic
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
