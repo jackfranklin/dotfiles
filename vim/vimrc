@@ -179,7 +179,7 @@ highlight Comment cterm=italic
 autocmd FileType javascript.jsx highlight xmlAttrib cterm=italic
 
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
-autocmd FileType typescript.jsx highlight xmlAttrib cterm=italic
+autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
 
 " ~~~ MAPPINGS BELOW ~~~
 
