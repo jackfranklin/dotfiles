@@ -19,6 +19,7 @@ Plug 'briancollins/vim-jst'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir'
 Plug 'posva/vim-vue'
+Plug 'Quramy/tsuquyomi'
 
 " Actual Plugs
 Plug 'tpope/vim-surround'
@@ -176,8 +177,10 @@ set synmaxcol=500
 " has to go after all theme declarations
 highlight Comment cterm=italic
 autocmd FileType javascript.jsx highlight xmlAttrib cterm=italic
-autocmd BufNewFile,BufRead *.tsx,*.jsx set filetype=typescript.jsx
+
+autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
 autocmd FileType typescript.jsx highlight xmlAttrib cterm=italic
+
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
