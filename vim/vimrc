@@ -46,6 +46,8 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'SirVer/ultisnips'
 
+Plug 'junegunn/goyo.vim'
+
 " Colours
 Plug 'ajh17/Spacegray.vim'
 Plug 'altercation/vim-colors-solarized'
