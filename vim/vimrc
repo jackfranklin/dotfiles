@@ -178,10 +178,10 @@ set synmaxcol=500
 " https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
 " has to go after all theme declarations
 highlight Comment cterm=italic
-autocmd FileType javascript.jsx highlight xmlAttrib cterm=italic
-
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
+
 autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
+autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
 
 " ~~~ MAPPINGS BELOW ~~~
 
