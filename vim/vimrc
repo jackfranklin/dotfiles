@@ -62,8 +62,7 @@ filetype plugin indent on
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
 
-" Allow JSX in normal JS files
-let g:jsx_ext_required = 0
+let g:tsuquyomi_disable_default_mappings = 1
 
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
@@ -238,10 +237,6 @@ nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
 
-" Insert mode completion
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-
 let g:fzf_prefer_tmux = 1
 
 " Elm.vim settings
@@ -256,8 +251,6 @@ autocmd BufReadPost * if &filetype != "gitcommit" && line("'\"") > 1 && line("'\
 vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
-
-let g:javascript_plugin_flow = 1
 
 " toggle folds with space
 nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
