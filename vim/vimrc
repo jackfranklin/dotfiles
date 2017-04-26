@@ -268,3 +268,13 @@ let g:ale_linters = {
 
 " stop Elm.vim trying to show compiler erorrs in Vim
 let g:elm_format_fail_silently = 1
+
+" fugitive.vim maps
+
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gc :Gcommit --verbose<CR>
+nnoremap <leader>gpl :Gpull<CR>
+nnoremap <leader>gpu :Gpush<CR>
+nnoremap <leader>gr :Gremove<CR>
+nnoremap <leader>gco :Git checkout<Space>
+nnoremap <leader>gcb :Git checkout -b <Space>
