@@ -187,6 +187,9 @@ autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
 "gtfo ex mode
 map Q <Nop>
 
+nnoremap <leader>c :VtrSendCommandToRunner!<Space>
+nnoremap <leader>yi :VtrSendCommandToRunner! yarn install<Space>
+
 " Rspec.vim
 let g:rspec_command = "call VtrSendCommand('rspec {spec}', 1)"
 map <Leader>e :call RunCurrentSpecFile()<CR>
