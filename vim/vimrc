@@ -45,6 +45,7 @@ Plug 'jordwalke/VimAutoMakeDirectory'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'SirVer/ultisnips'
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
 
 Plug 'junegunn/goyo.vim'
 
