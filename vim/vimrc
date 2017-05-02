@@ -147,6 +147,7 @@ if vimTheme == 'solarized'
 elseif vimTheme == 'smyck'
   set background=dark
   colorscheme smyck
+  highlight Error NONE
 else
   colorscheme spacegray
   highlight CursorLine ctermbg=235
