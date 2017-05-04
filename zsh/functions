@@ -1,19 +1,8 @@
 # vim: set filetype=sh:
 
-virtualenv_auto_activate() {
-  if [ -e ".venv" ]; then
-    # Check to see if already activated to avoid redundant activating
-    if [ "$VIRTUAL_ENV" != "$(pwd -P)/.venv" ]; then
-      echo "Activating virtualenv ..."
-      source .venv/bin/activate
-    fi
-  fi
-}
-
 cd () {
   builtin cd "$*"
   ls
-  virtualenv_auto_activate
 }
 
 
@@ -25,14 +14,6 @@ function tj {
 
 git-current-branch() {
   git rev-parse --abbrev-ref HEAD
-}
-
-git-parent-branch() {
-  git show-branch -a 2&>/dev/null \
-  | ack '\*' \
-  | ack -v "$(git-current-branch)" \
-  | head -n1 \
-  | perl -wnl -e '/\[([^\^\]]*)/ and print $1;'
 }
 
 function g {
@@ -128,5 +109,25 @@ function js-highlight() {
 
 function git-files-in-last-commit() {
   git diff-tree --no-commit-id --name-only -r HEAD
+}
+
+# from https://github.com/junegunn/fzf/wiki/examples#git
+gbr() {
+  local branches branch
+  branches=$(git for-each-ref --count=30 --sort=-committerdate refs/heads/ --format="%(refname:short)") &&
+  branch=$(echo "$branches" |
+           fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+  git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
+}
+
+gshow() {
+  git log --graph --color=always \
+      --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" "$@" |
+  fzf --ansi --no-sort --reverse --tiebreak=index --bind=ctrl-s:toggle-sort \
+      --bind "ctrl-m:execute:
+                (grep -o '[a-f0-9]\{7\}' | head -1 |
+                xargs -I % sh -c 'git show --color=always % | less -R') << 'FZF-EOF'
+                {}
+FZF-EOF"
 }
 
