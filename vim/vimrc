@@ -18,7 +18,6 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'briancollins/vim-jst'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir'
-Plug 'posva/vim-vue'
 Plug 'Quramy/tsuquyomi'
 
 " Actual Plugs
@@ -108,9 +107,6 @@ syntax spell toplevel
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
 autocmd FileType elm setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
-" ruby syntax highlighting is slower with the newer engine
-autocmd FileType ruby setlocal regexpengine=1
-
 set laststatus=2
 
 set linebreak
@@ -129,15 +125,13 @@ set backspace=indent,eol,start
 set wildmode=full
 set wildmenu
 
-set foldmethod=syntax
-
 let mapleader=","
 noremap \ ,
 
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
-set number
-set relativenumber
+" set number
+" set relativenumber
 
 let vimTheme=$VIM_THEME
 
@@ -173,7 +167,7 @@ set splitright
 set tags=./.tags;
 
 " Stop Vim dying if there's massively long lines.
-set synmaxcol=500
+set synmaxcol=1000
 
 " https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
 " has to go after all theme declarations
@@ -256,13 +250,6 @@ vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
-" toggle folds with space
-nnoremap <silent> <Space> @=(foldlevel('.')?'za':"\<Space>")<CR>
-vnoremap <Space> zf
-set foldlevel=99999
-
-" expand all folds when entering a file
-autocmd BufWinEnter * silent! :%foldopen!
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 " disable the Ale HTML linters
@@ -274,7 +261,6 @@ let g:ale_linters = {
 let g:elm_format_fail_silently = 1
 
 " fugitive.vim maps
-
 nnoremap <leader>gs :Gstatus<CR>
 nnoremap <leader>gc :Gcommit --verbose<CR>
 nnoremap <leader>gpl :Gpull<CR>
