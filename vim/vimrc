@@ -78,6 +78,9 @@ autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
+" this line below pushes everything below it to the right hand side
+set statusline+=%=
+set statusline+=\ %l\:%c
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
