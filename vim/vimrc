@@ -5,6 +5,7 @@ Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
 Plug 'pangloss/vim-javascript', { 'branch': 'develop' }
+Plug 'guns/xterm-color-table.vim'
 
 Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
@@ -45,13 +46,7 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
-
 Plug 'junegunn/goyo.vim'
-
-" Colours
-Plug 'ajh17/Spacegray.vim'
-Plug 'altercation/vim-colors-solarized'
-Plug 'jackfranklin/Smyck-Color-Scheme'
 
 call plug#end()
 
@@ -74,6 +69,12 @@ autocmd FileType qf setlocal wrap linebreak
 
 autocmd BufNewFile,BufRead .babelrc setlocal filetype=json
 autocmd BufNewFile,BufRead .eslintrc setlocal filetype=json
+
+function! SyntaxItem()
+  echo synIDattr(synID(line("."),col("."),1),"name")
+endfunction
+
+
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
@@ -81,6 +82,7 @@ set statusline+=\ %{fugitive#statusline()}
 " this line below pushes everything below it to the right hand side
 set statusline+=%=
 set statusline+=\ %l\:%c
+
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
@@ -136,24 +138,10 @@ set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 " set number
 " set relativenumber
 
-let vimTheme=$VIM_THEME
-
-if vimTheme == 'solarized'
-  set background=light
-  colorscheme solarized
-elseif vimTheme == 'smyck'
-  set background=dark
-  colorscheme smyck
-  highlight Error NONE
-else
-  colorscheme spacegray
-  highlight CursorLine ctermbg=235
-  highlight ColorColumn ctermbg=235
-endif
-
 set colorcolumn=120
 set cursorline
 hi cursorline cterm=none term=none
+highlight CursorLine ctermbg=235
 autocmd WinEnter * setlocal cursorline
 autocmd WinLeave * setlocal nocursorline
 " clear highlights by hitting ESC
@@ -179,7 +167,9 @@ autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
 
 autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
 autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
+highlight PmenuSel ctermbg=252 ctermfg=242
 
+highlight jsxAttrib ctermfg=3
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
