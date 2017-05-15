@@ -74,11 +74,14 @@ function! SyntaxItem()
   echo synIDattr(synID(line("."),col("."),1),"name")
 endfunction
 
+" Ale status line - last empty string = no message when everything is OK
+let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
 
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
+set statusline+=\ %{ALEGetStatusLine()}
 " this line below pushes everything below it to the right hand side
 set statusline+=%=
 set statusline+=\ %l\:%c
@@ -243,6 +246,8 @@ vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
 let g:ale_lint_on_save = 1
 let g:ale_lint_on_text_changed = 0
 " disable the Ale HTML linters
