@@ -246,14 +246,13 @@ vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
 let g:ale_lint_on_save = 1
-let g:ale_lint_on_text_changed = 0
+let g:ale_lint_on_text_changed = 'never'
 " disable the Ale HTML linters
 let g:ale_linters = {
 \   'html': [],
 \}
+let g:ale_set_highlights = 0
 
 " stop Elm.vim trying to show compiler erorrs in Vim
 let g:elm_format_fail_silently = 1
