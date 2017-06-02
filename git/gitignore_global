@@ -14,3 +14,4 @@ _site/
 .env
 .venv
 JACK_NOTES.txt
+.vscode/
