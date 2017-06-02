@@ -258,12 +258,12 @@ let g:ale_set_highlights = 0
 let g:elm_format_fail_silently = 1
 
 " set Prettier up to run on save
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = [
-\ 'prettier',
-\]
-let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
+" let g:ale_fixers = {}
+" let g:ale_fixers['javascript'] = [
+" \ 'prettier',
+" \]
+" let g:ale_fix_on_save = 1
+" let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
 
 " fugitive.vim maps
 nnoremap <leader>gs :Gstatus<CR>
