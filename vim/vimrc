@@ -5,7 +5,7 @@ Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'moll/vim-node'
 Plug 'pangloss/vim-javascript', { 'branch': 'develop' }
-Plug 'guns/xterm-color-table.vim'
+" Plug 'guns/xterm-color-table.vim'
 
 Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
@@ -14,12 +14,12 @@ Plug 'mustache/vim-mustache-handlebars'
 Plug 'mxw/vim-jsx'
 Plug 'ElmCast/elm-vim'
 Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+Plug 'peitalin/vim-jsx-typescript', { 'for': 'typescript' }
 " does EJS files
 Plug 'briancollins/vim-jst'
 Plug 'fatih/vim-go'
 Plug 'elixir-lang/vim-elixir'
-Plug 'Quramy/tsuquyomi'
+Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 
 " Actual Plugs
 Plug 'tpope/vim-surround'
@@ -46,7 +46,7 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'SirVer/ultisnips'
 Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer' }
-Plug 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 
 call plug#end()
 
@@ -256,6 +256,14 @@ let g:ale_set_highlights = 0
 
 " stop Elm.vim trying to show compiler erorrs in Vim
 let g:elm_format_fail_silently = 1
+
+" set Prettier up to run on save
+let g:ale_fixers = {}
+let g:ale_fixers['javascript'] = [
+\ 'prettier',
+\]
+let g:ale_fix_on_save = 1
+let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
 
 " fugitive.vim maps
 nnoremap <leader>gs :Gstatus<CR>
