@@ -12,7 +12,8 @@ Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript', { 'for': 'typescript' }
 Plug 'elixir-lang/vim-elixir'
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
-Plug 'neoclide/vim-jsx-improve'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
 
 " Actual Plugs
 Plug 'tpope/vim-surround'
@@ -52,6 +53,8 @@ let g:tsuquyomi_disable_default_mappings = 1
 
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
+
+set background=dark
 
 runtime macros/matchit.vim
 
@@ -129,8 +132,8 @@ noremap \ ,
 
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
-" set number
-" set relativenumber
+set number
+set relativenumber
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
@@ -153,16 +156,14 @@ set synmaxcol=1000
 highlight Comment cterm=italic
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
 
-" for real: https://github.com/neoclide/vim-jsx-improve/issues/6
-au BufNewFile,BufRead *.jsx setlocal ft=html ft=javascript
-
 autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
 autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
 highlight PmenuSel ctermbg=252 ctermfg=242
 
 highlight jsxAttrib ctermfg=3
-highlight jsFuncCall ctermfg=21
 highlight jsThis cterm=italic ctermfg=3
+highlight jsFuncCall ctermfg=cyan
+highlight jsComment ctermfg=gray cterm=italic
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
