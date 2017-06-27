@@ -2,6 +2,7 @@ call plug#begin('~/.vim/plugged')
 Plug 'tpope/vim-git'
 call plug#end()
 
+set nocompatible
 set backspace=indent,eol,start
 set cursorline
 hi cursorline cterm=none term=none
