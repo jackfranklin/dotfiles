@@ -152,7 +152,7 @@ highlight PmenuSel ctermbg=252 ctermfg=242
 highlight jsxAttrib ctermfg=3
 highlight jsThis ctermfg=3
 highlight jsFuncCall ctermfg=cyan
-highlight jsComment ctermfg=gray
+highlight jsComment ctermfg=240 ctermbg=none
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
