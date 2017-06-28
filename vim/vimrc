@@ -54,6 +54,8 @@ autocmd VimResized * :wincmd =
 set shiftround
 set noshowcmd
 set lazyredraw
+set nofoldenable
+map K <Nop>
 
 set background=dark
 
@@ -147,12 +149,19 @@ set tags=./.tags;
 
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
 
-highlight PmenuSel ctermbg=252 ctermfg=242
+" make the completion menu a bit more readable
+highlight PmenuSel ctermbg=white ctermfg=black
+highlight Pmenu ctermbg=black ctermfg=white
 
+" so it's clear which paren I'm on and which is matched
+highlight MatchParen cterm=underline ctermbg=none ctermfg=yellow
+
+"few nicer JS colours
 highlight jsxAttrib ctermfg=3
 highlight jsThis ctermfg=3
 highlight jsFuncCall ctermfg=cyan
 highlight jsComment ctermfg=240 ctermbg=none
+
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
