@@ -18,7 +18,7 @@ GIT_MERGE_AUTOEDIT=no
 export GIT_MERGE_AUTOEDIT
 
 # the one true way
-export EDITOR='vim -u ~/.gitvimrc'
+export EDITOR='nvim'
 
 # emacs style bindings
 bindkey -e

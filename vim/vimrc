@@ -127,6 +127,7 @@ noremap \ ,
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
 set number
+set relativenumber
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
@@ -146,17 +147,17 @@ set synmaxcol=1000
 
 " https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
 " has to go after all theme declarations
-highlight Comment cterm=italic
+" highlight Comment cterm=italic
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
 
-autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
-autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
+" autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
+" autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
 highlight PmenuSel ctermbg=252 ctermfg=242
 
 highlight jsxAttrib ctermfg=3
-highlight jsThis cterm=italic ctermfg=3
+highlight jsThis ctermfg=3
 highlight jsFuncCall ctermfg=cyan
-highlight jsComment ctermfg=gray cterm=italic
+highlight jsComment ctermfg=gray
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
