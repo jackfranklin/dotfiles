@@ -26,9 +26,6 @@ bindkey -e
 # load rbenv
 if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
 
-# this allows Vim to use C-s as a mapping
-stty -ixon
-
 # execute binstubs by default
 export PATH="./.bundle/binstubs:$PATH"
 
@@ -45,15 +42,10 @@ export AUTOENV_FILE_ENTER=".env"
 source $HOME/antigen/antigen.zsh
 
 antigen bundle Tarrasch/zsh-autoenv
-antigen bundle robbyrussell/oh-my-zsh plugins/z
-antigen bundle robbyrussell/oh-my-zsh plugins/npm
-antigen bundle robbyrussell/oh-my-zsh plugins/colorize
 antigen bundle zsh-users/zsh-syntax-highlighting
+antigen bundle robbyrussell/oh-my-zsh plugins/z
 antigen bundle zsh-users/zsh-autosuggestions
 antigen apply
-
-# used so Ag can tab complete from ctags file
-fpath=(~/dotfiles/zsh/completion $fpath)
 
 export NVM_DIR="/Users/jackfranklin/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
