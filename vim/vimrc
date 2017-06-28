@@ -51,6 +51,9 @@ let g:tsuquyomi_disable_default_mappings = 1
 " automatically rebalance windows on vim resize
 autocmd VimResized * :wincmd =
 
+set shiftround
+set noshowcmd
+
 set background=dark
 
 runtime macros/matchit.vim
@@ -75,7 +78,6 @@ set statusline+=\ %{fugitive#statusline()}
 set statusline+=\ %{ALEGetStatusLine()}
 " this line below pushes everything below it to the right hand side
 set statusline+=%=
-set statusline+=\ %l\:%c
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
@@ -142,16 +144,8 @@ set splitright
 
 set tags=./.tags;
 
-" Stop Vim dying if there's massively long lines.
-set synmaxcol=1000
-
-" https://alexpearce.me/2014/05/italics-in-iterm2-vim-tmux/
-" has to go after all theme declarations
-" highlight Comment cterm=italic
 autocmd BufNewFile,BufRead *.tsx set filetype=typescript.jsx
 
-" autocmd FileType typescript.jsx highlight jsxAttrib cterm=italic
-" autocmd FileType javascript.jsx highlight jsxAttrib cterm=italic
 highlight PmenuSel ctermbg=252 ctermfg=242
 
 highlight jsxAttrib ctermfg=3
