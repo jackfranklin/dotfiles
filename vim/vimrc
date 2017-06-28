@@ -53,6 +53,7 @@ autocmd VimResized * :wincmd =
 
 set shiftround
 set noshowcmd
+set lazyredraw
 
 set background=dark
 
