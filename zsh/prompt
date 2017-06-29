@@ -17,4 +17,4 @@ zstyle ':vcs_info:*' enable git
 
 precmd () { vcs_info }
 PROMPT='%F{5}[%F{2}%n%F{5}] %F{3}%3~ ${vcs_info_msg_0_} %f%# '
-RPS1='$(get_suspended_jobs)'
+RPROMPT='$(get_suspended_jobs)'
