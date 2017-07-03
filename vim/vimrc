@@ -158,10 +158,10 @@ highlight Pmenu ctermbg=black ctermfg=white
 highlight MatchParen cterm=underline ctermbg=none ctermfg=yellow
 
 "few nicer JS colours
-highlight jsxAttrib ctermfg=3
-highlight jsThis ctermfg=3
+highlight jsxAttrib ctermfg=3 cterm=italic
+highlight jsThis ctermfg=3 cterm=italic
 highlight jsFuncCall ctermfg=cyan
-highlight jsComment ctermfg=240 ctermbg=none
+highlight jsComment ctermfg=245 ctermbg=none cterm=italic
 
 " ~~~ MAPPINGS BELOW ~~~
 
@@ -237,4 +237,4 @@ let g:ale_fixers['javascript'] = [
 \ 'prettier', 'eslint'
 \]
 let g:ale_fix_on_save = 1
-let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi --print-width 120'
+let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
