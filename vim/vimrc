@@ -163,6 +163,7 @@ highlight jsThis cterm=italic ctermfg=224
 highlight jsSuper cterm=italic ctermfg=13
 highlight jsFuncCall ctermfg=cyan
 highlight jsComment ctermfg=245 ctermbg=none cterm=italic
+highlight jsClassProperty ctermfg=14 cterm=bold
 
 " ~~~ MAPPINGS BELOW ~~~
 
