@@ -155,11 +155,12 @@ highlight PmenuSel ctermbg=white ctermfg=black
 highlight Pmenu ctermbg=black ctermfg=white
 
 " so it's clear which paren I'm on and which is matched
-highlight MatchParen cterm=underline ctermbg=none ctermfg=yellow
+highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
 "few nicer JS colours
-highlight jsxAttrib ctermfg=3 cterm=italic
-highlight jsThis ctermfg=3 cterm=italic
+highlight xmlAttrib cterm=italic ctermfg=121
+highlight jsThis cterm=italic ctermfg=224
+highlight jsSuper cterm=italic ctermfg=13
 highlight jsFuncCall ctermfg=cyan
 highlight jsComment ctermfg=245 ctermbg=none cterm=italic
 
