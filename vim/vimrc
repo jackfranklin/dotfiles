@@ -45,7 +45,6 @@ filetype plugin indent on
 
 let g:UltiSnipsExpandTrigger="<c-k>"
 let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
-let g:jsx_ext_required = 0
 
 let g:tsuquyomi_disable_default_mappings = 1
 
@@ -54,7 +53,6 @@ autocmd VimResized * :wincmd =
 
 set shiftround
 set noshowcmd
-set lazyredraw
 set nofoldenable
 map K <Nop>
 
@@ -133,7 +131,6 @@ noremap \ ,
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
 set number
-set relativenumber
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
