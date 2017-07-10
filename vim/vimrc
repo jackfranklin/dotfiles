@@ -155,11 +155,11 @@ highlight Pmenu ctermbg=black ctermfg=white
 highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
 "few nicer JS colours
-highlight xmlAttrib cterm=italic ctermfg=121
-highlight jsThis cterm=italic ctermfg=224
-highlight jsSuper cterm=italic ctermfg=13
+highlight xmlAttrib ctermfg=121
+highlight jsThis ctermfg=224
+highlight jsSuper ctermfg=13
 highlight jsFuncCall ctermfg=cyan
-highlight jsComment ctermfg=245 ctermbg=none cterm=italic
+highlight jsComment ctermfg=245 ctermbg=none
 highlight jsClassProperty ctermfg=14 cterm=bold
 
 " ~~~ MAPPINGS BELOW ~~~
