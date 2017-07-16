@@ -14,9 +14,26 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 # Installing
 
 - Swap your shell to ZSH (System Prefs -> Users -> Right Click on 'Advanced Settings' -> select ZSH from dropdown).
-- Clone repository (I recommend `~/dotfiles`). If you don't use `~/dotfiles`, you'll have to update a couple of the scripts to point them to the right place.
+- Clone repository into `~/dotfiles`
 - `cd ~/dotfiles`
 - Go through the `Makefile` and run the commands to get the things up that you'd like.
 
-# Adding new vim plugin
-- plugins are managed in `vim/vimrc` with [Vundle](https://github.com/gmarik/vundle). Add a plugin there, restart Vim and run `:PlugInstall`.
+# Vim Plugins
+
+Are all handled with Vim Plug.
+
+# Setting up terminal
+
+I use the Mac OS Terminal.app vs iTerm 2 (I've found it's a bit snappier and I like having fewer custom apps).
+
+However, you need to configure Shift+UP and Shift+DOWN to send the right sequence (such that you can use shift + arrow keys to resize Tmux splits.
+
+![](doc/terminal-keys.png)
+
+# Other apps to install that are not in the `Brewfile`
+
+- Mac App Store
+    - Divvy
+- 1Password
+- Mega Sync
+- Spark

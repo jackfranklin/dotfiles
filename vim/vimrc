@@ -9,7 +9,8 @@ Plug 'tpope/vim-markdown'
 Plug 'ElmCast/elm-vim'
 Plug 'leafgarland/typescript-vim'
 Plug 'peitalin/vim-jsx-typescript', { 'for': 'typescript' }
-Plug 'elixir-lang/vim-elixir'
+Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
@@ -36,10 +37,13 @@ Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'SirVer/ultisnips'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
 call plug#end()
 
 set nocompatible
+
+let g:deoplete#enable_at_startup = 1
 
 filetype plugin indent on
 
