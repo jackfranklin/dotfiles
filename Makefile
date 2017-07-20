@@ -38,7 +38,8 @@ install_brews:
 	brew bundle
 
 python_modules:
-	pip install neovim
+	pip3 install neovim
+	pip3 install neovim-remote
 
 nvm:
 	curl https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | sh
@@ -48,17 +49,10 @@ nvm:
 antigen:
 	cd ~ && git clone https://github.com/zsh-users/antigen.git
 
-tmux:
-	git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
-
-term_info:
-	tic term-config/xterm-256color-italic.terminfo
-	tic -x term-config/tmux-256color.terminfo
-
 # See https://github.com/neovim/neovim/issues/2048#issuecomment-78045837 for info
 fix_neovim_ctrl_h:
 	infocmp $TERM | sed 's/kbs=^[hH]/kbs=\\177/' > $TERM.ti
 	tic $TERM.ti
 
 install-global-npms:
-	npm install --global flow-vim-quickfix yarn
+	npm install --global flow-vim-quickfix yarn elm

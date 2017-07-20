@@ -259,6 +259,8 @@ if has('nvim')
   tnoremap <c-k> <c-\><c-n><c-w>k
   tnoremap <c-l> <c-\><c-n><c-w>l
 
+  autocmd BufWinEnter,WinEnter term://* startinsert
+
   let test#strategy = 'neovim'
 endif
 
