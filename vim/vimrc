@@ -1,6 +1,6 @@
 call plug#begin('~/.vim/plugged')
 
-" Syntax
+" Syntax and language specific
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
 Plug 'othree/html5.vim'
@@ -18,6 +18,7 @@ Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
 Plug 'carlitux/deoplete-ternjs', { 'do': 'npm install -g tern' }
 
 " Actual Plugs
+Plug 'vimlab/split-term.vim'
 Plug 'tpope/vim-surround'
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'tpope/vim-rbenv'
@@ -31,8 +32,6 @@ Plug 'tpope/vim-ragtag'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'gorkunov/smartpairs.vim'
 Plug 'thinca/vim-visualstar'
-Plug 'christoomey/vim-tmux-runner'
-Plug 'thoughtbot/vim-rspec'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
@@ -40,6 +39,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'Shougo/neosnippet.vim'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'janko-m/vim-test'
 
 call plug#end()
 
@@ -191,14 +191,11 @@ highlight jsClassProperty ctermfg=14 cterm=bold
 "gtfo ex mode
 map Q <Nop>
 
-nnoremap <leader>c :VtrSendCommandToRunner!<Space>
-nnoremap <leader>yi :VtrSendCommandToRunner! yarn install<Space>
-
-" Rspec.vim
-let g:rspec_command = "call VtrSendCommand('rspec {spec}', 1)"
-map <Leader>e :call RunCurrentSpecFile()<CR>
-map <Leader>n :call RunNearestSpec()<CR>
-map <Leader>l :call RunLastSpec()<CR>
+" vim-test
+map <Leader>e :TestFile<CR>
+map <Leader>n :TestNearest<CR>
+map <Leader>l :TestLast<CR>
+map <Leader>s :TestSuite<CR>
 
 " new file in current directory
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -210,12 +207,6 @@ map <leader>v :vsplit<CR>
 
 " clean up any trailing whitespace
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
-
-nnoremap <leader>fr :VtrFocusRunner<cr>
-nnoremap <leader>kr :VtrKillRunner<cr>
-nnoremap <leader>rr :VtrSendLinesToRunner<cr>
-nnoremap <leader>dr :VtrSendCtrlD<cr>
-nnoremap <leader>ar :VtrAttachToPane<cr>
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
 autocmd FileType * setlocal formatoptions-=r formatoptions-=o
@@ -261,3 +252,13 @@ let g:ale_fixers['javascript'] = [
 \]
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
+
+if has('nvim')
+  tnoremap <c-h> <c-\><c-n><c-w>h
+  tnoremap <c-j> <c-\><c-n><c-w>j
+  tnoremap <c-k> <c-\><c-n><c-w>k
+  tnoremap <c-l> <c-\><c-n><c-w>l
+
+  let test#strategy = 'neovim'
+endif
+
