@@ -142,7 +142,7 @@ noremap \ ,
 
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
-set number
+" set number
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
