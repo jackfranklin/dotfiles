@@ -101,4 +101,4 @@ export PATH="$PATH:`yarn global bin`"
 source ~/.songkickrc
 export ORGNAME=crowdsurge
 
-export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+# export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
