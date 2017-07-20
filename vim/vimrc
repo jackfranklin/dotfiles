@@ -35,7 +35,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
-Plug 'SirVer/ultisnips'
+Plug 'Shougo/neosnippet.vim'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 
@@ -45,10 +45,16 @@ set nocompatible
 
 let g:deoplete#enable_at_startup = 1
 
+let g:neosnippet#disable_runtime_snippets = {
+\   '_' : 1,
+\ }
+
 filetype plugin indent on
 
-let g:UltiSnipsExpandTrigger="<c-k>"
-let g:UltiSnipsSnippetDirectories = ['~/.config/nvim/UltiSnips', 'UltiSnips']
+let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
 
 let g:tsuquyomi_disable_default_mappings = 1
 
@@ -59,6 +65,8 @@ set shiftround
 set noshowcmd
 set nofoldenable
 map K <Nop>
+
+set inccommand=nosplit
 
 set background=dark
 
