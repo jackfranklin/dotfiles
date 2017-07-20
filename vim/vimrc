@@ -223,7 +223,7 @@ noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap <leader>t :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 
-let g:fzf_prefer_tmux = 1
+" let g:fzf_prefer_tmux = 1
 
 " Elm.vim settings
 let g:elm_format_autosave = 1
