@@ -38,6 +38,7 @@ Plug 'tpope/vim-vinegar'
 Plug 'Shougo/neosnippet.vim'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'janko-m/vim-test'
+Plug 'jreybert/vimagit'
 
 call plug#end()
 
@@ -96,6 +97,7 @@ set statusline+=\ %{fugitive#statusline()}
 set statusline+=\ %{ALEGetStatusLine()}
 " this line below pushes everything below it to the right hand side
 set statusline+=%=
+set statusline+=\%l
 
 " assume the /g flag on :s substitutions to replace all matches in a line
 set gdefault
