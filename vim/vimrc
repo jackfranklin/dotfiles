@@ -48,6 +48,9 @@ let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
 
+
+let g:jsx_ext_required = 0
+
 "Add extra filetypes
 let g:tern#filetypes = [
 \ 'jsx',
