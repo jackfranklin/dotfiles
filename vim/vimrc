@@ -38,7 +38,8 @@ Plug 'tpope/vim-vinegar'
 Plug 'Shougo/neosnippet.vim'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'janko-m/vim-test'
-Plug 'jreybert/vimagit'
+Plug 'tpope/vim-endwise'
+Plug 'mattn/emmet-vim'
 
 call plug#end()
 
@@ -263,3 +264,10 @@ endif
 
 set completeopt-=preview
 
+" so Emmet.vim will work in JSX
+let g:user_emmet_settings = {
+\  'javascript.jsx' : {
+\      'extends': 'jsx',
+\      'quote_char': '"',
+\  },
+\}
