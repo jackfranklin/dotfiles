@@ -22,11 +22,11 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 Are all handled with Vim Plug.
 
-# Setting up terminal
+# Setting up Terminal.app
 
-I use the Mac OS Terminal.app vs iTerm 2 (I've found it's a bit snappier and I like having fewer custom apps).
-
-However, you need to configure Shift+UP and Shift+DOWN to send the right sequence (such that you can use shift + arrow keys to resize Tmux splits.
+- Install the `Chalk.terminal` theme.
+- Install [Input Mono](http://input.fontbureau.com/preview/)
+- Configure Shift+UP and Shift+DOWN to send the right sequence (such that you can use shift + arrow keys to resize Tmux splits.
 
 ![](doc/terminal-keys.png)
 
@@ -36,4 +36,4 @@ However, you need to configure Shift+UP and Shift+DOWN to send the right sequenc
     - Divvy
 - 1Password
 - Mega Sync
-- Spark
+- [Karabiner Elements](https://github.com/tekezo/Karabiner-Elements/)
