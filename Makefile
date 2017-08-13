@@ -27,7 +27,7 @@ symlinks:
 	@ln -s ~/dotfiles/vim/vim/UltiSnips ~/.config/nvim/UltiSnips
 
 
-LATEST_RUBY="2.2.3"
+LATEST_RUBY="2.4.1"
 ruby:
 	[ -d ~/.rbenv/versions/$(LATEST_RUBY) ] || rbenv install $(LATEST_RUBY)
 	rbenv global $(LATEST_RUBY)
