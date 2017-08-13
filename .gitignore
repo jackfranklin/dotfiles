@@ -12,4 +12,5 @@ rbenv/version
 rbenv/versions
 vim/vim/autoload/plug.vim.old
 bundle/cache
+npmrc/npmrc
 
