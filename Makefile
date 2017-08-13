@@ -25,6 +25,7 @@ symlinks:
 	@ln -s ~/.vim ~/.config/nvim
 	@ln -s ~/dotfiles/vim/vimrc ~/.config/nvim/init.vim
 	@ln -s ~/dotfiles/vim/vim/UltiSnips ~/.config/nvim/UltiSnips
+	touch ~/dotfiles/zsh/secret
 
 
 LATEST_RUBY="2.4.1"
@@ -42,7 +43,7 @@ python_modules:
 	pip3 install neovim-remote
 
 nvm:
-	curl https://raw.githubusercontent.com/creationix/nvm/v0.31.2/install.sh | sh
+	curl https://raw.githubusercontent.com/creationix/nvm/v0.33.2/install.sh | sh
 	source ~/.nvm/nvm.sh && nvm install 6
 	source ~/.nvm/nvm.sh && nvm alias default 6
 
