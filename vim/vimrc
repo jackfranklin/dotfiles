@@ -14,7 +14,8 @@ Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
-Plug 'ternjs/tern_for_vim', { 'do': 'npm install' }
+Plug 'cakebaker/scss-syntax.vim'
+Plug 'vim-scripts/indentpython.vim'
 
 " Actual Plugs
 Plug 'vimlab/split-term.vim'
