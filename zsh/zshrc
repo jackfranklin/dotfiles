@@ -47,7 +47,7 @@ antigen bundle robbyrussell/oh-my-zsh plugins/z
 antigen bundle zsh-users/zsh-autosuggestions
 antigen apply
 
-export NVM_DIR="/Users/jackfranklin/.nvm"
+export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
 
 # from https://github.com/creationix/nvm#deeper-shell-integration
@@ -98,7 +98,10 @@ export PATH="$HOME/.bin:$PATH"
 # yarn
 export PATH="$PATH:`yarn global bin`"
 
-source ~/.songkickrc
-export ORGNAME=crowdsurge
-
 # export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export WORKON_HOME="$HOME/.virtualenvs"
+export PROJECT_HOME="$HOME/Work"
+source /usr/local/bin/virtualenvwrapper.sh
+# export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.5/bin"

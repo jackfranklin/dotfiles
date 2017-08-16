@@ -30,7 +30,6 @@ cask 'appcleaner'
 cask '1password'
 cask 'megasync', args: { appdir: "/Applications" }
 cask 'boom'
-mas 'divvy'
 
 
 
