@@ -1,8 +1,32 @@
 # vim: set filetype=sh:
 
+function workon_cwd {
+ GIT_DIR=`git rev-parse --git-dir 2> /dev/null`
+ if [ $? == 0 ]; then
+   # Find the repo root and check for virtualenv name override
+   GIT_DIR=`\builtin cd $GIT_DIR; pwd`
+   PROJECT_ROOT=`dirname "$GIT_DIR"`
+   ENV_NAME=`basename "$PROJECT_ROOT"`
+   if [ -d "$WORKON_HOME/$ENV_NAME" ]; then
+     # Activate the environment only if it is not already active
+     if [ "$VIRTUAL_ENV" != "$WORKON_HOME/$ENV_NAME" ]; then
+       if [ -e "$WORKON_HOME/$ENV_NAME/bin/activate" ]; then
+         echo "Activating virtualenv for $ENV_NAME"
+         workon "$ENV_NAME"
+       fi
+     fi
+   elif [ $VIRTUAL_ENV ]; then
+     echo "Deactivating virtualenv $VIRTUAL_ENV"
+     deactivate
+   fi
+ fi
+}
+
 cd () {
   builtin cd "$*"
   ls
+
+  workon_cwd
 }
 
 
