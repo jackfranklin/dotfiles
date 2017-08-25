@@ -16,6 +16,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'vim-scripts/indentpython.vim'
+Plug 'tpope/vim-sleuth'
 
 " Actual Plugs
 Plug 'vimlab/split-term.vim'
@@ -41,6 +42,7 @@ Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-endwise'
 Plug 'mattn/emmet-vim'
+Plug 'embear/vim-localvimrc'
 
 call plug#end()
 
@@ -247,7 +249,7 @@ let g:elm_format_fail_silently = 1
 " set Prettier up to run on save
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = [
-\ 'prettier', 'eslint'
+\ 'eslint'
 \]
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
@@ -272,3 +274,5 @@ let g:user_emmet_settings = {
 \      'quote_char': '"',
 \  },
 \}
+
+let g:localvimrc_persistent = 2
