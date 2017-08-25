@@ -15,3 +15,4 @@ _site/
 .venv
 JACK_NOTES.txt
 .vscode/
+.lvimrc
