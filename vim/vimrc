@@ -17,6 +17,7 @@ Plug 'mxw/vim-jsx'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'vim-scripts/indentpython.vim'
 Plug 'tpope/vim-sleuth'
+Plug 'flowtype/vim-flow'
 
 " Actual Plugs
 Plug 'vimlab/split-term.vim'
@@ -47,21 +48,17 @@ Plug 'embear/vim-localvimrc'
 call plug#end()
 
 set nocompatible
+filetype plugin indent on
 
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
 
+let g:javascript_plugin_flow = 1
+let g:flow#enable = 0
 
 let g:jsx_ext_required = 0
 
-"Add extra filetypes
-let g:tern#filetypes = [
-\ 'jsx',
-\ 'javascript.jsx',
-\ ]
-
-filetype plugin indent on
 
 let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
