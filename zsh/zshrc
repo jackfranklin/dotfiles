@@ -103,5 +103,7 @@ export PATH="$PATH:`yarn global bin`"
 
 export WORKON_HOME="$HOME/.virtualenvs"
 export PROJECT_HOME="$HOME/Work"
-source /usr/local/bin/virtualenvwrapper.sh
+if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
+  source /usr/local/bin/virtualenvwrapper.sh
+fi
 # export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/9.5/bin"
