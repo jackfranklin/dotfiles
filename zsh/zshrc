@@ -106,4 +106,4 @@ export PROJECT_HOME="$HOME/Work"
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
 fi
-export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin/"
+export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
