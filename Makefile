@@ -1,4 +1,4 @@
-DIR="${HOME}/dotfiles
+DIR="${HOME}/dotfiles"
 
 all:
 	@echo "Run things individually!"
