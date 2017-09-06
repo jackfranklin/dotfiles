@@ -15,9 +15,11 @@ Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'cakebaker/scss-syntax.vim'
-Plug 'vim-scripts/indentpython.vim'
+Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'tpope/vim-sleuth'
-Plug 'flowtype/vim-flow'
+Plug 'flowtype/vim-flow', { 'for': 'javascript' }
+Plug 'styled-components/vim-styled-components', { 'for': 'javascript.jsx' }
+Plug 'tweekmonster/django-plus.vim'
 
 " Actual Plugs
 Plug 'vimlab/split-term.vim'
@@ -54,9 +56,14 @@ let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
 
-let g:javascript_plugin_flow = 1
+" the Flow plugin is useful but by default it type checks on save
+" don't need this to happen because Ale does that for us instead
 let g:flow#enable = 0
 
+" turns on Flow syntax highlighting
+let g:javascript_plugin_flow = 1
+
+" looks for JSX in just .js files
 let g:jsx_ext_required = 0
 
 
