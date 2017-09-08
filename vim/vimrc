@@ -14,11 +14,11 @@ Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
 Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
+Plug 'hail2u/vim-css3-syntax'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'tpope/vim-sleuth'
 Plug 'flowtype/vim-flow', { 'for': 'javascript' }
-Plug 'styled-components/vim-styled-components', { 'for': 'javascript.jsx' }
 Plug 'tweekmonster/django-plus.vim'
 
 " Actual Plugs
