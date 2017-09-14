@@ -19,7 +19,6 @@
 [push]
 	default = simple
 [color]
-	ui = always
 [color "diff-highlight"]
   oldNormal = red
   oldHighlight = red 52
