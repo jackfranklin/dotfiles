@@ -61,7 +61,9 @@ module.exports = {
     "hyperterm-one-dark",
     "hyper-statusline",
     "hypercwd",
-    "hyper-pane"
+    "hyper-pane",
+    "hyper-search",
+    "hyper-autohide-tabs"
   ],
 
   bell: false,
