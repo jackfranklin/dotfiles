@@ -63,7 +63,6 @@ module.exports = {
     "hypercwd",
     "hyper-pane",
     "hyper-search",
-    "hyper-autohide-tabs"
   ],
 
   bell: false,
