@@ -3,6 +3,7 @@ alias v="nvim"
 alias f="fg"
 alias l="ls"
 alias ..="builtin cd .."
+alias a="atom-beta"
 
 # misc
 alias slrn="slrn -n"
