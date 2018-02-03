@@ -16,3 +16,4 @@ _site/
 JACK_NOTES.txt
 .vscode/
 .lvimrc
+.tern-project
