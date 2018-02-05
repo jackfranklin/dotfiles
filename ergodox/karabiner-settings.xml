@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-<root>
- <item>
-    <name>Swap F13 to (</name>
-    <identifier>private.swap_f13_left_bracket</identifier>
-    <autogen>__KeyToKey__ KeyCode::F13, KeyCode::KEY_9, ModifierFlag::SHIFT_L</autogen>
-    <autogen>__KeyToKey__ KeyCode::F14, KeyCode::KEY_0, ModifierFlag::SHIFT_L</autogen>
-  </item>
-</root>
