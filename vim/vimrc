@@ -1,3 +1,8 @@
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+        \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 call plug#begin('~/.vim/plugged')
 
 " Syntax and language specific
@@ -7,18 +12,18 @@ Plug 'othree/html5.vim'
 Plug 'leshill/vim-json'
 Plug 'tpope/vim-markdown'
 Plug 'ElmCast/elm-vim'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript', { 'for': 'typescript' }
-Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
-Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
-Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
+" Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript', { 'for': 'typescript' }
+" Plug 'elixir-lang/vim-elixir', { 'for': 'elixir' }
+" Plug 'slashmili/alchemist.vim', { 'for': 'elixir' }
+" Plug 'Quramy/tsuquyomi', { 'for': 'typescript' }
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
 Plug 'hail2u/vim-css3-syntax'
 Plug 'cakebaker/scss-syntax.vim'
 Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'tpope/vim-sleuth'
-Plug 'flowtype/vim-flow', { 'for': 'javascript' }
+" Plug 'flowtype/vim-flow', { 'for': 'javascript' }
 Plug 'tweekmonster/django-plus.vim'
 
 " Actual Plugs
@@ -46,11 +51,18 @@ Plug 'janko-m/vim-test'
 Plug 'tpope/vim-endwise'
 Plug 'mattn/emmet-vim'
 Plug 'embear/vim-localvimrc'
+Plug 'altercation/vim-colors-solarized'
+Plug 'joshdick/onedark.vim'
+Plug 'NLKNguyen/papercolor-theme'
+
 
 call plug#end()
 
 set nocompatible
 filetype plugin indent on
+
+set noerrorbells visualbell t_vb=
+autocmd GUIEnter * set visualbell t_vb=
 
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
@@ -61,10 +73,13 @@ let g:neosnippet#disable_runtime_snippets = {
 let g:flow#enable = 0
 
 " turns on Flow syntax highlighting
-let g:javascript_plugin_flow = 1
+" let g:javascript_plugin_flow = 1
 
 " looks for JSX in just .js files
 let g:jsx_ext_required = 0
+
+set go-=R
+set go-=L
 
 
 let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
@@ -82,10 +97,6 @@ set noshowcmd
 set nofoldenable
 map K <Nop>
 
-set inccommand=split
-
-set background=dark
-
 runtime macros/matchit.vim
 
 " wrap quickfix window
@@ -98,14 +109,10 @@ function! SyntaxItem()
   echo synIDattr(synID(line("."),col("."),1),"name")
 endfunction
 
-" Ale status line - last empty string = no message when everything is OK
-let g:ale_statusline_format = ['⨉ %d', '⚠ %d', '']
-
 " status bar
 set statusline=%F%m%r%h%w\  "fullpath and status modified sign
 set statusline+=\ %y "filetype
 set statusline+=\ %{fugitive#statusline()}
-set statusline+=\ %{ALEGetStatusLine()}
 " this line below pushes everything below it to the right hand side
 set statusline+=%=
 set statusline+=\%l
@@ -132,6 +139,13 @@ set ignorecase smartcase
 
 set spelllang=en_gb
 syntax spell toplevel
+
+if (has("termguicolors"))
+  set termguicolors
+endif
+
+set background=dark
+colorscheme PaperColor
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
 autocmd FileType elm setlocal shiftwidth=4 softtabstop=4 tabstop=4
@@ -160,6 +174,8 @@ noremap \ ,
 set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
 
 " set number
+" set relativenumber
+" set cursorline
 
 " clear highlights by hitting ESC
 " or by hitting enter in normal mode
@@ -184,12 +200,12 @@ highlight Pmenu ctermbg=black ctermfg=white
 highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
 "few nicer JS colours
-highlight xmlAttrib ctermfg=121
-highlight jsThis ctermfg=224
-highlight jsSuper ctermfg=13
-highlight jsFuncCall ctermfg=cyan
-highlight jsComment ctermfg=245 ctermbg=none
-highlight jsClassProperty ctermfg=14 cterm=bold
+" highlight xmlAttrib ctermfg=121
+" highlight jsThis ctermfg=224
+" highlight jsSuper ctermfg=13
+" highlight jsFuncCall ctermfg=cyan
+" highlight jsComment ctermfg=245 ctermbg=none
+" highlight jsClassProperty ctermfg=14 cterm=bold
 
 " ~~~ MAPPINGS BELOW ~~~
 
@@ -253,7 +269,7 @@ let g:elm_format_fail_silently = 1
 " set Prettier up to run on save
 let g:ale_fixers = {}
 let g:ale_fixers['javascript'] = [
-\ 'eslint'
+\  'prettier'
 \]
 let g:ale_fix_on_save = 1
 let g:ale_javascript_prettier_options = '--single-quote --trailing-comma es5 --no-semi'
@@ -264,6 +280,7 @@ if has('nvim')
   tnoremap <c-k> <c-\><c-n><c-w>k
   tnoremap <c-l> <c-\><c-n><c-w>l
   tnoremap <Esc> <C-\><C-n>
+  set inccommand=split
 
   autocmd BufWinEnter,WinEnter term://* startinsert
 
