@@ -20,23 +20,26 @@
 	default = simple
 [color]
 [color "diff-highlight"]
-  oldNormal = red
-  oldHighlight = red 52
-  newNormal = green
-  newHighlight = green 22
+	oldNormal = red bold
+	oldHighlight = red bold 52
+	newNormal = green bold
+	newHighlight = green bold 22
 [color "diff"]
-  commit = green
-  meta = yellow
-  frag = cyan
-  old = red
-  new = green
-  whitespace = red reverse
+	commit = yellow bold
+	meta = yellow
+	frag = magenta bold
+	old = red bold
+	new = green bold
+	whitespace = red reverse
 [help]
 	autocorrect = 1
 [core]
 	excludesfile = ~/.gitignore_global
+	; pager = diff-so-fancy | less --tabs=4 -RFX
 	pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less -r
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [pull]
 	rebase = true
+[color]
+	ui = true
