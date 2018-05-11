@@ -89,11 +89,11 @@ export FZF_DEFAULT_COMMAND='ag -g "" --hidden'
 export GOPATH=$HOME/git/go
 export PATH="$GOPATH/bin:$PATH"
 
-# execute locally installed npm modules
-export PATH="./node_modules/.bin:$PATH"
-
 # put things in ~/.bin into my $PATH
 export PATH="$HOME/.bin:$PATH"
+
+# execute locally installed npm modules
+export PATH="./node_modules/.bin:$PATH"
 
 # yarn
 export PATH="$PATH:`yarn global bin`"
@@ -107,3 +107,4 @@ if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
 fi
 export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
+eval "$(thefuck --alias)"

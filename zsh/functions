@@ -131,3 +131,7 @@ gshow() {
 FZF-EOF"
 }
 
+
+youtube-audio() {
+  youtube-dl --extract-audio --audio-format mp3 --prefer-ffmpeg $1
+}

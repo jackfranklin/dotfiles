@@ -3,7 +3,7 @@ alias v="nvim"
 alias f="fg"
 alias l="ls"
 alias ..="builtin cd .."
-alias a="atom-beta"
+alias a="atom-beta --clear-window-state $1"
 
 # misc
 alias slrn="slrn -n"
@@ -87,3 +87,5 @@ alias jshigh="pbpaste | highlight --syntax=js -O rtf | pbcopy"
 
 #Elm
 alias epi="elm package install"
+
+# alias mvim="/Applications/MacVim.app/Contents/MacOS/Vim"
