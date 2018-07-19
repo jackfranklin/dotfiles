@@ -81,6 +81,8 @@ let g:jsx_ext_required = 0
 set go-=R
 set go-=L
 
+syntax on
+
 
 let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
