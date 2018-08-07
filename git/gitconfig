@@ -35,8 +35,6 @@
 	autocorrect = 1
 [core]
 	excludesfile = ~/.gitignore_global
-	; pager = diff-so-fancy | less --tabs=4 -RFX
-	; pager = /usr/local/share/git-core/contrib/diff-highlight/diff-highlight | less -r
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [pull]
