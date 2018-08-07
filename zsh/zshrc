@@ -122,4 +122,3 @@ case `uname` in
     # commands for Linux go here
   ;;
 esac
->>>>>>> zsh updates
