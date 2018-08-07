@@ -24,7 +24,8 @@ export EDITOR='vim'
 bindkey -e
 
 # load rbenv
-if which rbenv > /dev/null; then eval "$(rbenv init - zsh)"; fi
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init - zsh)"
 
 # execute binstubs by default
 export PATH="./.bundle/binstubs:$PATH"
@@ -61,7 +62,7 @@ load-nvmrc() {
     local nvmrc_node_version=$(nvm version "$(cat "${nvmrc_path}")")
 
     if [ "$nvmrc_node_version" != "N/A" ] && [ "$nvmrc_node_version" != "$node_version" ]; then
-      nvm use 
+      nvm use
     fi
   elif [ "$node_version" != "$(nvm version default)" ]; then
     echo "Reverting to nvm default version"
@@ -102,11 +103,23 @@ export PATH="$PATH:`yarn global bin`"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export WORKON_HOME="$HOME/.virtualenvs"
+
+# TODO: are these two mac only or for everything?
 export PROJECT_HOME="$HOME/git/thread"
 export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
 fi
-export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
-# eval "$(thefuck --alias)"
+
+export PATH="$PATH:$HOME/.rbenv/bin"
+
+case `uname` in
+  Darwin)
+    export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
+  ;;
+  Linux)
+    # commands for Linux go here
+  ;;
+esac
+>>>>>>> zsh updates
