@@ -104,9 +104,7 @@ export PATH="$PATH:`yarn global bin`"
 
 export WORKON_HOME="$HOME/.virtualenvs"
 
-# TODO: are these two mac only or for everything?
 export PROJECT_HOME="$HOME/git/thread"
-export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
@@ -116,9 +114,12 @@ export PATH="$PATH:$HOME/.rbenv/bin"
 
 case `uname` in
   Darwin)
+    # Mac things here
     export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
+    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
   ;;
   Linux)
     # commands for Linux go here
+    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
   ;;
 esac
