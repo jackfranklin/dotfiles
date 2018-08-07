@@ -13,6 +13,7 @@ symlinks:
 	@ln -sf $(DIR)/vim/gitvimrc ~/.gitvimrc
 	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
 	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
+	@ln -sf $(DIR)/tmux/tmux-osx.conf ~/.tmux-osx.conf
 	@ln -sf $(DIR)/ag/agignore ~/.agignore
 	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
 	@ln -sf $(DIR)/git/gitignore_global ~/.gitignore_global
