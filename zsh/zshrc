@@ -103,8 +103,8 @@ export PATH="$PATH:`yarn global bin`"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 export WORKON_HOME="$HOME/.virtualenvs"
-
 export PROJECT_HOME="$HOME/git/thread"
+export VIRTUALENVWRAPPER_PYTHON=`which python3`
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
@@ -112,14 +112,13 @@ fi
 
 export PATH="$PATH:$HOME/.rbenv/bin"
 
+
 case `uname` in
   Darwin)
     # Mac things here
     export PATH="$PATH:/Applications/Postgres.app/Contents/Versions/latest/bin"
-    export VIRTUALENVWRAPPER_PYTHON=/usr/local/bin/python3
   ;;
   Linux)
     # commands for Linux go here
-    export VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
   ;;
 esac
