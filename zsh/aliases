@@ -88,5 +88,6 @@ alias jshigh="pbpaste | highlight --syntax=js -O rtf | pbcopy"
 
 #Elm
 alias epi="elm package install"
+alias elmthread="npm install --global elm@0.18.0 elm-format@0.7.0-exp"
 
 # alias mvim="/Applications/MacVim.app/Contents/MacOS/Vim"
