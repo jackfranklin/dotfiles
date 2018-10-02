@@ -25,6 +25,7 @@ Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'tpope/vim-sleuth'
 " Plug 'flowtype/vim-flow', { 'for': 'javascript' }
 Plug 'tweekmonster/django-plus.vim'
+Plug 'jparise/vim-graphql'
 
 " Actual Plugs
 Plug 'vimlab/split-term.vim'

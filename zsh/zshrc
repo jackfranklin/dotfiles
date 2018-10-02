@@ -33,8 +33,8 @@ export PATH="./.bundle/binstubs:$PATH"
 # execute things in the ./bin directory
 export PATH="./bin:$PATH"
 
-export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_72.jdk/Contents/Home"
-export PATH=/opt/apache-maven-3.3.9/bin:$PATH
+# export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_72.jdk/Contents/Home"
+# export PATH=/opt/apache-maven-3.3.9/bin:$PATH
 
 # heroku toolbelt
 export PATH="/usr/local/heroku/bin:$PATH"
@@ -87,17 +87,17 @@ source $HOME/dotfiles/zsh/secret
 
 export FZF_DEFAULT_COMMAND='ag -g "" --hidden'
 
-export GOPATH=$HOME/git/go
-export PATH="$GOPATH/bin:$PATH"
+# export GOPATH=$HOME/git/go
+# export PATH="$GOPATH/bin:$PATH"
 
 # put things in ~/.bin into my $PATH
-export PATH="$HOME/.bin:$PATH"
+# export PATH="$HOME/.bin:$PATH"
 
 # execute locally installed npm modules
-export PATH="./node_modules/.bin:$PATH"
+# export PATH="./node_modules/.bin:$PATH"
 
 # yarn
-export PATH="$PATH:`yarn global bin`"
+# export PATH="$PATH:`yarn global bin`"
 
 # export VISUAL="nvr -cc split --remote-wait +'set bufhidden=wipe'"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
@@ -105,12 +105,12 @@ export PATH="$PATH:`yarn global bin`"
 export WORKON_HOME="$HOME/.virtualenvs"
 export PROJECT_HOME="$HOME/git/thread"
 export VIRTUALENVWRAPPER_PYTHON=`which python3`
+export PATH="$PATH:$HOME/.rbenv/bin"
 
 if [ -f /usr/local/bin/virtualenvwrapper.sh ]; then
   source /usr/local/bin/virtualenvwrapper.sh
 fi
 
-export PATH="$PATH:$HOME/.rbenv/bin"
 
 
 case `uname` in
