@@ -30,9 +30,6 @@ eval "$(rbenv init - zsh)"
 # execute binstubs by default
 export PATH="./.bundle/binstubs:$PATH"
 
-# execute things in the ./bin directory
-export PATH="./bin:$PATH"
-
 # export JAVA_HOME="/Library/Java/JavaVirtualMachines/jdk1.8.0_72.jdk/Contents/Home"
 # export PATH=/opt/apache-maven-3.3.9/bin:$PATH
 
@@ -91,7 +88,7 @@ export FZF_DEFAULT_COMMAND='ag -g "" --hidden'
 # export PATH="$GOPATH/bin:$PATH"
 
 # put things in ~/.bin into my $PATH
-# export PATH="$HOME/.bin:$PATH"
+export PATH="$HOME/.bin:$PATH"
 
 # execute locally installed npm modules
 # export PATH="./node_modules/.bin:$PATH"
