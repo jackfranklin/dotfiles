@@ -36,6 +36,8 @@ root: ~/git/testlink
 # Runs after everything. Use it to attach to tmux with custom options etc.
 # post: tmux -CC attach -t testlink
 
+pre_window: bundle install
+
 
 windows:
   - servers:
@@ -43,5 +45,5 @@ windows:
       panes:
         - docker-compose up
         - ./bin/webpack-dev-server
-  - rails: rails s
+  - rails: yarn && rails s
   - shell: code .
