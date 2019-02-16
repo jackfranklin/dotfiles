@@ -27,8 +27,8 @@ symlinks:
 	@ln -s ~/.vim ~/.config/nvim
 	@ln -s ~/dotfiles/vim/vimrc ~/.config/nvim/init.vim
 	@ln -s ~/dotfiles/vim/vim/UltiSnips ~/.config/nvim/UltiSnips
+	@ln -sf $(DIR)/tmux/tmuxinator ~/.config/tmuxinator
 	touch ~/dotfiles/zsh/secret
-
 
 LATEST_RUBY="2.4.1"
 ruby:
