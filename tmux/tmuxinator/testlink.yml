@@ -36,7 +36,7 @@ root: ~/git/testlink
 # Runs after everything. Use it to attach to tmux with custom options etc.
 # post: tmux -CC attach -t testlink
 
-pre_window: bundle install
+on_project_start: bundle install
 
 
 windows:
