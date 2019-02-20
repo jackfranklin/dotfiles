@@ -9,7 +9,6 @@ symlinks:
 	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
 	@ln -nsf $(DIR)/vim/vim ~/.vim
 	@ln -sf $(DIR)/vim/vimrc ~/.vimrc
-	@ln -sf $(DIR)/hyper.js ~/.hyper.js
 	@ln -sf $(DIR)/vim/gitvimrc ~/.gitvimrc
 	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
 	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
