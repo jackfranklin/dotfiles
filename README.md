@@ -19,7 +19,7 @@ Are all handled with Vim Plug.
 
 # Setting up the ergodox keyboards
 
-- Latest ergodox layout: https://configure.ergodox-ez.com/layouts/nxJ9/latest/0
+- Latest ergodox layout: https://configure.ergodox-ez.com/layouts/YYVv/latest/0
 
 # Mac Apps
 
