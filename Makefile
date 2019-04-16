@@ -8,6 +8,7 @@ symlinks:
 	@ln -sf $(DIR)/zsh/zshenv ~/.zshenv
 	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
 	@ln -nsf $(DIR)/vim/vim ~/.vim
+	@ln -nsf $(DIR)/hyper/hyper.js ~/.hyper.js
 	@ln -sf $(DIR)/vim/vimrc ~/.vimrc
 	@ln -sf $(DIR)/vim/gitvimrc ~/.gitvimrc
 	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
