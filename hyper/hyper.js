@@ -4,9 +4,10 @@ module.exports = {
     fontFamily: 'IBM Plex Mono',
   },
   plugins: [
-    'hyper-oceanic-next',
+    // 'hyper-oceanic-next',
     'hyper-statusline',
     'hypercwd',
     'hyperlinks',
+    'hyper-altair'
   ]
 }
