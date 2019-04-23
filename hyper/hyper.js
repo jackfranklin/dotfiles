@@ -5,7 +5,7 @@ module.exports = {
   },
   plugins: [
     // 'hyper-oceanic-next',
-    'hyper-statusline',
+    // 'hyper-statusline',
     'hypercwd',
     'hyperlinks',
     'hyper-altair'
