@@ -66,6 +66,11 @@ function git-merge-branch-into-current {
   git merge $1
 }
 
+function git-new-branch-push-origin {
+  branch=`git_branch_name`
+  git push -u origin $branch
+}
+
 function git-checkout-remote-branch {
   git fetch
   git checkout -b $1 "origin/$1"
