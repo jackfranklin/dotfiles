@@ -15,11 +15,9 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 Are all handled with Vim Plug.
 
-![](doc/terminal-keys.png)
-
 # Setting up the ergodox keyboards
 
-- Latest ergodox layout: https://configure.ergodox-ez.com/layouts/YYVv/latest/0
+- Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/EeKGv/latest/1
 
 # Mac Apps
 
