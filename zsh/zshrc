@@ -77,8 +77,11 @@ cd .
 
 source $HOME/dotfiles/zsh/aliases
 source $HOME/dotfiles/zsh/functions
-source $HOME/dotfiles/zsh/prompt
+# source $HOME/dotfiles/zsh/prompt
 source $HOME/dotfiles/zsh/secret
+
+autoload -U promptinit; promptinit
+prompt pure
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
