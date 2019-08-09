@@ -1,5 +1,5 @@
 # lazy
-alias v="vim"
+alias v="nvim"
 alias f="fg"
 alias l="ls"
 alias ..="builtin cd .."
