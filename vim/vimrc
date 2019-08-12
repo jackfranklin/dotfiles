@@ -151,6 +151,7 @@ if (has("termguicolors"))
 endif
 
 set background=dark
+colorscheme default
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
 autocmd FileType elm setlocal shiftwidth=4 softtabstop=4 tabstop=4
