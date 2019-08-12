@@ -151,7 +151,6 @@ if (has("termguicolors"))
 endif
 
 set background=dark
-colorscheme base16-oceanicnext
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
 autocmd FileType elm setlocal shiftwidth=4 softtabstop=4 tabstop=4
@@ -207,7 +206,6 @@ highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
 highlight Comment cterm=italic
 
-"few nicer JS colours
 " highlight xmlAttrib ctermfg=121
 " highlight jsThis ctermfg=224
 " highlight jsSuper ctermfg=13
@@ -266,6 +264,8 @@ nnoremap <leader>8 "*p
 let g:ale_lint_on_save = 1
 let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
+let g:ale_lint_on_insert_leave = 0
+let g:ale_lint_on_enter= 0
 let g:ale_linters = {
       \ 'html': [],
       \  'javascript': ['eslint']
@@ -277,8 +277,6 @@ let g:ale_set_highlights = 0
 
 " stop Elm.vim trying to show compiler erorrs in Vim
 let g:elm_format_fail_silently = 1
-
-" set Prettier up to run on save
 
 if has('nvim')
   tnoremap <c-h> <c-\><c-n><c-w>h
@@ -303,5 +301,39 @@ let g:user_emmet_settings = {
       \  },
       \}
 
-set guifont=Dank\ Mono:h14
-highlight Comment gui=italic
+if has('gui_running')
+  set guifont=Dank\ Mono:h14
+  colorscheme base16-oceanicnext
+  highlight Comment gui=italic
+
+  let g:fzf_layout = {'down': '~20%'}
+
+  let test#strategy = 'vimterminal'
+
+  set macligatures
+
+  " so it's clear which paren I'm on and which is matched
+  highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
+
+  highlight Comment cterm=italic
+
+  " highlight xmlAttrib ctermfg=121
+  highlight jsThis guifg=LightRed gui=italic
+  " highlight jsSuper ctermfg=13
+  " highlight jsFuncCall ctermfg=cyan
+  " highlight jsComment ctermfg=245 ctermbg=none
+  " highlight jsClassProperty ctermfg=14 cterm=bold
+  highlight jsDestructuringPropertyValue guifg=LightBlue
+  highlight jsDestructuringBlock guifg=LightBlue
+  highlight jsClassProperty guifg=#6699CC
+  highlight jsObjectKey guifg=LightBlue
+  highlight jsVariableDef guifg=#6699CC gui=underline
+
+  set cursorline
+  set lazyredraw
+endif
+
+function! SynGroup()
+  let l:s = synID(line('.'), col('.'), 1)
+  echo synIDattr(l:s, 'name') . ' -> ' . synIDattr(synIDtrans(l:s), 'name')
+endfun
