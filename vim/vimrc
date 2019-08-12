@@ -38,16 +38,16 @@ Plug 'gorkunov/smartpairs.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-" Plug 'w0rp/ale'
+Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'Shougo/neosnippet.vim'
 " Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-endwise'
-Plug 'sbdchd/neoformat'
-Plug 'neomake/neomake'
+" Plug 'sbdchd/neoformat'
+" Plug 'neomake/neomake'
 Plug 'jaawerth/nrun.vim'
-Plug 'arcticicestudio/nord-vim'
+" Plug 'arcticicestudio/nord-vim'
 
 
 call plug#end()
@@ -195,6 +195,8 @@ highlight Pmenu ctermbg=black ctermfg=white
 " so it's clear which paren I'm on and which is matched
 highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
+highlight Comment cterm=italic
+
 "few nicer JS colours
 " highlight xmlAttrib ctermfg=121
 " highlight jsThis ctermfg=224
@@ -252,22 +254,21 @@ vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
 let g:ale_lint_on_save = 1
+let g:ale_fix_on_save = 1
 let g:ale_lint_on_text_changed = 'never'
-" disable the Ale HTML linters
 let g:ale_linters = {
-\   'html': [],
-\}
+      \ 'html': [],
+      \  'javascript': ['eslint']
+      \}
+let g:ale_fixers = {
+      \  'javascript': ['prettier']
+      \}
 let g:ale_set_highlights = 0
 
 " stop Elm.vim trying to show compiler erorrs in Vim
 let g:elm_format_fail_silently = 1
 
 " set Prettier up to run on save
-let g:ale_fixers = {}
-let g:ale_fixers['javascript'] = [
-\  'prettier'
-\]
-let g:ale_fix_on_save = 1
 
 if has('nvim')
   tnoremap <c-h> <c-\><c-n><c-w>h
@@ -280,24 +281,6 @@ if has('nvim')
   autocmd BufWinEnter,WinEnter term://* startinsert
 
   let test#strategy = 'neovim'
-
-  let g:eslint_path = nrun#Which('eslint')
-  if g:eslint_path !=# 'eslint not found'
-    let g:neomake_javascript_eslint_exe = g:eslint_path
-    let g:neomake_jsx_enabled_makers = ['eslint']
-    let g:neomake_javascript_enabled_makers = ['eslint']
-  endif
-
-  "" Neoformat
-  """"""""""""
-  augroup fmt
-    autocmd!
-    autocmd FileType javascript,javascript.jsx,typescript,python
-          \ autocmd! BufWritePre * Neoformat
-
-  augroup END
-
-  let g:neoformat_enabled_json = ['prettier']
 endif
 
 set completeopt-=preview
