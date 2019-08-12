@@ -41,13 +41,16 @@ Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
 Plug 'Shougo/neosnippet.vim'
-" Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
+Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'janko-m/vim-test'
 Plug 'tpope/vim-endwise'
 " Plug 'sbdchd/neoformat'
 " Plug 'neomake/neomake'
 Plug 'jaawerth/nrun.vim'
-" Plug 'arcticicestudio/nord-vim'
+
+" Colours
+Plug 'lifepillar/vim-solarized8'
+Plug 'chriskempson/base16-vim'
 
 
 call plug#end()
@@ -137,11 +140,13 @@ set spelllang=en_gb
 syntax spell toplevel
 
 if (has("termguicolors"))
-  set termguicolors
+  " set termguicolors
+  " let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+  " let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 set background=dark
-" colorscheme PaperColor
+colorscheme base16-oceanicnext
 
 autocmd FileType markdown setlocal shiftwidth=4 softtabstop=4 tabstop=4 wrap linebreak nolist wrap lbr colorcolumn=0 synmaxcol=999999
 autocmd FileType elm setlocal shiftwidth=4 softtabstop=4 tabstop=4
@@ -292,3 +297,6 @@ let g:user_emmet_settings = {
       \      'quote_char': '"',
       \  },
       \}
+
+set guifont=Dank\ Mono:h13
+highlight Comment gui=italic

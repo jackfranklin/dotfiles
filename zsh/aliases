@@ -1,5 +1,6 @@
 # lazy
 alias v="nvim"
+alias gvim='/Applications/MacVim.app/Contents/MacOS/Vim -g'
 alias f="fg"
 alias l="ls"
 alias ..="builtin cd .."
