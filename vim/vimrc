@@ -48,6 +48,7 @@ Plug 'tpope/vim-endwise'
 " Plug 'neomake/neomake'
 Plug 'jaawerth/nrun.vim'
 Plug 'alvan/vim-closetag'
+Plug 'terryma/vim-multiple-cursors'
 
 " Colours
 Plug 'chriskempson/base16-vim'
