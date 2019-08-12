@@ -329,6 +329,9 @@ if has('gui_running')
   highlight jsObjectKey guifg=LightBlue
   highlight jsVariableDef guifg=#6699CC gui=underline
 
+  " this is for the bug where vim-js can't highlight objects in funcs correctly
+  highlight jsParensError guibg=NONE
+
   set cursorline
   set lazyredraw
 endif
