@@ -47,9 +47,9 @@ Plug 'tpope/vim-endwise'
 " Plug 'sbdchd/neoformat'
 " Plug 'neomake/neomake'
 Plug 'jaawerth/nrun.vim'
+Plug 'alvan/vim-closetag'
 
 " Colours
-Plug 'lifepillar/vim-solarized8'
 Plug 'chriskempson/base16-vim'
 
 
@@ -65,6 +65,7 @@ augroup filetypes
   autocmd BufNewFile,BufRead tsconfig.json set filetype=jsonc
   autocmd BufNewFile,BufRead .gitignore set filetype=config
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
+  autocmd BufNewFile,BufRead *.js set filetype=javascript.tsx
   autocmd BufNewFile,BufRead zprofile set filetype=zsh
 augroup END
 
@@ -72,6 +73,10 @@ syntax on
 
 set noerrorbells visualbell t_vb=
 autocmd GUIEnter * set visualbell t_vb=
+
+let g:closetag_filenames= '*.jsx,*.js,*.html'
+let g:closetag_xhtml_filenames= '*.jsx,*.js'
+let g:closetag_xhtml_filetypes= 'javascript.jsx'
 
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
