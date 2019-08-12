@@ -206,15 +206,6 @@ highlight Pmenu ctermbg=black ctermfg=white
 " so it's clear which paren I'm on and which is matched
 highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
-highlight Comment cterm=italic
-
-" highlight xmlAttrib ctermfg=121
-" highlight jsThis ctermfg=224
-" highlight jsSuper ctermfg=13
-" highlight jsFuncCall ctermfg=cyan
-" highlight jsComment ctermfg=245 ctermbg=none
-" highlight jsClassProperty ctermfg=14 cterm=bold
-
 " ~~~ MAPPINGS BELOW ~~~
 
 "gtfo ex mode
@@ -288,13 +279,37 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
   set inccommand=split
 
+  colorscheme base16-oceanicnext
+  autocmd BufNewFile,BufRead * highlight jsParensError ctermbg=NONE
+  highlight Comment cterm=italic
   autocmd BufWinEnter,WinEnter term://* startinsert
+  " so it's clear which paen I'm on and which is matched
+  " highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
+
+  " highlight Comment cterm=italic ctermfg=gray
+  highlight jsParensError ctermbg=NONE
+  " highlight jsString ctermfg=White
+
+  " " highlight xmlAttrib ctermfg=121
+  " highlight jsThis ctermfg=LightRed cterm=italic
+  " highlight jsReturn ctermfg=13
+  " highlight jsFuncCall ctermfg=Blue
+  " " highlight jsModuleKeyword ctermfg=190
+  " " highlight jsComment ctermfg=245 ctermbg=none
+  " " highlight jsClassProperty ctermfg=14 cterm=bold
+  " highlight jsDestructuringPropertyValue ctermfg=LightBlue
+  " highlight jsDestructuringBlock ctermfg=190
+  " highlight jsClassProperty ctermfg=LightBlue
+  " " highlight jsObjectKey ctermfg=LightBlue
+  " highlight jsVariableDef ctermfg=LightBlue cterm=underline
+  " highlight jsObjectShorthandProp ctermfg=White
+
 
   let test#strategy = 'neovim'
 endif
 
 set completeopt-=preview
-
+let g:fzf_layout = {'down': '~20%'}
 " so Emmet.vim will work in JSX
 let g:user_emmet_settings = {
       \  'javascript.jsx' : {
@@ -308,16 +323,9 @@ if has('gui_running')
   colorscheme base16-oceanicnext
   highlight Comment gui=italic
 
-  let g:fzf_layout = {'down': '~20%'}
-
   let test#strategy = 'vimterminal'
 
   set macligatures
-
-  " so it's clear which paren I'm on and which is matched
-  highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
-
-  highlight Comment cterm=italic
 
   " highlight xmlAttrib ctermfg=121
   highlight jsThis guifg=LightRed gui=italic
@@ -337,6 +345,9 @@ if has('gui_running')
   set cursorline
   set lazyredraw
 endif
+
+highlight gitcommitComment ctermbg=NONE
+highlight gitcommitOnBranch ctermbg=NONE
 
 function! SynGroup()
   let l:s = synID(line('.'), col('.'), 1)
