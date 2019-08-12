@@ -298,5 +298,5 @@ let g:user_emmet_settings = {
       \  },
       \}
 
-set guifont=Dank\ Mono:h13
+set guifont=Dank\ Mono:h14
 highlight Comment gui=italic
