@@ -66,7 +66,7 @@ augroup filetypes
   autocmd BufNewFile,BufRead tsconfig.json set filetype=jsonc
   autocmd BufNewFile,BufRead .gitignore set filetype=config
   autocmd BufNewFile,BufRead *.tsx set filetype=typescript.tsx
-  autocmd BufNewFile,BufRead *.js set filetype=javascript.tsx
+  autocmd BufNewFile,BufRead *.js set filetype=javascript.jsx
   autocmd BufNewFile,BufRead zprofile set filetype=zsh
 augroup END
 
@@ -82,6 +82,9 @@ let g:closetag_xhtml_filetypes= 'javascript.jsx'
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
+" let g:neosnippet#enable_conceal_markers = 0
+set conceallevel=2
+set concealcursor=niv
 
 " looks for JSX in just .js files
 let g:jsx_ext_required = 0
@@ -302,7 +305,7 @@ if has('nvim')
   " highlight jsClassProperty ctermfg=LightBlue
   " " highlight jsObjectKey ctermfg=LightBlue
   " highlight jsVariableDef ctermfg=LightBlue cterm=underline
-  " highlight jsObjectShorthandProp ctermfg=White
+  " highlight jsObjectShorthandProp ctermfg=3
 
 
   let test#strategy = 'neovim'
