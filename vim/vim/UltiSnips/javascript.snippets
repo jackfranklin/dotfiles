@@ -6,3 +6,20 @@ snippet import-default
 alias id
   import ${1} from '${2}'
 
+snippet react-boilerplate
+alias rb
+  import React from 'react'
+  import PropTypes from 'prop-types'
+
+  const ${1} = props => {
+    return (
+      <div>
+        <p>hello world</p>
+      </div>
+    )
+  }
+
+  $1.propTypes = {}
+
+  export default $1
+

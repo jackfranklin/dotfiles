@@ -232,7 +232,7 @@ map <leader>v :vsplit<CR>
 nnoremap <leader>W :%s/\s\+$//<cr>:let @/=''<cr>
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
-autocmd FileType * setlocal formatoptions-=r formatoptions-=o
+" autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
 noremap H ^
 noremap L $
@@ -267,7 +267,8 @@ let g:ale_linters = {
       \  'javascript': ['eslint']
       \}
 let g:ale_fixers = {
-      \  'javascript': ['prettier']
+      \ 'javascript': ['prettier'],
+      \ 'scss': ['prettier'],
       \}
 let g:ale_set_highlights = 0
 
