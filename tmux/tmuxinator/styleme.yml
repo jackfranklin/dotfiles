@@ -44,11 +44,11 @@ pre_window: workon styleme
 
 windows:
   - servers:
-      layout: even-horizontal
+      layout: even-vertical
       # Synchronize all panes of this window, can be enabled before or after the pane commands run.
       # 'before' represents legacy functionality and will be deprecated in a future release, in favour of 'after'
       # synchronize: after
       panes:
         - styleme/manage.py runserver
         - yarn && yarn dev-build-serve
-  - cli: code .
+  - cli:
