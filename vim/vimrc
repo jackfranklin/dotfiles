@@ -269,6 +269,7 @@ let g:ale_linters = {
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
       \ 'scss': ['prettier'],
+      \ 'css': ['prettier'],
       \}
 let g:ale_set_highlights = 0
 
