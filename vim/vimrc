@@ -284,32 +284,6 @@ if has('nvim')
   tnoremap <Esc> <C-\><C-n>
   set inccommand=split
 
-  colorscheme base16-oceanicnext
-  autocmd BufNewFile,BufRead * highlight jsParensError ctermbg=NONE
-  highlight Comment cterm=italic
-  autocmd BufWinEnter,WinEnter term://* startinsert
-  " so it's clear which paen I'm on and which is matched
-  " highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
-
-  " highlight Comment cterm=italic ctermfg=gray
-  highlight jsParensError ctermbg=NONE
-  " highlight jsString ctermfg=White
-
-  " " highlight xmlAttrib ctermfg=121
-  " highlight jsThis ctermfg=LightRed cterm=italic
-  " highlight jsReturn ctermfg=13
-  " highlight jsFuncCall ctermfg=Blue
-  " " highlight jsModuleKeyword ctermfg=190
-  " " highlight jsComment ctermfg=245 ctermbg=none
-  " " highlight jsClassProperty ctermfg=14 cterm=bold
-  " highlight jsDestructuringPropertyValue ctermfg=LightBlue
-  " highlight jsDestructuringBlock ctermfg=190
-  " highlight jsClassProperty ctermfg=LightBlue
-  " " highlight jsObjectKey ctermfg=LightBlue
-  " highlight jsVariableDef ctermfg=LightBlue cterm=underline
-  " highlight jsObjectShorthandProp ctermfg=3
-
-
   let test#strategy = 'neovim'
 endif
 
@@ -349,6 +323,33 @@ if has('gui_running')
 
   set cursorline
   set lazyredraw
+else
+  colorscheme base16-oceanicnext
+  autocmd BufNewFile,BufRead * highlight jsParensError ctermbg=NONE
+  highlight Comment cterm=italic
+  autocmd BufWinEnter,WinEnter term://* startinsert
+  " so it's clear which paen I'm on and which is matched
+  " highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
+
+  " highlight Comment cterm=italic ctermfg=gray
+  highlight jsParensError ctermbg=NONE
+  " highlight jsString ctermfg=White
+
+  " " highlight xmlAttrib ctermfg=121
+  " highlight jsThis ctermfg=LightRed cterm=italic
+  " highlight jsReturn ctermfg=13
+  " highlight jsFuncCall ctermfg=Blue
+  " " highlight jsModuleKeyword ctermfg=190
+  " " highlight jsComment ctermfg=245 ctermbg=none
+  " " highlight jsClassProperty ctermfg=14 cterm=bold
+  " highlight jsDestructuringPropertyValue ctermfg=LightBlue
+  " highlight jsDestructuringBlock ctermfg=190
+  " highlight jsClassProperty ctermfg=LightBlue
+  " " highlight jsObjectKey ctermfg=LightBlue
+  " highlight jsVariableDef ctermfg=LightBlue cterm=underline
+  " highlight jsObjectShorthandProp ctermfg=3
+
+
 endif
 
 highlight gitcommitComment ctermbg=NONE
