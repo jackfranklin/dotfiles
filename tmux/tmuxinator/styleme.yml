@@ -50,5 +50,5 @@ windows:
       # synchronize: after
       panes:
         - styleme/manage.py runserver
-        - yarn && yarn dev-build-serve
+        - yarn && yarn dev-build-watch-external
   - cli:
