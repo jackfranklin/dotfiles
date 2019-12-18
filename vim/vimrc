@@ -40,6 +40,7 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'w0rp/ale'
 Plug 'tpope/vim-vinegar'
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
 Plug 'junegunn/goyo.vim', { 'for': 'markdown' }
 Plug 'janko-m/vim-test'
@@ -268,6 +269,7 @@ let g:ale_linters = {
       \}
 let g:ale_fixers = {
       \ 'javascript': ['prettier'],
+      \ 'javascriptreact': ['prettier'],
       \ 'scss': ['prettier'],
       \ 'css': ['prettier'],
       \}
