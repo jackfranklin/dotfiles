@@ -8,14 +8,12 @@ call plug#begin('~/.vim/plugged')
 " Syntax and language specific
 Plug 'tpope/vim-git'
 Plug 'vim-ruby/vim-ruby'
-Plug 'sheerun/vim-polyglot'
 Plug 'vim-scripts/indentpython.vim', { 'for': 'python' }
 Plug 'tpope/vim-sleuth'
 Plug 'tweekmonster/django-plus.vim'
 Plug 'jparise/vim-graphql'
-Plug 'pangloss/vim-javascript',    { 'for': ['javascript', 'javascript.jsx'] }
-Plug 'leafgarland/typescript-vim', { 'for': ['typescript', 'typescript.tsx'] }
-Plug 'maxmellon/vim-jsx-pretty',   { 'for': ['javascript', 'javascript.jsx','typescript', 'typescript.tsx'] }
+Plug 'yuezk/vim-js'
+Plug 'maxmellon/vim-jsx-pretty'
 Plug 'othree/html5.vim',       { 'for': 'html' }
 Plug 'hail2u/vim-css3-syntax', { 'for': 'css' }
 Plug 'elzr/vim-json',          { 'for': 'json' }
