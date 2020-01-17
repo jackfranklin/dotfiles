@@ -322,15 +322,23 @@ if has('gui_running')
   set cursorline
   set lazyredraw
 else
-  colorscheme base16-oceanicnext
+  colorscheme base16-3024
   autocmd BufNewFile,BufRead * highlight jsParensError ctermbg=NONE
-  highlight Comment cterm=italic
   autocmd BufWinEnter,WinEnter term://* startinsert
   " so it's clear which paen I'm on and which is matched
   " highlight MatchParen cterm=none ctermbg=none ctermfg=yellow
 
-  " highlight Comment cterm=italic ctermfg=gray
-  highlight jsParensError ctermbg=NONE
+  highlight Comment cterm=italic ctermfg=10
+  highlight StatusLine ctermbg=17
+  highlight LineNr ctermbg=17 ctermfg=10
+  highlight CursorLineNr ctermbg=10 ctermfg=White
+  " highlight jsString ctermfg=White
+
+  " " highlight xmlAttrib ctermfg=121
+  " highlight jsThis ctermfg=LightRed cterm=italic
+  " highlight jsReturn ctermfg=13
+  " highlight jsFuncCall ctermfg=Blue
+  " " highlight jsModuleKeyword ctermfg=190
   " highlight jsString ctermfg=White
 
   " " highlight xmlAttrib ctermfg=121
