@@ -1,3 +1,0 @@
-#!/usr/bin/env sh
-
-git clone --depth=1 --branch=master git@github.com:jackfranklin/react-hot-load-webpack-boilerplate.git $1 && cd $1 && rm -rf .git && git init && git add -A && git commit -m "Initial commit" && npm install

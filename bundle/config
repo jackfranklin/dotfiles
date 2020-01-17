@@ -1,4 +1,0 @@
----
-BUNDLE_PATH: ".bundle"
-BUNDLE_BIN: ".bundle/binstubs"
-BUNDLE_BUILD__EVENTMACHINE: "--with-cppflags=-I/usr/local/opt/openssl/include"
