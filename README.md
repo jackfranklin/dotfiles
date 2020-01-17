@@ -1,6 +1,8 @@
 # Jack's Dotfiles
 
-My dotfiles for Vim and ZSH. Shamelessly stolen from tonnes of dotfile repositories I found online.
+My dotfiles for Vim, ZSH, Fish (which I'm trying!) and many other things. Mostly taken from endless googling and reading of other people's dotfiles.
+
+Note that these aren't designed to be droppable onto your machine - lots of stuff is specific to me :)
 
 Files are symlinked into the proper location, and have the `.` added. For example:
 
@@ -11,20 +13,32 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ~/dotfiles/git/gitignore_global => ~/.gitignore_global
 ...and so on
 ```
-# Vim Plugins
 
-Are all handled with Vim Plug.
+# New Mac machine setup steps
+
+- Download Chrome
+- Download 1Password and login
+- Generate SSH key and set it up on GitHub
+- Download iTerm 2
+- Clone this repo into `~/dotfiles`
+- Setup Vim
+  - `make vim`
+  - Install Vim plug (https://github.com/junegunn/vim-plug)
+  - Run Vim + plug install
+- Install [asdf](https://asdf-vm.com/#/)
+  - install `asdf-nodejs`
+- Change the default shell to Fish
+- `cd fish && make symlink`
+- Download VSCode
+  - setup Settings Sync (1Password has the token + gist link)
+- `npm adduser` to login to npm
+- Generate a new token for Github and use that to authenticate with `hub`
+
 
 # Setting up the ergodox keyboards
 
 - Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/EeKGv/latest/1
 
-# Mac Apps
-
-Most should be installed with the Brewfile, which you can install with `make install_brews`
-
 # Authentication
 
-- `npm adduser` to login to npm
-- Generate a new token for Github and use that to authenticate with `hub`
 
