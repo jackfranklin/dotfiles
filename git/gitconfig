@@ -35,6 +35,7 @@
 	autocorrect = 1
 [core]
 	excludesfile = ~/.gitignore_global
+	editor = vim
 [url "git@github.com:"]
 	insteadOf = https://github.com/
 [pull]
