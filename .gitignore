@@ -15,3 +15,5 @@ bundle/cache
 npmrc/npmrc
 bin/hub
 
+fish/fishd.*
+
