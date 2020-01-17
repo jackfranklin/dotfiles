@@ -4,9 +4,7 @@ all:
 	@echo "Run things individually!"
 
 symlinks:
-	@mkdir ~/.config
 	@ln -nsf $(DIR)/zsh/zsh ~/.zsh
-	@ln -nsf $(DIR)/fish ~/.config/fish
 	@ln -sf $(DIR)/zsh/zshenv ~/.zshenv
 	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
 	@ln -nsf $(DIR)/vim/vim ~/.vim
