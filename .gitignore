@@ -16,4 +16,5 @@ npmrc/npmrc
 bin/hub
 
 fish/fishd.*
+fish/fisher_files
 
