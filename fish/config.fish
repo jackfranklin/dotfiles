@@ -21,6 +21,7 @@ alias gca="git commit --amend"
 alias gcan="git commit --amend --no-edit"
 alias gsp="git stash pop"
 alias gconflict="git diff --name-only --diff-filter=U"
+alias df="cd ~/dotfiles"
 
 set EDITOR 'vim'
 
