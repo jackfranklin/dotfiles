@@ -22,8 +22,11 @@ alias gcan="git commit --amend --no-edit"
 alias gsp="git stash pop"
 alias gconflict="git diff --name-only --diff-filter=U"
 alias df="cd ~/dotfiles"
+alias nvim="/home/jack/nvim.appimage"
 
-set EDITOR 'vim'
+set EDITOR 'nvim'
+
+set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden'
 
 source ~/.asdf/asdf.fish
 
