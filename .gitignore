@@ -18,3 +18,5 @@ bin/hub
 fish/fishd.*
 fish/fisher_files
 
+.netrwhist
+

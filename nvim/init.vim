@@ -8,7 +8,11 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'terryma/vim-multiple-cursors'
 
-Plug 'SirVer/ultisnips'
+" Plug 'SirVer/ultisnips'
+if has('nvim')
+  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+  Plug 'Shougo/neosnippet.vim'
+endif
 
 Plug 'HerringtonDarkholme/yats.vim'
 Plug '/othree/yajs.vim'
@@ -89,4 +93,14 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 
-let g:UltiSnipsExpandTrigger="<c-k>"
+" let g:UltiSnipsExpandTrigger="<c-k>"
+
+let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
+imap <C-k> <Plug>(neosnippet_expand_or_jump)
+smap <C-k> <Plug>(neosnippet_expand_or_jump)
+xmap <C-k> <Plug>(neosnippet_expand_target)
+
+let g:neosnippet#disable_runtime_snippets = {
+\   '_' : 1,
+\ }
+
