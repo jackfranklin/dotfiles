@@ -9,6 +9,9 @@ vim:
 	@ln -sf $(DIR)/vim/gitvimrc ~/.gitvimrc
 	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
 
+neovim:
+	@ln -nsf $(DIR)/nvim ~/.config/nvim
+
 
 symlinks:
 	@ln -nsf $(DIR)/zsh/zsh ~/.zsh
@@ -22,10 +25,6 @@ symlinks:
 	@ln -sf $(DIR)/bin ~/.bin
 	@ln -sf $(DIR)/rbenv ~/.rbenv
 	@ln -sf $(DIR)/npmrc/npmrc ~/.npmrc
-	@mkdir -p ~/.config/nvim
-	@ln -s ~/.vim ~/.config/nvim
-	@ln -s ~/dotfiles/vim/vimrc ~/.config/nvim/init.vim
-	@ln -s ~/dotfiles/vim/vim/UltiSnips ~/.config/nvim/UltiSnips
 	@ln -sf $(DIR)/tmux/tmuxinator ~/.config/tmuxinator
 	touch ~/dotfiles/zsh/secret
 
