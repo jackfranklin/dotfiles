@@ -44,7 +44,6 @@ set tabstop=2
 set shiftwidth=2
 set softtabstop=2
 set autoindent
-autocmd FileType elm setlocal shiftwidth=4 softtabstop=4 tabstop=4
 
 set incsearch
 set hlsearch
@@ -88,9 +87,6 @@ highlight Comment cterm=italic
 let g:ale_lint_on_text_changed = 'never'
 let g:ale_lint_on_insert_leave = 0
 
-let g:ale_fixers = {
-\ 'elm': ['elm-format']
-\}
 let g:ale_fix_on_save = 1
 
 let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
