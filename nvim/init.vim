@@ -93,8 +93,6 @@ let g:ale_fixers = {
 \}
 let g:ale_fix_on_save = 1
 
-" let g:UltiSnipsExpandTrigger="<c-k>"
-
 let g:neosnippet#snippets_directory = '~/.config/nvim/UltiSnips'
 imap <C-k> <Plug>(neosnippet_expand_or_jump)
 smap <C-k> <Plug>(neosnippet_expand_or_jump)
@@ -103,4 +101,7 @@ xmap <C-k> <Plug>(neosnippet_expand_target)
 let g:neosnippet#disable_runtime_snippets = {
 \   '_' : 1,
 \ }
+
+highlight PMenuSel ctermfg=0 ctermbg=13
+highlight PMenu ctermfg=255 ctermbg=0
 
