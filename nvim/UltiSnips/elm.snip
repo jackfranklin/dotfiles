@@ -1,5 +1,13 @@
+snippet mod
+  module ${1:Foo} exposing (${2:..})
+	${0}
+
 snippet imp
   import ${0:Html}
 
 snippet impe
   import ${1:Html} exposing (${0:..})
+
+snippet func
+  ${1:foo}: ${2:Int}
+  ${3:$1} = ${0:1}
