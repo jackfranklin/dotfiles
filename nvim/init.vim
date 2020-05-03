@@ -8,7 +8,8 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'terryma/vim-multiple-cursors'
 
-" Plug 'SirVer/ultisnips'
+Plug 'dag/vim-fish'
+
 if has('nvim')
   Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
   Plug 'Shougo/neosnippet.vim'
