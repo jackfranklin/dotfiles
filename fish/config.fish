@@ -22,7 +22,12 @@ alias gcan="git commit --amend --no-edit"
 alias gsp="git stash pop"
 alias gconflict="git diff --name-only --diff-filter=U"
 alias df="cd ~/dotfiles"
-alias nvim="/home/jack/nvim.appimage"
+
+# On Windows/WSL nvim is an appimage that gets downloaded
+if not which nvim > /dev/null
+  alias nvim="/home/jack/nvim.appimage"
+end
+
 
 set EDITOR 'nvim'
 
@@ -30,7 +35,7 @@ set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden'
 
 source ~/.asdf/asdf.fish
 
-set -g fisher_path /home/jack/dotfiles/fish/fisher_files
+set -g fisher_path $HOME/dotfiles/fish/fisher_files
 
 set fish_function_path $fish_function_path[1] $fisher_path/functions $fish_function_path[2..-1]
 set fish_complete_path $fish_complete_path[1] $fisher_path/completions $fish_complete_path[2..-1]

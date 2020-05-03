@@ -12,6 +12,12 @@ vim:
 neovim:
 	@ln -nsf $(DIR)/nvim ~/.config/nvim
 
+alacritty:
+	@ln -nsf $(DIR)/alacritty ~/.config/alacritty
+
+fish:
+	@ln -nsf $(DIR)/fish ~/.config/fish
+
 
 symlinks:
 	@ln -nsf $(DIR)/zsh/zsh ~/.zsh
