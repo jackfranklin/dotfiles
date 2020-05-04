@@ -7,6 +7,7 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'plasticboy/vim-markdown'
 
 Plug 'dag/vim-fish'
 
@@ -116,3 +117,8 @@ autocmd VimResized * :wincmd =
 set omnifunc=ale#completion#OmniFunc
 
 nmap <silent> <C-e> <Plug>(ale_next_wrap)
+
+let g:vim_markdown_frontmatter = 1
+let g:vim_markdown_folding_level = 6
+
+set noswapfile
