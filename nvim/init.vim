@@ -102,4 +102,4 @@ let g:neosnippet#disable_runtime_snippets = {
 highlight PMenuSel ctermfg=0 ctermbg=13
 highlight PMenu ctermfg=255 ctermbg=0
 highlight MatchParen ctermfg=255 ctermbg=240
-
+highlight ALEError ctermbg=none cterm=underline ctermfg=1

@@ -31,4 +31,6 @@ colors:
     white:   '#e6e6e6'
 
 font:
-   size: 13
+  normal:
+    family: "Dank Mono"
+  size: 16
