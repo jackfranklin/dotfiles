@@ -17,7 +17,7 @@ if has('nvim')
 endif
 
 Plug 'HerringtonDarkholme/yats.vim'
-Plug '/othree/yajs.vim'
+Plug 'othree/yajs.vim'
 
 Plug 'andys8/vim-elm-syntax'
 
