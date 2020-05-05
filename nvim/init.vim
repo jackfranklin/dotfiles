@@ -26,8 +26,13 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'dense-analysis/ale'
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'mileszs/ack.vim'
 
 call plug#end()
+let g:ackprg = 'ag --vimgrep --smart-case'
+nnoremap \ :Ack!<SPACE>
+
+set list listchars=tab:»·,trail:·
 
 filetype plugin indent on
 
@@ -122,3 +127,6 @@ let g:vim_markdown_frontmatter = 1
 let g:vim_markdown_folding_level = 6
 
 set noswapfile
+vnoremap <leader>8 "*y
+vnoremap <leader>9 "*p
+nnoremap <leader>8 "*p
