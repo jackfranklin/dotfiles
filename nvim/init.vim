@@ -6,14 +6,15 @@ Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-unimpaired'
 Plug 'terryma/vim-multiple-cursors'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
 
 " SYNTAXES
-Plug 'HerringtonDarkholme/yats.vim' " TypeScript
 Plug 'othree/yajs.vim' " JavaScript
+Plug 'HerringtonDarkholme/yats.vim' " TypeScript
 Plug 'andys8/vim-elm-syntax'
 Plug 'dag/vim-fish'
 Plug 'plasticboy/vim-markdown'
@@ -23,9 +24,14 @@ Plug 'junegunn/fzf.vim'
 
 Plug 'dense-analysis/ale'
 Plug 'christoomey/vim-tmux-navigator'
+
 Plug 'mileszs/ack.vim'
 
 call plug#end()
+
+if (has('termguicolors'))
+  set termguicolors
+endif
 
 filetype plugin indent on
 
