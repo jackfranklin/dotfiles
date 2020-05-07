@@ -22,10 +22,14 @@ Plug 'plasticboy/vim-markdown'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 
-Plug 'dense-analysis/ale'
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-runner'
 
 Plug 'mileszs/ack.vim'
+
+Plug 'lifepillar/vim-solarized8'
+
 
 call plug#end()
 
@@ -36,13 +40,21 @@ endif
 filetype plugin indent on
 
 so ~/.config/nvim/defaults.vim
-so ~/.config/nvim/ale.vim
+so ~/.config/nvim/coc.vim
 so ~/.config/nvim/highlights.vim
 so ~/.config/nvim/maps.vim
 so ~/.config/nvim/snippets.vim
 
 " So you can run :call SyntaxItem() to see what the syntax is
 function! SyntaxItem()
-  echo synIDattr(synID(line("."),col("."),1),"name")
+  echo "hi<" . synIDattr(synID(line("."),col("."),1),"name") . '> trans<'
+        \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
+        \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 endfunction
+
+set background=dark
+colorscheme solarized8
+
+set foldlevel=99
+set foldmethod=syntax
 
