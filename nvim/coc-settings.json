@@ -2,7 +2,6 @@
   "suggest.autoTrigger":"none",
   "prettier.requireConfig": true,
   "suggest.triggerAfterInsertEnter": false,
-  "suggest.noselect": false,
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript"],
   "coc.preferences.formatOnType": false,
   "eslint.run": "onSave",
