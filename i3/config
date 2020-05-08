@@ -192,5 +192,3 @@ bindsym XF86AudioPrev exec playerctl previous
 
 exec_always setxkbmap -option caps:escape
 
-exec --no-startup-id "xss-lock -- i3lock -e -d -c 000000"
-
