@@ -1,7 +1,7 @@
 {
-  "suggest.autoTrigger":"none",
+  //"suggest.autoTrigger":"none",
   "prettier.requireConfig": true,
-  "suggest.triggerAfterInsertEnter": false,
+  //"suggest.triggerAfterInsertEnter": false,
   "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript"],
   "coc.preferences.formatOnType": false,
   "eslint.run": "onSave",
