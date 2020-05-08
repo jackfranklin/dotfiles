@@ -39,6 +39,25 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 - Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/DZgxP/latest/1
 
-# Authentication
+# Linux notes
+
+Sorting out trackpad: https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
+
+`sudo touch /etc/X11/xorg.conf.d/90-touchpad.conf`
+
+And file contains:
+
+```
+Section "InputClass"
+        Identifier "touchpad"
+        MatchIsTouchpad "on"
+        Driver "libinput"
+        Option "Tapping" "on"
+	Option "NaturalScrolling" "on"
+	Option "TappingButtonMap" "lrm"
+EndSection
+
+```
+
 
 

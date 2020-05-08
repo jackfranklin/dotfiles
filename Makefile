@@ -1,6 +1,6 @@
 DIR="${HOME}/dotfiles"
 
-.PHONY: tmux neovim alacritty fish git ag
+.PHONY: tmux neovim alacritty fish git ag i3
 
 all:
 	@echo "Run things individually!"
@@ -23,6 +23,9 @@ fish:
 tmux:
 	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
 	@ln -sf $(DIR)/tmux/tmux-osx.conf ~/.tmux-osx.conf
+
+i3:
+	@ln -nsf $(DIR)/i3 ~/.config/i3
 
 ag:
 	@ln -sf $(DIR)/ag/agignore ~/.agignore
