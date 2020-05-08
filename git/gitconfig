@@ -12,25 +12,9 @@
   amend = commit --amend
   aa = add --all
   fa = fetch --all
-  pom = push origin master
   b = branch
-  ignored = !git ls-files -v | grep "^[[:lower:]]"
-  prune-local = !git branch --merged | tr -d '*' | grep -v dev | xargs -n1 git branch -d
 [push]
 	default = simple
-[color]
-[color "diff-highlight"]
-	oldNormal = red bold
-	oldHighlight = red bold 52
-	newNormal = green bold
-	newHighlight = green bold 22
-[color "diff"]
-	commit = yellow bold
-	meta = yellow
-	frag = magenta bold
-	old = red bold
-	new = green bold
-	whitespace = red reverse
 [help]
 	autocorrect = 1
 [core]
