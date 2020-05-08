@@ -41,6 +41,7 @@ filetype plugin indent on
 
 so ~/.config/nvim/defaults.vim
 so ~/.config/nvim/coc.vim
+so ~/.config/nvim/fzf.vim
 so ~/.config/nvim/highlights.vim
 so ~/.config/nvim/maps.vim
 so ~/.config/nvim/snippets.vim
@@ -57,4 +58,3 @@ colorscheme solarized8
 
 set foldlevel=99
 set foldmethod=syntax
-
