@@ -1,5 +1,7 @@
 DIR="${HOME}/dotfiles"
 
+.PHONY: tmux neovim alacritty fish git ag
+
 all:
 	@echo "Run things individually!"
 
@@ -18,20 +20,25 @@ alacritty:
 fish:
 	@ln -nsf $(DIR)/fish ~/.config/fish
 
+tmux:
+	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
+	@ln -sf $(DIR)/tmux/tmux-osx.conf ~/.tmux-osx.conf
 
-symlinks:
+ag:
+	@ln -sf $(DIR)/ag/agignore ~/.agignore
+
+git:
+	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
+	@ln -sf $(DIR)/git/gitignore_global ~/.gitignore_global
+
+
+bin:
+	@ln -sf $(DIR)/bin ~/.bin
+
+zsh:
 	@ln -nsf $(DIR)/zsh/zsh ~/.zsh
 	@ln -sf $(DIR)/zsh/zshenv ~/.zshenv
 	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
-	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
-	@ln -sf $(DIR)/tmux/tmux-osx.conf ~/.tmux-osx.conf
-	@ln -sf $(DIR)/ag/agignore ~/.agignore
-	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
-	@ln -sf $(DIR)/git/gitignore_global ~/.gitignore_global
-	@ln -sf $(DIR)/bin ~/.bin
-	@ln -sf $(DIR)/rbenv ~/.rbenv
-	@ln -sf $(DIR)/npmrc/npmrc ~/.npmrc
-	@ln -sf $(DIR)/tmux/tmuxinator ~/.config/tmuxinator
 	touch ~/dotfiles/zsh/secret
 
 antigen:
