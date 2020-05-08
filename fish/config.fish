@@ -31,7 +31,7 @@ end
 
 set EDITOR 'nvim'
 
-set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden'
+set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
 
 source ~/.asdf/asdf.fish
 
