@@ -25,11 +25,10 @@ Plug 'junegunn/fzf.vim'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
-
 Plug 'mileszs/ack.vim'
 
+" THEMES
 Plug 'lifepillar/vim-solarized8'
-
 
 call plug#end()
 
