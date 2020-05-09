@@ -1,11 +1,20 @@
 {
-  //"suggest.autoTrigger":"none",
   "prettier.requireConfig": true,
-  //"suggest.triggerAfterInsertEnter": false,
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript"],
+  "suggest.maxCompleteItemCount": 10,
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "elm"],
   "coc.preferences.formatOnType": false,
   "eslint.run": "onSave",
   "tsserver.formatOnType": false,
   "coc.preferences.formatOnInsertLeave": false,
-  "suggest.disableKind": true
+  "suggest.disableKind": true,
+  "languageserver": {
+    "elmLS": {
+      "command": "elm-language-server",
+      "filetypes": ["elm"],
+      "rootPatterns": ["elm.json"],
+      "initializationOptions": {
+        "elmAnalyseTrigger": "change"
+      }
+    }
+  }
 }

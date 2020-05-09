@@ -1,6 +1,6 @@
 DIR="${HOME}/dotfiles"
 
-.PHONY: tmux neovim alacritty fish git ag i3
+.PHONY: tmux neovim alacritty fish git ag i3 elm-language-server
 
 all:
 	@echo "Run things individually!"
@@ -46,3 +46,6 @@ zsh:
 
 antigen:
 	cd ~ && git clone https://github.com/zsh-users/antigen.git
+
+elm-language-server:
+	npm install --global elm-tooling@elm-language-server
