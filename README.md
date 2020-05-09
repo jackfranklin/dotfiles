@@ -59,5 +59,7 @@ EndSection
 
 ```
 
+Bluetooth pairing with Bose: https://askubuntu.com/questions/833322/pair-bose-quietcomfort-35-with-ubuntu-over-bluetooth
+
 
 
