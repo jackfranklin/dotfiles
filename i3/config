@@ -179,6 +179,7 @@ bindsym $mod+r mode "resize"
 # finds out, if available)
 bar {
         status_command i3blocks -c ~/.config/i3/i3blocks.conf
+        font pango:Dank Mono 16
 }
 
 bindsym $mod+shift+x exec i3lock
