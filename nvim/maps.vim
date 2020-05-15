@@ -27,3 +27,8 @@ nnoremap <leader>b :Buffers<cr>
 vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
+
+
+" terryma/expand-region
+map <Right> <Plug>(expand_region_expand)
+map <Left> <Plug>(expand_region_shrink)
