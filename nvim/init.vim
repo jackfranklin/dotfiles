@@ -19,6 +19,7 @@ Plug 'HerringtonDarkholme/yats.vim' " TypeScript
 Plug 'andys8/vim-elm-syntax'
 Plug 'dag/vim-fish'
 Plug 'plasticboy/vim-markdown'
+Plug 'niftylettuce/vim-jinja' " Nunjucks
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'

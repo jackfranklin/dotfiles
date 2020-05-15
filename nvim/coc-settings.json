@@ -1,7 +1,8 @@
 {
   "prettier.requireConfig": true,
+  "prettier.onlyUseLocalVersion": true,
   "suggest.maxCompleteItemCount": 10,
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "elm"],
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "typescript", "elm", "markdown"],
   "coc.preferences.formatOnType": false,
   "eslint.run": "onSave",
   "tsserver.formatOnType": false,
