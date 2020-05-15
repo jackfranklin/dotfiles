@@ -32,7 +32,8 @@ set cursorline
 " TRAILING WHITESPACE
 set list listchars=tab:»·,trail:·
 
-let mapleader=","
+" let mapleader=","
+let mapleader = "\<Space>"
 
 set splitbelow
 set splitright
