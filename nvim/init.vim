@@ -15,7 +15,7 @@ Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
 
 " SYNTAXES
-Plug 'othree/yajs.vim' " JavaScript
+Plug 'jackfranklin/yajs.vim' " JavaScript
 Plug 'HerringtonDarkholme/yats.vim' " TypeScript
 Plug 'andys8/vim-elm-syntax'
 Plug 'dag/vim-fish'
