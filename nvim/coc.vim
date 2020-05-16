@@ -2,7 +2,8 @@ let g:coc_global_extensions = [
   \ 'coc-tsserver',
   \ 'coc-json',
   \ 'coc-prettier',
-  \ 'coc-eslint'
+  \ 'coc-eslint',
+  \ 'coc-pairs'
   \ ]
 
 inoremap <silent><expr> <c-space> coc#refresh()
