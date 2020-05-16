@@ -5,12 +5,6 @@ DIR="${HOME}/dotfiles"
 all:
 	@echo "Run things individually!"
 
-vim:
-	@ln -nsf $(DIR)/vim/vim ~/.vim
-	@ln -sf $(DIR)/vim/vimrc ~/.vimrc
-	@ln -sf $(DIR)/vim/gitvimrc ~/.gitvimrc
-	@ln -nsf $(DIR)/vim/plugin ~/.vim/plugin
-
 neovim:
 	@ln -nsf $(DIR)/nvim ~/.config/nvim
 
@@ -33,7 +27,6 @@ ag:
 git:
 	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
 	@ln -sf $(DIR)/git/gitignore_global ~/.gitignore_global
-
 
 bin:
 	@ln -sf $(DIR)/bin ~/.bin
