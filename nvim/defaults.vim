@@ -15,6 +15,8 @@ set shiftwidth=2
 set softtabstop=2
 set autoindent
 
+set inccommand=nosplit
+
 " SEARCH SETTINGS
 set incsearch
 set hlsearch

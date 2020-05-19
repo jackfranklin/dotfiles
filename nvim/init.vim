@@ -10,6 +10,7 @@ Plug 'tpope/vim-unimpaired'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'terryma/vim-expand-region'
 Plug 'thinca/vim-visualstar'
+Plug 'Konfekt/FastFold'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'Shougo/neosnippet.vim'
