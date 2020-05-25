@@ -44,4 +44,4 @@ elm-language-server:
 	npm install --global elm-tooling@elm-language-server
 
 ubuntu-deps:
-	sudo apt-get install neovim silversearcher-ag fish build-essential
+	sudo apt-get install neovim silversearcher-ag fish build-essential tmux
