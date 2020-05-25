@@ -22,14 +22,13 @@ noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
 nnoremap <leader>t :Files<cr>
 nnoremap <leader>b :Buffers<cr>
 
-
 " global clipboard
 vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
-" terryma/expand-region
-map <Right> <Plug>(expand_region_expand)
-map <Left> <Plug>(expand_region_shrink)
-
+" FOLDS
 nnoremap <leader>z za<CR>
+
+" Coc-snippets
+imap <C-k> <Plug>(coc-snippets-expand-jump)

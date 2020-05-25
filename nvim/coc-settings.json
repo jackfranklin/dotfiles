@@ -17,5 +17,9 @@
         "elmAnalyseTrigger": "change"
       }
     }
+  },
+  "snippets.userSnippetsDirectory": "~/.config/nvim/UltiSnips", 
+  "snippets.extends": {
+    "typescript": ["javascript"]
   }
 }

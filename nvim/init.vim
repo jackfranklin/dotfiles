@@ -7,13 +7,12 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-unimpaired'
-Plug 'terryma/vim-multiple-cursors'
-Plug 'terryma/vim-expand-region'
+Plug 'gorkunov/smartpairs.vim'
 Plug 'thinca/vim-visualstar'
 Plug 'Konfekt/FastFold'
+Plug 'junegunn/goyo.vim'
 
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-Plug 'Shougo/neosnippet.vim'
 
 " SYNTAXES
 Plug 'jackfranklin/yajs.vim' " JavaScript
@@ -47,7 +46,6 @@ so ~/.config/nvim/coc.vim
 so ~/.config/nvim/fzf.vim
 so ~/.config/nvim/highlights.vim
 so ~/.config/nvim/maps.vim
-so ~/.config/nvim/snippets.vim
 
 " So you can run :call SyntaxItem() to see what the syntax is
 function! SyntaxItem()

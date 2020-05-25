@@ -3,7 +3,7 @@ let g:coc_global_extensions = [
   \ 'coc-json',
   \ 'coc-prettier',
   \ 'coc-eslint',
-  \ 'coc-pairs'
+  \ 'coc-snippets'
   \ ]
 
 inoremap <silent><expr> <c-space> coc#refresh()
