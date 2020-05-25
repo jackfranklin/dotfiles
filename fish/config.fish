@@ -23,12 +23,6 @@ alias gsp="git stash pop"
 alias gconflict="git diff --name-only --diff-filter=U"
 alias df="cd ~/dotfiles"
 
-# On Windows/WSL nvim is an appimage that gets downloaded
-if not which nvim > /dev/null
-  alias nvim="/home/jack/nvim.appimage"
-end
-
-
 set EDITOR 'nvim'
 
 set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
