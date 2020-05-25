@@ -60,4 +60,4 @@ set background=dark
 colorscheme solarized8
 
 set foldlevel=99
-set foldmethod=syntax
+set foldmethod=indent
