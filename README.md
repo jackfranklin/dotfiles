@@ -37,8 +37,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 # Setting up the ergodox keyboards
 
-- Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/xbVX3/latest/0
-
+- Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/64nmq/latest/2
 # Linux notes
 
 Sorting out trackpad: https://cravencode.com/post/essentials/enable-tap-to-click-in-i3wm/
