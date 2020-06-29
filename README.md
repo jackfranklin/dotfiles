@@ -37,7 +37,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 # Setting up the ergodox keyboards
 
-- Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/mleY3/latest/1
+- Latest ergodox layout: https://configure.ergodox-ez.com/ergodox-ez/layouts/yZVQB/latest/0
 
 # Linux notes
 
