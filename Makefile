@@ -45,3 +45,7 @@ elm-language-server:
 
 ubuntu-deps:
 	sudo apt-get install neovim silversearcher-ag fish build-essential tmux
+
+fisher:
+	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
+
