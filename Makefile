@@ -7,6 +7,9 @@ all:
 
 neovim:
 	@ln -nsf $(DIR)/nvim ~/.config/nvim
+	@echo "Don't forget to install vim-plug then do :PlugInstall"
+	@echo "https://github.com/junegunn/vim-plug#neovim"
+
 
 alacritty:
 	@ln -nsf $(DIR)/alacritty ~/.config/alacritty
