@@ -30,14 +30,13 @@ Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'mileszs/ack.vim'
 
-" THEMES
-Plug 'lifepillar/vim-solarized8'
-
 call plug#end()
 
-if (has('termguicolors'))
-  set termguicolors
-endif
+" if (has('termguicolors'))
+"   set termguicolors
+" endif
+
+set guicursor=
 
 filetype plugin indent on
 
@@ -53,9 +52,6 @@ function! SyntaxItem()
         \ . synIDattr(synID(line("."),col("."),0),"name") . "> lo<"
         \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 endfunction
-
-set background=dark
-colorscheme solarized8
 
 set foldlevel=99
 set foldmethod=indent
