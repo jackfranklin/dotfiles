@@ -52,3 +52,7 @@ ubuntu-deps:
 fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 
+latest_neovim_linux:
+	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
+	chmod u+x nvim.appimage
+	mv nvim.appimage ~/dotfiles/images

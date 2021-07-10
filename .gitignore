@@ -27,4 +27,5 @@ fish/functions/__history*
 fish/functions/fzf_key_bindings.fish
 
 .netrwhist
+images/
 
