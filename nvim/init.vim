@@ -8,24 +8,10 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
-Plug 'thinca/vim-visualstar'
-Plug 'Konfekt/FastFold'
-Plug 'junegunn/goyo.vim'
+" Plug 'thinca/vim-visualstar'
+" Plug 'Konfekt/FastFold'
+" Plug 'junegunn/goyo.vim'
 
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-
-" SYNTAXES
-Plug 'jackfranklin/yajs.vim' " JavaScript
-Plug 'HerringtonDarkholme/yats.vim' " TypeScript
-Plug 'andys8/vim-elm-syntax'
-Plug 'dag/vim-fish'
-Plug 'plasticboy/vim-markdown'
-Plug 'niftylettuce/vim-jinja' " Nunjucks
-
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
-Plug 'junegunn/fzf.vim'
-
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'mileszs/ack.vim'
@@ -33,7 +19,21 @@ Plug 'mileszs/ack.vim'
 " THEMES
 Plug 'lifepillar/vim-solarized8'
 
+if (has('nvim'))
+  Plug 'neovim/nvim-lspconfig'
+  Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
+  Plug 'nvim-lua/popup.nvim'
+  Plug 'nvim-lua/plenary.nvim'
+  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'folke/lsp-colors.nvim', { 'branch': 'main' }
+  Plug 'folke/trouble.nvim', { 'branch': 'main' }
+  Plug 'tjdevries/colorbuddy.vim'
+  Plug 'Th3Whit3Wolf/onebuddy', { 'branch': 'main' }
+end
+
 call plug#end()
+
 
 if (has('termguicolors'))
   set termguicolors
@@ -42,9 +42,9 @@ endif
 filetype plugin indent on
 
 so ~/.config/nvim/defaults.vim
-so ~/.config/nvim/coc.vim
-so ~/.config/nvim/fzf.vim
-so ~/.config/nvim/highlights.vim
+" so ~/.config/nvim/coc.vim
+" so ~/.config/nvim/fzf.vim
+" so ~/.config/nvim/highlights.vim
 so ~/.config/nvim/maps.vim
 
 " So you can run :call SyntaxItem() to see what the syntax is
@@ -54,8 +54,14 @@ function! SyntaxItem()
         \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 endfunction
 
-set background=dark
-colorscheme solarized8
+" set background=dark
+" colorscheme solarized8
+
+set background=light
+colorscheme onebuddy
 
 set foldlevel=99
 set foldmethod=indent
+
+nnoremap <silent> <C-p> <cmd>Lspsaga diagnostic_jump_prev<CR>
+nnoremap <silent> <C-n> <cmd>Lspsaga diagnostic_jump_next<CR>

@@ -47,7 +47,7 @@ elm-language-server:
 	npm install --global elm-tooling@elm-language-server
 
 ubuntu-deps:
-	sudo apt-get install neovim silversearcher-ag fish build-essential tmux
+	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep
 
 fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
@@ -56,3 +56,6 @@ latest_neovim_linux:
 	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
 	chmod u+x nvim.appimage
 	mv nvim.appimage ~/dotfiles/images
+
+language_servers_global:
+	npm install --global typescript typescript-language-server svelte-language-server diagnostics-language-server
