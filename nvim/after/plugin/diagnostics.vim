@@ -1,2 +1,0 @@
-lua << EOF
-EOF

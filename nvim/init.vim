@@ -30,6 +30,8 @@ if (has('nvim'))
   Plug 'folke/trouble.nvim', { 'branch': 'main' }
   Plug 'tjdevries/colorbuddy.vim'
   Plug 'Th3Whit3Wolf/onebuddy', { 'branch': 'main' }
+  Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
+  Plug 'mhartington/formatter.nvim'
 end
 
 call plug#end()
@@ -65,3 +67,4 @@ set foldmethod=indent
 
 nnoremap <silent> <C-p> <cmd>Lspsaga diagnostic_jump_prev<CR>
 nnoremap <silent> <C-n> <cmd>Lspsaga diagnostic_jump_next<CR>
+
