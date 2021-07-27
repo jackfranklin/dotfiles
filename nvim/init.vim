@@ -33,6 +33,7 @@ if (has('nvim'))
   Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
   Plug 'mhartington/formatter.nvim'
   Plug 'hrsh7th/nvim-compe'
+  Plug 'TimUntersberger/neogit'
 end
 
 call plug#end()
