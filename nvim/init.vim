@@ -32,6 +32,7 @@ if (has('nvim'))
   Plug 'Th3Whit3Wolf/onebuddy', { 'branch': 'main' }
   Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
   Plug 'mhartington/formatter.nvim'
+  Plug 'hrsh7th/nvim-compe'
 end
 
 call plug#end()
@@ -65,6 +66,7 @@ colorscheme onebuddy
 set foldlevel=99
 set foldmethod=indent
 
-nnoremap <silent> <C-p> <cmd>Lspsaga diagnostic_jump_prev<CR>
-nnoremap <silent> <C-n> <cmd>Lspsaga diagnostic_jump_next<CR>
+
+" this is the same as IncSearch in the onebuddy color theme
+highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
 

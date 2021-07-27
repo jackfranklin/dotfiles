@@ -1,3 +1,3 @@
 function nvim
-  $HOME/dotfiles/images/nvim.appimage
+  $HOME/dotfiles/images/nvim.appimage $argv
 end
