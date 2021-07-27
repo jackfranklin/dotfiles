@@ -20,7 +20,7 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', 'K', '<Cmd>Lspsaga hover_doc<CR>', opts)
   buf_set_keymap('n', '<C-p>', '<Cmd>Lspsaga diagnostic_jump_prev<CR>', opts)
   buf_set_keymap('n', '<C-n>', '<Cmd>Lspsaga diagnostic_jump_next<CR>', opts)
-  buf_set_keymap('n', '<leader>d', "<Cmd>lua require'lspsaga.diagnostic'.show_line_diagnostics()<CR>", opts)
+  buf_set_keymap('n', '<leader>d', "<Cmd>lua require'lspsaga.diagnostic'.show_cursor_diagnostics()<CR>", opts)
   buf_set_keymap('n', '<leader>ca', "<Cmd>Lspsaga code_action<CR>", opts)
   buf_set_keymap('n', '<leader>cr', "<Cmd>Lspsaga rename<CR>", opts)
 
