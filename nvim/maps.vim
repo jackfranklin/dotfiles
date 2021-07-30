@@ -1,7 +1,7 @@
 " ACK (well, Ag)
 let g:ackprg = 'ag --vimgrep --smart-case'
 nnoremap \ :Ack!<SPACE>
-nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
+" nnoremap K :Ack! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 nnoremap <CR> :noh<CR><CR>
 
