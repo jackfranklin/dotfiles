@@ -23,7 +23,7 @@ local eslint_configuration = function(config_options)
   local local_eslint_path = node_modules_path:joinpath(".bin"):joinpath("eslint")
 
   if local_eslint_path:exists() then
-    return local_eslint_path
+    return local_eslint_path:make_relative(current_working_directory)
   elseif package_json_path:exists() and not silence_debug then
     printer("Found package.json but no local ESLint; did you mean to npm install it?")
   elseif fallback_to_global then
@@ -36,28 +36,30 @@ local eslint_configuration = function(config_options)
   end
 end
 
-local get_typescript_lsp_cmd = function(fallback_to_global, silence_debug)
-  fallback_to_global = fallback_to_global or false
-  silence_debug = silence_debug or false
+local get_typescript_lsp_cmd = function(config_options)
+  config_options = config_options or {}
+  local fallback_to_global = config_options.fallback_to_global or false
+  local silence_debug = config_options.silence_debug or false
+  local printer = create_printer("TypeScript")
   local local_ts_path = node_modules_path:joinpath(".bin"):joinpath("tsserver")
 
-  local base_cmds = { "typescript-language-server", "--stdio" }
+  local ts_language_server_command = { "typescript-language-server", "--stdio" }
 
   if local_ts_path:exists() then
-    table.insert(base_cmds, "--tsserver-path", local_ts_path)
-    return base_cmds
+    table.insert(ts_language_server_command, "--tsserver-path", local_ts_path:make_relative(current_working_directory))
+    return ts_language_server_command
   elseif tsconfig_path:exists() and not silence_debug then
-    print("TypeScript: Did not find local tsserver but did find tsconfig.json; did you mean to npm install it?")
-    return base_cmds
+    printer("Did not find local tsserver but did find tsconfig.json; did you mean to npm install it?")
+    return ts_language_server_command
   elseif jsconfig_path:exists() and not silence_debug then
-    print("TypeScript: Did not find local tsserver but did find jsconfig.json; did you mean to npm install it?")
-    return base_cmds
+    printer("Did not find local tsserver but did find jsconfig.json; did you mean to npm install it?")
+    return ts_language_server_command
   elseif fallback_to_global then
     if not silence_debug then
-      print("TypeScript: falling back to global install")
+      printer("Falling back to global install.")
     end
 
-    return base_cmds
+    return ts_language_server_command
   end
   return nil
 end

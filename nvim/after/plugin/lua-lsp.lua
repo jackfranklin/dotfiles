@@ -1,4 +1,6 @@
 local on_attach = require('lsp_on_attach').on_attach
+local Path = require'plenary.path'
+
 --[[
 This is taken from nlua.vim (https://github.com/tjdevries/nlua.nvim)
 because I couldn't quite get nlua.nvim working with the lua language server
@@ -18,6 +20,11 @@ else
 end
 
 local sumneko_root_path = '/home/jack/git/lua-language-server'
+if not Path:new(sumneko_root_path):exists() then
+  print("Lua: could not find sumneko lua-language-server path")
+  return
+end
+
 local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
 
 local runtime_path = vim.split(package.path, ';')

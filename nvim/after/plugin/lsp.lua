@@ -1,5 +1,5 @@
 local nvim_lsp = require('lspconfig')
-local config_paths = require('local_tools')
+local config_paths = require('config_paths')
 local on_attach = require('lsp_on_attach').on_attach
 
 
@@ -22,9 +22,35 @@ local diagnostic_linter_filetypes = {}
 
 local eslint_path = config_paths.eslint_path()
 if eslint_path ~= nil then
-  diagnostic_linters["eslint"] = eslint_path
-  diagnostic_linter_filetypes["javascript"] = eslint_path
-  diagnostic_linter_filetypes["typescript"] = eslint_path
+  local eslint_config = {
+    command = "./node_modules/.bin/eslint",
+    rootPatterns = {".git"},
+    debounce = 100,
+    args = {
+      "--stdin",
+      "--stdin-filename",
+      "%filepath",
+      "--format",
+      "json"
+    },
+    sourceName = "eslint",
+    parseJson = {
+      errorsRoot = "[0].messages",
+      line = "line",
+      column = "column",
+      endLine = "endLine",
+      endColumn = "endColumn",
+      message = "${message} [${ruleId}]",
+      security = "severity"
+    },
+    securities = {
+      [2] = "error",
+      [1] = "warning"
+    },
+  }
+  diagnostic_linters["eslint"] = eslint_config
+  diagnostic_linter_filetypes["javascript"] = "eslint"
+  diagnostic_linter_filetypes["typescript"] = "eslint"
 end
 
 nvim_lsp.diagnosticls.setup {

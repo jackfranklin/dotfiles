@@ -46,9 +46,6 @@ endif
 filetype plugin indent on
 
 so ~/.config/nvim/defaults.vim
-" so ~/.config/nvim/coc.vim
-" so ~/.config/nvim/fzf.vim
-" so ~/.config/nvim/highlights.vim
 so ~/.config/nvim/maps.vim
 
 " So you can run :call SyntaxItem() to see what the syntax is
@@ -66,7 +63,6 @@ colorscheme onebuddy
 
 set foldlevel=99
 set foldmethod=indent
-
 
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
