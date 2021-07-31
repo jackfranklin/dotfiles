@@ -36,6 +36,21 @@ local eslint_configuration = function(config_options)
   end
 end
 
+local get_prettier_executable = function(config_options)
+  config_options = config_options or {}
+  local silence_debug = config_options.silence_debug or false
+  local printer = create_printer("Prettier")
+
+  local local_prettier_path = node_modules_path:joinpath(".bin"):joinpath("prettier")
+
+  if local_prettier_path:exists() then
+    return local_prettier_path:make_relative(current_working_directory)
+  elseif package_json_path:exists() and not silence_debug then
+    printer("Found package.json but no local Prettier; did you mean to npm install it?")
+  end
+  return nil
+end
+
 local get_typescript_lsp_cmd = function(config_options)
   config_options = config_options or {}
   local fallback_to_global = config_options.fallback_to_global or false
@@ -66,6 +81,7 @@ end
 
 M.eslint_path = eslint_configuration
 M.typescript_lsp_cmd = get_typescript_lsp_cmd
+M.prettier_path = get_prettier_executable
 
 return M
 
