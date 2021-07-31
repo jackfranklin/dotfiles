@@ -34,6 +34,8 @@ if (has('nvim'))
   Plug 'mhartington/formatter.nvim'
   Plug 'hrsh7th/nvim-compe'
   Plug 'TimUntersberger/neogit'
+  Plug 'hrsh7th/vim-vsnip'
+  Plug 'hrsh7th/vim-vsnip-integ'
 end
 
 call plug#end()
