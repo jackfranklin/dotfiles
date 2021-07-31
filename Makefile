@@ -58,4 +58,4 @@ latest_neovim_linux:
 	mv nvim.appimage ~/dotfiles/images
 
 language_servers_global:
-	npm install --global typescript typescript-language-server svelte-language-server diagnostics-language-server
+	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver
