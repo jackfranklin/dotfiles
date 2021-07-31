@@ -10,6 +10,7 @@ require'compe'.setup({
     path = true,
     buffer = true,
     nvim_lsp = true,
+    vsnip = true,
   },
 })
 EOF
