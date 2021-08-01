@@ -61,7 +61,8 @@ local get_typescript_lsp_cmd = function(config_options)
   local ts_language_server_command = { "typescript-language-server", "--stdio" }
 
   if local_ts_path:exists() then
-    table.insert(ts_language_server_command, "--tsserver-path", local_ts_path:make_relative(current_working_directory))
+    table.insert(ts_language_server_command, "--tsserver-path")
+    table.insert(ts_language_server_command, tostring(local_ts_path:make_relative(current_working_directory)))
     return ts_language_server_command
   elseif tsconfig_path:exists() and not silence_debug then
     printer("Did not find local tsserver but did find tsconfig.json; did you mean to npm install it?")
