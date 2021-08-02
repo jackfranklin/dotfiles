@@ -5,6 +5,7 @@ M = {}
 local current_working_directory = vim.api.nvim_eval("getcwd()")
 local node_modules_path = Path:new(current_working_directory):joinpath("node_modules")
 local package_json_path = Path:new(current_working_directory):joinpath("package.json")
+local eslintrc_path = Path:new(current_working_directory):joinpath(".eslintrc.js")
 local tsconfig_path = Path:new(current_working_directory):joinpath("tsconfig.json")
 local jsconfig_path = Path:new(current_working_directory):joinpath("jsconfig.json")
 
@@ -24,9 +25,11 @@ local eslint_configuration = function(config_options)
 
   if local_eslint_path:exists() then
     return local_eslint_path:make_relative(current_working_directory)
-  elseif package_json_path:exists() and not silence_debug then
-    printer("Found package.json but no local ESLint; did you mean to npm install it?")
-  elseif fallback_to_global then
+  elseif eslintrc_path:exists() and not silence_debug then
+    printer("Found .eslintrc.js but no local ESLint; did you mean to npm install it?")
+  end
+
+  if fallback_to_global then
     if not silence_debug then
       print("Falling back to global install.")
     end

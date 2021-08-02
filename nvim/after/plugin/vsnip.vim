@@ -20,4 +20,5 @@ smap <expr> <C-j>   vsnip#available(1)  ? '<Plug>(vsnip-expand-or-jump)' : '<C-j
 let g:vsnip_filetypes = {}
 let g:vsnip_filetypes.javascript = ['typescript']
 let g:vsnip_filetypes.typescript = ['javascript']
+let g:vsnip_filetypes.svelte = ['javascript', 'typescript']
 

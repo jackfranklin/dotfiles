@@ -1,0 +1,23 @@
+{
+"Starter component": {
+	"prefix": "svcomp",
+	"body": [
+		"<script>",
+		"console.log('hello world')",
+		"</script>",
+		"<p>Hello world</p>",
+		"<style>",
+		"p {",
+		"color: red",
+		"}",
+		"</style>"
+	],
+	"description": "Log output to console"
+},
+"import component": {
+	"prefix": "svimport",
+	"body": [
+		"import $1 from '$1';"
+	]
+}
+}
