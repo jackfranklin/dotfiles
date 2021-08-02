@@ -1,5 +1,7 @@
 DIR="${HOME}/dotfiles"
 
+NEOVIM_GIT_DIR="${HOME}/git/neovim"
+
 .PHONY: tmux neovim alacritty fish git ag i3 elm-language-server
 
 all:
@@ -60,3 +62,8 @@ latest_neovim_linux:
 
 language_servers_global:
 	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver
+
+update_neovim:
+	cd ${NEOVIM_GIT_DIR} && git pull
+	cd ${NEOVIM_GIT_DIR} && make
+	cd ${NEOVIM_GIT_DIR} && sudo make install
