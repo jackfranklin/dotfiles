@@ -23,3 +23,12 @@ nnoremap <leader>8 "*p
 
 " FOLDS
 nnoremap <leader>z za<CR>
+
+" More undo break points in insert mode
+inoremap , ,<c-g>u
+inoremap . .<c-g>u
+inoremap ! !<c-g>u
+inoremap ? ?<c-g>u
+
+vnoremap J :m '>+1<CR>gv=gv
+vnoremap K :m '<-2<CR>gv=gv

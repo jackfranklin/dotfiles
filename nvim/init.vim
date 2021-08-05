@@ -14,9 +14,6 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'mileszs/ack.vim'
 Plug 'farmergreg/vim-lastplace'
 
-" THEMES
-Plug 'lifepillar/vim-solarized8'
-
 if (has('nvim'))
   Plug 'neovim/nvim-lspconfig'
   Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
