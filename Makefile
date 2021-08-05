@@ -2,8 +2,6 @@ DIR="${HOME}/dotfiles"
 
 NEOVIM_GIT_DIR="${HOME}/git/neovim"
 
-.PHONY: tmux neovim alacritty fish git ag i3 elm-language-server
-
 all:
 	@echo "Run things individually!"
 
@@ -45,9 +43,6 @@ zsh:
 antigen:
 	cd ~ && git clone https://github.com/zsh-users/antigen.git
 
-elm-language-server:
-	npm install --global elm-tooling@elm-language-server
-
 ubuntu-deps:
 	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep
 
@@ -61,7 +56,7 @@ latest_neovim_linux:
 	chmod +x ~/dotfiles/images/nvim.appimage
 
 language_servers_global:
-	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver
+	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d
 
 update_neovim:
 	cd ${NEOVIM_GIT_DIR} && git pull
