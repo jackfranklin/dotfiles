@@ -8,13 +8,11 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
-" Plug 'thinca/vim-visualstar'
-" Plug 'Konfekt/FastFold'
-" Plug 'junegunn/goyo.vim'
 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
 Plug 'mileszs/ack.vim'
+Plug 'farmergreg/vim-lastplace'
 
 " THEMES
 Plug 'lifepillar/vim-solarized8'

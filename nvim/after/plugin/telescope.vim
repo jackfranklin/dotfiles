@@ -1,22 +1,18 @@
-if !exists('g:loaded_telescope') | finish | endif
+nnoremap <silent> <leader>t <cmd>lua require('telescope.builtin').find_files({hidden = true})<CR>
+nnoremap <silent> ;r <Cmd>Telescope live_grep<CR>
+nnoremap <silent> \\ <Cmd>Telescope buffers<CR>
 
-nnoremap <silent> <leader>t <cmd>Telescope find_files<cr>
-nnoremap <silent> <leader>r <cmd>Telescope live_grep<cr>
-nnoremap <silent> \\ <cmd>Telescope buffers<cr>
-" nnoremap <silent> ;; <cmd>Telescope help_tags<cr>
-
-lua << EOF
+lua <<EOF
 local actions = require('telescope.actions')
--- Global remapping
-------------------------------
-require('telescope').setup{
+
+require('telescope').setup {
   defaults = {
+    file_ignore_patterns = {"^node_modules/", "^.git/"},
     mappings = {
       n = {
         ["q"] = actions.close
       },
     },
-  }
+  },
 }
 EOF
-
