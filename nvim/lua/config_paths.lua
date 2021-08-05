@@ -9,33 +9,53 @@ local eslintrc_path = Path:new(current_working_directory):joinpath(".eslintrc.js
 local tsconfig_path = Path:new(current_working_directory):joinpath("tsconfig.json")
 local jsconfig_path = Path:new(current_working_directory):joinpath("jsconfig.json")
 
-local create_printer = function(prefix)
+local create_printer = function(prefix, should_debug)
+  local debug = should_debug or false
   return function(message) 
-    print(prefix .. ": " .. message)
+    if debug then
+      print(prefix .. ": " .. message)
+    end
   end
+end
+
+local error_and_return_nil = function(prefix, message)
+  print(prefix .. ": " .. message)
+  return nil
+end
+
+local global_executable_exists = function(executable_name)
+  return vim.api.nvim_eval("executable('" .. executable_name .. "')") == 1
 end
 
 local eslint_configuration = function(config_options)
   config_options = config_options or {}
   local fallback_to_global = config_options.fallback_to_global or false
-  local silence_debug = config_options.silence_debug or false
-  local printer = create_printer("ESLint")
+  local debug = config_options.debug or false
+  local prefer_eslint_d = config_options.prefer_eslint_d or false
+  local printer = create_printer("ESLint", debug)
 
   local local_eslint_path = node_modules_path:joinpath(".bin"):joinpath("eslint")
+  local has_eslint_d_executable = global_executable_exists("eslint_d")
+  local has_global_eslint = global_executable_exists("eslint")
 
-  if local_eslint_path:exists() then
+  if prefer_eslint_d and has_eslint_d_executable then
+    return vim.api.nvim_eval("exepath('eslint_d')")
+  elseif local_eslint_path:exists() then
     return local_eslint_path:make_relative(current_working_directory)
-  elseif eslintrc_path:exists() and not silence_debug then
+  end
+
+
+  if eslintrc_path:exists() then
     printer("Found .eslintrc.js but no local ESLint; did you mean to npm install it?")
   end
 
   if fallback_to_global then
-    if not silence_debug then
-      print("Falling back to global install.")
+    if has_global_eslint then
+      printer("Falling back to global install.")
+      return vim.api.nvim_eval("exepath('eslint')")
     end
 
-    -- Global command; assume eslint is in the path
-    return "eslint"
+    return error_and_return_nil("ESLint", "fallback_to_global set but no eslint global found")
   end
 end
 
