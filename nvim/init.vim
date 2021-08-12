@@ -8,6 +8,7 @@ Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-unimpaired'
 Plug 'gorkunov/smartpairs.vim'
+Plug 'thinca/vim-visualstar'
 
 Plug 'christoomey/vim-tmux-navigator'
 Plug 'christoomey/vim-tmux-runner'
@@ -31,6 +32,7 @@ if (has('nvim'))
   Plug 'TimUntersberger/neogit'
   Plug 'hrsh7th/vim-vsnip'
   Plug 'hrsh7th/vim-vsnip-integ'
+  Plug 'windwp/nvim-autopairs'
 end
 
 call plug#end()

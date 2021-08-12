@@ -2,7 +2,7 @@ set completeopt=menuone,noselect
 
 lua << EOF
 require'compe'.setup({
-  autocomplete = false,
+  autocomplete = true,
   min_length = 2,
   preselect = "always",
   enabled = true,
