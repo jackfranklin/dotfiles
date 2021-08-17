@@ -16,6 +16,12 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<leader>cr', "<Cmd>Lspsaga rename<CR>", opts)
   buf_set_keymap('n', '<leader>cs', "<Cmd>Lspsaga signature_help<CR>", opts)
 
+  require "lsp_signature".on_attach({
+    bind = true,
+    hint_prefix = '',
+  })
+
+
 end
 
 M.on_attach = on_attach
