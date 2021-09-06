@@ -34,6 +34,7 @@ if (has('nvim'))
   Plug 'hrsh7th/vim-vsnip-integ'
   Plug 'windwp/nvim-autopairs'
   Plug 'ray-x/lsp_signature.nvim'
+  Plug 'hoob3rt/lualine.nvim'
 end
 
 call plug#end()

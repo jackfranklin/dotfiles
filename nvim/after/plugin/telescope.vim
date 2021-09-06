@@ -6,6 +6,14 @@ lua <<EOF
 local actions = require('telescope.actions')
 
 require('telescope').setup {
+  pickers = {
+      find_files = {
+        previewer = false,
+      },
+      file_browser = {
+        previewer = false,
+      }
+    }
   defaults = {
     file_ignore_patterns = {"^node_modules/", "^.git/"},
     disable_devicons = true,
