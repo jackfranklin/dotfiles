@@ -32,3 +32,18 @@ inoremap ? ?<c-g>u
 
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
+
+
+nnoremap <S-Left> :vertical resize-5<CR>
+nnoremap <S-Right> :vertical resize+5<CR>
+tnoremap <S-Left> :vertical resize-5<CR>
+tnoremap <S-Right> :vertical resize+5<CR>
+inoremap <S-Left> :vertical resize-5<CR>
+inoremap <S-Right> :vertical resize+5<CR>
+
+nnoremap <S-Up> :resize-5<CR>
+nnoremap <S-Down> :resize+5<CR>
+tnoremap <S-Up> :resize-5<CR>
+tnoremap <S-Down> :resize+5<CR>
+inoremap <S-Up> :resize-5<CR>
+inoremap <S-Down> :resize+5<CR>

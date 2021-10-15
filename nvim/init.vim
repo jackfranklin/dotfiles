@@ -28,13 +28,19 @@ if (has('nvim'))
   Plug 'Th3Whit3Wolf/onebuddy', { 'branch': 'main' }
   Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
   Plug 'mhartington/formatter.nvim'
-  Plug 'hrsh7th/nvim-compe'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-nvim-lsp'
+  Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/nvim-cmp'
+  Plug 'hrsh7th/cmp-vsnip'
   Plug 'TimUntersberger/neogit'
   Plug 'hrsh7th/vim-vsnip'
   Plug 'hrsh7th/vim-vsnip-integ'
   Plug 'windwp/nvim-autopairs'
   Plug 'ray-x/lsp_signature.nvim'
   Plug 'hoob3rt/lualine.nvim'
+  Plug 'kassio/neoterm'
+  Plug 'ojroques/vim-oscyank'
 end
 
 call plug#end()

@@ -2,6 +2,30 @@ local nvim_lsp = require('lspconfig')
 local config_paths = require('config_paths')
 local on_attach = require('lsp_on_attach').on_attach
 
+local cmp = require'cmp'
+cmp.setup({
+  snippet = {
+    expand = function(args)
+      vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
+    end,
+  },
+  mapping = {
+    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.close(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = {
+    { name = 'nvim_lsp'},
+    { name = 'vsnip' },
+    { name = 'buffer', max_item_count = 5 }
+  },
+  completion = {
+    completeopt = 'menu,menuone,noinsert',
+  }
+})
+
 
 local tsserver_command = config_paths.typescript_lsp_cmd()
 
@@ -9,7 +33,8 @@ if tsserver_command ~= nil then
   nvim_lsp.tsserver.setup {
     on_attach = on_attach,
     filetypes = { "typescript", "javascript" },
-    cmd = tsserver_command
+    cmd = tsserver_command,
+    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
   }
 end
 
