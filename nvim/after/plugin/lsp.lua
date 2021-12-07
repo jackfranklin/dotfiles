@@ -19,10 +19,11 @@ cmp.setup({
   sources = {
     { name = 'nvim_lsp'},
     { name = 'vsnip' },
-    { name = 'buffer', max_item_count = 5 }
+    { name = 'buffer', max_item_count = 5, keyword_length = 5 }
   },
   completion = {
     completeopt = 'menu,menuone,noinsert',
+    keyword_length = 3,
   }
 })
 
