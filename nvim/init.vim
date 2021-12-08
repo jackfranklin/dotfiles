@@ -73,4 +73,6 @@ set foldmethod=indent
 
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
+" TODO: think this should use DiagnosticFloatingHint
+highlight DiagnosticHint guifg=blue
 
