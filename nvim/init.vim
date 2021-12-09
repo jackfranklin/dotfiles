@@ -31,6 +31,7 @@ if (has('nvim'))
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-nvim-lsp'
   Plug 'hrsh7th/cmp-buffer'
+  Plug 'hrsh7th/cmp-path'
   Plug 'hrsh7th/nvim-cmp'
   Plug 'hrsh7th/cmp-vsnip'
   Plug 'TimUntersberger/neogit'
@@ -73,6 +74,5 @@ set foldmethod=indent
 
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
-" TODO: think this should use DiagnosticFloatingHint
-highlight DiagnosticHint guifg=blue
+highlight DiagnosticFloatingHint guifg=#fafafa
 
