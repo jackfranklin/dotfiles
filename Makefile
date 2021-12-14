@@ -59,7 +59,7 @@ language_servers_global:
 	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d
 
 kitty:
-	@ln -nsf ${DIR}/dotfiles/kitty ~/.config/kitty
+	@ln -nsf ${DIR}/kitty ~/.config/kitty
 
 
 update_neovim:

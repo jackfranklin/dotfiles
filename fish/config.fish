@@ -41,5 +41,6 @@ end
 
 set fish_greeting
 contains $HOME/git/private-dotfiles/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/git/private-dotfiles/bin
+contains $HOME/neovim/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/neovim/bin
 
 contains (npm get prefix)/bin $fish_user_paths; or set -Ua fish_user_paths (npm get prefix)/bin
