@@ -26,6 +26,9 @@ if not Path:new(sumneko_root_path):exists() then
 end
 
 local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
+if not Path:new(sumneko_binary):exists() then
+  sumneko_binary = sumneko_root_path.."/bin/lua-language-server"
+end
 
 local runtime_path = vim.split(package.path, ';')
 table.insert(runtime_path, "lua/?.lua")
