@@ -31,6 +31,8 @@ set number
 set relativenumber
 set cursorline
 
+set ttimeoutlen=1
+
 " TRAILING WHITESPACE
 set list listchars=tab:»·,trail:·
 

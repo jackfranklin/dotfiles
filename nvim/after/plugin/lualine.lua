@@ -10,6 +10,7 @@ require('lualine').setup({
     section_separators = { left = '', right = ''},
   },
   sections = {
+    lualine_b = {'branch'},
     lualine_c = {{
       'filename',
       -- 0 = filename, 1 = relative path, 2 = absolute path
