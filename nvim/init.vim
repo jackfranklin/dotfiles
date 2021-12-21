@@ -38,7 +38,6 @@ if (has('nvim'))
   Plug 'hrsh7th/vim-vsnip'
   Plug 'hrsh7th/vim-vsnip-integ'
   Plug 'windwp/nvim-autopairs'
-  " Plug 'ray-x/lsp_signature.nvim'
   Plug 'hoob3rt/lualine.nvim'
   Plug 'kassio/neoterm'
   Plug 'ojroques/vim-oscyank'
@@ -74,5 +73,12 @@ set foldmethod=indent
 
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
-highlight DiagnosticFloatingHint guifg=#fafafa
+highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
+highlight DiagnosticFloatingInfo guifg=#000000 guisp=none
+highlight DiagnosticFloatingWarn guifg=#000000 guisp=none
+highlight DiagnosticFloatingHint guifg=#000000 guisp=none
+" highlight DiagnosticUnderlineError cterm=underline guisp=red gui=underline
+highlight DiagnosticUnderlineInfo cterm=underline guisp=red gui=underline
+highlight DiagnosticUnderlineWarn cterm=underline guisp=red gui=underline
+highlight DiagnosticUnderlineHint cterm=underline guisp=red gui=underline
 

@@ -17,13 +17,10 @@ cmp.setup({
     ['<CR>'] = cmp.mapping.confirm({ select = true }),
   },
   sources = {
-    { name = 'nvim_lsp', keyword_length = 4, max_item_count = 5},
-    { name = 'path', keyword_length = 2 },
-    { name = 'vsnip', keyword_length = 3 },
-    { name = 'buffer', max_item_count = 5, keyword_length = 5 }
-  },
-  completion = {
-    -- completeopt = 'menu,menuone,noinsert',
+    { name = 'nvim_lsp', keyword_length = 2, max_item_count = 10 },
+    { name = 'path', keyword_length = 2, max_item_count = 3 },
+    { name = 'vsnip', keyword_length = 3, max_item_count = 2 },
+    { name = 'buffer', max_item_count = 4, keyword_length = 8 }
   },
 })
 
