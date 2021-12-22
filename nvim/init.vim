@@ -92,4 +92,5 @@ highlight DiagnosticFloatingHint guifg=#000000 guisp=none
 highlight DiagnosticUnderlineInfo cterm=underline guisp=red gui=underline
 highlight DiagnosticUnderlineWarn cterm=underline guisp=red gui=underline
 highlight DiagnosticUnderlineHint cterm=underline guisp=red gui=underline
+highlight lualine_y_diagnostics_hint_normal guifg=white
 
