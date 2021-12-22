@@ -7,12 +7,12 @@ nnoremap <CR> :noh<CR><CR>
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>v :vsplit<CR>
 
+nnoremap <Left> :tabprevious<CR>
+nnoremap <Right> :tabnext<CR>
+
 noremap H ^
 noremap L $
 noremap Y y$
-  completion = {
-  },
-
 " http://blog.petrzemek.net/2016/04/06/things-about-vim-i-wish-i-knew-earlier/
 " better jk normally but don't remap when it's called with a count
 noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
