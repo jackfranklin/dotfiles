@@ -16,27 +16,38 @@ Plug 'mileszs/ack.vim'
 Plug 'farmergreg/vim-lastplace'
 
 if (has('nvim'))
-  Plug 'neovim/nvim-lspconfig'
-  Plug 'glepnir/lspsaga.nvim', { 'branch': 'main' }
   Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-lua/plenary.nvim'
+
   Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make', 'branch': 'main' }
+
+  " LSP, Syntax + diagnostics
+  Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'folke/lsp-colors.nvim', { 'branch': 'main' }
   Plug 'folke/trouble.nvim', { 'branch': 'main' }
+
+  " Formatting of code
+  Plug 'mhartington/formatter.nvim'
+
+  " Colours
+  Plug 'folke/lsp-colors.nvim', { 'branch': 'main' }
   Plug 'tjdevries/colorbuddy.vim'
   Plug 'Th3Whit3Wolf/onebuddy', { 'branch': 'main' }
-  Plug 'JoosepAlviste/nvim-ts-context-commentstring', { 'branch': 'main' }
-  Plug 'mhartington/formatter.nvim'
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/cmp-nvim-lsp'
-  Plug 'hrsh7th/cmp-buffer'
-  Plug 'hrsh7th/cmp-path'
-  Plug 'hrsh7th/nvim-cmp'
-  Plug 'hrsh7th/cmp-vsnip'
-  Plug 'TimUntersberger/neogit'
+
+
+  " Snippets
   Plug 'hrsh7th/vim-vsnip'
   Plug 'hrsh7th/vim-vsnip-integ'
+
+  " cmp (auto completion)
+  Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
+  Plug 'hrsh7th/cmp-buffer', { 'branch': 'main' }
+  Plug 'hrsh7th/cmp-vsnip', { 'branch': 'main' }
+  Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
+  Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
+
+  " Misc
   Plug 'windwp/nvim-autopairs'
   Plug 'hoob3rt/lualine.nvim'
   Plug 'kassio/neoterm'
