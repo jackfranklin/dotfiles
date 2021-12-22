@@ -10,6 +10,8 @@ map <leader>v :vsplit<CR>
 noremap H ^
 noremap L $
 noremap Y y$
+  completion = {
+  },
 
 " http://blog.petrzemek.net/2016/04/06/things-about-vim-i-wish-i-knew-earlier/
 " better jk normally but don't remap when it's called with a count
