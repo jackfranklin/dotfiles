@@ -89,8 +89,10 @@ highlight DiagnosticFloatingInfo guifg=#000000 guisp=none
 highlight DiagnosticFloatingWarn guifg=#000000 guisp=none
 highlight DiagnosticFloatingHint guifg=#000000 guisp=none
 " highlight DiagnosticUnderlineError cterm=underline guisp=red gui=underline
-highlight DiagnosticUnderlineInfo cterm=underline guisp=red gui=underline
+highlight DiagnosticUnderlineInfo cterm=underline guisp=black gui=underline
 highlight DiagnosticUnderlineWarn cterm=underline guisp=red gui=underline
-highlight DiagnosticUnderlineHint cterm=underline guisp=red gui=underline
-highlight lualine_y_diagnostics_hint_normal guifg=white
+highlight DiagnosticUnderlineHint cterm=underline guisp=black gui=underline
+
+highlight DiagnosticHint guifg=black
+highlight DiagnosticInfo guifg=black
 
