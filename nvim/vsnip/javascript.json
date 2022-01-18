@@ -1,9 +1,16 @@
 {
 	"Import external module.": {
-		"prefix": "import-named",
+		"prefix": ";imn",
 		"body": [
 			"import { $0 } from \"${1:module}\";"
 		],
 		"description": "Import external module."
+	}
+	"@type": {
+		"prefix": "@type",
+		"body": [
+			"/** @type $0 */"
+		],
+		"description": "@type single line"
 	}
 }
