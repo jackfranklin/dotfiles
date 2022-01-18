@@ -85,13 +85,18 @@ set foldmethod=indent
 
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
+
+" Controls the floating window when your cursor is on an error
 highlight DiagnosticFloatingInfo guifg=#000000 guisp=none
 highlight DiagnosticFloatingWarn guifg=#000000 guisp=none
 highlight DiagnosticFloatingHint guifg=#000000 guisp=none
+
+" Controls the rendering of the code to highlight the issue
 highlight DiagnosticUnderlineInfo cterm=underline guisp=black gui=underline
-highlight DiagnosticUnderlineWarn cterm=underline guisp=red gui=underline
 highlight DiagnosticUnderlineHint cterm=underline guisp=black gui=underline
 
+" Controls the colour in the lualine block.
 highlight DiagnosticHint guifg=black
 highlight DiagnosticInfo guifg=black
+highlight DiagnosticWarn guifg=black
 

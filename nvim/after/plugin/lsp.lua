@@ -67,8 +67,8 @@ if eslint_path ~= nil then
       security = "severity"
     },
     securities = {
-      [2] = "error",
-      [1] = "warning"
+      ["2"] = "error",
+      ["1"] = "warning"
     },
   }
   diagnostic_linters["eslint"] = eslint_config
