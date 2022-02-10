@@ -36,4 +36,13 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 - Get themes from https://github.com/iamthad/base16-mintty (onelight-256)
 - Set wsltty terminal to xterm-256colors
 
+## Building nvim
+
+1. Clone nvim to `~/git/neovim`.
+2. Build with the right flags:
+    ```
+    make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim
+    ```
+3. `make install`
+
 
