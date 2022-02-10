@@ -39,10 +39,12 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ## Building nvim
 
 1. Clone nvim to `~/git/neovim`.
-2. Build with the right flags:
+1. `git pull` if required on `master.`
+1. `git checkout <tag>` if you want a stable version.
+1. Build with the right flags:
     ```
     make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim
     ```
-3. `make install`
+1. `make install`
 
 
