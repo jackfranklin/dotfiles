@@ -15,6 +15,9 @@ Plug 'christoomey/vim-tmux-runner'
 Plug 'mileszs/ack.vim'
 Plug 'farmergreg/vim-lastplace'
 
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'junegunn/fzf.vim'
+
 if (has('nvim'))
   Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-lua/plenary.nvim'
