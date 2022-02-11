@@ -103,3 +103,6 @@ highlight DiagnosticHint guifg=black
 highlight DiagnosticInfo guifg=black
 highlight DiagnosticWarn guifg=black
 
+set breakindent
+set breakindentopt=shift:2
+
