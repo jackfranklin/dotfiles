@@ -6,6 +6,15 @@ local formatter_filetypes = {
   javascript = {},
   svelte = {},
   typescript = {},
+  rust = {
+    function()
+      return {
+        exe = "rustfmt",
+        args = {"--emit=stdout"},
+        stdin = true,
+      }
+    end
+  },
 }
 
 if prettier_path ~= nil then
@@ -34,4 +43,12 @@ require('formatter').setup({
   logging = false,
   filetype = formatter_filetypes,
 })
+
+-- TODO: this is annoying - want to really detect when vim is launched what formatters we should enable
+vim.api.nvim_exec([[
+augroup FormatAutogroup
+autocmd!
+autocmd BufWritePost *.js,*.svelte,*.ts,*.rs FormatWrite
+augroup END
+]], true)
 

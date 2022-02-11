@@ -58,6 +58,13 @@ latest_neovim_linux:
 language_servers_global:
 	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d
 
+install_rust_analyzer:
+	rustup component add rust-src
+	mkdir -p ~/.local/bin
+	curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
+	chmod +x ~/.local/bin/rust-analyzer
+
+
 kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
 

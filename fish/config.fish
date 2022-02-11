@@ -44,7 +44,12 @@ contains $HOME/git/private-dotfiles/bin $fish_user_paths; or set -Ua fish_user_p
 contains $HOME/neovim/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/neovim/bin
 
 contains (npm get prefix)/bin $fish_user_paths; or set -Ua fish_user_paths (npm get prefix)/bin
+contains $HOME/.local/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/.local/bin
+
+# Note the -p here means prepend, so that the cargo stuff is used ahead of any other sources for Rust things
+contains $HOME/.cargo/bin $fish_user_paths; or set -Up fish_user_paths $HOME/.cargo/bin
 
 if type -q "setxkbmap"
+  # Remaps caps-lock to escape.
   setxkbmap -option caps:escape
 end
