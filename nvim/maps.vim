@@ -7,8 +7,13 @@ nnoremap <CR> :noh<CR><CR>
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>v :vsplit<CR>
 
-nnoremap <Left> :tabprevious<CR>
-nnoremap <Right> :tabnext<CR>
+nnoremap tj :tabprevious<CR>
+nnoremap tk :tabnext<CR>
+nnoremap th :tabfirst<CR>
+nnoremap tl :tablast<CR>
+tnoremap tj <C-\><C-n>:tabprevious<CR>
+tnoremap tk <C-\><C-n>:tabnext<CR>
+
 
 noremap H ^
 noremap L $

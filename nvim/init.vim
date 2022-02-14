@@ -77,14 +77,8 @@ function! SyntaxItem()
         \ . synIDattr(synIDtrans(synID(line("."),col("."),1)),"name") . ">"
 endfunction
 
-" set background=dark
-" colorscheme solarized8
-
 set background=light
 colorscheme onebuddy
-
-set foldlevel=99
-set foldmethod=indent
 
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
@@ -102,7 +96,4 @@ highlight DiagnosticUnderlineHint cterm=underline guisp=black gui=underline
 highlight DiagnosticHint guifg=black
 highlight DiagnosticInfo guifg=black
 highlight DiagnosticWarn guifg=black
-
-set breakindent
-set breakindentopt=shift:2
 
