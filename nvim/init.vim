@@ -7,12 +7,8 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-unimpaired'
-Plug 'gorkunov/smartpairs.vim'
 Plug 'thinca/vim-visualstar'
 
-Plug 'christoomey/vim-tmux-navigator'
-Plug 'christoomey/vim-tmux-runner'
-Plug 'mileszs/ack.vim'
 Plug 'farmergreg/vim-lastplace'
 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
@@ -28,7 +24,6 @@ if (has('nvim'))
   " LSP, Syntax + diagnostics
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-  Plug 'folke/trouble.nvim', { 'branch': 'main' }
 
   " Formatting of code
   Plug 'mhartington/formatter.nvim'
@@ -51,7 +46,6 @@ if (has('nvim'))
   Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
 
   " Misc
-  Plug 'windwp/nvim-autopairs'
   Plug 'hoob3rt/lualine.nvim'
   Plug 'kassio/neoterm'
   Plug 'ojroques/vim-oscyank'

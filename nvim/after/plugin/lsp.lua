@@ -4,6 +4,9 @@ local on_attach = require('lsp_on_attach').on_attach
 
 local cmp = require'cmp'
 cmp.setup({
+  completion = {
+    completeopt = 'menu,menuone,noinsert',
+  }
   snippet = {
     expand = function(args)
       vim.fn["vsnip#anonymous"](args.body) -- For `vsnip` user.
@@ -14,7 +17,13 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<C-y>'] = cmp.mapping(
+      cmp.mapping.confirm {
+        behavior = cmp.ConfirmBehavior.Insert,
+        select = true,
+      },
+      { "i", "c" }
+    ),
   },
   sources = {
     { name = 'nvim_lsp', keyword_length = 2, max_item_count = 10 },
