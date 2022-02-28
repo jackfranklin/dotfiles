@@ -91,3 +91,6 @@ highlight DiagnosticHint guifg=black
 highlight DiagnosticInfo guifg=black
 highlight DiagnosticWarn guifg=black
 
+" Do not autowrap comments onto the next line
+set formatoptions-=t
+
