@@ -33,6 +33,9 @@ cmp.setup({
   },
 })
 
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+
 
 local tsserver_command = config_paths.typescript_lsp_cmd()
 
@@ -41,21 +44,27 @@ if tsserver_command ~= nil then
     on_attach = on_attach,
     filetypes = { "typescript", "javascript" },
     cmd = tsserver_command,
-    capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+    capabilities = capabilities,
   }
 end
 
 nvim_lsp.svelte.setup {
   on_attach = on_attach,
+    capabilities = capabilities,
 }
 
 nvim_lsp.rust_analyzer.setup {
   on_attach = on_attach,
+    capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
       checkOnSave = {
         command = "clippy"
-      }
+      },
+      completion = {
+        addCallParenthesis = true,
+        addCallArgumentSnippets = true,
+      },
     }
   }
 }
