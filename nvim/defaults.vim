@@ -51,3 +51,8 @@ autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 " Better wrapping
 set breakindent
 set breakindentopt=shift:2
+
+nnoremap <C-h> <C-w>h
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-l> <C-w>l
