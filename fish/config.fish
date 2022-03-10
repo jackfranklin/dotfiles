@@ -45,6 +45,7 @@ contains $HOME/neovim/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/neo
 
 contains (npm get prefix)/bin $fish_user_paths; or set -Ua fish_user_paths (npm get prefix)/bin
 contains $HOME/.local/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/.local/bin
+contains $HOME/git/lua-language-server/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/git/lua-language-server/bin
 
 # Note the -p here means prepend, so that the cargo stuff is used ahead of any other sources for Rust things
 contains $HOME/.cargo/bin $fish_user_paths; or set -Up fish_user_paths $HOME/.cargo/bin

@@ -50,6 +50,11 @@ if (has('nvim'))
   Plug 'kassio/neoterm'
   Plug 'ojroques/vim-oscyank'
   Plug 'andymass/vim-matchup'
+
+  " Building vim plugins + lua things
+  Plug 'folke/lua-dev.nvim'
+
+  Plug '~/git/FTerm.nvim'
 end
 
 call plug#end()

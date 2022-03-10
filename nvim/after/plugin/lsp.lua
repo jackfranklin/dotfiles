@@ -122,3 +122,12 @@ vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   }
 )
 
+-- Setup lua, specifically for nvim things
+local luadev = require("lua-dev").setup({
+  lspconfig = {
+    on_attach = on_attach,
+    -- cmd = {"lua-language-server"}
+  },
+})
+
+nvim_lsp.sumneko_lua.setup(luadev)
