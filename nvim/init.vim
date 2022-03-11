@@ -54,7 +54,7 @@ if (has('nvim'))
   " Building vim plugins + lua things
   Plug 'folke/lua-dev.nvim'
 
-  Plug '~/git/FTerm.nvim'
+  Plug 'numToStr/FTerm.nvim'
 end
 
 call plug#end()
