@@ -44,6 +44,7 @@ if (has('nvim'))
   Plug 'hrsh7th/cmp-vsnip', { 'branch': 'main' }
   Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
   Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
+  Plug 'hrsh7th/cmp-nvim-lua', { 'branch': 'main' }
 
   " Misc
   Plug 'hoob3rt/lualine.nvim'

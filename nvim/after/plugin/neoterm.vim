@@ -1,4 +1,3 @@
-let g:neoterm_default_mod = 'botright vertical'
 tnoremap <Esc> <C-\><C-n>
 tnoremap <C-h> <C-\><C-n><C-w>h
 tnoremap <C-j> <C-\><C-n><C-w>j
