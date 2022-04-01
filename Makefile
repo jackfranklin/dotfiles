@@ -56,7 +56,7 @@ latest_neovim_linux:
 	chmod +x ~/dotfiles/images/nvim.appimage
 
 language_servers_global:
-	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d
+	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted
 
 install_rust_analyzer:
 	rustup component add rust-src
