@@ -35,8 +35,8 @@ if (has('nvim'))
 
 
   " Snippets
-  Plug 'hrsh7th/vim-vsnip'
-  Plug 'hrsh7th/vim-vsnip-integ'
+  " Plug 'hrsh7th/vim-vsnip'
+  " Plug 'hrsh7th/vim-vsnip-integ'
 
   " cmp (auto completion)
   Plug 'hrsh7th/cmp-nvim-lsp', { 'branch': 'main' }
@@ -45,6 +45,9 @@ if (has('nvim'))
   Plug 'hrsh7th/cmp-path', { 'branch': 'main' }
   Plug 'hrsh7th/nvim-cmp', {'branch': 'main'}
   Plug 'hrsh7th/cmp-nvim-lua', { 'branch': 'main' }
+  Plug 'saadparwaiz1/cmp_luasnip'
+  Plug 'L3MON4D3/LuaSnip'
+
 
   " Misc
   Plug 'hoob3rt/lualine.nvim'
