@@ -1,9 +1,10 @@
 local ls = require('luasnip')
-local types = require('luasnip.util.types')
+-- local types = require('luasnip.util.types')
 
 ls.config.set_config {
   history = true,
 
+  -- TODO: not sure why we need this.
   -- updateevents = "TextChanged,TextChangedI",
 
   enable_autosnippets = true,
@@ -31,17 +32,15 @@ vim.keymap.set("i", "<c-l>", function()
 end, { silent = true })
 
 -- Reload snippets.
-vim.keymap.set("n", "<leader><leader>s", "<cmd>source ~/dotfiles/nvim/after/plugin/snippets.lua<CR>")
+vim.keymap.set("n", "<leader><leader>ss", "<cmd>source ~/dotfiles/nvim/after/plugin/snippets.lua<CR>")
+-- Edit snippets
+vim.keymap.set("n", "<leader><leader>se", ":lua require('luasnip.loaders.from_lua').edit_snippet_files()<CR>")
 
--- TODO: create folder for snippets following: https://github.com/L3MON4D3/LuaSnip/blob/master/DOC.md#lua-snippets-loader
-ls.add_snippets(nil, {
-  all = {
-    ls.parser.parse_snippet("testing", "hello world"),
-  },
-  lua = {
-    ls.parser.parse_snippet("lf", "local $1 = function($2)\n  $0\nend"),
-  }
+require('luasnip.loaders.from_lua').load({
+  paths = "~/.config/nvim/luasnip"
 })
 
 -- If we are in a TS file, make all JS snippets available too.
 ls.filetype_extend("typescript", {"javascript"})
+-- If we are in a Svelte file, enable JS snippets
+ls.filetype_extend("svelte", {"javascript"})
