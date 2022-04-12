@@ -3,11 +3,15 @@ local ls = require('luasnip')
 
 ls.config.set_config {
   history = true,
-
-  -- TODO: not sure why we need this.
-  -- updateevents = "TextChanged,TextChangedI",
-
-  enable_autosnippets = true,
+  updateevents = "TextChanged,TextChangedI",
+  -- enable_autosnippets = true,
+  ext_opts = {
+    [types.choiceNode] = {
+      active = {
+        virt_text = {{ " <- Choice", "" }}
+      }
+    }
+  }
 }
 
 -- Expand current snippet or jump to next item within snippet.
