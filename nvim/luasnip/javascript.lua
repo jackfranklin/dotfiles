@@ -9,7 +9,7 @@ local fmt = require('luasnip.extras.fmt').fmt
 local rep = require('luasnip.extras').rep;
 local repeat_and_change = function(placeholder_index, index_to_copy)
   return d(placeholder_index, function(args)
-    return sn(nil, i(index_to_copy, args[index_to_copy]))
+    return sn(nil, i(1, args[index_to_copy]))
   end, {index_to_copy})
 end
 return {
@@ -40,4 +40,13 @@ return {
   s("spec", fmt([[it('{}', {}() => {{
   {}
 }});]], {i(1), c(2, {t "async ", t ""}), i(0)})),
+
+  s("custom-element", fmt([[class {} extends HTMLElement {{
+  #shadow = this.attachShadow({{ mode: 'open' }});
+
+  #render(): void {{
+  }}
+}}
+
+customElements.define({}, {})]], {i(1), i(2), rep(1)})),
 }
