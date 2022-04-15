@@ -6,6 +6,7 @@ local formatter_filetypes = {
   javascript = {},
   svelte = {},
   typescript = {},
+  css = {},
   rust = {
     function()
       return {
@@ -28,13 +29,14 @@ if prettier_path ~= nil then
 
   table.insert(formatter_filetypes.javascript, prettier_formatter)
   table.insert(formatter_filetypes.svelte, prettier_formatter)
+  table.insert(formatter_filetypes.css, prettier_formatter)
   table.insert(formatter_filetypes.typescript, prettier_formatter)
 
   -- TODO: better way to turn formatter on automatically - check if at least one formatter is defined for the current file type?
   vim.api.nvim_exec([[
   augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.js,*.svelte,*.ts FormatWrite
+  autocmd BufWritePost *.js,*.svelte,*.ts,*.css FormatWrite
   augroup END
   ]], true)
 end
