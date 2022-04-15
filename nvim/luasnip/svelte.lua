@@ -9,4 +9,5 @@ $1
 $2
 </style>]]
   ),
+  ls.parser.parse_snippet("svimp", [[import $1 from './$1.svelte';]]),
 }
