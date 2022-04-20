@@ -26,10 +26,10 @@ return {
   })),
 
   -- ima: import * as foo from bar
-  s("ima", fmt([[import * as {} from '{}.js';]], {i(1), i(2)})),
+  s("ima", fmt([[import * as {} from '{}.js';]], {i(2), i(1)})),
 
   -- imn: import {} from foo
-  s("imn", fmt([[import {{{}}} from '{}.js';]], {i(1), i(2)})),
+  s("imn", fmt([[import {{{}}} from '{}.js';]], {i(2), i(1)})),
 
   -- describe
   s("desc", fmt([[describe('{}', () => {{

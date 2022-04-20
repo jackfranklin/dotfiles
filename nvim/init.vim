@@ -57,8 +57,9 @@ if (has('nvim'))
 
   " Building vim plugins + lua things
   Plug 'folke/lua-dev.nvim'
-
   Plug 'numToStr/FTerm.nvim'
+
+  Plug 'rmagatti/auto-session'
 end
 
 call plug#end()

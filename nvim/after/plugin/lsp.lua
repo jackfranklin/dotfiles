@@ -27,6 +27,12 @@ cmp.setup({
       },
       { "i", "c" }
     ),
+    ['<C-n>'] = {
+      i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    },
+    ['<C-p>'] = {
+      i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    },
   },
   sources = {
     { name = 'nvim_lsp', keyword_length = 2, max_item_count = 10 },
