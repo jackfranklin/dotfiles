@@ -103,6 +103,10 @@ highlight DiagnosticHint guifg=black
 highlight DiagnosticInfo guifg=black
 highlight DiagnosticWarn guifg=black
 
+highlight TabLineSel guifg=white
+
 " Do not autowrap comments onto the next line
 set formatoptions-=t
+
+set switchbuf=useopen,usetab
 
