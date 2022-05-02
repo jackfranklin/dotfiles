@@ -8,11 +8,10 @@ vim.api.nvim_create_user_command('TaskThenExit', function(input)
 end, { bang = true, nargs = '*' })
 vim.api.nvim_create_user_command('TaskPersist', function(input)
   local cmd = input.args
-  vim.api.nvim_command(":Tclear")
-  vim.api.nvim_command(":T " .. cmd)
+  vim.api.nvim_command(":1T clear && " .. cmd)
 end, { bang = true, nargs = '*' })
 
 vim.api.nvim_set_keymap("n", "<leader>pe", ":TaskThenExit ",{})
 vim.api.nvim_set_keymap("n", "<leader>pp", ":TaskPersist ",{})
-vim.api.nvim_set_keymap("n", "<leader>pt", ":Ttoggle<CR><ESC>",{})
+vim.api.nvim_set_keymap("n", "<leader>pt", ":1Ttoggle<CR><ESC>",{})
 
