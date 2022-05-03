@@ -48,3 +48,24 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 1. `make install`
 
 
+## Fonts
+
+To get the MonoLisa font (note: do not commit the font files to this repo, it's a purchased font!), might need to create `~/.config/fonts/fonts.conf`:
+
+```xml
+<?xml version="1.0"?>
+<!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+<fontconfig>
+<match target="scan">
+    <test name="family">
+        <string>MonoLisa script</string>
+    </test>
+    <edit name="spacing">
+        <int>100</int>
+    </edit>
+</match>
+</fontconfig>
+```
+
+The font-family name should be whatever Kitty shows when you run `kitty +list-fonts`. This will get Kitty to recognise the italic variant.
+
