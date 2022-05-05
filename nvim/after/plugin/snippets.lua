@@ -28,8 +28,8 @@ vim.keymap.set({ "i", "s" }, "<c-j>", function()
   end
 end, { silent = true })
 
--- Use <c-l> to select from options
-vim.keymap.set("i", "<c-l>", function()
+-- Use <C-c> to select from options
+vim.keymap.set("i", "<c-c>", function()
   if ls.choice_active() then
     ls.change_choice(1)
   end

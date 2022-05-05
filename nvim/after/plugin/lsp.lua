@@ -2,7 +2,6 @@ local nvim_lsp = require('lspconfig')
 local util = require('lspconfig.util')
 local config_paths = require('config_paths')
 local on_attach = require('lsp_on_attach').on_attach
-local util = require('lspconfig.util')
 
 local cmp = require'cmp'
 cmp.setup({

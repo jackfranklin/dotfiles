@@ -58,10 +58,10 @@ if (has('nvim'))
   Plug 'andymass/vim-matchup'
 
   " Building vim plugins + lua things
-  Plug 'folke/lua-dev.nvim'
+  " Plug 'folke/lua-dev.nvim'
   Plug 'numToStr/FTerm.nvim'
-
   Plug 'rmagatti/auto-session'
+
 end
 
 call plug#end()
@@ -109,4 +109,7 @@ highlight TabLineSel guifg=white
 set formatoptions-=t
 
 set switchbuf=useopen,usetab
+
+inoremap <S-Tab> <C-x><C-l>
+
 
