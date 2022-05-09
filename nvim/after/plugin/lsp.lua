@@ -34,12 +34,12 @@ cmp.setup({
     },
   },
   sources = {
-    { name = 'nvim_lsp', keyword_length = 2, max_item_count = 10 },
-    { name = 'path', keyword_length = 2, max_item_count = 3 },
+    { name = 'nvim_lsp', max_item_count = 10 },
+    { name = 'path', keyword_length = 3, max_item_count = 10 },
     -- { name = 'vsnip', keyword_length = 3, max_item_count = 4 },
-    { name = 'luasnip', max_item_count = 3 },
-    { name = 'buffer', max_item_count = 4, keyword_length = 8 },
-    { name = 'nvim_lua', max_item_count = 4, keyword_length = 8 }
+    { name = 'luasnip', max_item_count = 5 },
+    { name = 'buffer', max_item_count = 10, keyword_length = 4 },
+    { name = 'nvim_lua', max_item_count = 4, keyword_length = 2 }
   },
 })
 
