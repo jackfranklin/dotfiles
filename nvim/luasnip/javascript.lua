@@ -13,16 +13,14 @@ local repeat_and_change = function(placeholder_index, index_to_copy)
   end, {index_to_copy})
 end
 return {
+  s("thisp", fmt("this.#{}", {i(1)})),
+  s("defp", fmt("#{}({}):{} {{{}}}", {i(1), i(2), i(3), i(4)})),
   s("cl", fmt("console.log({});", {i(1)})),
 
   -- clo: smart console.log
   s("clo", fmt("console.log('{}', {});", {
+    repeat_and_change(2, 1),
     i(1),
-    -- d(2, function(args)
-    --   -- we use i(1) here because it's nested
-    --   return sn(nil, i(1, args[1]))
-    -- end, {1}),
-    repeat_and_change(2, 1)
   })),
 
   -- ima: import * as foo from bar
