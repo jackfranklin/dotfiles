@@ -11,10 +11,6 @@ nnoremap <PageUp> :tabprevious<CR>
 nnoremap <PageDown> :tabnext<CR>
 tnoremap <PageUp> <C-\><C-n>:tabprevious<CR>
 tnoremap <PageDown> <C-\><C-n>:tabnext<CR>
-nnoremap <C-o> :tabprevious<CR>
-nnoremap <C-p> :tabnext<CR>
-tnoremap <C-o> <C-\><C-n>:tabprevious<CR>
-tnoremap <C-p> <C-\><C-n>:tabnext<CR>
 
 noremap H ^
 noremap L $
