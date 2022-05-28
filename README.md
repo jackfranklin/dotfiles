@@ -48,9 +48,13 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 1. `make install`
 
 
-## Fonts
+## Fonts and Kitty terminal
 
-To get the MonoLisa font (note: do not commit the font files to this repo, it's a purchased font!), might need to create `~/.config/fonts/fonts.conf`:
+To get the MonoLisa font (note: do not commit the font files to this repo, it's a purchased font!) working, we need to (for whatever reason) convince Kitty that all its variants (including italic/script) are monospace.
+
+Install the font (files in Google Drive); on Linux most reliable way is to copy files into `~/.local/share/fonts` and run `fc-cache -r`.
+
+Then create `~/.config/fonts/fonts.conf`:
 
 ```xml
 <?xml version="1.0"?>
@@ -67,5 +71,5 @@ To get the MonoLisa font (note: do not commit the font files to this repo, it's 
 </fontconfig>
 ```
 
-The font-family name should be whatever Kitty shows when you run `kitty +list-fonts`. This will get Kitty to recognise the italic variant.
+The font-family name should be whatever Kitty shows when you run `kitty +list-fonts`.
 
