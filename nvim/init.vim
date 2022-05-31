@@ -55,7 +55,6 @@ if (has('nvim'))
   Plug 'hoob3rt/lualine.nvim'
   Plug 'kassio/neoterm'
   Plug 'ojroques/vim-oscyank'
-  Plug 'andymass/vim-matchup'
 
   " Building vim plugins + lua things
   " Plug 'folke/lua-dev.nvim'
