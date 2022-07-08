@@ -51,7 +51,7 @@ local tsserver_command = config_paths.typescript_lsp_cmd()
 if tsserver_command ~= nil then
   nvim_lsp.tsserver.setup {
     on_attach = on_attach,
-    filetypes = { "typescript", "javascript" },
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
     cmd = tsserver_command,
     capabilities = capabilities,
   }

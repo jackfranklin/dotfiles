@@ -4,6 +4,8 @@ local prettier_path = config_paths.prettier_path()
 
 local formatter_filetypes = {
   javascript = {},
+  javascriptreact = {},
+  typescriptreact = {},
   svelte = {},
   typescript = {},
   css = {},
@@ -31,14 +33,9 @@ if prettier_path ~= nil then
   table.insert(formatter_filetypes.svelte, prettier_formatter)
   table.insert(formatter_filetypes.css, prettier_formatter)
   table.insert(formatter_filetypes.typescript, prettier_formatter)
+  table.insert(formatter_filetypes.javascriptreact, prettier_formatter)
+  table.insert(formatter_filetypes.typescriptreact, prettier_formatter)
 
-  -- TODO: better way to turn formatter on automatically - check if at least one formatter is defined for the current file type?
-  vim.api.nvim_exec([[
-  augroup FormatAutogroup
-  autocmd!
-  autocmd BufWritePost *.js,*.svelte,*.ts,*.css FormatWrite
-  augroup END
-  ]], true)
 end
 
 require('formatter').setup({
@@ -46,11 +43,11 @@ require('formatter').setup({
   filetype = formatter_filetypes,
 })
 
--- TODO: this is annoying - want to really detect when vim is launched what formatters we should enable
+-- TODO: better way to turn formatter on automatically - check if at least one formatter is defined for the current file type?
 vim.api.nvim_exec([[
 augroup FormatAutogroup
 autocmd!
-autocmd BufWritePost *.js,*.svelte,*.ts,*.rs,*.css FormatWrite
+autocmd BufWritePost *.js,*.svelte,*.ts,*.rs,*.css,*.jsx,*.tsx FormatWrite
 augroup END
 ]], true)
 
