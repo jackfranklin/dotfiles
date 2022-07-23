@@ -26,6 +26,7 @@ require('neo-tree').setup({
     },
   },
   filesystem = {
+    hijack_netrw_behavior = "disabled",
     window = {
       mappings = {
         ["U"] = "navigate_up",
