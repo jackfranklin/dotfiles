@@ -2,6 +2,7 @@ nnoremap <silent> <leader>t <cmd>lua require('telescope.builtin').find_files({hi
 nnoremap <silent> <leader>r <Cmd>Telescope live_grep<CR>
 nnoremap <silent> <leader>b <Cmd>Telescope buffers<CR>
 nnoremap <silent> <leader>s <Cmd>Telescope lsp_document_symbols<CR>
+nnoremap <silent> - <cmd>lua require('telescope.builtin').find_files({hidden = true, cwd = require('telescope.utils').buffer_dir()})<CR>
 
 lua <<EOF
 local actions = require('telescope.actions')

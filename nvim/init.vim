@@ -1,8 +1,8 @@
 call plug#begin(stdpath('data'). '/plugged')
 
 Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-vinegar'
+" Plug 'tpope/vim-surround'
+" Plug 'tpope/vim-vinegar'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-eunuch'
@@ -19,6 +19,10 @@ Plug 'junegunn/fzf.vim'
 if (has('nvim'))
   Plug 'nvim-lua/popup.nvim'
   Plug 'nvim-lua/plenary.nvim'
+
+  Plug 'kylechui/nvim-surround'
+  Plug 'MunifTanjim/nui.nvim'
+  Plug 'nvim-neo-tree/neo-tree.nvim', {'branch': 'v2.x'}
 
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make', 'branch': 'main' }
