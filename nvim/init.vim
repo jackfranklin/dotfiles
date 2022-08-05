@@ -55,14 +55,18 @@ if (has('nvim'))
 
 
   " Misc
-  Plug 'hoob3rt/lualine.nvim'
   Plug 'kassio/neoterm'
   Plug 'ojroques/vim-oscyank'
 
   " Building vim plugins + lua things
   " Plug 'folke/lua-dev.nvim'
   Plug 'numToStr/FTerm.nvim'
+
   Plug 'rmagatti/auto-session'
+  Plug 'ldelossa/buffertag', { 'branch': 'main' }
+  Plug 'SmiteshP/nvim-navic'
+
+
 
 end
 
@@ -113,5 +117,16 @@ set formatoptions-=t
 set switchbuf=useopen,usetab
 
 inoremap <S-Tab> <C-x><C-l>
+
+set laststatus=3
+
+hi StatusLine guifg=black guibg=#f0f0f0
+hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#f0f0f0
+hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
+hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
+hi JackStatusBarFugitive guifg=#494b53 guibg=#f0f0f0
+hi JackStatusBarNavic guifg=#494b53 guibg=#d0d0d0
+hi WinbarNC gui=none guifg=gray
+hi NormalFloat guibg=none
 
 
