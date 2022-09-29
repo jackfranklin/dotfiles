@@ -5,4 +5,5 @@ tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 
 autocmd BufEnter * if &buftype == 'terminal' | :startinsert | endif
+autocmd BufEnter * if &buftype == 'terminal' | :set nocursorline | endif
 
