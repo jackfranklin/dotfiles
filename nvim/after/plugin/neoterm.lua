@@ -59,7 +59,7 @@ end, { bang = true, nargs = '*' })
 vim.api.nvim_create_user_command('TaskPersist', function(input)
   local execute = function(cmd)
     vim.api.nvim_command(":1Tclear")
-    vim.api.nvim_command(":1T " .. cmd)
+    vim.api.nvim_command(":1T clear && " .. cmd)
   end
 
   local one_off_command = input.args

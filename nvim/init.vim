@@ -21,7 +21,6 @@ if (has('nvim'))
 
   Plug 'kylechui/nvim-surround'
   Plug 'MunifTanjim/nui.nvim'
-  Plug 'nvim-neo-tree/neo-tree.nvim', {'branch': 'v2.x'}
 
   Plug 'nvim-telescope/telescope.nvim'
   Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make', 'branch': 'main' }
