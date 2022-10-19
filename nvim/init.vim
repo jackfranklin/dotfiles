@@ -65,7 +65,7 @@ if (has('nvim'))
   Plug 'ldelossa/buffertag', { 'branch': 'main' }
   Plug 'SmiteshP/nvim-navic'
 
-
+  Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
 
 end
 
@@ -89,26 +89,8 @@ function! SyntaxItem()
 endfunction
 
 set background=light
-colorscheme onebuddy
-
-" this is the same as IncSearch in the onebuddy color theme
-highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
-
-" Controls the floating window when your cursor is on an error
-highlight DiagnosticFloatingInfo guifg=#000000 guisp=none
-highlight DiagnosticFloatingWarn guifg=#000000 guisp=none
-highlight DiagnosticFloatingHint guifg=#000000 guisp=none
-
-" Controls the rendering of the code to highlight the issue
-highlight DiagnosticUnderlineInfo cterm=underline guisp=black gui=underline
-highlight DiagnosticUnderlineHint cterm=underline guisp=black gui=underline
-
-" Controls the colour in the lualine block.
-highlight DiagnosticHint guifg=black
-highlight DiagnosticInfo guifg=black
-highlight DiagnosticWarn guifg=black
-
-highlight TabLineSel guifg=white
+" colorscheme onebuddy
+lua require('jack.theme')
 
 " Do not autowrap comments onto the next line
 set formatoptions-=t
@@ -116,16 +98,4 @@ set formatoptions-=t
 set switchbuf=useopen,usetab
 
 inoremap <S-Tab> <C-x><C-l>
-
 set laststatus=3
-
-hi StatusLine guifg=black guibg=#f0f0f0
-hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#f0f0f0
-hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
-hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
-hi JackStatusBarFugitive guifg=#494b53 guibg=#f0f0f0
-hi JackStatusBarNavic guifg=#494b53 guibg=#d0d0d0
-hi WinbarNC gui=none guifg=gray
-hi NormalFloat guibg=none
-
-

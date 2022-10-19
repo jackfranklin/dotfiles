@@ -5,7 +5,7 @@ vim.g.neoterm_default_mod = 'botright vertical'
 vim.api.nvim_set_keymap("n", "<leader>pe", ":TaskThenExit ",{})
 vim.api.nvim_set_keymap("n", "<leader>pp", ":TaskPersist ",{})
 vim.api.nvim_set_keymap("n", "<leader>pt", ":1Ttoggle<CR><ESC>",{})
-vim.api.nvim_set_keymap("n", "<leader>e", ":TaskPersist<CR>",{})
+vim.api.nvim_set_keymap("n", "<leader>et", ":TaskPersist<CR>",{})
 
 
 local Input = require("nui.input")
