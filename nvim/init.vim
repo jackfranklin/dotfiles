@@ -66,6 +66,7 @@ if (has('nvim'))
   Plug 'SmiteshP/nvim-navic'
 
   Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
+  Plug 'google/executor.nvim', { 'branch': 'main' }
 
 end
 
