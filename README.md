@@ -32,9 +32,8 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 - `npm adduser` to login to npm
 
 ## Windows & WSL
-- Download wsltty
-- Get themes from https://github.com/iamthad/base16-mintty (onelight-256)
-- Set wsltty terminal to xterm-256colors
+- Install Windows Terminal experimental (currently need the new text rendering engine with better cursor colour contrast)
+- Add Catpuccin theme for Win terminal + enable. Set Ubuntu as the default profile when opening the terminal / new tab.
 
 ## Building nvim
 
@@ -43,7 +42,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 1. `git checkout <tag>` if you want a stable version.
 1. Build with the right flags:
     ```
-    make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim
+    make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim
     ```
 1. `make install`
 
