@@ -1,3 +1,5 @@
+local navic = require('nvim-navic')
+
 M = {}
 local on_attach = function(client, bufnr)
   -- By binding these keys here, we ensure they are bound only once the language server is ready for them.
@@ -17,7 +19,9 @@ local on_attach = function(client, bufnr)
   buf_set_keymap('n', '<C-p>', '<cmd>lua vim.diagnostic.goto_prev()<CR>', opts)
   buf_set_keymap('n', '<C-n>', '<cmd>lua vim.diagnostic.goto_next()<CR>', opts)
 
-
+ if client.server_capabilities.documentSymbolProvider then
+    navic.attach(client, bufnr)
+  end
 end
 
 M.on_attach = on_attach
