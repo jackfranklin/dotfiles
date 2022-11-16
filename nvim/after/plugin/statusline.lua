@@ -8,7 +8,7 @@ navic.setup({
     Class         = "[C] ",
     Method        = "[M] ",
     Property      = "[P] ",
-    Field         = "[F] ",
+    Field         = "",
     Constructor   = "",
     Enum          = "[E] ",
     Interface     = "[I] ",
@@ -28,6 +28,7 @@ navic.setup({
     Operator      = "",
     TypeParameter = "",
   },
+  depth_limit = 3,
 })
 vim.o.laststatus = 3
 local get_diagnostics = function()
