@@ -58,6 +58,9 @@ latest_neovim_linux:
 language_servers_global:
 	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted
 
+elm_language_servers:
+	npm install -g elm elm-test elm-format @elm-tooling/elm-language-server
+
 install_rust_analyzer:
 	rustup component add rust-src
 	mkdir -p ~/.local/bin

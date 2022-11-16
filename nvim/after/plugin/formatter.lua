@@ -51,3 +51,5 @@ autocmd BufWritePost *.js,*.svelte,*.ts,*.rs,*.css,*.jsx,*.tsx FormatWrite
 augroup END
 ]], true)
 
+vim.cmd [[autocmd BufWritePre *.elm lua vim.lsp.buf.format()]]
+

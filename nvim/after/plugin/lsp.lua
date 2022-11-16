@@ -59,7 +59,7 @@ cmp.setup({
   },
 })
 
-capabilities = require('cmp_nvim_lsp').default_capabilities()
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
 local tsserver_command = config_paths.typescript_lsp_cmd()
 
@@ -71,6 +71,13 @@ if tsserver_command ~= nil then
     capabilities = capabilities,
   }
 end
+
+nvim_lsp.elmls.setup{
+  root_dir = function(name)
+    return util.root_pattern('elm.json')(name)
+  end,
+  on_attach = on_attach,
+}
 
 nvim_lsp.svelte.setup {
   on_attach = on_attach,
