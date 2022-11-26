@@ -12,7 +12,7 @@ navic.setup({
     Constructor   = "",
     Enum          = "[E] ",
     Interface     = "[I] ",
-    Function      = "[F] ",
+    Function      = "",
     Variable      = "",
     Constant      = "",
     String        = "",
@@ -65,8 +65,6 @@ function StatusBarNavic()
   return navic.get_location()
 end
 local status_line_parts = {
-  "%f",
-  " ",
   diagnostic_status_line,
   "%=", -- this pushes what's after it to the RHS
   "%#JackStatusBarNavic#%{v:lua.StatusBarNavic()}%*",

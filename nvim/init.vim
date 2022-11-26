@@ -62,11 +62,11 @@ if (has('nvim'))
   Plug 'numToStr/FTerm.nvim'
 
   Plug 'rmagatti/auto-session'
-  Plug 'ldelossa/buffertag', { 'branch': 'main' }
   Plug 'SmiteshP/nvim-navic'
 
   Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
   Plug 'google/executor.nvim', { 'branch': 'main' }
+  Plug 'jackfranklin/winbar.nvim'
 
 end
 
