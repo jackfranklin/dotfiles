@@ -67,6 +67,7 @@ if (has('nvim'))
   Plug 'catppuccin/nvim', { 'as': 'catppuccin' }
   Plug 'google/executor.nvim', { 'branch': 'main' }
   Plug 'jackfranklin/winbar.nvim'
+  Plug 'windwp/nvim-autopairs'
 
 end
 
