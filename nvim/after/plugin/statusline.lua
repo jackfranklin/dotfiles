@@ -1,4 +1,5 @@
 local navic = require('nvim-navic')
+local executor = require("executor")
 navic.setup({
   icons = {
     File          = "",
@@ -31,6 +32,7 @@ navic.setup({
   depth_limit = 3,
 })
 vim.o.laststatus = 3
+
 local get_diagnostics = function()
   -- 0 = current buffer
   local diags_for_buffer = vim.diagnostic.get(0)
@@ -52,6 +54,7 @@ local get_diagnostics = function()
     hint = info + hint,
   }
 end
+
 function LSPCount(key, letter)
   local diags = get_diagnostics()
   if diags == nil or diags[key] < 1 then
@@ -60,11 +63,25 @@ function LSPCount(key, letter)
   local str = string.format("%s:%i ", letter, diags[key])
   return str
 end
+
 local diagnostic_status_line = [[%#JackStatusBarDiagnosticError#%{v:lua.LSPCount('error', 'E')}%*%#JackStatusBarDiagnosticWarn#%{v:lua.LSPCount('warning', 'W')}%*%#JackStatusBarDiagnosticHint#%{v:lua.LSPCount('hint', 'H')}%*]]
+
 function StatusBarNavic()
   return navic.get_location()
 end
+
+function StatusBarExecutor()
+  local text = executor.statusline()
+  if text == "" then
+    return ""
+  else
+    -- Put another empty space on to split it from the next part
+    return text .. " "
+  end
+end
+
 local status_line_parts = {
+  "%{v:lua.StatusBarExecutor()}",
   diagnostic_status_line,
   "%=", -- this pushes what's after it to the RHS
   "%#JackStatusBarNavic#%{v:lua.StatusBarNavic()}%*",
