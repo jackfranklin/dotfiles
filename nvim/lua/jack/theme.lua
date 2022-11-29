@@ -4,6 +4,11 @@ require("catppuccin").setup({
     -- Prevent conditionals from being italic
     conditionals = {},
   },
+  custom_highlights = function(colors)
+    return {
+      ["@text.todo"] = { fg = colors.base, bg = colors.yellow, style = { "bold" } },
+    }
+  end,
 })
 vim.api.nvim_command("colorscheme catppuccin")
 local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
