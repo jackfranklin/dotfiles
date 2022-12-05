@@ -68,6 +68,7 @@ if (has('nvim'))
   Plug 'google/executor.nvim', { 'branch': 'main' }
   Plug 'jackfranklin/winbar.nvim'
   Plug 'windwp/nvim-autopairs'
+  Plug 'ibhagwan/fzf-lua'
 
 end
 
