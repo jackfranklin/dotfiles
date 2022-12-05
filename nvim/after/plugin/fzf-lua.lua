@@ -4,7 +4,7 @@ vim.api.nvim_set_keymap("n", "<leader>b", "<Cmd>lua require('fzf-lua').buffers()
 vim.api.nvim_set_keymap("n", "<leader>s", "<Cmd>lua require('fzf-lua').lsp_document_symbols<CR>", {})
 
 require("fzf-lua").setup({
-  file_ignore_patterns = { "^node_modules/", "^dwarf_extension/", "^third_party/", "^.git/", "%.json.gz" },
+  file_ignore_patterns = { "^node_modules/", "^.git/"},
   winopts = {
     height = 0.2,
     preview = {

@@ -9,6 +9,7 @@ require('winbar').setup({
         'dashboard',
         'packer',
         'neogitstatus',
+        'fzf',
         'NvimTree',
         'Trouble',
         'alpha',
