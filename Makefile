@@ -11,21 +11,8 @@ neovim:
 	@echo "https://github.com/junegunn/vim-plug#neovim"
 
 
-alacritty:
-	@ln -nsf $(DIR)/alacritty ~/.config/alacritty
-
 fish:
 	@ln -nsf $(DIR)/fish ~/.config/fish
-
-tmux:
-	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
-	@ln -sf $(DIR)/tmux/tmux-osx.conf ~/.tmux-osx.conf
-
-i3:
-	@ln -nsf $(DIR)/i3 ~/.config/i3
-
-ag:
-	@ln -sf $(DIR)/ag/agignore ~/.agignore
 
 git:
 	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
@@ -33,15 +20,6 @@ git:
 
 bin:
 	@ln -sf $(DIR)/bin ~/.bin
-
-zsh:
-	@ln -nsf $(DIR)/zsh/zsh ~/.zsh
-	@ln -sf $(DIR)/zsh/zshenv ~/.zshenv
-	@ln -sf $(DIR)/zsh/zshrc ~/.zshrc
-	touch ~/dotfiles/zsh/secret
-
-antigen:
-	cd ~ && git clone https://github.com/zsh-users/antigen.git
 
 ubuntu-deps:
 	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep
