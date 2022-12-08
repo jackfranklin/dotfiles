@@ -9,6 +9,9 @@ local formatter_filetypes = {
   svelte = {},
   typescript = {},
   css = {},
+  lua = {
+    require('formatter.filetypes.lua').stylua,
+  },
   rust = {
     function()
       return {
@@ -47,9 +50,10 @@ require('formatter').setup({
 vim.api.nvim_exec([[
 augroup FormatAutogroup
 autocmd!
-autocmd BufWritePost *.js,*.svelte,*.ts,*.rs,*.css,*.jsx,*.tsx FormatWrite
+autocmd BufWritePost *.js,*.svelte,*.ts,*.rs,*.css,*.jsx,*.tsx,*.lua FormatWrite
 augroup END
 ]], true)
 
+-- Run Elm-format via the LSP formatter, not Formatter.nvim
 vim.cmd [[autocmd BufWritePre *.elm lua vim.lsp.buf.format()]]
 

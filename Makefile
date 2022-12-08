@@ -49,14 +49,8 @@ ubuntu-deps:
 fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 
-latest_neovim_linux:
-	curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim.appimage
-	chmod u+x nvim.appimage
-	mv nvim.appimage ~/dotfiles/images/
-	chmod +x ~/dotfiles/images/nvim.appimage
-
 language_servers_global:
-	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted
+	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted @johnnymorganz/stylua-bin
 
 elm_language_servers:
 	npm install -g elm elm-test elm-format @elm-tooling/elm-language-server
