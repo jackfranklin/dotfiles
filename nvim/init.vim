@@ -28,6 +28,7 @@ if (has('nvim'))
   " LSP, Syntax + diagnostics
   Plug 'neovim/nvim-lspconfig'
   Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+  Plug 'nvim-treesitter/playground'
   " Loading status of LSP servers
   Plug 'j-hui/fidget.nvim'
 
