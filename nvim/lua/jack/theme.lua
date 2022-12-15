@@ -11,6 +11,10 @@ require("catppuccin").setup({
 				bg = colors.green,
 				fg = colors.base,
 			},
+			Folded = {
+				bg = colors.crust,
+				fg = colors.text,
+			},
 		}
 	end,
 })
