@@ -1,3 +1,6 @@
+-- TODO: convert these to use NeoVim API methods directly.
+vim.api.nvim_exec(
+	[[
 " ACK (well, Ag)
 let g:ackprg = 'ag --vimgrep --smart-case'
 
@@ -51,3 +54,8 @@ tnoremap <S-Up> :resize-5<CR>
 tnoremap <S-Down> :resize+5<CR>
 inoremap <S-Up> :resize-5<CR>
 inoremap <S-Down> :resize+5<CR>
+
+inoremap <S-Tab> <C-x><C-l>
+	]],
+	false
+)

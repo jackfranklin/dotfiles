@@ -31,6 +31,19 @@ M.load_plugins = function(use)
 			local ts_update = require("nvim-treesitter.install").update({ with_sync = true })
 			ts_update()
 		end,
+		config = function()
+			-- Ensure folds function: https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim
+			vim.api.nvim_exec(
+				[[
+				function FoldConfig()
+					set foldmethod=expr
+					set foldexpr=nvim_treesitter#foldexpr()
+				endfunction
+				autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
+				]],
+				false
+			)
+		end,
 	})
 	use("nvim-treesitter/playground")
 
