@@ -1,12 +1,14 @@
-" STATUS LINE
-set statusline=%F%m%r%h%w\  "fullpath and status modified sign
-set statusline+=\ %y "filetype
-set statusline+=\ %{fugitive#statusline()}
-" this line below pushes everything below it to the right hand side
-set statusline+=%=
-set statusline+=\%l
-
+vim.api.nvim_exec(
+	[[
+filetype plugin indent on
+set termguicolors
 set autoread
+
+" Do not autowrap comments onto the next line
+set formatoptions-=t
+
+set switchbuf=useopen,usetab
+set laststatus=3
 
 " INDENTS + STUFF
 set expandtab
@@ -60,3 +62,6 @@ nnoremap <C-l> <C-w>l
 set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
+]],
+	false
+)

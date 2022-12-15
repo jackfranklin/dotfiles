@@ -5,10 +5,12 @@ NEOVIM_GIT_DIR="${HOME}/git/neovim"
 all:
 	@echo "Run things individually!"
 
-neovim:
+neovim: packer
 	@ln -nsf $(DIR)/nvim ~/.config/nvim
-	@echo "Don't forget to install vim-plug then do :PlugInstall"
-	@echo "https://github.com/junegunn/vim-plug#neovim"
+
+packer:
+	git clone --depth 1 https://github.com/wbthomason/packer.nvim\
+ ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
 
 fish:
