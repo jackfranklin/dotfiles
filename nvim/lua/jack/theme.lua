@@ -7,6 +7,7 @@ require("catppuccin").setup({
 	},
 	custom_highlights = function(colors)
 		return {
+			["@tag.attribute.tsx"] = { style = { "italic" } },
 			["@text.todo"] = { fg = colors.base, bg = colors.yellow, style = { "bold" } },
 			TabLineSel = {
 				bg = colors.green,
