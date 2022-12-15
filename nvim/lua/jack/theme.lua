@@ -1,4 +1,5 @@
 vim.g.catppuccin_flavour = "latte"
+vim.api.nvim_exec([[set background=light]], { output = "false" })
 require("catppuccin").setup({
 	styles = {
 		-- Prevent conditionals from being italic
