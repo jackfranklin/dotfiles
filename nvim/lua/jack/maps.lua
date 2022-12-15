@@ -56,6 +56,12 @@ inoremap <S-Up> :resize-5<CR>
 inoremap <S-Down> :resize+5<CR>
 
 inoremap <S-Tab> <C-x><C-l>
+
+tnoremap <Esc> <C-\><C-n>
+tnoremap <C-h> <C-\><C-n><C-w>h
+tnoremap <C-j> <C-\><C-n><C-w>j
+tnoremap <C-k> <C-\><C-n><C-w>k
+tnoremap <C-l> <C-\><C-n><C-w>l
 	]],
 	false
 )

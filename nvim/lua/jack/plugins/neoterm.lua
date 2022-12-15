@@ -1,6 +1,13 @@
 vim.g.neoterm_size = tostring(0.3 * vim.o.columns)
 vim.g.neoterm_default_mod = "botright vertical"
 
+vim.api.nvim_exec(
+	[[
+autocmd BufEnter * if &filetype == 'neoterm' | :startinsert | endif
+]],
+	false
+)
+
 vim.api.nvim_set_keymap("n", "<leader>pe", ":TaskThenExit ", {})
 vim.api.nvim_set_keymap("n", "<leader>pp", ":TaskPersist ", {})
 vim.api.nvim_set_keymap("n", "<leader>pt", ":1Ttoggle<CR><ESC>", {})
