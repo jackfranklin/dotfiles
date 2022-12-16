@@ -1,24 +1,24 @@
 vim.g.catppuccin_flavour = "latte"
 vim.api.nvim_exec([[set background=light]], { output = "false" })
 require("catppuccin").setup({
-	styles = {
-		-- Prevent conditionals from being italic
-		conditionals = {},
-	},
-	custom_highlights = function(colors)
-		return {
-			["@tag.attribute.tsx"] = { style = { "italic" } },
-			["@text.todo"] = { fg = colors.base, bg = colors.yellow, style = { "bold" } },
-			TabLineSel = {
-				bg = colors.green,
-				fg = colors.base,
-			},
-			Folded = {
-				bg = colors.crust,
-				fg = colors.text,
-			},
-		}
-	end,
+  styles = {
+    -- Prevent conditionals from being italic
+    conditionals = {},
+  },
+  custom_highlights = function(colors)
+    return {
+      ["@tag.attribute.tsx"] = { style = { "italic" } },
+      ["@text.todo"] = { fg = colors.base, bg = colors.yellow, style = { "bold" } },
+      TabLineSel = {
+        bg = colors.green,
+        fg = colors.base,
+      },
+      Folded = {
+        bg = colors.crust,
+        fg = colors.text,
+      },
+    }
+  end,
 })
 -- Generate a set of colors to look at:
 -- local latte = require("catppuccin.palettes").get_palette("latte")
@@ -54,28 +54,28 @@ require("catppuccin").setup({
 vim.api.nvim_command("colorscheme catppuccin")
 local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
 vim.api.nvim_exec(
-	[[
+  [[
 hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#f0f0f0
 hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
 hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
 ]],
-	true
+  true
 )
 if theme == "catppuccin" then
-	vim.api.nvim_exec(
-		[[
+  vim.api.nvim_exec(
+    [[
 hi NormalFloat guibg=none
 hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#e6e9ef
 hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#e6e9ef
 hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#e6e9ef
 hi Winbar guibg=#e6e9ef
 ]],
-		true
-	)
+    true
+  )
 end
 if theme == "onebuddy" then
-	vim.api.nvim_exec(
-		[[
+  vim.api.nvim_exec(
+    [[
 " this is the same as IncSearch in the onebuddy color theme
 highlight Search guifg=#fafafa guibg=#4078f2 guisp=none
 highlight DiagnosticFloatingInfo guifg=#000000 guisp=none
@@ -96,6 +96,6 @@ hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
 hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
 hi NormalFloat guibg=none
   ]],
-		{ output = true }
-	)
+    { output = true }
+  )
 end

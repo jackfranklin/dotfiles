@@ -1,6 +1,6 @@
 -- TODO: convert these to use NeoVim API methods directly.
 vim.api.nvim_exec(
-	[[
+  [[
 " ACK (well, Ag)
 let g:ackprg = 'ag --vimgrep --smart-case'
 
@@ -63,5 +63,5 @@ tnoremap <C-j> <C-\><C-n><C-w>j
 tnoremap <C-k> <C-\><C-n><C-w>k
 tnoremap <C-l> <C-\><C-n><C-w>l
 	]],
-	false
+  false
 )

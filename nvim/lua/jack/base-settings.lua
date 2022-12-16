@@ -1,5 +1,5 @@
 vim.api.nvim_exec(
-	[[
+  [[
 filetype plugin indent on
 set termguicolors
 set autoread
@@ -63,5 +63,5 @@ set foldmethod=expr
 set foldexpr=nvim_treesitter#foldexpr()
 set nofoldenable
 ]],
-	false
+  false
 )
