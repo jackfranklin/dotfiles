@@ -1,4 +1,4 @@
-M = {}
+local M = {}
 
 M.load_plugins = function(use)
   use("wbthomason/packer.nvim")
@@ -35,12 +35,12 @@ M.load_plugins = function(use)
       -- Ensure folds function: https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim
       vim.api.nvim_exec(
         [[
-				function FoldConfig()
-					set foldmethod=expr
-					set foldexpr=nvim_treesitter#foldexpr()
-				endfunction
-				autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
-				]],
+function FoldConfig()
+  set foldmethod=expr
+  set foldexpr=nvim_treesitter#foldexpr()
+endfunction
+autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
+]],
         false
       )
     end,
