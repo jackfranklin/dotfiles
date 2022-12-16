@@ -14,7 +14,7 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "rounded",
 })
 
-M = {}
+local M = {}
 M.typescript = function(config)
   if config.cmd ~= nil then
     nvim_lsp.tsserver.setup({
