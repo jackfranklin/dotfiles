@@ -1,6 +1,6 @@
 local Path = require("plenary.path")
 
-M = {}
+local M = {}
 
 local current_working_directory = vim.api.nvim_eval("getcwd()")
 local node_modules_path = Path:new(current_working_directory):joinpath("node_modules")
