@@ -14,9 +14,10 @@ M.setup = function(config)
       end
     end,
   })
-  vim.api.nvim_set_keymap("n", "<leader>er", ":ExecutorRun<CR>", {})
-  vim.api.nvim_set_keymap("n", "<leader>ev", ":ExecutorToggleDetail<CR>", {})
-  vim.api.nvim_set_keymap("n", "<leader>es", ":ExecutorSetCommand<CR>", {})
+  local opts = { noremap = true, silent = true }
+  vim.api.nvim_set_keymap("n", "<leader>er", ":ExecutorRun<CR>", opts)
+  vim.api.nvim_set_keymap("n", "<leader>ev", ":ExecutorToggleDetail<CR>", opts)
+  vim.api.nvim_set_keymap("n", "<leader>es", ":ExecutorSetCommand<CR>", opts)
 end
 
 return M
