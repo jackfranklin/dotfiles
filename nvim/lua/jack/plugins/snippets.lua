@@ -46,5 +46,6 @@ require("luasnip.loaders.from_lua").load({
 
 -- If we are in a TS file, make all JS snippets available too.
 ls.filetype_extend("typescript", { "javascript" })
+ls.filetype_extend("typescriptreact", { "typescript", "javascript" })
 -- If we are in a Svelte file, enable JS snippets
 ls.filetype_extend("svelte", { "javascript" })

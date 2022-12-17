@@ -1,10 +1,9 @@
-M = {}
+local M = {}
 local on_attach = function(client, bufnr)
   -- By binding these keys here, we ensure they are bound only once the language server is ready for them.
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
   end
-  -- local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
 
   local opts = { noremap = true, silent = true }
 
