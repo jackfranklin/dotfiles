@@ -22,6 +22,11 @@ M.setup = function(config)
 
   require("fzf-lua").setup({
     file_ignore_patterns = ignore,
+    keymap = {
+      fzf = {
+        ["ctrl-q"] = "select-all+accept",
+      },
+    },
     winopts = {
       height = 0.2,
       preview = {
