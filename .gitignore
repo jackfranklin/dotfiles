@@ -29,3 +29,4 @@ fish/functions/fzf_key_bindings.fish
 .netrwhist
 images/
 
+nvim/plugin/packer_compiled.lua

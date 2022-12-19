@@ -71,7 +71,6 @@ autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
   use("SmiteshP/nvim-navic")
   use("google/executor.nvim")
   use("jackfranklin/winbar.nvim")
-  use("windwp/nvim-autopairs")
   use("ibhagwan/fzf-lua")
 end
 
