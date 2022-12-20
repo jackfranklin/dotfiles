@@ -4,9 +4,6 @@ filetype plugin indent on
 set termguicolors
 set autoread
 
-" Do not autowrap comments onto the next line
-set formatoptions-=t
-
 set switchbuf=useopen,usetab
 set laststatus=3
 
