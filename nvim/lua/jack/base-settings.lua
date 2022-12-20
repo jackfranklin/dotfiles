@@ -14,6 +14,9 @@ set shiftwidth=2
 set softtabstop=2
 set autoindent
 
+" Do not autowrap comments onto the next line
+set formatoptions-=t
+
 set inccommand=split
 
 " SEARCH SETTINGS

@@ -17,6 +17,11 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<leader>cc", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
   buf_set_keymap("n", "<C-p>", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "<C-n>", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+
+  -- Disable formatexpr to allow Vim's built in gq to work.
+  -- See: https://github.com/neovim/neovim/pull/19677
+  -- In theory this idea works great but the TS language server doesn't wrap comments.
+  vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
 end
 
 M.on_attach = on_attach
