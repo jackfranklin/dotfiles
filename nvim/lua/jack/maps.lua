@@ -28,9 +28,6 @@ vnoremap <leader>8 "*y
 vnoremap <leader>9 "*p
 nnoremap <leader>8 "*p
 
-" FOLDS
-nnoremap <leader>z za<CR>
-
 " More undo break points in insert mode
 inoremap , ,<c-g>u
 inoremap . .<c-g>u

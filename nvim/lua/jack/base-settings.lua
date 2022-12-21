@@ -59,9 +59,8 @@ nnoremap <C-j> <C-w>j
 nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
-set foldmethod=expr
-set foldexpr=nvim_treesitter#foldexpr()
-set foldlevel=99
+set foldmethod=indent
+set nofoldenable
 ]],
   false
 )
