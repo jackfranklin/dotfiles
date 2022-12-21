@@ -12,7 +12,6 @@ packer:
 	git clone --depth 1 https://github.com/wbthomason/packer.nvim\
  ~/.local/share/nvim/site/pack/packer/start/packer.nvim
 
-
 fish:
 	@ln -nsf $(DIR)/fish ~/.config/fish
 
@@ -41,9 +40,12 @@ install_rust_analyzer:
 	curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
 	chmod +x ~/.local/bin/rust-analyzer
 
-
 kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
+
+sync_alacritty_windows:
+	cp alacritty_windows/alacritty.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
+	cp alacritty_windows/theme.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
 
 
 update_neovim:
