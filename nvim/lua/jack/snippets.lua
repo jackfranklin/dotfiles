@@ -98,7 +98,8 @@ M.svelte = function()
 $1
 <style>
 $2
-</style>]]
+</style>]],
+      {}
     ),
     ls.parser.parse_snippet("svimp", [[import $1 from './$1.svelte';]]),
   }

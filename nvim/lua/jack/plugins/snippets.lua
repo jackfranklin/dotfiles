@@ -36,7 +36,7 @@ vim.keymap.set("i", "<c-c>", function()
 end, { silent = true })
 
 -- Reload snippets.
-vim.keymap.set("n", "<leader><leader>ss", "<cmd>source ~/dotfiles/nvim/after/plugin/snippets.lua<CR>")
+vim.keymap.set("n", "<leader><leader>ss", "<cmd>source ~/dotfiles/nvim/lua/jack/snippets.lua<CR>")
 -- Edit snippets
 vim.keymap.set("n", "<leader><leader>se", ":lua require('luasnip.loaders.from_lua').edit_snippet_files()<CR>")
 
