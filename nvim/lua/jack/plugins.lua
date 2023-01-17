@@ -23,6 +23,7 @@ M.load_plugins = function(use)
   use("junegunn/fzf.vim")
 
   use("mhartington/formatter.nvim")
+  use("windwp/nvim-autopairs")
 
   use("neovim/nvim-lspconfig")
   use({
@@ -67,7 +68,6 @@ M.load_plugins = function(use)
   use("ojroques/vim-oscyank")
 
   use("numToStr/FTerm.nvim")
-  use("rmagatti/auto-session")
   use("SmiteshP/nvim-navic")
   use("google/executor.nvim")
   use("jackfranklin/winbar.nvim")

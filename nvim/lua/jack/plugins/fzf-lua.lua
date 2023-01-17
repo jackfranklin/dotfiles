@@ -10,7 +10,7 @@ M.setup = function(config)
   vim.keymap.set("n", "<leader>b", function()
     require("fzf-lua").buffers()
   end)
-  vim.keymap.set("n", "<leader>s", function()
+  vim.keymap.set("n", "<leader>fs", function()
     require("fzf-lua").lsp_document_symbols()
   end)
 

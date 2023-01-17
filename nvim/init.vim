@@ -4,7 +4,7 @@ lua require('jack.maps')
 lua require('jack.theme')
 
 lua require('jack.plugins.ack')
-lua require('jack.plugins.auto-session')
+lua require('jack.plugins.autopairs')
 lua require('jack.plugins.cmp')
 lua require('jack.plugins.executor').setup({})
 lua require('jack.plugins.formatter')
