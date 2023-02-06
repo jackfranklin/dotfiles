@@ -23,7 +23,7 @@ M.load_plugins = function(use)
   use("junegunn/fzf.vim")
 
   use("mhartington/formatter.nvim")
-  use("windwp/nvim-autopairs")
+  use({ "windwp/nvim-autopairs", commit = "f00eb3b766c370cb34fdabc29c760338ba9e4c6c" })
 
   use("neovim/nvim-lspconfig")
   use({
