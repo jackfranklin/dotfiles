@@ -17,18 +17,8 @@ local on_attach = function(client, bufnr)
   buf_set_keymap("n", "<leader>cc", "<cmd>lua vim.diagnostic.open_float()<CR>", opts)
   buf_set_keymap("n", "[d", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
   buf_set_keymap("n", "]d", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
-  buf_set_keymap(
-    "n",
-    "[e",
-    "<cmd>lua vim.diagnostic.goto_prev({ severity =  vim.diagnostic.severity.ERROR })<CR>",
-    opts
-  )
-  buf_set_keymap(
-    "n",
-    "]e",
-    "<cmd>lua vim.diagnostic.goto_next({ severity =  vim.diagnostic.severity.ERROR })<CR>",
-    opts
-  )
+  buf_set_keymap("n", "ge", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
+  buf_set_keymap("n", "gE", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opts)
 
   -- Disable formatexpr to allow Vim's built in gq to work.
   -- See: https://github.com/neovim/neovim/pull/19677
