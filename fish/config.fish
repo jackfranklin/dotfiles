@@ -27,6 +27,8 @@ alias df="cd ~/dotfiles"
 set EDITOR 'nvim'
 
 set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
+set -gx TERM alacritty;
+
 
 source ~/.asdf/asdf.fish
 

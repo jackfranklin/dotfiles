@@ -14,23 +14,6 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ...and so on
 ```
 
-# New machine setup steps
-
-- Download Chrome
-- Download 1Password and login
-- Generate SSH key and set it up on GitHub
-- Clone this repo into `~/dotfiles`
-- Setup Vim
-  - `make vim`
-  - Install neovim from repo https://github.com/neovim/neovim/wiki/Building-Neovim)
-  - Install Vim plug (https://github.com/junegunn/vim-plug)
-  - Run Vim + plug install
-- Install [asdf](https://asdf-vm.com/#/)
-  - install `asdf-nodejs`
-- Change the default shell to Fish
-- `cd fish && make symlink`
-- `npm adduser` to login to npm
-
 ## Windows & WSL
 - Install Windows Terminal experimental (currently need the new text rendering engine with better cursor colour contrast)
 - Add Catpuccin theme for Win terminal + enable. Set Ubuntu as the default profile when opening the terminal / new tab.
@@ -42,7 +25,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 1. `git checkout <tag>` if you want a stable version.
 1. Build with the right flags:
     ```
-    make CMAKE_BUILD_TYPE=RelWithDebInfo CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim
+    make CMAKE_BUILD_TYPE=Release CMAKE_EXTRA_FLAGS="-DCMAKE_INSTALL_PREFIX=$HOME/neovim
     ```
 1. `make install`
 
@@ -71,4 +54,15 @@ Then create `~/.config/fonts/fonts.conf`:
 ```
 
 The font-family name should be whatever Kitty shows when you run `kitty +list-fonts`.
+
+## Setting up Alacritty
+- Install latest version from GitHub
+- [WINDOWS] `make sync_alacritty_windows` to copy the config into the right place
+- Ensure `alacritty.info` is installed properly [https://github.com/alacritty/alacritty/blob/master/INSTALL.md#terminfo]. Note that you can drop the `sudo` from the command (at least for me).
+- Make sure `echo $TERM` gives you `alacritty`, and `infocmp alacritty` works.
+- Check it is all configured with the right fonts by running `echo -e "\e[3mItalic"` and seeing if it outputs italic.
+
+## Fonts
+
+Fonts I have purchased are all in the `Purchased Fonts` folder of Google Drive (do not put them into the repo or public!).
 

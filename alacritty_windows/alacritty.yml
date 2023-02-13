@@ -17,7 +17,7 @@ import:
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-#env:
+env:
   # TERM variable
 
   #
@@ -25,7 +25,7 @@ import:
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
-  #TERM: alacritty
+  TERM: alacritty
 
 #window:
   # Window dimensions (changes require restart)
@@ -119,13 +119,15 @@ font:
     family: "Cartograph CF"
   bold:
     family: "Cartograph CF"
-    style: Bold
+    # Note: the `style` line is commented out here based on https://github.com/alacritty/alacritty/issues/1977#issuecomment-736271651, which fixes italics working in Alacritty, and I am not entirely sure why.
+    # From reading online it seems if you omit the style line, Alacritty figures out which one to use and seems to get it right.
+    # style: Bold
   italic:
     family: "Cartograph CF"
-    style: Italic
+    # style: Italic
   bold_italic:
     family: "Cartograph CF"
-    style: Bold Italic
+    # style: Bold Italic
 # Font configuration
 #font:
   # Normal (roman) font face
