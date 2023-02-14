@@ -64,3 +64,5 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 )
 
 vim.api.nvim_set_keymap("n", "<BS>", ":", { noremap = true })
+vim.api.nvim_set_keymap("n", "gp", ":cnext<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "gP", ":cprev<CR>", { noremap = true })
