@@ -74,6 +74,44 @@ customElements.define({}, {})]],
         { i(1), i(2), rep(1) }
       )
     ),
+
+    -- if
+    s(
+      "iif",
+      fmt(
+        [[if({}) {{
+  {}
+}}]],
+        { i(1), i(0) }
+      )
+    ),
+
+    -- if else
+    s(
+      "elif",
+      fmt(
+        [[if({}) {{
+  {}
+}} else {{
+  {}
+}}]],
+        { i(1), i(2), i(0) }
+      )
+    ),
+  }
+end
+
+M.typescript = function()
+  return {
+    s(
+      "ffunc",
+      fmt(
+        [[function {}({}): {} {{
+  {}
+}}]],
+        { i(1), i(2), i(3), i(0) }
+      )
+    ),
   }
 end
 
