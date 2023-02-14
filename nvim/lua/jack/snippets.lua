@@ -98,6 +98,16 @@ customElements.define({}, {})]],
         { i(1), i(2), i(0) }
       )
     ),
+    -- for const of
+    s(
+      "fforof",
+      fmt(
+        [[for (const {} of {}) {{
+  {}
+}}]],
+        { i(1), i(2), i(0) }
+      )
+    ),
   }
 end
 
@@ -107,6 +117,24 @@ M.typescript = function()
       "ffunc",
       fmt(
         [[function {}({}): {} {{
+  {}
+}}]],
+        { i(1), i(2), i(3), i(0) }
+      )
+    ),
+    s(
+      "method",
+      fmt(
+        [[{}({}): {} {{
+  {}
+}}]],
+        { i(1), i(2), i(3), i(0) }
+      )
+    ),
+    s(
+      "pmethod",
+      fmt(
+        [[#{}({}): {} {{
   {}
 }}]],
         { i(1), i(2), i(3), i(0) }
