@@ -17,6 +17,13 @@ local M = {}
 M.utils = {}
 M.utils.repeat_and_change = repeat_and_change
 
+M.all = function()
+  return {
+    s("todobug", fmt([[ TODO({}): {}]], { i(1), i(0) })),
+    s("todoplain", fmt([[ TODO: {}]], { i(0) })),
+  }
+end
+
 M.javascript = function()
   return {
     s("jslog", fmt([[console.log(JSON.stringify({}, null, 2));{}]], { i(1), i(0) })),
@@ -106,6 +113,24 @@ customElements.define({}, {})]],
   {}
 }}]],
         { i(1), i(2), i(0) }
+      )
+    ),
+    s(
+      "ffunc",
+      fmt(
+        [[function {}({}) {{
+  {}
+}}]],
+        { i(1), i(2), i(0) }
+      )
+    ),
+    s(
+      "cbf",
+      fmt(
+        [[({} => {{
+  {}
+}})]],
+        { i(1), i(0) }
       )
     ),
   }
