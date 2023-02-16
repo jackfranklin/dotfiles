@@ -24,6 +24,13 @@ local on_attach = function(client, bufnr)
   -- See: https://github.com/neovim/neovim/pull/19677
   -- In theory this idea works great but the TS language server doesn't wrap comments.
   vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
+  -- neovim recently added support for LSP semantic highlighting, but when an
+  -- autoformatter runs there is a very visual flash as the semantic highlights
+  -- from the server are reapplied. The built in treesitter highlighting is
+  -- plenty good enough for me and does not suffer from that problem. In the
+  -- future when perhaps it is better cached and updated, I will try this
+  -- again. It is still in an experimental state within neovim.
+  client.server_capabilities.semanticTokensProvider = nil
 end
 
 M.on_attach = on_attach
