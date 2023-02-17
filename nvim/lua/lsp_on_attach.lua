@@ -1,8 +1,13 @@
+local navic = require("nvim-navic")
 local M = {}
 local on_attach = function(client, bufnr)
   -- By binding these keys here, we ensure they are bound only once the language server is ready for them.
   local function buf_set_keymap(...)
     vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
+
+  if client.server_capabilities.documentSymbolProvider then
+    navic.attach(client, bufnr)
   end
 
   local opts = { noremap = true, silent = true }

@@ -68,7 +68,11 @@ local diagnostic_status_line =
   [[%#JackStatusBarDiagnosticError#%{v:lua.LSPCount('error', 'E')}%*%#JackStatusBarDiagnosticWarn#%{v:lua.LSPCount('warning', 'W')}%*%#JackStatusBarDiagnosticHint#%{v:lua.LSPCount('hint', 'H')}%*]]
 
 function StatusBarNavic()
-  return navic.get_location()
+  local text = navic.get_location()
+  if text == "" then
+    return ""
+  end
+  return "[ " .. text .. " ]"
 end
 
 function StatusBarExecutor()

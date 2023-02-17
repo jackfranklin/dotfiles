@@ -68,6 +68,7 @@ hi NormalFloat guibg=none
 hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#e6e9ef
 hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#e6e9ef
 hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#e6e9ef
+hi JackStatusBarNavic cterm=italic gui=italic guibg=#e6e9ef
 hi Winbar guibg=#e6e9ef
 ]],
     true
