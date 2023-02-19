@@ -30,4 +30,4 @@ fish/functions/fzf_key_bindings.fish
 images/
 
 nvim/plugin/packer_compiled.lua
-nvim/linux64*
+nvim-linux64*
