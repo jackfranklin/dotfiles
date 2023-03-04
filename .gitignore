@@ -31,3 +31,4 @@ images/
 
 nvim/plugin/packer_compiled.lua
 nvim-linux64*
+.luarc.json
