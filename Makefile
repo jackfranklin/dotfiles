@@ -5,7 +5,7 @@ NEOVIM_GIT_DIR="${HOME}/git/neovim"
 all:
 	@echo "Run things individually!"
 
-neovim: packer
+neovim:
 	@ln -nsf $(DIR)/nvim ~/.config/nvim
 
 packer:
