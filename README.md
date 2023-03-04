@@ -66,3 +66,11 @@ The font-family name should be whatever Kitty shows when you run `kitty +list-fo
 
 Fonts I have purchased are all in the `Purchased Fonts` folder of Google Drive (do not put them into the repo or public!).
 
+## Lua LS
+
+Install the release from GitHub and then create the wrapper script and put it on the PATH:
+
+```
+https://github.com/luals/lua-language-server/wiki/Getting-Started#command-line
+```
+
