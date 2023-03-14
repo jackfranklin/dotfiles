@@ -22,7 +22,7 @@ lua require('jack.plugins.winbar')
 lua << EOF
 local config = require('config_paths')
 local formatter = require('jack.plugins.formatter').setup({
-  prettier_path = config.prettier_path
+  prettier_path = config.prettier_path(),
 })
 formatter.configure_formatters()
 EOF
