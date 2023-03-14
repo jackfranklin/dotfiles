@@ -105,5 +105,10 @@ end
 M.eslint_path = eslint_configuration
 M.typescript_lsp_cmd = get_typescript_lsp_cmd
 M.prettier_path = get_prettier_executable
+M.local_prettier_installed = function()
+  local local_prettier_path = node_modules_path:joinpath(".bin"):joinpath("prettier")
+  return local_prettier_path:exists()
+end
+M.global_executable_exists = global_executable_exists
 
 return M
