@@ -72,7 +72,7 @@ M.setup = function(config)
       [[
 augroup FormatAutogroup
 autocmd!
-autocmd BufWritePost *.js,*.svelte,*.ts,*.rs,*.css,*.jsx,*.tsx,*.lua FormatWrite
+autocmd BufWritePost *.cjs,*.mjs,*.js,*.svelte,*.ts,*.rs,*.css,*.jsx,*.tsx,*.lua FormatWrite
 augroup END
 ]],
       true
