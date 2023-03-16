@@ -6,13 +6,13 @@ navic.setup({
     Module = "",
     Namespace = "",
     Package = "",
-    Class = "[C] ",
-    Method = "[M] ",
-    Property = "[P] ",
+    Class = "",
+    Method = "",
+    Property = "",
     Field = "",
     Constructor = "",
-    Enum = "[E] ",
-    Interface = "[I] ",
+    Enum = "",
+    Interface = "",
     Function = "",
     Variable = "",
     Constant = "",
@@ -72,7 +72,11 @@ function StatusBarNavic()
   if text == "" then
     return ""
   end
-  return "[ " .. text .. " ]"
+  local without_callbacks = text:gsub(" callback", "")
+  if string.len(without_callbacks) >= 90 then
+    without_callbacks = "…" .. without_callbacks:sub(-85)
+  end
+  return without_callbacks
 end
 
 function StatusBarExecutor()
