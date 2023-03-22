@@ -33,12 +33,8 @@ M.eslint = function(config)
     end,
   }
 
-  if config.nodePath ~= nil then
-    eslint_setup.setting = {
-      nodePath = config.nodePath,
-    }
-  end
-  nvim_lsp.eslint.setup(eslint_setup)
+  local final_setup = vim.tbl_deep_extend("force", eslint_setup, config or {})
+  nvim_lsp.eslint.setup(final_setup)
 end
 
 M.lua = function(config)
