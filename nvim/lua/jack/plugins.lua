@@ -8,6 +8,8 @@ M.load_plugins = function(use)
   use("nvim-lua/plenary.nvim")
   use("MunifTanjim/nui.nvim")
 
+  use("mattn/emmet-vim")
+
   use("tpope/vim-commentary")
   use("tpope/vim-vinegar")
   use("tpope/vim-fugitive")

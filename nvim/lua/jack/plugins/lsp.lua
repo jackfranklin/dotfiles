@@ -13,7 +13,11 @@ lsp_config.typescript({
 
 lsp_config.eslint({})
 lsp_config.lua({ on_attach = on_attach })
-lsp_config.emmet({ on_attach = on_attach })
+-- TODO: figure out if this is possible to have but not have completions appear
+-- in nvim-cmp, because in TypeScript files they appear above most useful
+-- completion suggestions
+-- https://github.com/aca/emmet-ls/issues/42
+-- lsp_config.emmet({ on_attach = on_attach })
 
 nvim_lsp.elmls.setup({
   root_dir = function(name)
