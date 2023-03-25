@@ -65,4 +65,14 @@ M.lua = function(config)
   })
 end
 
+M.emmet = function(config)
+  local emmet_capabilities = require("cmp_nvim_lsp").default_capabilities()
+  emmet_capabilities.textDocument.completion.completionItem.snippetSupport = true
+
+  nvim_lsp.emmet_ls.setup({
+    on_attach = config.on_attach,
+    capabilities = emmet_capabilities,
+    filetypes = { "html", "typescriptreact", "javascriptreact", "css", "typescript" },
+  })
+end
 return M

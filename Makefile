@@ -29,7 +29,7 @@ fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 
 language_servers_global:
-	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted @johnnymorganz/stylua-bin @fsouza/prettierd
+	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted @johnnymorganz/stylua-bin @fsouza/prettierd emmet-ls
 
 elm_language_servers:
 	npm install -g elm elm-test elm-format @elm-tooling/elm-language-server

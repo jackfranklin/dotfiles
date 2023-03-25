@@ -13,6 +13,7 @@ lsp_config.typescript({
 
 lsp_config.eslint({})
 lsp_config.lua({ on_attach = on_attach })
+lsp_config.emmet({ on_attach = on_attach })
 
 nvim_lsp.elmls.setup({
   root_dir = function(name)
