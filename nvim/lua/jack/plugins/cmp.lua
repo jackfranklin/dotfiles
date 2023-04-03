@@ -9,7 +9,10 @@ cmp.setup({
     end,
   },
   window = {
-    documentation = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered({
+      max_height = 10,
+      scrollbar = 0,
+    }),
   },
   mapping = {
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
