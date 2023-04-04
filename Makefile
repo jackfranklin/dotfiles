@@ -23,7 +23,7 @@ bin:
 	@ln -sf $(DIR)/bin ~/.bin
 
 ubuntu-deps:
-	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep
+	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep zip
 
 fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher

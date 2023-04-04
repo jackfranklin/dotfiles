@@ -74,3 +74,8 @@ Install the release from GitHub and then create the wrapper script and put it on
 https://github.com/luals/lua-language-server/wiki/Getting-Started#command-line
 ```
 
+## Setting up Lua things
+
+- Install `lua5.1` and `lua5.1-dev` from apt-get. Need them both so LuaRocks can install.
+- Install LuaRocks: https://luarocks.org/#quick-start
+
