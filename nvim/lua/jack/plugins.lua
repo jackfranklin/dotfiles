@@ -21,8 +21,8 @@ M.load_plugins = function(use)
   use("farmergreg/vim-lastplace")
   use("kylechui/nvim-surround")
 
-  use({ "junegunn/fzf", run = ":call fzf#install()" })
-  use("junegunn/fzf.vim")
+  -- use({ "junegunn/fzf", run = ":call fzf#install()" })
+  -- use("junegunn/fzf.vim")
 
   use("mhartington/formatter.nvim")
   use("windwp/nvim-autopairs")
