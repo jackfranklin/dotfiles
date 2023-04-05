@@ -11,7 +11,12 @@ M.setup = function(config)
     require("fzf-lua").buffers()
   end)
   vim.keymap.set("n", "<leader>fs", function()
-    require("fzf-lua").lsp_document_symbols()
+    require("fzf-lua").lsp_document_symbols({
+      symbol_style = 3,
+      winopts = {
+        preview = { hidden = "nohidden" },
+      },
+    })
   end)
 
   local ignore = { "^node_modules/", "^.git/" }
