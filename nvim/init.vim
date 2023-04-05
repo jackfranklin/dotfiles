@@ -16,7 +16,6 @@ lua require('jack.plugins.neoterm')
 lua require('jack.plugins.snippets')
 lua require('jack.plugins.statusline')
 lua require('jack.plugins.surround')
-lua require('jack.plugins.theme-fix')
 lua require('jack.plugins.treesitter')
 lua require('jack.plugins.winbar')
 
