@@ -33,7 +33,7 @@ M.setup = function(config)
       },
     },
     winopts = {
-      height = 0.2,
+      height = 0.4,
       preview = {
         hidden = "hidden",
       },
