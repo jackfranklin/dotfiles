@@ -1,21 +1,5 @@
 require("nvim-treesitter.configs").setup({
-  ensure_installed = {
-    "lua",
-    "rust",
-    "tsx",
-    "javascript",
-    "typescript",
-    "css",
-    "markdown",
-    "markdown_inline",
-    "html",
-    "fish",
-    "jsdoc",
-    "make",
-    "svelte",
-    "yaml",
-    "comment",
-  },
+  ensure_installed = "all",
   highlight = {
     enable = true,
   },
