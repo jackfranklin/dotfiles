@@ -10,8 +10,10 @@ cmp.setup({
   },
   window = {
     documentation = cmp.config.window.bordered({
+      scrolloff = 2,
+      side_padding = 2,
       max_height = 10,
-      scrollbar = 0,
+      scrollbar = false,
     }),
   },
   mapping = {
