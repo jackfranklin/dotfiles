@@ -79,3 +79,16 @@ https://github.com/luals/lua-language-server/wiki/Getting-Started#command-line
 - Install `lua5.1` and `lua5.1-dev` from apt-get. Need them both so LuaRocks can install.
 - Install LuaRocks: https://luarocks.org/#quick-start
 
+## Slow performance on large TS files
+
+Seems to be an nvim-treesitter issue: https://github.com/nvim-treesitter/nvim-treesitter/issues/3581.
+
+Even though that is marked as closed, it still causes me issues. The fix is to manually go into the nvim-treesitter install (.local/share/nvim/site/pack...) and comment out the injection that is mentioned in the opening post on that GH issue:
+
+```
+((comment) @_gql_comment
+  (#eq? @_gql_comment "/* GraphQL */")
+  (template_string) @graphql)
+```
+
+That makes it snappy on the larger files again.
