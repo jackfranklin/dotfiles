@@ -42,16 +42,22 @@ for file in $fisher_path/conf.d/*.fish
 end
 
 set fish_greeting
-contains $HOME/git/private-dotfiles/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/git/private-dotfiles/bin
-contains $HOME/neovim/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/neovim/bin
 
-contains (npm get prefix)/bin $fish_user_paths; or set -Ua fish_user_paths (npm get prefix)/bin
-contains $HOME/.local/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/.local/bin
-contains $HOME/nvim-linux64/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/nvim-linux64/bin
-contains $HOME/git/lua-language-server/bin $fish_user_paths; or set -Ua fish_user_paths $HOME/git/lua-language-server/bin
-
-# Note the -p here means prepend, so that the cargo stuff is used ahead of any other sources for Rust things
-contains $HOME/.cargo/bin $fish_user_paths; or set -Up fish_user_paths $HOME/.cargo/bin
+# $PATH
+# Note that fish_add_path prepends by default, so the -a flag is used to
+# signify amend, so that the order the lines are here is the order that they
+# are in the $PATH
+fish_add_path $HOME/.cargo/bin
+fish_add_path $HOME/.fzf/bin
+fish_add_path $HOME/git/private-dotfiles/bin
+fish_add_path (npm get prefix)/bin
+fish_add_path $HOME/.local/bin
+# For computers where I build Neovim from source.
+fish_add_path $HOME/neovim/bin
+# Installing neovim via the appimage + extracting it
+fish_add_path $HOME/squashfs-root/usr/bin
+# (Now deprecated) installing Neovim via a tarball
+# fish_add_path $HOME/nvim-linux64/bin
 
 if type -q "setxkbmap"
   # Remaps caps-lock to escape.
