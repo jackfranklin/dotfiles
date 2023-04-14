@@ -3,6 +3,10 @@ local M = {}
 M.setup = function(config)
   require("executor").setup({
     use_split = false,
+    notifications = {
+      task_started = false,
+      task_completed = false,
+    },
     popup = {
       height = vim.o.lines - 10,
     },
