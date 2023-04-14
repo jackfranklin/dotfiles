@@ -9,7 +9,6 @@ M.load_plugins = function(use)
   use("MunifTanjim/nui.nvim")
 
   use("mattn/emmet-vim")
-
   use("tpope/vim-commentary")
   use("tpope/vim-vinegar")
   use("tpope/vim-fugitive")
@@ -20,9 +19,6 @@ M.load_plugins = function(use)
   use("mileszs/ack.vim")
   use("farmergreg/vim-lastplace")
   use("kylechui/nvim-surround")
-
-  -- use({ "junegunn/fzf", run = ":call fzf#install()" })
-  -- use("junegunn/fzf.vim")
 
   use("mhartington/formatter.nvim")
   use("windwp/nvim-autopairs")
@@ -74,6 +70,7 @@ M.load_plugins = function(use)
   use("google/executor.nvim")
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
+  use("lewis6991/gitsigns.nvim")
 end
 
 return M
