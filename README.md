@@ -82,13 +82,12 @@ https://github.com/luals/lua-language-server/wiki/Getting-Started#command-line
 ## Slow performance on large TS files
 
 Seems to be an nvim-treesitter issue: https://github.com/nvim-treesitter/nvim-treesitter/issues/3581.
-
 Even though that is marked as closed, it still causes me issues. The fix is to manually go into the nvim-treesitter install (.local/share/nvim/site/pack...) and comment out the injection that is mentioned in the opening post on that GH issue:
-
 ```
 ((comment) @_gql_comment
   (#eq? @_gql_comment "/* GraphQL */")
   (template_string) @graphql)
 ```
-
 That makes it snappy on the larger files again.
+
+**Update** on 19th April 2023: [this commit](https://github.com/nvim-treesitter/nvim-treesitter/commit/da7f886ab5dde87b7c9bbae1c1eb99aa63a74e55) to nvim-treesitter has updated the above injection and it seems much quicker now. So likely do not need to do this change by default.
