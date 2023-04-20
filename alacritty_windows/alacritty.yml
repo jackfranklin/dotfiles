@@ -11,7 +11,7 @@
 
 # to the user's home directory starting with `~/`.
 import:
-  - "C:/Users/jack/AppData/Roaming/alacritty/theme.yml"
+  - "C:/Users/jack/AppData/Roaming/alacritty/cat-frappe.yml"
 
 
 # Any items in the `env` entry below will be added as
@@ -116,17 +116,17 @@ env:
 
 font:
   normal:
-    family: "Cartograph CF"
-  bold:
-    family: "Cartograph CF"
+    family: "Dank Mono"
+  # bold:
+    # family: "Cartograph CF"
     # Note: the `style` line is commented out here based on https://github.com/alacritty/alacritty/issues/1977#issuecomment-736271651, which fixes italics working in Alacritty, and I am not entirely sure why.
     # From reading online it seems if you omit the style line, Alacritty figures out which one to use and seems to get it right.
     # style: Bold
-  italic:
-    family: "Cartograph CF"
+  # italic:
+    # family: "Cartograph CF"
     # style: Italic
-  bold_italic:
-    family: "Cartograph CF"
+  # bold_italic:
+    # family: "Cartograph CF"
     # style: Bold Italic
 # Font configuration
 #font:
@@ -177,7 +177,7 @@ font:
     #style: Bold Italic
 
   # Point size
-  size: 12.0
+  size: 14.0
 
   # Offset is the extra space around each character. `offset.y` can be thought
   # of as modifying the line spacing, and `offset.x` as modifying the letter

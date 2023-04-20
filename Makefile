@@ -45,7 +45,8 @@ kitty:
 
 sync_alacritty_windows:
 	cp alacritty_windows/alacritty.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
-	cp alacritty_windows/theme.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
+	cp alacritty_windows/cat-latte.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
+	cp alacritty_windows/cat-frappe.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
 
 
 update_neovim:

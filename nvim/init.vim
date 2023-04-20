@@ -1,6 +1,7 @@
 lua require('jack.init').packer()
 lua require('jack.base-settings')
 lua require('jack.maps')
+lua require('jack.plugins.winbar')
 lua require('jack.theme')
 
 lua require('jack.plugins.ack')
@@ -18,7 +19,6 @@ lua require('jack.plugins.snippets')
 lua require('jack.plugins.statusline')
 lua require('jack.plugins.surround')
 lua require('jack.plugins.treesitter')
-lua require('jack.plugins.winbar')
 
 lua << EOF
 local config = require('config_paths')

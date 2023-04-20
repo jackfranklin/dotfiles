@@ -1,5 +1,12 @@
-vim.g.catppuccin_flavour = "latte"
-vim.api.nvim_exec([[set background=light]], { output = "false" })
+local catppuccin_flavour = "frappe"
+vim.g.catppuccin_flavour = catppuccin_flavour
+
+if catppuccin_flavour == "latte" then
+  vim.api.nvim_exec([[set background=light]], { output = "false" })
+elseif catppuccin_flavour == "frappe" then
+  vim.api.nvim_exec([[set background=dark]], { output = "false" })
+end
+
 require("catppuccin").setup({
   styles = {
     -- Prevent conditionals from being italic
@@ -23,49 +30,27 @@ require("catppuccin").setup({
       },
     }
   end,
+  highlight_overrides = {
+    frappe = function(frappe)
+      return {
+        WinbarFile = { bg = frappe.mantle, fg = frappe.green },
+        WinBarPath = { bg = frappe.mantle, fg = frappe.text },
+        JackStatusBarDiagnosticError = { bg = frappe.mantle, fg = frappe.red },
+        JackStatusBarDiagnosticWarn = { bg = frappe.mantle, fg = frappe.pink },
+        JackStatusBarDiagnosticHint = { bg = frappe.mantle, fg = frappe.yellow },
+        JackStatusBarNavic = { style = { "italic" } },
+      }
+    end,
+  },
 })
 -- Generate a set of colors to look at:
 -- local latte = require("catppuccin.palettes").get_palette("latte")
--- local colors = {
---   base = "#EFF1F5",
---   blue = "#1e66f5",
---   crust = "#DCE0E8",
---   flamingo = "#DD7878",
---   green = "#40A02B",
---   lavender = "#7287FD",
---   mantle = "#E6E9EF",
---   maroon = "#E64553",
---   mauve = "#8839EF",
---   overlay0 = "#9CA0B0",
---   overlay1 = "#8C8FA1",
---   overlay2 = "#7C7F93",
---   peach = "#FE640B",
---   pink = "#ea76cb",
---   red = "#D20F39",
---   rosewater = "#dc8a78",
---   sapphire = "#209FB5",
---   sky = "#04A5E5",
---   subtext0 = "#6C6F85",
---   subtext1 = "#5C5F77",
---   surface0 = "#CCD0DA",
---   surface1 = "#BCC0CC",
---   surface2 = "#ACB0BE",
--- teal = "#179299",
---   text = "#4C4F69",
---   yellow = "#df8e1d",
--- }
--- print(vim.inspect(latte))
+-- local frappe = require("catppuccin.palettes").get_palette("frappe")
+
 vim.api.nvim_command("colorscheme catppuccin")
 local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
-vim.api.nvim_exec(
-  [[
-hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#f0f0f0
-hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
-hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
-]],
-  true
-)
-if theme == "catppuccin" then
+
+if theme == "catppuccin" and catppuccin_flavour == "latte" then
   vim.api.nvim_exec(
     [[
 hi NormalFloat guibg=none
@@ -79,6 +64,17 @@ hi Winbar guibg=#e6e9ef
 ]],
     true
   )
+end
+if theme == "catppuccin" and catppuccin_flavour == "frappe" then
+  -- vim.api.nvim_exec(
+  --   string.format(
+  --     [[
+  --     hi WinbarFile guibg=%s guifg=white
+  --   ]],
+  --     frappe.mantle
+  --   ),
+  --   true
+  -- )
 end
 if theme == "onebuddy" then
   vim.api.nvim_exec(
