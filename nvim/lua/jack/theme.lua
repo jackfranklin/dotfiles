@@ -33,12 +33,13 @@ require("catppuccin").setup({
   highlight_overrides = {
     frappe = function(frappe)
       return {
-        WinbarFile = { bg = frappe.mantle, fg = frappe.green },
+        WinBar = { bg = frappe.mantle, fg = frappe.green },
+        WinBarFile = { bg = frappe.mantle, fg = frappe.green },
         WinBarPath = { bg = frappe.mantle, fg = frappe.text },
         JackStatusBarDiagnosticError = { bg = frappe.mantle, fg = frappe.red },
         JackStatusBarDiagnosticWarn = { bg = frappe.mantle, fg = frappe.pink },
         JackStatusBarDiagnosticHint = { bg = frappe.mantle, fg = frappe.yellow },
-        JackStatusBarNavic = { style = { "italic" } },
+        JackStatusBarNavic = { style = { "italic" }, bg = frappe.mantle },
       }
     end,
   },
@@ -64,17 +65,6 @@ hi Winbar guibg=#e6e9ef
 ]],
     true
   )
-end
-if theme == "catppuccin" and catppuccin_flavour == "frappe" then
-  -- vim.api.nvim_exec(
-  --   string.format(
-  --     [[
-  --     hi WinbarFile guibg=%s guifg=white
-  --   ]],
-  --     frappe.mantle
-  --   ),
-  --   true
-  -- )
 end
 if theme == "onebuddy" then
   vim.api.nvim_exec(
