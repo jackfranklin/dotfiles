@@ -40,10 +40,10 @@ M.javascript = function()
     ),
 
     -- ima: import * as foo from bar
-    s("ima", fmt([[import * as {} from '{}.js';]], { i(2), i(1) })),
+    s("ima", fmt([[import * as {} from '{}';]], { i(2), i(1) })),
 
     -- imn: import {} from foo
-    s("imn", fmt([[import {{{}}} from '{}.js';]], { i(2), i(1) })),
+    s("imn", fmt([[import {{{}}} from '{}';]], { i(2), i(1) })),
 
     -- describe
     s(
@@ -103,6 +103,26 @@ customElements.define({}, {})]],
   {}
 }}]],
         { i(1), i(2), i(0) }
+      )
+    ),
+    -- if not
+    s(
+      "nif",
+      fmt(
+        [[if(!{}) {{
+  {}
+}}]],
+        { i(1), i(0) }
+      )
+    ),
+    -- if not then throw
+    s(
+      "nifthrow",
+      fmt(
+        [[if(!{}) {{
+  throw new Error('{}');
+}}]],
+        { i(1), i(0) }
       )
     ),
     -- for const of
