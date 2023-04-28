@@ -84,7 +84,7 @@ customElements.define({}, {})]],
 
     -- if
     s(
-      "iif",
+      "if",
       fmt(
         [[if({}) {{
   {}
@@ -107,7 +107,7 @@ customElements.define({}, {})]],
     ),
     -- if not
     s(
-      "nif",
+      "ifnot",
       fmt(
         [[if(!{}) {{
   {}
@@ -117,7 +117,7 @@ customElements.define({}, {})]],
     ),
     -- if not then throw
     s(
-      "nifthrow",
+      "ifnotthrow",
       fmt(
         [[if(!{}) {{
   throw new Error('{}');
