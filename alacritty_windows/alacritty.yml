@@ -116,7 +116,7 @@ env:
 
 font:
   normal:
-    family: "Dank Mono"
+    family: "IntelOne Mono"
   # bold:
     # family: "Cartograph CF"
     # Note: the `style` line is commented out here based on https://github.com/alacritty/alacritty/issues/1977#issuecomment-736271651, which fixes italics working in Alacritty, and I am not entirely sure why.

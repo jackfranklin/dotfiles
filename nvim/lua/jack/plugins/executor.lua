@@ -1,6 +1,13 @@
 local M = {}
 
 M.setup = function(config)
+  local stored_commands = {
+    ["executor.nvim"] = {
+      "make test",
+    },
+  }
+  local final_commands = vim.tbl_deep_extend("force", stored_commands, config.stored_commands or {})
+
   require("executor").setup({
     use_split = false,
     notifications = {
@@ -10,6 +17,7 @@ M.setup = function(config)
     popup = {
       height = vim.o.lines - 10,
     },
+    stored_commands = final_commands,
     output_filter = function(command, lines)
       if config.output_filter then
         return config.output_filter(command, lines)
