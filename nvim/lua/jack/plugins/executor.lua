@@ -1,12 +1,12 @@
 local M = {}
 
 M.setup = function(config)
-  local stored_commands = {
+  local preset_commands = {
     ["executor.nvim"] = {
       "make test",
     },
   }
-  local final_commands = vim.tbl_deep_extend("force", stored_commands, config.stored_commands or {})
+  local merged_preset_commands = vim.tbl_deep_extend("force", preset_commands, config.preset_commands or {})
 
   require("executor").setup({
     use_split = false,
@@ -17,7 +17,7 @@ M.setup = function(config)
     popup = {
       height = vim.o.lines - 10,
     },
-    stored_commands = final_commands,
+    preset_commands = merged_preset_commands,
     output_filter = function(command, lines)
       if config.output_filter then
         return config.output_filter(command, lines)
