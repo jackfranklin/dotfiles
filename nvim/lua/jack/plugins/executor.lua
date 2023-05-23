@@ -30,6 +30,7 @@ M.setup = function(config)
   vim.api.nvim_set_keymap("n", "<leader>er", ":ExecutorRun<CR>", opts)
   vim.api.nvim_set_keymap("n", "<leader>ev", ":ExecutorToggleDetail<CR>", opts)
   vim.api.nvim_set_keymap("n", "<leader>es", ":ExecutorSetCommand<CR>", opts)
+  vim.api.nvim_set_keymap("n", "<leader>ep", ":ExecutorShowPresets<CR>", opts)
 end
 
 return M
