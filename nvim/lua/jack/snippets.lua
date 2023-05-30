@@ -84,7 +84,7 @@ customElements.define({}, {})]],
 
     -- if
     s(
-      "if",
+      "iff",
       fmt(
         [[if({}) {{
   {}
