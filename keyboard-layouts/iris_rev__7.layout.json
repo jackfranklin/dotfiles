@@ -28,8 +28,8 @@
       "KC_C",
       "KC_V",
       "KC_B",
-      "MT(,KC_MS_RIGHT)",
-      "0xfbdf",
+      "KC_NO",
+      "KC_NO",
       "KC_LCTL",
       "KC_LSFT",
       "LT(2,KC_BSPC)",
@@ -58,8 +58,8 @@
       "KC_COMM",
       "KC_M",
       "KC_N",
-      "0x8c60",
-      "0x8093",
+      "KC_NO",
+      "KC_NO",
       "KC_LCTL",
       "KC_SPC",
       "LT(1,KC_ENT)",
@@ -90,8 +90,8 @@
       "S(KC_0)",
       "S(KC_RBRC)",
       "KC_RBRC",
-      "0x940c",
-      "A(undefined)",
+      "KC_NO",
+      "A(KC_NO)",
       "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",
@@ -120,8 +120,8 @@
       "C(KC_3)",
       "C(KC_2)",
       "C(KC_1)",
-      "0x81",
-      "LCA(undefined)",
+      "KC_NO",
+      "LCA(KC_NO)",
       "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",
@@ -138,7 +138,7 @@
       "A(KC_LEFT)",
       "A(KC_DOWN)",
       "A(KC_UP)",
-      "A(KC_NO)",
+      "A(KC_RGHT)",
       "KC_NO",
       "KC_NO",
       "KC_LEFT",
@@ -150,9 +150,9 @@
       "S(KC_LEFT)",
       "S(KC_DOWN)",
       "S(KC_UP)",
-      "S(KC_NO)",
+      "S(KC_RGHT)",
       "KC_NO",
-      "0xc002",
+      "KC_NO",
       "C(KC_B)",
       "KC_TRNS",
       "KC_TRNS",
@@ -183,7 +183,7 @@
       "S(KC_QUOT)",
       "S(KC_EQL)",
       "MT(MOD_LCTL | MOD_LALT | MOD_RCTL | MOD_RALT,KC_TRNS)",
-      "0x9103",
+      "KC_NO",
       "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",
@@ -215,7 +215,7 @@
       "KC_NO",
       "KC_NO",
       "KC_NO",
-      "0x2b2a",
+      "KC_NO",
       "KC_TRNS",
       "KC_TRNS",
       "KC_TRNS",
@@ -254,28 +254,28 @@
   ],
   "encoders": [
     [
-      ["LAG(KC_QUOT)", "0x5294"],
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_A)", "0xc094"]
+      ["LAG(KC_QUOT)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"]
     ],
     [
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_TAB)", "0x5194"],
-      ["LAG(KC_A)", "0xc094"]
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_TAB)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"]
     ],
     [
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_A)", "0xc094"],
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"],
       ["LAG(KC_TAB)", "LCAG(KC_LANG5)"],
-      ["LAG(KC_A)", "0xc094"]
+      ["LAG(KC_A)", "KC_NO"]
     ],
     [
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_A)", "0xc094"],
-      ["LAG(KC_SPC)", "0xa494"],
-      ["LAG(KC_A)", "0xc094"]
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"],
+      ["LAG(KC_SPC)", "KC_NO"],
+      ["LAG(KC_A)", "KC_NO"]
     ]
   ]
 }
