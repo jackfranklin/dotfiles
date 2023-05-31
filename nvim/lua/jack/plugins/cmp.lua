@@ -35,6 +35,9 @@ cmp.setup({
       i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
     },
   },
+  performance = {
+    max_view_entries = 20,
+  },
   sources = {
     { name = "nvim_lsp", max_item_count = 10, priority = 5 },
     { name = "luasnip", max_item_count = 5, priority = 4 },
