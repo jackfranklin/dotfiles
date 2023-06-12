@@ -71,7 +71,6 @@ M.load_plugins = function(use)
   use("~/git/executor.nvim")
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
-  use("lewis6991/gitsigns.nvim")
 end
 
 return M
