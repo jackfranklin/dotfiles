@@ -29,13 +29,27 @@ local on_attach = function(client, bufnr)
   -- See: https://github.com/neovim/neovim/pull/19677
   -- In theory this idea works great but the TS language server doesn't wrap comments.
   vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
+
   -- neovim recently added support for LSP semantic highlighting, but when an
   -- autoformatter runs there is a very visual flash as the semantic highlights
   -- from the server are reapplied. The built in treesitter highlighting is
   -- plenty good enough for me and does not suffer from that problem. In the
   -- future when perhaps it is better cached and updated, I will try this
   -- again. It is still in an experimental state within neovim.
-  client.server_capabilities.semanticTokensProvider = nil
+  -- Update 14 June 2023: setting this value to nil now causes errors and is not the recommended approach. 
+  -- :h lsp-semantic-highlight gives the following suggestion for disabling:
+  -- go/rpp-features-eng-scoping
+-- You can disable semantic highlights by clearing the highlight groups: >lua
+
+--     -- Hide semantic highlights for functions
+--     vim.api.nvim_set_hl(0, '@lsp.type.function', {})
+
+--     -- Hide all semantic highlights
+--     for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+--       vim.api.nvim_set_hl(0, group, {})
+--     end
+  --  But for now I will instead try it out and see how it feels :)
+  -- client.server_capabilities.semanticTokensProvider = nil
 end
 
 M.on_attach = on_attach
