@@ -36,18 +36,18 @@ local on_attach = function(client, bufnr)
   -- plenty good enough for me and does not suffer from that problem. In the
   -- future when perhaps it is better cached and updated, I will try this
   -- again. It is still in an experimental state within neovim.
-  -- Update 14 June 2023: setting this value to nil now causes errors and is not the recommended approach. 
+  -- Update 14 June 2023: setting this value to nil now causes errors and is not the recommended approach.
   -- :h lsp-semantic-highlight gives the following suggestion for disabling:
   -- go/rpp-features-eng-scoping
--- You can disable semantic highlights by clearing the highlight groups: >lua
+  -- You can disable semantic highlights by clearing the highlight groups: >lua
 
---     -- Hide semantic highlights for functions
---     vim.api.nvim_set_hl(0, '@lsp.type.function', {})
+  --     -- Hide semantic highlights for functions
+  --     vim.api.nvim_set_hl(0, '@lsp.type.function', {})
 
---     -- Hide all semantic highlights
---     for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
---       vim.api.nvim_set_hl(0, group, {})
---     end
+  --     -- Hide all semantic highlights
+  --     for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+  --       vim.api.nvim_set_hl(0, group, {})
+  --     end
   --  But for now I will instead try it out and see how it feels :)
   -- client.server_capabilities.semanticTokensProvider = nil
 end

@@ -63,7 +63,7 @@ M.setup = function(config)
     table.insert(formatter_filetypes.typescriptreact, prettier_formatter)
 
     require("formatter").setup({
-      logging = false,
+      -- logging = false,
       filetype = formatter_filetypes,
     })
 
