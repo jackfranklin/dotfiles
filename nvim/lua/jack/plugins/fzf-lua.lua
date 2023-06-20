@@ -2,7 +2,9 @@ local M = {}
 
 M.setup = function(config)
   vim.keymap.set("n", "<leader>t", function()
-    require("fzf-lua").files()
+    require("fzf-lua").files({
+      git_icons = false,
+    })
   end)
   vim.keymap.set("n", "<leader>o", function()
     require("fzf-lua").oldfiles({ cwd_only = true })
