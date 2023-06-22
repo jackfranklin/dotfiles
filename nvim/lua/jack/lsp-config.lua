@@ -26,6 +26,16 @@ M.typescript = function(config)
   end
 end
 
+M.css = function(config)
+  -- We do have snippet support
+  local css_capabilities = vim.lsp.protocol.make_client_capabilities()
+  css_capabilities.textDocument.completion.completionItem.snippetSupport = true
+  nvim_lsp.cssls.setup({
+    capabilities = css_capabilities,
+    on_attach = config.on_attach,
+  })
+end
+
 M.eslint = function(config)
   local eslint_setup = {
     root_dir = function(name)

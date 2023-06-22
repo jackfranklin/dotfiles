@@ -19,6 +19,8 @@ lsp_config.lua({ on_attach = on_attach })
 -- https://github.com/aca/emmet-ls/issues/42
 -- lsp_config.emmet({ on_attach = on_attach })
 
+lsp_config.css({ on_attach = on_attach })
+
 nvim_lsp.elmls.setup({
   root_dir = function(name)
     return util.root_pattern("elm.json")(name)
