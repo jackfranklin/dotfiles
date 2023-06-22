@@ -60,6 +60,7 @@ fish_add_path $HOME/neovim/bin
 fish_add_path $HOME/squashfs-root/usr/bin
 # (Now deprecated) installing Neovim via a tarball
 # fish_add_path $HOME/nvim-linux64/bin
+fish_add_path $HOME/cargo/bin
 
 if type -q "setxkbmap"
   # Remaps caps-lock to escape.

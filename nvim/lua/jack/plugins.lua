@@ -45,6 +45,11 @@ M.load_plugins = function(use)
     end,
   })
   use("nvim-treesitter/playground")
+  use({
+    "nvim-treesitter/nvim-treesitter-textobjects",
+    after = "nvim-treesitter",
+    requires = "nvim-treesitter/nvim-treesitter",
+  })
 
   -- COLOURS + THEMES
   use("folke/lsp-colors.nvim")
