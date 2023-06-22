@@ -48,6 +48,9 @@ sync_alacritty_windows:
 	cp alacritty_windows/cat-latte.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
 	cp alacritty_windows/cat-frappe.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
 
+sync_wezterm:
+	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
+
 
 update_neovim:
 	cd ${NEOVIM_GIT_DIR} && git pull
