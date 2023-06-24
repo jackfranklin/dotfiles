@@ -1,5 +1,5 @@
 local plugins = require("jack.plugins")
-M = {}
+local M = {}
 
 M.packer = function()
   return require("packer").startup(function(use)

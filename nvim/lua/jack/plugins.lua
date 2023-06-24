@@ -30,19 +30,6 @@ M.load_plugins = function(use)
       local ts_update = require("nvim-treesitter.install").update({})
       ts_update()
     end,
-    config = function()
-      -- Ensure folds function: https://github.com/nvim-treesitter/nvim-treesitter/wiki/Installation#packernvim
-      -- vim.api.nvim_exec(
-      --   [[
-      -- function FoldConfig()
-      -- set foldmethod=expr
-      -- set foldexpr=nvim_treesitter#foldexpr()
-      -- endfunction
-      -- autocmd BufAdd,BufEnter,BufNew,BufNewFile,BufWinEnter * :call FoldConfig()
-      -- ]],
-      --   false
-      -- )
-    end,
   })
   use("nvim-treesitter/playground")
   use({
@@ -76,6 +63,7 @@ M.load_plugins = function(use)
   use("~/git/executor.nvim")
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
+  use("jose-elias-alvarez/null-ls.nvim")
 end
 
 return M

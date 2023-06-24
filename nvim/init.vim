@@ -18,11 +18,17 @@ lua require('jack.plugins.snippets')
 lua require('jack.plugins.statusline')
 lua require('jack.plugins.surround')
 lua require('jack.plugins.treesitter')
-
 lua << EOF
-local config = require('config_paths')
-local formatter = require('jack.plugins.formatter').setup({
-  prettier_path = config.prettier_path(),
-})
-formatter.configure_formatters()
+local null_ls = require('jack.plugins.null-ls-plugin')
+null_ls.setup()
+null_ls.install_lua_auto_formatting()
+null_ls.install_prettier_auto_formatting()
 EOF
+
+" lua << EOF
+" " local config = require('config_paths')
+" " local formatter = require('jack.plugins.formatter').setup({
+" "   prettier_path = config.prettier_path(),
+" " })
+" " formatter.configure_formatters()
+" EOF
