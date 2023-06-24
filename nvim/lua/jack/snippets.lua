@@ -45,6 +45,22 @@ M.javascript = function()
     -- imn: import {} from foo
     s("imn", fmt([[import {{{}}} from '{}';]], { i(2), i(1) })),
 
+    -- imd: import baz from foo
+    s("imd", fmt([[import {} from '{}';]], { i(2), i(1) })),
+
+    -- connectedCallback
+    s(
+      "connCall",
+      fmt(
+        [[
+connectedCallback() {{
+  this.#shadow.adoptedStyleSheets = [{}];
+}}
+    ]],
+        { i(1) }
+      )
+    ),
+
     -- describe
     s(
       "desc",
@@ -81,6 +97,8 @@ customElements.define({}, {})]],
         { i(1), i(2), rep(1) }
       )
     ),
+
+    s("tag", fmt([[<{}{}>{}</{}>]], { i(1), i(2), i(0), rep(1) })),
 
     -- if
     s(
@@ -186,6 +204,7 @@ M.typescript = function()
         { i(1), i(2), i(3), i(0) }
       )
     ),
+    s("tsmap", fmt([[new Map<{}, {}>({})]], { i(1), i(2), i(0) })),
   }
 end
 
