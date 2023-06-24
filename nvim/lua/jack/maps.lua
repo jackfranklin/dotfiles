@@ -4,7 +4,7 @@ vim.api.nvim_exec(
 " ACK (well, Ag)
 let g:ackprg = 'ag --vimgrep --smart-case'
 
-nnoremap <CR> :noh<CR><CR>
+"" nnoremap <CR> :noh<CR><CR>
 
 " new file in current directory
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
@@ -67,3 +67,5 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 vim.api.nvim_set_keymap("n", "<BS>", ":", { noremap = true })
 vim.api.nvim_set_keymap("n", "gp", ":cnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "gP", ":cprev<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<CR>", "ciw", { noremap = true })
