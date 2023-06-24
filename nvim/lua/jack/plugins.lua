@@ -64,6 +64,9 @@ M.load_plugins = function(use)
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
   use("jose-elias-alvarez/null-ls.nvim")
+  use("nvim-tree/nvim-web-devicons")
+
+  use("echasnovski/mini.files")
 end
 
 return M
