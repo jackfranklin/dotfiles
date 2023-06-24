@@ -23,7 +23,7 @@ lua << EOF
 local null_ls = require('jack.plugins.null-ls-plugin')
 null_ls.setup()
 null_ls.install_lua_auto_formatting()
-null_ls.install_prettier_auto_formatting()
+null_ls.install_frontend_auto_formatting()
 EOF
 
 " lua << EOF
