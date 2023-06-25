@@ -8,7 +8,7 @@ local config = {}
 config.color_scheme = "Catppuccin Frappe"
 config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.font = wezterm.font("IntelOne Mono")
-config.font_size = 14
+config.font_size = 13
 
 config.keys = {
   {
