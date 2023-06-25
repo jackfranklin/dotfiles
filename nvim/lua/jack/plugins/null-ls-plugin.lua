@@ -27,6 +27,13 @@ M.setup = function()
         end,
       }),
     },
+    on_attach = function(client, bufnr)
+      -- Without this, null-ls will set the formatexpr when it attaches which
+      -- we do not want, because it breaks text wrapping at 80chars, as Vim
+      -- delegates to the language server.
+      -- https://github.com/jose-elias-alvarez/null-ls.nvim/issues/1131
+      vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
+    end,
   })
 end
 
