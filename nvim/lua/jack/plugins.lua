@@ -52,6 +52,7 @@ M.load_plugins = function(use)
   use("hrsh7th/cmp-path")
   use("hrsh7th/nvim-cmp")
   use("hrsh7th/cmp-nvim-lua")
+  use("stevearc/oil.nvim")
   use("saadparwaiz1/cmp_luasnip")
 
   use("kassio/neoterm")
@@ -64,9 +65,6 @@ M.load_plugins = function(use)
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
   use("jose-elias-alvarez/null-ls.nvim")
-  use("nvim-tree/nvim-web-devicons")
-
-  use("echasnovski/mini.files")
 end
 
 return M
