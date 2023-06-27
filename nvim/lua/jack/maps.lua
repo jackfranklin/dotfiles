@@ -64,18 +64,20 @@ tnoremap <C-l> <C-\><C-n><C-w>l
   false
 )
 
--- vim.api.nvim_set_keymap("n", "<BS>", ":", { noremap = true })
 vim.api.nvim_set_keymap("n", "gp", ":cnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "gP", ":cprev<CR>", { noremap = true })
--- vim.api.nvim_set_keymap("n", "<Space><Space>", "ciw", { noremap = true })
-vim.api.nvim_set_keymap("n", "<CR>", ":noh<CR><CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh", { noremap = true })
 
+-- Map <CR> to ciw, but avoid certain buffers.
 local augroup = vim.api.nvim_create_augroup("EnterRemap", {})
 vim.api.nvim_clear_autocmds({ group = augroup })
 vim.api.nvim_create_autocmd("BufReadPost", {
-  pattern = { "*" },
   group = augroup,
-  callback = function(id, event, group, match, bufnr)
-    print(vim.bo.buftype)
+  callback = function(data)
+    local buftype = vim.api.nvim_get_option_value("buftype", { buf = data.buf })
+    if buftype == "quickfix" then
+      return
+    end
+    vim.api.nvim_buf_set_keymap(data.buf, "n", "<CR>", "ciw", { noremap = true })
   end,
 })

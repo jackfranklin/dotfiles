@@ -53,7 +53,7 @@ M.install_frontend_auto_formatting = function()
   vim.api.nvim_clear_autocmds({ group = augroup })
   vim.api.nvim_create_autocmd("BufWritePre", {
     group = augroup,
-    pattern = { "*.js", "*.ts", "*.css", "html", "json", "markdown" },
+    pattern = { "*.js", "*.ts", "*.css", "*.html", "*.json", "*.markdown" },
     callback = function(id, event, group, match, bufnr)
       format_with_null_ls(bufnr)
     end,
