@@ -20,7 +20,6 @@ M.load_plugins = function(use)
   use("farmergreg/vim-lastplace")
   use("kylechui/nvim-surround")
 
-  use("mhartington/formatter.nvim")
   use("windwp/nvim-autopairs")
 
   use("neovim/nvim-lspconfig")

@@ -66,7 +66,7 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 
 vim.api.nvim_set_keymap("n", "gp", ":cnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "gP", ":cprev<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh", { noremap = true })
+vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh<CR>", { noremap = true })
 
 -- Map <CR> to ciw, but avoid certain buffers.
 local augroup = vim.api.nvim_create_augroup("EnterRemap", {})
