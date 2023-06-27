@@ -25,11 +25,3 @@ null_ls.setup()
 null_ls.install_lua_auto_formatting()
 null_ls.install_frontend_auto_formatting()
 EOF
-
-" lua << EOF
-" " local config = require('config_paths')
-" " local formatter = require('jack.plugins.formatter').setup({
-" "   prettier_path = config.prettier_path(),
-" " })
-" " formatter.configure_formatters()
-" EOF
