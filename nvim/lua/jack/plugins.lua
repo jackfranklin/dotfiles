@@ -21,6 +21,7 @@ M.load_plugins = function(use)
   use("kylechui/nvim-surround")
 
   use("windwp/nvim-autopairs")
+  use("akinsho/toggleterm.nvim")
 
   use("neovim/nvim-lspconfig")
   use({
@@ -54,7 +55,6 @@ M.load_plugins = function(use)
   use("stevearc/oil.nvim")
   use("saadparwaiz1/cmp_luasnip")
 
-  use("kassio/neoterm")
   use("ojroques/vim-oscyank")
 
   use("numToStr/FTerm.nvim")

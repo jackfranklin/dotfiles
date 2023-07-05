@@ -76,7 +76,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
   callback = function(data)
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = data.buf })
     -- acwrite is the buftype for oil.nvim
-    if buftype == "quickfix" or buftype == "acwrite" then
+    if buftype == "quickfix" or buftype == "acwrite" or buftype == "terminal" then
       return
     end
     vim.api.nvim_buf_set_keymap(data.buf, "n", "<CR>", "ciw", { noremap = true })
