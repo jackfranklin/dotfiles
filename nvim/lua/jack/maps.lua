@@ -71,7 +71,7 @@ vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh<CR>", { noremap = true })
 -- Map <CR> to ciw, but avoid certain buffers.
 local augroup = vim.api.nvim_create_augroup("EnterRemap", {})
 vim.api.nvim_clear_autocmds({ group = augroup })
-vim.api.nvim_create_autocmd("BufReadPost", {
+vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
   group = augroup,
   callback = function(data)
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = data.buf })
