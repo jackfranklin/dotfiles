@@ -6,7 +6,8 @@ local config = {}
 
 -- For example, changing the color scheme:
 config.color_scheme = "Catppuccin Frappe"
-config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
+-- config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
+config.default_domain = "WSL:Ubuntu"
 config.font = wezterm.font("IntelOne Mono")
 config.font_size = 14
 config.window_padding = {
