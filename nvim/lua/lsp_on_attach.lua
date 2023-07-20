@@ -42,12 +42,12 @@ local on_attach = function(client, bufnr)
   -- You can disable semantic highlights by clearing the highlight groups: >lua
 
   --     -- Hide semantic highlights for functions
-  --     vim.api.nvim_set_hl(0, '@lsp.type.function', {})
+  vim.api.nvim_set_hl(0, "@lsp.type.function", {})
 
   --     -- Hide all semantic highlights
-  --     for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
-  --       vim.api.nvim_set_hl(0, group, {})
-  --     end
+  for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
+    vim.api.nvim_set_hl(0, group, {})
+  end
   --  But for now I will instead try it out and see how it feels :)
   -- client.server_capabilities.semanticTokensProvider = nil
 end

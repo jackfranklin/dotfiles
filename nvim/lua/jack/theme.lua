@@ -7,6 +7,14 @@ elseif catppuccin_flavour == "frappe" then
   vim.api.nvim_exec([[set background=dark]], { output = "false" })
 end
 
+require("dark_flat").setup({
+  themes = function(colors)
+    return {
+      ["@include.typescript"] = { fg = colors.white:darken(0.8) },
+    }
+  end,
+})
+
 require("catppuccin").setup({
   styles = {
     -- Prevent conditionals from being italic
@@ -48,7 +56,7 @@ require("catppuccin").setup({
 -- local latte = require("catppuccin.palettes").get_palette("latte")
 -- local frappe = require("catppuccin.palettes").get_palette("frappe")
 
-vim.api.nvim_command("colorscheme catppuccin")
+vim.api.nvim_command("colorscheme dark_flat")
 local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
 
 if theme == "catppuccin" and catppuccin_flavour == "latte" then
@@ -88,6 +96,16 @@ hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#f0f0f0
 hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
 hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
 hi NormalFloat guibg=none
+  ]],
+    { output = true }
+  )
+end
+if theme == "dark_flat" then
+  vim.api.nvim_exec(
+    [[
+hi JackStatusBarDiagnosticError guifg=#d54e53
+hi JackStatusBarDiagnosticWarn guifg=#d19a66
+hi JackStatusBarDiagnosticHint guifg=#676e7b
   ]],
     { output = true }
   )
