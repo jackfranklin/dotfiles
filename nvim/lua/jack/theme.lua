@@ -11,6 +11,7 @@ require("dark_flat").setup({
   themes = function(colors)
     return {
       ["@include.typescript"] = { fg = colors.white:darken(0.8) },
+      ["@punctuation.bracket"] = { fg = colors.pink:darken(0.7) },
     }
   end,
 })
