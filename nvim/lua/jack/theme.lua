@@ -11,9 +11,12 @@ require("dark_flat").setup({
   themes = function(colors)
     return {
       ["@punctuation.bracket"] = { fg = colors.pink:darken(0.7) },
+      ["@include.typescript"] = { fg = colors.white:darken(0.5), italic = true },
+
       MatchParen = { fg = colors.white },
       CursorLine = { bg = colors.vulcan:darken(0.7) },
       Normal = { bg = colors.none },
+      WinBar = { bg = colors.black, fg = colors.light_gray, bold = true },
     }
   end,
 })
