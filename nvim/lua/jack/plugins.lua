@@ -43,6 +43,7 @@ M.load_plugins = function(use)
   use("tjdevries/colorbuddy.vim")
   use("Th3Whit3Wolf/onebuddy")
   use({ "catppuccin/nvim", as = "catppuccin" })
+  use("sekke276/dark_flat.nvim")
 
   use("L3MON4D3/LuaSnip")
 
