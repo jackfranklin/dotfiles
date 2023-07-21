@@ -22,6 +22,15 @@ M.setup = function(config)
     })
   end)
 
+  vim.keymap.set("n", "<leader>fd", function()
+    local cwd_for_buf = vim.fn.expand("%:h")
+    require("fzf-lua").files({
+      git_icons = false,
+      file_icons = false,
+      cwd = cwd_for_buf,
+    })
+  end)
+
   local ignore = { "^node_modules/", "^.git/" }
   local extraIgnores = config.extra_ignore_patterns or {}
   for _, value in ipairs(extraIgnores) do
