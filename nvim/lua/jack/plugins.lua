@@ -59,11 +59,8 @@ M.load_plugins = function(use)
   use("ojroques/vim-oscyank")
 
   use("numToStr/FTerm.nvim")
-  -- Pinned pending https://github.com/SmiteshP/nvim-navic/issues/130
-  -- use({ "SmiteshP/nvim-navic", commit = "e6da6f74d89de65258ea7e98e22103ff5de6dcf5" })
-  use("~/git/nvim-navic")
-  -- use("google/executor.nvim")
-  use("~/git/executor.nvim")
+  use("SmiteshP/nvim-navic")
+  use("google/executor.nvim")
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
   use("jose-elias-alvarez/null-ls.nvim")
