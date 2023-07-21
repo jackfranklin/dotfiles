@@ -53,7 +53,6 @@ M.load_plugins = function(use)
   use("hrsh7th/cmp-path")
   use("hrsh7th/nvim-cmp")
   use("hrsh7th/cmp-nvim-lua")
-  use("stevearc/oil.nvim")
   use("echasnovski/mini.files")
   use("saadparwaiz1/cmp_luasnip")
 
