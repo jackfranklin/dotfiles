@@ -1,4 +1,16 @@
-require("toggleterm").setup()
+require("toggleterm").setup({
+  shade_terminals = false,
+  highlights = {
+    StatusLine = {
+      -- For some reason ToggleTerm breaks the statusline by setting gui=None for highlights.
+      -- So these colors are the colours from the flat_dark theme (currently the active one) to reset them back to normal.
+      -- If I change theme, I likely need to come and update these!
+      guifg = "#9ca3b2",
+      guibg = "#1e2024",
+    },
+  },
+})
+
 vim.api.nvim_exec(
   [[
 autocmd BufEnter * if &filetype == 'toggleterm' | :startinsert | endif
