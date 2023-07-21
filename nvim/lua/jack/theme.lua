@@ -12,6 +12,7 @@ require("dark_flat").setup({
     return {
       ["@include.typescript"] = { fg = colors.white:darken(0.8) },
       ["@punctuation.bracket"] = { fg = colors.pink:darken(0.7) },
+      MatchParen = { fg = colors.white },
     }
   end,
 })
