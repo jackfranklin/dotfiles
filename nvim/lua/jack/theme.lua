@@ -109,9 +109,9 @@ end
 if theme == "dark_flat" then
   vim.api.nvim_exec(
     [[
-hi JackStatusBarDiagnosticError guifg=#d54e53
-hi JackStatusBarDiagnosticWarn guifg=#d19a66
-hi JackStatusBarDiagnosticHint guifg=#676e7b
+hi JackStatusBarDiagnosticError guifg=#d54e53 guibg=#1e2024
+hi JackStatusBarDiagnosticWarn guifg=#d19a66 guibg=#1e2024
+hi JackStatusBarDiagnosticHint guifg=#676e7b guibg=#1e2024
   ]],
     { output = true }
   )
