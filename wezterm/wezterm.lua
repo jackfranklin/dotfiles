@@ -7,11 +7,13 @@ local config = {}
 
 -- For example, changing the color scheme:
 -- config.color_scheme = "Catppuccin Frappe"
-config.color_scheme = "Darkside"
+-- config.color_scheme = "Darkside"
+-- config.color_scheme = "Darktooth (base16)"
+config.color_scheme = "deep"
 -- I like the darkside color scheme but the cursor is a bit bright and makes it
 -- hard to see what is under it.
 config.colors = {
-  cursor_bg = "#545252",
+  -- cursor_bg = "#545252",
 }
 config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.default_domain = "WSL:Ubuntu"

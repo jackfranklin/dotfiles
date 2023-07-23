@@ -14,7 +14,7 @@ require("dark_flat").setup({
       ["@include.typescript"] = { fg = colors.white:darken(0.5), italic = true },
 
       MatchParen = { fg = colors.white },
-      CursorLine = { bg = colors.vulcan:darken(0.7) },
+      CursorLine = { bg = colors.vulcan:darken(0.5) },
       Normal = { bg = colors.none },
       WinBar = { bg = colors.black, fg = colors.light_gray, bold = true },
     }
