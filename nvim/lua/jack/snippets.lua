@@ -172,6 +172,19 @@ customElements.define({}, {})]],
       )
     ),
     s("ccon", fmt([[const {} = {}]], { i(1), i(0) })),
+    s("destruct", fmt([[const {{{}}} = {}]], { i(1), i(0) })),
+    s("ase", fmt([[assert.strictEqual({}, {})]], { i(0), i(1) })),
+    s("ade", fmt([[assert.deepEqual({}, {})]], { i(0), i(1) })),
+    s(
+      "cdoc",
+      fmt(
+        [[
+/**
+ * {}
+ **/]],
+        { i(0), i(1) }
+      )
+    ),
   }
 end
 
@@ -187,7 +200,7 @@ M.typescript = function()
       )
     ),
     s(
-      "method",
+      "mm",
       fmt(
         [[{}({}): {} {{
   {}
@@ -196,7 +209,7 @@ M.typescript = function()
       )
     ),
     s(
-      "pmethod",
+      "##",
       fmt(
         [[#{}({}): {} {{
   {}
