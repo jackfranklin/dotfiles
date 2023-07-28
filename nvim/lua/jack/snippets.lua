@@ -173,8 +173,8 @@ customElements.define({}, {})]],
     ),
     s("ccon", fmt([[const {} = {}]], { i(1), i(0) })),
     s("destruct", fmt([[const {{ {} }} = {}]], { i(1), i(0) })),
-    s("ase", fmt([[assert.strictEqual({}, {})]], { i(0), i(1) })),
-    s("ade", fmt([[assert.deepEqual({}, {})]], { i(0), i(1) })),
+    s("ase", fmt([[assert.strictEqual({}, {})]], { i(1), i(0) })),
+    s("ade", fmt([[assert.deepEqual({}, {})]], { i(1), i(0) })),
     s(
       "cdoc",
       fmt(
