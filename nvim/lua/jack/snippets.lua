@@ -27,6 +27,7 @@ end
 M.javascript = function()
   return {
     s("jslog", fmt([[console.log(JSON.stringify({}, null, 2));{}]], { i(1), i(0) })),
+    s("fixme", fmt([[// FIXME: {}]], { i(0) })),
 
     s("cl", fmt("console.log({});", { i(1) })),
 
@@ -175,6 +176,8 @@ customElements.define({}, {})]],
     s("destruct", fmt([[const {{ {} }} = {}]], { i(1), i(0) })),
     s("ase", fmt([[assert.strictEqual({}, {})]], { i(1), i(0) })),
     s("ade", fmt([[assert.deepEqual({}, {})]], { i(1), i(0) })),
+    s("ait", fmt([[assert.isTrue({})]], { i(0) })),
+    s("aif", fmt([[assert.isFalse({})]], { i(0) })),
     s(
       "cdoc",
       fmt(
