@@ -65,6 +65,7 @@ M.load_plugins = function(use)
   use("ibhagwan/fzf-lua")
   use("jose-elias-alvarez/null-ls.nvim")
   use("kassio/neoterm")
+  use("rlane/pounce.nvim")
 end
 
 return M
