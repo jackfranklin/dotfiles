@@ -21,6 +21,7 @@ lua require('jack.plugins.statusline')
 lua require('jack.plugins.surround')
 lua require('jack.plugins.treesitter')
 lua require('jack.plugins.mini-files')
+lua require('jack.plugins.pounce')
 lua << EOF
 local null_ls = require('jack.plugins.null-ls-plugin')
 null_ls.setup()
