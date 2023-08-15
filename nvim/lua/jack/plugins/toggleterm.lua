@@ -46,3 +46,54 @@ end
 
 vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua LazyGitToggle()<CR>", { noremap = true, silent = true })
 vim.api.nvim_set_keymap("n", "<leader>pt", "<cmd>lua SideTermToggle()<CR>", { noremap = true, silent = true })
+
+local defaultBuild = Terminal:new({
+  cmd = "autoninja -C out/Default && exit",
+  direction = "float",
+  float_opts = {
+    width = function(term)
+      local width = math.ceil(vim.o.columns / 4)
+      term.float_opts.col = vim.o.columns - width
+      return width
+    end,
+    height = function(term)
+      local height = 15
+      term.float_opts.row = vim.o.lines - height
+      return height
+    end,
+  },
+  close_on_exit = true,
+  on_open = function(term)
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+  end,
+})
+function DefaultBuildToggle()
+  defaultBuild:toggle()
+end
+
+local fastBuild = Terminal:new({
+  cmd = "autoninja -C out/Fast && exit",
+  direction = "float",
+  float_opts = {
+    width = function(term)
+      local width = math.ceil(vim.o.columns / 4)
+      term.float_opts.col = vim.o.columns - width
+      return width
+    end,
+    height = function(term)
+      local height = 15
+      term.float_opts.row = vim.o.lines - height
+      return height
+    end,
+  },
+  close_on_exit = true,
+  on_open = function(term)
+    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
+  end,
+})
+function FastBuildToggle()
+  fastBuild:toggle()
+end
+
+vim.api.nvim_set_keymap("n", "<leader>ad", "<cmd>lua DefaultBuildToggle()<CR>", { noremap = true, silent = true })
+vim.api.nvim_set_keymap("n", "<leader>af", "<cmd>lua FastBuildToggle()<CR>", { noremap = true, silent = true })
