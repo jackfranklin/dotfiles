@@ -48,7 +48,7 @@ vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua LazyGitToggle()<CR>", { nor
 vim.api.nvim_set_keymap("n", "<leader>pt", "<cmd>lua SideTermToggle()<CR>", { noremap = true, silent = true })
 
 local defaultBuild = Terminal:new({
-  cmd = "autoninja -C out/Default && exit",
+  cmd = "autoninja -C out/Default",
   direction = "float",
   float_opts = {
     width = function(term)
@@ -62,7 +62,7 @@ local defaultBuild = Terminal:new({
       return height
     end,
   },
-  close_on_exit = true,
+  close_on_exit = false,
   on_open = function(term)
     vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
   end,
@@ -72,7 +72,7 @@ function DefaultBuildToggle()
 end
 
 local fastBuild = Terminal:new({
-  cmd = "autoninja -C out/Fast && exit",
+  cmd = "autoninja -C out/Fast",
   direction = "float",
   float_opts = {
     width = function(term)
@@ -86,7 +86,7 @@ local fastBuild = Terminal:new({
       return height
     end,
   },
-  close_on_exit = true,
+  close_on_exit = false,
   on_open = function(term)
     vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
   end,
