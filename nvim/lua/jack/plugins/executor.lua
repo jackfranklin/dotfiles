@@ -9,6 +9,7 @@ M.setup = function(config)
       "npm run build-run-tests",
       "npm run build-run-tests-esbuild",
       "npm run typecheck",
+      { partial = true, cmd = 'make tests-with-glob GLOB="test/' },
     },
   }
   local merged_preset_commands = vim.tbl_deep_extend("force", preset_commands, config.preset_commands or {})
