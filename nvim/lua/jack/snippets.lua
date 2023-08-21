@@ -203,7 +203,16 @@ M.typescript = function()
       )
     ),
     s(
-      "mm",
+      "inter",
+      fmt(
+        [[interface {} {{
+  {}
+}}]],
+        { i(1), i(0) }
+      )
+    ),
+    s(
+      "meth",
       fmt(
         [[{}({}): {} {{
   {}
