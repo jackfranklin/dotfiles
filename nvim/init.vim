@@ -1,4 +1,11 @@
-lua require('jack.init').packer()
+lua << EOF
+local init = require('jack.init')
+init.ensure_packer_installed()
+init.run_lazy()
+EOF
+
+
+
 lua require('jack.base-settings')
 lua require('jack.maps')
 lua require('jack.theme')

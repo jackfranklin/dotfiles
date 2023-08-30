@@ -1,5 +1,67 @@
 local M = {}
 
+M.default = function()
+  return {
+    { "nvim-lua/popup.nvim", lazy = true },
+    { "nvim-lua/plenary.nvim", lazy = true },
+    { "MunifTanjim/nui.nvim", lazy = true },
+
+    "mattn/emmet-vim",
+    "tpope/vim-commentary",
+    "tpope/vim-vinegar",
+    { "tpope/vim-fugitive" },
+    "tpope/vim-sleuth",
+    "tpope/vim-eunuch",
+    "tpope/vim-unimpaired",
+    "thinca/vim-visualstar",
+    { "mileszs/ack.vim", lazy = true },
+    "farmergreg/vim-lastplace",
+    "kylechui/nvim-surround",
+    "windwp/nvim-autopairs",
+    "akinsho/toggleterm.nvim",
+    "neovim/nvim-lspconfig",
+
+    -- COLOURS + THEMES
+    "folke/lsp-colors.nvim",
+    "tjdevries/colorbuddy.vim",
+    -- "Th3Whit3Wolf/onebuddy",
+    { "sekke276/dark_flat.nvim", priority = 1001 },
+    { "catppuccin/nvim", name = "catppuccin", priority = 1000 },
+
+    -- Snippets and completion
+
+    "L3MON4D3/LuaSnip",
+    "hrsh7th/cmp-nvim-lsp",
+    "hrsh7th/cmp-buffer",
+    "hrsh7th/cmp-vsnip",
+    "hrsh7th/cmp-path",
+    "hrsh7th/nvim-cmp",
+    "hrsh7th/cmp-nvim-lua",
+    "saadparwaiz1/cmp_luasnip",
+
+    "echasnovski/mini.files",
+    "ojroques/vim-oscyank",
+    "numToStr/FTerm.nvim",
+    { "SmiteshP/nvim-navic", lazy = true },
+    { "google/executor.nvim", lazy = true },
+    "jackfranklin/winbar.nvim",
+    "ibhagwan/fzf-lua",
+    "jose-elias-alvarez/null-ls.nvim",
+    "kassio/neoterm",
+    { "rlane/pounce.nvim", lazy = true },
+    { "nvim-treesitter/nvim-treesitter", build = ":TSUpdate" },
+
+    { "nvim-treesitter/nvim-treesitter-textobjects", dependencies = {
+      "nvim-treesitter/nvim-treesitter",
+    } },
+  }
+
+  -- use({
+  --   after = "nvim-treesitter",
+  --   requires = "nvim-treesitter/nvim-treesitter",
+  -- })
+end
+
 M.load_plugins = function(use)
   use("wbthomason/packer.nvim")
 
