@@ -14,7 +14,7 @@ M.default = function()
     "tpope/vim-eunuch",
     "tpope/vim-unimpaired",
     "thinca/vim-visualstar",
-    { "mileszs/ack.vim", lazy = true },
+    { "mileszs/ack.vim", lazy = true, cmd = { "Ack" } },
     "farmergreg/vim-lastplace",
     "kylechui/nvim-surround",
     "windwp/nvim-autopairs",
