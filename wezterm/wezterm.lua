@@ -19,8 +19,8 @@ config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.default_domain = "WSL:Ubuntu"
 -- config.font = wezterm.font("IntelOne Mono")
 -- config.font = wezterm.font("Comic Code")
--- config.font = wezterm.font("Hack")
-config.font = wezterm.font("Victor Mono")
+config.font = wezterm.font("Hack")
+-- config.font = wezterm.font("Victor Mono")
 -- Disable ligatures.
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
