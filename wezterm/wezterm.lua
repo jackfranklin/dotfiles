@@ -13,13 +13,18 @@ config.color_scheme = "deep"
 -- I like the darkside color scheme but the cursor is a bit bright and makes it
 -- hard to see what is under it.
 config.colors = {
-  -- cursor_bg = "#545252",
+  -- cursor_bg = "#545252", (Enable me if using "darkside")
 }
 config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.default_domain = "WSL:Ubuntu"
 -- config.font = wezterm.font("IntelOne Mono")
-config.font = wezterm.font("Comic Code")
-config.font_size = 14
+-- config.font = wezterm.font("Comic Code")
+-- config.font = wezterm.font("Hack")
+config.font = wezterm.font("Victor Mono")
+-- Disable ligatures.
+config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
+
+config.font_size = 13
 config.window_padding = {
   left = 0,
   right = 0,
