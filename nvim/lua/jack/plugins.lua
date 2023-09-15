@@ -19,6 +19,7 @@ M.load_plugins = function(use)
   use("mileszs/ack.vim")
   use("farmergreg/vim-lastplace")
   use("kylechui/nvim-surround")
+  use("stevearc/conform.nvim")
 
   use("windwp/nvim-autopairs")
   use("akinsho/toggleterm.nvim")
