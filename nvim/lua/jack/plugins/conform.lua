@@ -4,6 +4,7 @@ local M = {}
 
 M.setup = function(config)
   conform.setup({
+    log_level = vim.log.levels.DEBUG,
     formatters_by_ft = {
       lua = {
         "stylua",
