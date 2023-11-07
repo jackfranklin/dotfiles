@@ -188,6 +188,29 @@ customElements.define({}, {})]],
         { i(0) }
       )
     ),
+    s(
+      "lit-html-component",
+      fmt(
+        [[import {{ html, render }} from 'lit-html';
+import styles from './{}.css';
+
+export class {} extends HTMLElement {{
+  #shadow = this.attachShadow({{ mode: 'open' }});
+
+  connectedCallback() {{
+    this.#shadow.adoptedStyleSheets = [styles];
+  }}
+
+  #render(): void {{
+    render(html`<p>hello world</p>`, this.#shadow, {{ host: this }});
+  }}
+}}
+
+customElements.define('{}', {});
+{}]],
+        { i(1), i(2), rep(1), rep(2), i(0) }
+      )
+    ),
   }
 end
 
