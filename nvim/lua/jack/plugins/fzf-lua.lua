@@ -10,6 +10,14 @@ M.setup = function(config)
   vim.keymap.set("n", "<leader>o", function()
     require("fzf-lua").oldfiles({ cwd_only = true })
   end)
+  vim.keymap.set("n", "<leader>fw", function()
+    require("fzf-lua").lsp_live_workspace_symbols({
+      symbol_style = 3,
+      winopts = {
+        preview = { hidden = "nohidden" },
+      },
+    })
+  end)
   vim.keymap.set("n", "<leader>b", function()
     require("fzf-lua").buffers()
   end)
