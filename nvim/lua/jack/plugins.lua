@@ -3,7 +3,6 @@ local M = {}
 M.load_plugins = function(use)
   use("wbthomason/packer.nvim")
 
-  -- TODO: find out what depends on these + note them as dependencies in packer.nvim
   use("nvim-lua/popup.nvim")
   use("nvim-lua/plenary.nvim")
   use("MunifTanjim/nui.nvim")
@@ -66,9 +65,14 @@ M.load_plugins = function(use)
   use("~/git/executor.nvim")
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
-  use("jose-elias-alvarez/null-ls.nvim")
   use("kassio/neoterm")
   use("rlane/pounce.nvim")
+
+  use({
+    "nvim-neorg/neorg",
+    run = ":Neorg sync-parsers",
+    requires = "nvim-lua/plenary.nvim",
+  })
 end
 
 return M
