@@ -1,5 +1,5 @@
 local M = {}
-M.setup = function()
+M.setup = function(_config)
   require("neorg").setup({
     load = {
       ["core.defaults"] = {}, -- Loads default behaviour
@@ -14,5 +14,7 @@ M.setup = function()
       },
     },
   })
+
+  vim.keymap.set("n", "<leader>ni", ":Neorg index<CR>")
 end
 return M
