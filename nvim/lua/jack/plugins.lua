@@ -64,7 +64,7 @@ M.load_plugins = function(use)
   -- use("google/executor.nvim")
   use("~/git/executor.nvim")
   use("jackfranklin/winbar.nvim")
-  use({ "ibhagwan/fzf-lua", commit = "99684a6c07da13ba49f62cfaf309dbce285247a7" })
+  use("ibhagwan/fzf-lua")
   use("kassio/neoterm")
   use("rlane/pounce.nvim")
 
