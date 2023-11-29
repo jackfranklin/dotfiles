@@ -15,6 +15,9 @@ M.setup = function(_config)
     },
   })
 
-  vim.keymap.set("n", "<leader>ni", ":Neorg index<CR>")
+  vim.keymap.set("n", "<leader>ni", function()
+    vim.cmd("vsplit")
+    vim.cmd("Neorg index")
+  end)
 end
 return M
