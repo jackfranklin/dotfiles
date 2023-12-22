@@ -25,7 +25,7 @@ config.font = wezterm.font("DM Mono")
 -- Disable ligatures.
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
-config.font_size = 14
+config.font_size = 15
 config.window_padding = {
   left = 0,
   right = 0,
