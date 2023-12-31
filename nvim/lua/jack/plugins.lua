@@ -73,6 +73,7 @@ M.load_plugins = function(use)
     run = ":Neorg sync-parsers",
     requires = "nvim-lua/plenary.nvim",
   })
+  use({ "NeogitOrg/neogit", requires = "nvim-lua/plenary.nvim" })
 end
 
 return M

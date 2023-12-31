@@ -5,6 +5,7 @@ require("jack.theme")
 require("jack.plugins.winbar")
 
 require("jack.plugins.ack")
+require("jack.plugins.neogit-config")
 require("jack.plugins.autopairs")
 require("jack.plugins.cmp")
 require("jack.plugins.neorg-config").setup()
