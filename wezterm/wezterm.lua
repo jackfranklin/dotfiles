@@ -9,7 +9,8 @@ local config = {}
 -- config.color_scheme = "Catppuccin Frappe"
 -- config.color_scheme = "Darkside"
 -- config.color_scheme = "Darktooth (base16)"
-config.color_scheme = "deep"
+-- config.color_scheme = "deep"
+config.color_scheme = "Tokyo Night"
 -- I like the darkside color scheme but the cursor is a bit bright and makes it
 -- hard to see what is under it.
 config.colors = {
