@@ -1,7 +1,7 @@
 require("jack.init").packer()
+require("jack.theme")
 require("jack.base-settings")
 require("jack.maps")
-require("jack.theme")
 require("jack.plugins.winbar")
 
 require("jack.plugins.ack")
