@@ -2,9 +2,9 @@ local catppuccin_flavour = "frappe"
 vim.g.catppuccin_flavour = catppuccin_flavour
 
 if catppuccin_flavour == "latte" then
-  vim.api.nvim_exec([[set background=light]], { output = "false" })
+  vim.api.nvim_exec([[set background=light]], false)
 elseif catppuccin_flavour == "frappe" then
-  vim.api.nvim_exec([[set background=dark]], { output = "false" })
+  vim.api.nvim_exec([[set background=dark]], false)
 end
 
 require("dark_flat").setup({
@@ -62,7 +62,22 @@ require("catppuccin").setup({
 -- local latte = require("catppuccin.palettes").get_palette("latte")
 -- local frappe = require("catppuccin.palettes").get_palette("frappe")
 
-vim.api.nvim_command("colorscheme dark_flat")
+require("tokyonight").setup({
+  on_highlights = function(hl, colors)
+    hl.JackStatusBarDiagnosticError = { fg = colors.red, bg = colors.bg_statusline }
+    hl.JackStatusBarDiagnosticWarn = { fg = colors.orange, bg = colors.bg_statusline }
+    hl.JackStatusBarDiagnosticHint = { fg = colors.fg, bg = colors.bg_statusline }
+    hl.JackStatusBarNavic = {
+      style = {
+        italic = true,
+      },
+      bg = colors.bg_statusline,
+      fg = colors.teal,
+    }
+  end,
+})
+
+vim.api.nvim_command("colorscheme tokyonight")
 local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
 
 if theme == "catppuccin" and catppuccin_flavour == "latte" then
@@ -103,7 +118,7 @@ hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#f0f0f0
 hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#f0f0f0
 hi NormalFloat guibg=none
   ]],
-    { output = true }
+    true
   )
 end
 if theme == "dark_flat" then
@@ -113,6 +128,6 @@ hi JackStatusBarDiagnosticError guifg=#d54e53 guibg=#1e2024
 hi JackStatusBarDiagnosticWarn guifg=#d19a66 guibg=#1e2024
 hi JackStatusBarDiagnosticHint guifg=#676e7b guibg=#1e2024
   ]],
-    { output = true }
+    true
   )
 end
