@@ -5,6 +5,7 @@ M.setup = function(config)
     require("fzf-lua").files({
       git_icons = false,
       file_icons = false,
+      no_header_i = true,
     })
   end)
   vim.keymap.set("n", "<leader>o", function()
@@ -16,6 +17,7 @@ M.setup = function(config)
       winopts = {
         preview = { hidden = "nohidden" },
       },
+      no_header_i = true,
     })
   end)
   vim.keymap.set("n", "<leader>b", function()
@@ -27,6 +29,7 @@ M.setup = function(config)
       winopts = {
         preview = { hidden = "nohidden" },
       },
+      no_header_i = true,
     })
   end)
 
@@ -36,6 +39,7 @@ M.setup = function(config)
       git_icons = false,
       file_icons = false,
       cwd = cwd_for_buf,
+      no_header_i = true,
     })
   end)
 
