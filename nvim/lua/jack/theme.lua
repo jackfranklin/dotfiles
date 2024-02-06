@@ -79,6 +79,27 @@ require("tokyonight").setup({
       bg = colors.bg_statusline,
       fg = colors.teal,
     }
+
+    hl.DiagnosticUnderlineError = {
+      style = {
+        underline = true,
+      },
+    }
+    hl.DiagnosticUnderlineWarn = {
+      style = {
+        underline = true,
+      },
+    }
+    hl.DiagnosticUnderlineHint = {
+      style = {
+        underline = true,
+      },
+    }
+    hl.DiagnosticUnderlineInfo = {
+      style = {
+        underline = true,
+      },
+    }
   end,
 })
 
