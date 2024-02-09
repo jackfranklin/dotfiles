@@ -46,6 +46,7 @@ M.load_plugins = function(use)
   use({ "catppuccin/nvim", as = "catppuccin" })
   use("sekke276/dark_flat.nvim")
   use("folke/tokyonight.nvim")
+  use("rebelot/kanagawa.nvim")
 
   use("L3MON4D3/LuaSnip")
 

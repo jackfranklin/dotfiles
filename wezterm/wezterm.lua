@@ -10,7 +10,8 @@ local config = {}
 -- config.color_scheme = "Darkside"
 -- config.color_scheme = "Darktooth (base16)"
 -- config.color_scheme = "deep"
-config.color_scheme = "Tokyo Night"
+-- config.color_scheme = "Tokyo Night"
+config.color_scheme = "Kanagawa (Gogh)"
 -- I like the darkside color scheme but the cursor is a bit bright and makes it
 -- hard to see what is under it.
 config.colors = {
@@ -27,7 +28,7 @@ config.font = wezterm.font("Geist Mono")
 -- Disable ligatures.
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
-config.font_size = 15
+config.font_size = 16
 config.window_padding = {
   left = 0,
   right = 0,

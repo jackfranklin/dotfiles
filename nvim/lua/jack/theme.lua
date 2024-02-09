@@ -7,7 +7,7 @@ elseif catppuccin_flavour == "frappe" then
   vim.api.nvim_exec([[set background=dark]], false)
 end
 
-function load_dark_flat()
+local function load_dark_flat()
   require("dark_flat").setup({
     themes = function(colors)
       return {
@@ -18,6 +18,44 @@ function load_dark_flat()
         CursorLine = { bg = colors.vulcan:darken(0.5) },
         Normal = { bg = colors.none },
         WinBar = { bg = colors.black, fg = colors.light_gray, bold = true },
+      }
+    end,
+  })
+end
+
+local function load_kanagawa()
+  require("kanagawa").setup({
+    undercurl = false, -- TODO: find out how to make this true for Mac only.
+    dimInactive = true,
+    overrides = function(colors)
+      return {
+        -- update kanagawa to handle new treesitter highlight captures
+        -- https://github.com/rebelot/kanagawa.nvim/issues/197
+        ["@string.regexp"] = { link = "@string.regex" },
+        ["@variable.parameter"] = { link = "@parameter" },
+        ["@exception"] = { link = "@exception" },
+        ["@string.special.symbol"] = { link = "@symbol" },
+        ["@markup.strong"] = { link = "@text.strong" },
+        ["@markup.italic"] = { link = "@text.emphasis" },
+        ["@markup.heading"] = { link = "@text.title" },
+        ["@markup.raw"] = { link = "@text.literal" },
+        ["@markup.quote"] = { link = "@text.quote" },
+        ["@markup.math"] = { link = "@text.math" },
+        ["@markup.environment"] = { link = "@text.environment" },
+        ["@markup.environment.name"] = { link = "@text.environment.name" },
+        ["@markup.link.url"] = { link = "Special" },
+        ["@markup.link.label"] = { link = "Identifier" },
+        ["@comment.note"] = { link = "@text.note" },
+        ["@comment.warning"] = { link = "@text.warning" },
+        ["@comment.danger"] = { link = "@text.danger" },
+        ["@diff.plus"] = { link = "@text.diff.add" },
+        ["@diff.minus"] = { link = "@text.diff.delete" },
+        ["@comment.todo"] = { fg = colors.palette.lotusRed },
+        JackStatusBarDiagnosticError = { fg = colors.theme.diag.error, bg = colors.theme.ui.bg_m3 },
+        JackStatusBarDiagnosticWarn = { fg = colors.theme.diag.warn, bg = colors.theme.ui.bg_m3 },
+        JackStatusBarDiagnosticHint = { fg = colors.theme.diag.hint, bg = colors.theme.ui.bg_m3 },
+        JackStatusBarDiagnosticInfo = { fg = colors.theme.diag.info, bg = colors.theme.ui.bg_m3 },
+        JackStatusBarNavic = { italic = true, bg = colors.theme.ui.bg_m3, fg = colors.theme.fg_dim },
       }
     end,
   })
@@ -67,43 +105,46 @@ function load_catppuccin()
   -- local frappe = require("catppuccin.palettes").get_palette("frappe")
 end
 
-require("tokyonight").setup({
-  on_highlights = function(hl, colors)
-    hl.JackStatusBarDiagnosticError = { fg = colors.red, bg = colors.bg_statusline }
-    hl.JackStatusBarDiagnosticWarn = { fg = colors.orange, bg = colors.bg_statusline }
-    hl.JackStatusBarDiagnosticHint = { fg = colors.fg, bg = colors.bg_statusline }
-    hl.JackStatusBarNavic = {
-      style = {
-        italic = true,
-      },
-      bg = colors.bg_statusline,
-      fg = colors.teal,
-    }
+function load_tokyonight()
+  require("tokyonight").setup({
+    on_highlights = function(hl, colors)
+      hl.JackStatusBarDiagnosticError = { fg = colors.red, bg = colors.bg_statusline }
+      hl.JackStatusBarDiagnosticWarn = { fg = colors.orange, bg = colors.bg_statusline }
+      hl.JackStatusBarDiagnosticHint = { fg = colors.fg, bg = colors.bg_statusline }
+      hl.JackStatusBarNavic = {
+        style = {
+          italic = true,
+        },
+        bg = colors.bg_statusline,
+        fg = colors.teal,
+      }
 
-    hl.DiagnosticUnderlineError = {
-      style = {
-        underline = true,
-      },
-    }
-    hl.DiagnosticUnderlineWarn = {
-      style = {
-        underline = true,
-      },
-    }
-    hl.DiagnosticUnderlineHint = {
-      style = {
-        underline = true,
-      },
-    }
-    hl.DiagnosticUnderlineInfo = {
-      style = {
-        underline = true,
-      },
-    }
-  end,
-})
+      hl.DiagnosticUnderlineError = {
+        style = {
+          underline = true,
+        },
+      }
+      hl.DiagnosticUnderlineWarn = {
+        style = {
+          underline = true,
+        },
+      }
+      hl.DiagnosticUnderlineHint = {
+        style = {
+          underline = true,
+        },
+      }
+      hl.DiagnosticUnderlineInfo = {
+        style = {
+          underline = true,
+        },
+      }
+    end,
+  })
+end
 
-vim.api.nvim_command("colorscheme tokyonight")
+load_kanagawa()
+vim.api.nvim_command("colorscheme kanagawa")
 local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
 
 if theme == "catppuccin" and catppuccin_flavour == "latte" then
