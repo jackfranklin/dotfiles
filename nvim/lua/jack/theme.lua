@@ -56,12 +56,13 @@ local function load_kanagawa()
         JackStatusBarDiagnosticHint = { fg = colors.theme.diag.hint, bg = colors.theme.ui.bg_m3 },
         JackStatusBarDiagnosticInfo = { fg = colors.theme.diag.info, bg = colors.theme.ui.bg_m3 },
         JackStatusBarNavic = { italic = true, bg = colors.theme.ui.bg_m3, fg = colors.theme.fg_dim },
+        DiagnosticUnnecessary = { underline = true, fg = colors.theme.syn.comment },
       }
     end,
   })
 end
 
-function load_catppuccin()
+local function load_catppuccin()
   require("catppuccin").setup({
 
     styles = {
@@ -105,7 +106,7 @@ function load_catppuccin()
   -- local frappe = require("catppuccin.palettes").get_palette("frappe")
 end
 
-function load_tokyonight()
+local function load_tokyonight()
   require("tokyonight").setup({
     on_highlights = function(hl, colors)
       hl.JackStatusBarDiagnosticError = { fg = colors.red, bg = colors.bg_statusline }
