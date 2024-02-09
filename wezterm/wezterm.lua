@@ -12,10 +12,12 @@ local config = {}
 -- config.color_scheme = "deep"
 -- config.color_scheme = "Tokyo Night"
 config.color_scheme = "Kanagawa (Gogh)"
--- I like the darkside color scheme but the cursor is a bit bright and makes it
--- hard to see what is under it.
+
 config.colors = {
-  -- cursor_bg = "#545252", (Enable me if using "darkside")
+  -- ENABLE ME if using Kanagawa (default cursor is too bright for me)
+  cursor_bg = "#787669",
+  -- ENABLE ME if using Darkside
+  -- cursor_bg = "#787669",
 }
 config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.default_domain = "WSL:Ubuntu"
