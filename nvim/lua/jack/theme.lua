@@ -29,27 +29,6 @@ local function load_kanagawa()
     dimInactive = true,
     overrides = function(colors)
       return {
-        -- update kanagawa to handle new treesitter highlight captures
-        -- https://github.com/rebelot/kanagawa.nvim/issues/197
-        ["@string.regexp"] = { link = "@string.regex" },
-        ["@variable.parameter"] = { link = "@parameter" },
-        ["@exception"] = { link = "@exception" },
-        ["@string.special.symbol"] = { link = "@symbol" },
-        ["@markup.strong"] = { link = "@text.strong" },
-        ["@markup.italic"] = { link = "@text.emphasis" },
-        ["@markup.heading"] = { link = "@text.title" },
-        ["@markup.raw"] = { link = "@text.literal" },
-        ["@markup.quote"] = { link = "@text.quote" },
-        ["@markup.math"] = { link = "@text.math" },
-        ["@markup.environment"] = { link = "@text.environment" },
-        ["@markup.environment.name"] = { link = "@text.environment.name" },
-        ["@markup.link.url"] = { link = "Special" },
-        ["@markup.link.label"] = { link = "Identifier" },
-        ["@comment.note"] = { link = "@text.note" },
-        ["@comment.warning"] = { link = "@text.warning" },
-        ["@comment.danger"] = { link = "@text.danger" },
-        ["@diff.plus"] = { link = "@text.diff.add" },
-        ["@diff.minus"] = { link = "@text.diff.delete" },
         ["@comment.todo"] = { fg = colors.palette.lotusRed },
         JackStatusBarDiagnosticError = { fg = colors.theme.diag.error, bg = colors.theme.ui.bg_m3 },
         JackStatusBarDiagnosticWarn = { fg = colors.theme.diag.warn, bg = colors.theme.ui.bg_m3 },
