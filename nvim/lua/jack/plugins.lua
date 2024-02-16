@@ -19,7 +19,6 @@ M.load_plugins = function(use)
   use("farmergreg/vim-lastplace")
   use("kylechui/nvim-surround")
   use("stevearc/conform.nvim")
-  use("ThePrimeagen/harpoon")
 
   use("windwp/nvim-autopairs")
   use("akinsho/toggleterm.nvim")
@@ -68,14 +67,12 @@ M.load_plugins = function(use)
   use("jackfranklin/winbar.nvim")
   use("ibhagwan/fzf-lua")
   use("kassio/neoterm")
-  use("rlane/pounce.nvim")
 
   use({
     "nvim-neorg/neorg",
     run = ":Neorg sync-parsers",
     requires = "nvim-lua/plenary.nvim",
   })
-  use({ "NeogitOrg/neogit", requires = "nvim-lua/plenary.nvim" })
 end
 
 return M
