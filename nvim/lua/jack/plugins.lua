@@ -71,6 +71,8 @@ M.load_plugins = function(use)
     run = ":Neorg sync-parsers",
     requires = "nvim-lua/plenary.nvim",
   })
+
+  use("lewis6991/gitsigns.nvim")
 end
 
 return M
