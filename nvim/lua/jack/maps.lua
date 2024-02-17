@@ -82,3 +82,14 @@ vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
     vim.api.nvim_buf_set_keymap(data.buf, "n", "<CR>", "ciw", { noremap = true })
   end,
 })
+
+-- Taken from https://stackoverflow.com/questions/16678661/how-can-i-delete-the-current-file-in-vim
+local function confirm_and_delete_buffer()
+  local confirm = vim.fn.confirm("Delete buffer and file?", "&Yes\n&No", 2)
+
+  if confirm == 1 then
+    os.remove(vim.fn.expand("%"))
+    vim.api.nvim_buf_delete(0, { force = true })
+  end
+end
+vim.keymap.set("n", "<leader>df", confirm_and_delete_buffer)
