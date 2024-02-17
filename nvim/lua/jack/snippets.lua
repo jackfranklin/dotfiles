@@ -157,10 +157,10 @@ customElements.define({}, {})]],
     s(
       "ffunc",
       fmt(
-        [[function {}({}) {{
+        [[{}function {}({}) {{
   {}
 }}]],
-        { i(1), i(2), i(0) }
+        { c(1, { t("export "), t("") }), i(2), i(3), i(0) }
       )
     ),
     s(
@@ -219,10 +219,10 @@ M.typescript = function()
     s(
       "ffunc",
       fmt(
-        [[function {}({}): {} {{
+        [[{}function {}({}): {} {{
   {}
 }}]],
-        { i(1), i(2), i(3), i(0) }
+        { c(1, { t("export "), t("") }), i(2), i(3), i(4), i(0) }
       )
     ),
     s(
