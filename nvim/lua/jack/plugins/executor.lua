@@ -6,10 +6,10 @@ M.setup = function(config)
       "make test",
     },
     ["routemaster-js"] = {
+      { partial = true, cmd = 'make tests-with-glob GLOB="test/' },
       "npm run build-run-tests",
       "npm run build-run-tests-esbuild",
       "npm run typecheck",
-      { partial = true, cmd = 'make tests-with-glob GLOB="test/' },
     },
   }
   local merged_preset_commands = vim.tbl_deep_extend("force", preset_commands, config.preset_commands or {})
@@ -37,6 +37,7 @@ M.setup = function(config)
   vim.api.nvim_set_keymap("n", "<leader>ev", ":ExecutorToggleDetail<CR>", opts)
   vim.api.nvim_set_keymap("n", "<leader>es", ":ExecutorSetCommand<CR>", opts)
   vim.api.nvim_set_keymap("n", "<leader>ep", ":ExecutorShowPresets<CR>", opts)
+  vim.api.nvim_set_keymap("n", "<leader>eh", ":ExecutorShowHistory<CR>", opts)
 end
 
 return M
