@@ -73,6 +73,7 @@ M.load_plugins = function(use)
   })
 
   use("lewis6991/gitsigns.nvim")
+  use({ "kevinhwang91/nvim-ufo", requires = "kevinhwang91/promise-async" })
 end
 
 return M
