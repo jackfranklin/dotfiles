@@ -1,16 +1,18 @@
 local M = {}
 
+local on_track_commands = {
+  { partial = true, cmd = 'make tests-with-glob GLOB="test/' },
+  "npm run build-run-tests",
+  "npm run build-run-tests-esbuild",
+  "npm run typecheck",
+}
 M.setup = function(config)
   local preset_commands = {
     ["executor.nvim"] = {
       "make test",
     },
-    ["routemaster-js"] = {
-      { partial = true, cmd = 'make tests-with-glob GLOB="test/' },
-      "npm run build-run-tests",
-      "npm run build-run-tests-esbuild",
-      "npm run typecheck",
-    },
+    ["routemaster-js"] = on_track_commands,
+    ["routemaster"] = on_track_commands,
   }
   local merged_preset_commands = vim.tbl_deep_extend("force", preset_commands, config.preset_commands or {})
 
