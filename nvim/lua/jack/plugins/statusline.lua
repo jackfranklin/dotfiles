@@ -97,4 +97,5 @@ local status_line_parts = {
   " ", -- bit of padding after the navigation
   "%#JackStatusBarFugitive#%{FugitiveStatusline()}%* ",
 }
+
 vim.o.statusline = table.concat(status_line_parts, "")

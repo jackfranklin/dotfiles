@@ -31,6 +31,13 @@ M.setup = function(config)
         return lines
       end
     end,
+    statusline = {
+      prefix_text = "",
+      icons = {
+        failed = "F",
+        passed = "P",
+      },
+    },
   })
   local opts = { noremap = true, silent = true }
   vim.api.nvim_set_keymap("n", "<leader>er", ":ExecutorRun<CR>", opts)
