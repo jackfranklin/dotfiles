@@ -43,6 +43,14 @@ M.setup = function(config)
     })
   end)
 
+  vim.keymap.set("n", "gd", function()
+    require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
+  end)
+
+  vim.keymap.set("n", "gr", function()
+    require("fzf-lua").lsp_references({ jump_to_single_result = true })
+  end)
+
   local ignore = { "^node_modules/", "^.git/" }
   local extraIgnores = config.extra_ignore_patterns or {}
   for _, value in ipairs(extraIgnores) do
