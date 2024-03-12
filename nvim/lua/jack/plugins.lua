@@ -58,7 +58,6 @@ M.load_plugins = function(use)
 
   use("ojroques/vim-oscyank")
 
-  use("numToStr/FTerm.nvim")
   use("SmiteshP/nvim-navic")
   -- use("google/executor.nvim")
   use("~/git/executor.nvim")

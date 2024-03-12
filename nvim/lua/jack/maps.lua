@@ -10,8 +10,8 @@ let g:ackprg = 'ag --vimgrep --smart-case'
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>v :vsplit<CR>
 
-nnoremap <PageUp> :tabprevious<CR>
-nnoremap <PageDown> :tabnext<CR>
+nnoremap <silent> <PageUp> :tabprevious<CR>
+nnoremap <silent> <PageDown> :tabnext<CR>
 tnoremap <PageUp> <C-\><C-n>:tabprevious<CR>
 tnoremap <PageDown> <C-\><C-n>:tabnext<CR>
 
