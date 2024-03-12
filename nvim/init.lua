@@ -1,5 +1,6 @@
-local lazy_config = require("jack.lazy")
-lazy_config.run_lazy({
+require("jack.base-settings")
+
+require("jack.lazy").run_lazy({
   --
   -- THEME + COLOURS
   --
@@ -92,11 +93,21 @@ lazy_config.run_lazy({
   -- LSP, auto-complete and snippets
   --
   {
+    "mattn/emmet-vim",
+    keys = "<C-e>",
+    config = function()
+      require("jack.plugins.emmet-vim")
+    end,
+  },
+  {
     "SmiteshP/nvim-navic",
   },
   {
     "L3MON4D3/LuaSnip",
     event = "InsertEnter",
+    config = function()
+      require("jack.plugins.snippets")
+    end,
   },
   {
     "hrsh7th/nvim-cmp",
@@ -145,13 +156,12 @@ lazy_config.run_lazy({
   {
     "stevearc/conform.nvim",
     config = function()
-      require("jack.plugins.conform")
+      require("jack.plugins.conform").setup({})
     end,
     event = "BufWritePre",
   },
 })
 
-require("jack.base-settings")
 require("jack.statusline")
 require("jack.maps")
 require("jack.folds")
