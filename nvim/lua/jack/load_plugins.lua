@@ -95,8 +95,11 @@ local base_plugins = {
   --
   {
     "mattn/emmet-vim",
-    keys = "<C-e>",
-    config = function()
+    keys = { { "<C-e>", mode = "i" } },
+    init = function()
+      -- We use init here as the config for this plugin is
+      -- setting two global variables which must be set
+      -- before the plugin is loaded.
       require("jack.plugins.emmet-vim")
     end,
   },
