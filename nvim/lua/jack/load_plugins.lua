@@ -47,6 +47,7 @@ local base_plugins = {
     "mileszs/ack.vim",
     lazy = true,
     cmd = { "Ack" },
+    keys = { "<leader>/" },
     config = function()
       require("jack.plugins.ack")
     end,
