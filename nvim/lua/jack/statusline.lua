@@ -89,13 +89,54 @@ function StatusBarExecutor()
   end
 end
 
+local function executor_text(inner_text)
+  -- Purposeful end space to pad out status bar items
+  return "[" .. inner_text .. "] "
+end
+
+function ExecutorPassOutput()
+  local status = executor.current_status()
+  if status == "PASSED" then
+    return executor_text("P")
+  end
+  return ""
+end
+
+function ExecutorFailOutput()
+  local status = executor.current_status()
+  if status == "FAILED" then
+    return executor_text("F")
+  end
+  return ""
+end
+
+function ExecutorInProgressOutput()
+  local status = executor.current_status()
+  if status == "IN_PROGRESS" then
+    return executor_text("…")
+  end
+  return ""
+end
+
+local executor_status = table.concat({
+  "%#ExecutorPass#",
+  "%{v:lua.ExecutorPassOutput()}",
+  "%#Normal#",
+  "%#ExecutorFail#",
+  "%{v:lua.ExecutorFailOutput()}",
+  "%#Normal#",
+  "%#ExecutorInProgress#",
+  "%{v:lua.ExecutorInProgressOutput()}",
+  "%#Normal#",
+}, "")
+
 local status_line_parts = {
-  "%{v:lua.StatusBarExecutor()}",
+  executor_status,
   diagnostic_status_line,
   "%=", -- this pushes what's after it to the RHS
   "%#JackStatusBarNavic#%{v:lua.StatusBarNavic()}%*",
-  " ", -- bit of padding after the navigation
-  "%#JackStatusBarFugitive#%{FugitiveStatusline()}%* ",
+  " ", -- Padding between navic + fugitive
+  "%#JackStatusBarFugitive#%{FugitiveStatusline()}%*",
 }
 
 vim.o.statusline = table.concat(status_line_parts, "")

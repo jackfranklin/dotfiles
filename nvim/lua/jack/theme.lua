@@ -36,6 +36,8 @@ local function load_kanagawa()
         JackStatusBarDiagnosticInfo = { fg = colors.theme.diag.info, bg = colors.theme.ui.bg_m3 },
         JackStatusBarNavic = { italic = true, bg = colors.theme.ui.bg_m3, fg = colors.theme.fg_dim },
         DiagnosticUnnecessary = { underline = true, fg = colors.theme.syn.comment },
+        ExecutorFail = { fg = colors.theme.diag.error, bg = colors.theme.ui.bg_m3 },
+        ExecutorPass = { fg = colors.theme.diag.ok, bg = colors.theme.ui.bg_m3 },
         Folded = {
           italic = true,
           bg = colors.theme.ui.bg_m3,
