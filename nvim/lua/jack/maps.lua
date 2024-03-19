@@ -4,8 +4,6 @@ vim.api.nvim_exec(
 " ACK (well, Ag)
 let g:ackprg = 'ag --vimgrep --smart-case'
 
-"" nnoremap <CR> :noh<CR><CR>
-
 " new file in current directory
 map <Leader>nf :e <C-R>=expand("%:p:h") . "/" <CR>
 map <leader>v :vsplit<CR>

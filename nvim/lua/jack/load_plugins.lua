@@ -14,6 +14,7 @@ local base_plugins = {
   },
   {
     "jackfranklin/winbar.nvim",
+    -- dir = "~/git/winbar.nvim",
     config = function()
       require("jack.plugins.winbar")
     end,
