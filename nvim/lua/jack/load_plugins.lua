@@ -22,7 +22,7 @@ local base_plugins = {
   --
   -- TPOPE
   --
-  { "tpope/vim-commentary", keys = "gc" },
+  { "tpope/vim-commentary", keys = { { "gc", mode = "n" }, { "gcc", mode = "v" } } },
   {
     "tpope/vim-fugitive",
     -- Cannot be lazy as we rely on it for the statusline.
