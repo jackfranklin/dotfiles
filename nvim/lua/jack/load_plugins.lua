@@ -97,7 +97,7 @@ local base_plugins = {
   --
   {
     "mattn/emmet-vim",
-    keys = { { "<C-e>", mode = "i" } },
+    keys = { { "<C-e>", mode = { "i", "v" } } },
     init = function()
       -- We use init here as the config for this plugin is
       -- setting two global variables which must be set
