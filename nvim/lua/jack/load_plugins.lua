@@ -43,6 +43,12 @@ local base_plugins = {
       require("jack.plugins.mini-files")
     end,
   },
+  {
+    "echasnovski/mini.indentscope",
+    config = function()
+      require("jack.plugins.mini-indent")
+    end,
+  },
   { "ojroques/vim-oscyank", cmd = "OSCYankVisual" },
   {
     "mileszs/ack.vim",
