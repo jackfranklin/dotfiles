@@ -1,4 +1,8 @@
-require("mini.indentscope").setup({})
+require("mini.indentscope").setup({
+  options = {
+    try_as_border = true,
+  },
+})
 
 -- Disable indents when in terminal, executor windows (nofile) and help
 local augroup = vim.api.nvim_create_augroup("DisableIndent", {})
