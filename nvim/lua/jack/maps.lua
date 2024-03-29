@@ -62,8 +62,8 @@ tnoremap <C-l> <C-\><C-n><C-w>l
   false
 )
 
-vim.api.nvim_set_keymap("n", "gp", ":cnext<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "gP", ":cprev<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "cn", ":cnext<CR>", { noremap = true })
+vim.api.nvim_set_keymap("n", "cp", ":cprev<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh<CR>", { noremap = true })
 
 -- Map <CR> to ciw, but avoid certain buffers.

@@ -148,6 +148,13 @@ local base_plugins = {
       require("jack.plugins.lsp")
     end,
   },
+  {
+    "rmagatti/goto-preview",
+    keys = { "gp", mode = "n" },
+    config = function()
+      require("jack.plugins.gotopreview")
+    end,
+  },
 
   --
   -- TREESITTER
