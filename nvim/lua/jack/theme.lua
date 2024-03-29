@@ -26,7 +26,7 @@ end
 local function load_kanagawa()
   require("kanagawa").setup({
     undercurl = false, -- TODO: find out how to make this true for Mac only.
-    dimInactive = true,
+    dimInactive = false,
     overrides = function(colors)
       return {
         ["@comment.todo"] = { fg = colors.palette.lotusRed },
