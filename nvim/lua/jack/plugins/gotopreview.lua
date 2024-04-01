@@ -2,12 +2,6 @@ local goto_preview = require("goto-preview")
 
 goto_preview.setup({
   post_open_hook = function(buff, win)
-    vim.keymap.set("n", "<Esc>", function()
-      if vim.api.nvim_win_is_valid(win) then
-        vim.api.nvim_win_close(win, true)
-      end
-    end, { buffer = buff })
-
     vim.keymap.set("n", "q", function()
       if vim.api.nvim_win_is_valid(win) then
         vim.api.nvim_win_close(win, true)
