@@ -5,5 +5,5 @@ vim.api.nvim_exec(
   let g:user_emmet_leader_key='<C-9>'
   let g:user_emmet_expandabbr_key = '<C-e>'
 ]],
-  { output = "false" }
+  false
 )

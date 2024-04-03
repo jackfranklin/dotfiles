@@ -5,7 +5,6 @@ require("winbar").setup({
     "startify",
     "terminal",
     "neoterm",
-    "FTerm",
     "dashboard",
     "packer",
     "neogitstatus",
