@@ -1,10 +1,6 @@
 local M = {}
 
-local base_plugins = function(module_prefix)
-  local function config_req(p)
-    return require(module_prefix .. p)
-  end
-
+local base_plugins = function()
   return {
     --
     -- THEME + COLOURS
@@ -14,14 +10,15 @@ local base_plugins = function(module_prefix)
       lazy = false,
       priority = 1000,
       config = function()
-        config_req("jack.theme")
+        require("jack.theme")
+        -- require("jack.theme")
       end,
     },
     {
       "jackfranklin/winbar.nvim",
       -- dir = "~/git/winbar.nvim",
       config = function()
-        config_req("jack.plugins.winbar")
+        require("jack.plugins.winbar")
       end,
     },
     --
@@ -31,7 +28,7 @@ local base_plugins = function(module_prefix)
     {
       "tpope/vim-fugitive",
       config = function()
-        config_req("jack.plugins.fugitive")
+        require("jack.plugins.fugitive")
       end,
     },
     "tpope/vim-sleuth",
@@ -44,13 +41,13 @@ local base_plugins = function(module_prefix)
       "echasnovski/mini.files",
       keys = "-",
       config = function()
-        config_req("jack.plugins.mini-files")
+        require("jack.plugins.mini-files")
       end,
     },
     {
       "echasnovski/mini.indentscope",
       config = function()
-        config_req("jack.plugins.mini-indent")
+        require("jack.plugins.mini-indent")
       end,
     },
     { "ojroques/vim-oscyank", cmd = "OSCYankVisual" },
@@ -60,20 +57,20 @@ local base_plugins = function(module_prefix)
       cmd = { "Ack" },
       keys = { "<leader>/" },
       config = function()
-        config_req("jack.plugins.ack")
+        require("jack.plugins.ack")
       end,
     },
     "farmergreg/vim-lastplace",
     {
       "kylechui/nvim-surround",
       config = function()
-        config_req("jack.plugins.surround")
+        require("jack.plugins.surround")
       end,
     },
     {
       "windwp/nvim-autopairs",
       config = function()
-        config_req("jack.plugins.autopairs")
+        require("jack.plugins.autopairs")
       end,
     },
     --
@@ -82,14 +79,14 @@ local base_plugins = function(module_prefix)
     {
       "akinsho/toggleterm.nvim",
       config = function()
-        config_req("jack.plugins.toggleterm")
+        require("jack.plugins.toggleterm")
       end,
     },
     {
       "ibhagwan/fzf-lua",
       keys = "<leader>t",
       config = function()
-        config_req("jack.plugins.fzf-lua").setup({})
+        require("jack.plugins.fzf-lua").setup({})
       end,
     },
     {
@@ -99,7 +96,7 @@ local base_plugins = function(module_prefix)
       },
       keys = { "<leader>er", "<leader>ep" },
       config = function()
-        config_req("jack.plugins.executor").setup({})
+        require("jack.plugins.executor").setup({})
       end,
     },
     --
@@ -112,7 +109,7 @@ local base_plugins = function(module_prefix)
         -- We use init here as the config for this plugin is
         -- setting two global variables which must be set
         -- before the plugin is loaded.
-        config_req("jack.plugins.emmet-vim")
+        require("jack.plugins.emmet-vim")
       end,
     },
     {
@@ -122,7 +119,7 @@ local base_plugins = function(module_prefix)
       "L3MON4D3/LuaSnip",
       event = "InsertEnter",
       config = function()
-        config_req("jack.plugins.snippets")
+        require("jack.plugins.snippets")
       end,
     },
     {
@@ -137,7 +134,7 @@ local base_plugins = function(module_prefix)
         "saadparwaiz1/cmp_luasnip",
       },
       config = function()
-        config_req("jack.plugins.cmp")
+        require("jack.plugins.cmp")
       end,
     },
     {
@@ -149,14 +146,14 @@ local base_plugins = function(module_prefix)
         "nvim-lua/plenary.nvim",
       },
       config = function()
-        config_req("jack.plugins.lsp")
+        require("jack.plugins.lsp")
       end,
     },
     {
       "rmagatti/goto-preview",
       keys = { "gp", mode = "n" },
       config = function()
-        config_req("jack.plugins.gotopreview")
+        require("jack.plugins.gotopreview")
       end,
     },
 
@@ -170,7 +167,7 @@ local base_plugins = function(module_prefix)
       },
       build = ":TSUpdate",
       config = function()
-        config_req("jack.plugins.treesitter")
+        require("jack.plugins.treesitter")
       end,
     },
 
@@ -180,7 +177,7 @@ local base_plugins = function(module_prefix)
     {
       "stevearc/conform.nvim",
       config = function()
-        config_req("jack.plugins.conform").setup({})
+        require("jack.plugins.conform").setup({})
       end,
       event = "BufWritePre",
     },
@@ -191,10 +188,9 @@ M.load = function(config)
   config = config or {}
   local extra_plugins = config.extra_plugins or {}
   local config_overrides = config.config_overrides or {}
-  local prefix = config.prefix or ""
 
   local final_plugins = {}
-  for k, v in pairs(base_plugins(prefix)) do
+  for k, v in pairs(base_plugins()) do
     final_plugins[k] = v
     local plugin_name = v[1] or v.dir
     local override_config = config_overrides[plugin_name]
@@ -206,7 +202,7 @@ M.load = function(config)
     final_plugins[k] = v
   end
 
-  require(prefix .. "jack.lazy").run_lazy(final_plugins)
+  require("jack.lazy").run_lazy(final_plugins)
 end
 
 return M
