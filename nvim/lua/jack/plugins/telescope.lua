@@ -15,6 +15,7 @@ M.setup = function(config)
   end)
   vim.keymap.set("n", "<leader>tb", builtin.buffers, {})
   vim.keymap.set("n", "<leader>ts", builtin.lsp_document_symbols, {})
+  vim.keymap.set("n", "<leader>tc", builtin.command_history, {})
 
   -- LSP replacements for basic goto refs & goto defs
   vim.keymap.set("n", "gr", builtin.lsp_references, {})
