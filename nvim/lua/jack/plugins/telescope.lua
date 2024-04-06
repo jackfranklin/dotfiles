@@ -9,7 +9,11 @@ M.setup = function(config)
     table.insert(file_ignore_patterns, value)
   end
 
+  -- TODO: pick one Jack !
   vim.keymap.set("n", "<leader>tf", builtin.find_files, {})
+  vim.keymap.set("n", "<leader>tt", builtin.find_files, {})
+  vim.keymap.set("n", "<leader>f", builtin.find_files, {})
+
   vim.keymap.set("n", "<leader>td", function()
     builtin.find_files({ cwd = vim.fn.expand("%:p:h") })
   end)
@@ -42,6 +46,9 @@ M.setup = function(config)
         preview = true,
       },
       lsp_definitions = {
+        preview = true,
+      },
+      lsp_document_symbols = {
         preview = true,
       },
     },

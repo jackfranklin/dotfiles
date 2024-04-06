@@ -90,7 +90,6 @@ local base_plugins = function()
     -- },
     {
       "nvim-telescope/telescope.nvim",
-      keys = { "<leader>tf" },
       tag = "0.1.6",
       dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
       config = function()
