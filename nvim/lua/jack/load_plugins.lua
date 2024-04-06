@@ -45,6 +45,13 @@ local base_plugins = function()
       end,
     },
     {
+      "echasnovski/mini.diff",
+      event = { "BufReadPre" },
+      config = function()
+        require("jack.plugins.mini-diff")
+      end,
+    },
+    {
       "echasnovski/mini.indentscope",
       config = function()
         require("jack.plugins.mini-indent")
