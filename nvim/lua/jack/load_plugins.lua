@@ -73,6 +73,23 @@ local base_plugins = function()
         require("jack.plugins.autopairs")
       end,
     },
+    -- FUZZY FINDERS
+    -- {
+    --   "ibhagwan/fzf-lua",
+    --   keys = "<leader>t",
+    --   config = function()
+    --     require("jack.plugins.fzf-lua").setup({})
+    --   end,
+    -- },
+    {
+      "nvim-telescope/telescope.nvim",
+      keys = { "<leader>tf" },
+      tag = "0.1.6",
+      dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
+      config = function()
+        require("jack.plugins.telescope").setup({})
+      end,
+    },
     --
     -- TERMINAL AND TASK RUNNERS
     --
@@ -80,13 +97,6 @@ local base_plugins = function()
       "akinsho/toggleterm.nvim",
       config = function()
         require("jack.plugins.toggleterm")
-      end,
-    },
-    {
-      "ibhagwan/fzf-lua",
-      keys = "<leader>t",
-      config = function()
-        require("jack.plugins.fzf-lua").setup({})
       end,
     },
     {
