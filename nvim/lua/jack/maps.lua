@@ -64,7 +64,16 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 
 vim.api.nvim_set_keymap("n", "cn", ":cnext<CR>", { noremap = true })
 vim.api.nvim_set_keymap("n", "cp", ":cprev<CR>", { noremap = true })
-vim.api.nvim_set_keymap("n", "<Space><Space>", ":noh<CR>", { noremap = true })
+vim.keymap.set("n", "<Esc>", ":noh<CR>")
+
+-- Highlight text when yanking it
+vim.api.nvim_create_autocmd("TextYankPost", {
+  desc = "Highlight when yanking (copying) text",
+  group = vim.api.nvim_create_augroup("kickstart-highlight-yank", { clear = true }),
+  callback = function()
+    vim.highlight.on_yank()
+  end,
+})
 
 -- Map <CR> to ciw, but avoid certain buffers.
 local augroup = vim.api.nvim_create_augroup("EnterRemap", {})
