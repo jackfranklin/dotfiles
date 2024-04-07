@@ -1,6 +1,6 @@
 -- TODO: convert these to use NeoVim API methods directly.
 vim.keymap.set("n", "<leader>nf", ':e <C-R>=expand("%:p:h") . "/" <CR>', { desc = "Create [n]ew [f]ile in directory" })
-vim.keymap.set("n", "<leader>v<CR>", ":vsplit", { desc = ":vsplit" })
+vim.keymap.set("n", "<leader>v", ":vsplit<CR>", { desc = ":vsplit" })
 
 vim.api.nvim_exec(
   [[
