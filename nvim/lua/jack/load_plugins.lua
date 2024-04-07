@@ -62,7 +62,7 @@ local base_plugins = function()
       "mileszs/ack.vim",
       lazy = true,
       cmd = { "Ack" },
-      keys = { "<leader>/" },
+      keys = { { "<leader>/", desc = "Search with Ack!" } },
       config = function()
         require("jack.plugins.ack")
       end,
@@ -79,6 +79,19 @@ local base_plugins = function()
       config = function()
         require("jack.plugins.autopairs")
       end,
+    },
+    {
+      "folke/which-key.nvim",
+      event = "VeryLazy",
+      init = function()
+        vim.o.timeout = true
+        vim.o.timeoutlen = 300
+      end,
+      opts = {
+        -- your configuration comes here
+        -- or leave it empty to use the default settings
+        -- refer to the configuration section below
+      },
     },
     -- FUZZY FINDERS
     -- {

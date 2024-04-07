@@ -34,5 +34,6 @@
   "vim-sleuth": { "branch": "master", "commit": "1cc4557420f215d02c4d2645a748a816c220e99b" },
   "vim-unimpaired": { "branch": "master", "commit": "6d44a6dc2ec34607c41ec78acf81657248580bf1" },
   "vim-visualstar": { "branch": "master", "commit": "a18cd0e7a03311ac709595c1d261ed44b45c9098" },
+  "which-key.nvim": { "branch": "main", "commit": "4433e5ec9a507e5097571ed55c02ea9658fb268a" },
   "winbar.nvim": { "branch": "main", "commit": "89c45233a103950a7b09866a00996a4f5dcbc790" }
 }

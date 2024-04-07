@@ -8,4 +8,4 @@ let g:ack_use_cword_for_empty_search = 1
   false
 )
 
-vim.api.nvim_set_keymap("n", "<leader>/", ":Ack!<Space>", {})
+vim.keymap.set("n", "<leader>/", ":Ack!<Space>", { desc = "Search with Ack!" })
