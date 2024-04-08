@@ -1,5 +1,7 @@
 local M = {}
 
+local executor = require("executor")
+
 M.setup = function(config)
   local preset_commands = {
     ["executor.nvim"] = {
@@ -40,12 +42,16 @@ M.setup = function(config)
       },
     },
   })
-  local opts = { noremap = true, silent = true }
-  vim.api.nvim_set_keymap("n", "<leader>er", ":ExecutorRun<CR>", opts)
-  vim.api.nvim_set_keymap("n", "<leader>ev", ":ExecutorToggleDetail<CR>", opts)
-  vim.api.nvim_set_keymap("n", "<leader>es", ":ExecutorSetCommand<CR>", opts)
-  vim.api.nvim_set_keymap("n", "<leader>ep", ":ExecutorShowPresets<CR>", opts)
-  vim.api.nvim_set_keymap("n", "<leader>eh", ":ExecutorShowHistory<CR>", opts)
+  local normal_key = function(lhs, func, which_key_desc)
+    local opts = { desc = "[e]xecutor " .. which_key_desc, noremap = true, silent = true }
+    vim.keymap.set("n", lhs, func, opts)
+  end
+
+  normal_key("<leader>er", executor.commands.run, "[r]un")
+  normal_key("<leader>ev", executor.commands.toggle_detail, "[v]iew detail")
+  normal_key("<leader>es", executor.commands.set_command, "[s]et command")
+  normal_key("<leader>ep", executor.commands.run, "show [p]resets")
+  normal_key("<leader>eh", executor.commands.run, "show [h]istory")
 end
 
 return M

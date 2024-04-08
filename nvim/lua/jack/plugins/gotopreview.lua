@@ -12,4 +12,4 @@ goto_preview.setup({
 
 vim.keymap.set("n", "gp", function()
   goto_preview.goto_preview_definition()
-end)
+end, { desc = "LSP [g]oto [p]review" })

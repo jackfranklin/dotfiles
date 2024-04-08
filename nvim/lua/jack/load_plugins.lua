@@ -114,7 +114,6 @@ local base_plugins = function()
       dependencies = {
         "MunifTanjim/nui.nvim",
       },
-      keys = { "<leader>er", "<leader>ep" },
       config = function()
         require("jack.plugins.executor").setup({})
       end,

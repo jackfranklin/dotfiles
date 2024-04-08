@@ -14,19 +14,12 @@ require("toggleterm").setup({
 vim.api.nvim_exec(
   [[
 autocmd BufEnter * if &filetype == 'toggleterm' | :startinsert | endif
+autocmd BufEnter * if &filetype == 'toggleterm' | :set cursorline | endif
+autocmd BufLeave * if &filetype == 'toggleterm' | :set nocursorline | endif
 ]],
   false
 )
 local Terminal = require("toggleterm.terminal").Terminal
-local lazygit = Terminal:new({
-  cmd = "lazygit",
-  direction = "float",
-  hidden = true,
-  on_open = function(term)
-    vim.cmd("startinsert!")
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-  end,
-})
 local side_terminal = Terminal:new({
   direction = "vertical",
   hidden = true,
@@ -37,63 +30,12 @@ local side_terminal = Terminal:new({
   start_in_insert = true,
 })
 
-function LazyGitToggle()
-  lazygit:toggle()
-end
 function SideTermToggle()
   side_terminal:toggle(vim.o.columns * 0.3)
 end
 
-vim.api.nvim_set_keymap("n", "<leader>lg", "<cmd>lua LazyGitToggle()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>pt", "<cmd>lua SideTermToggle()<CR>", { noremap = true, silent = true })
-
-local defaultBuild = Terminal:new({
-  cmd = "autoninja -C out/Default",
-  direction = "float",
-  float_opts = {
-    width = function(term)
-      local width = math.ceil(vim.o.columns / 4)
-      term.float_opts.col = vim.o.columns - width
-      return width
-    end,
-    height = function(term)
-      local height = 15
-      term.float_opts.row = vim.o.lines - height
-      return height
-    end,
-  },
-  close_on_exit = false,
-  on_open = function(term)
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-  end,
+vim.keymap.set("n", "<leader>pt", "<cmd>lua SideTermToggle()<CR>", {
+  noremap = true,
+  silent = true,
+  desc = "toggle side terminal",
 })
-function DefaultBuildToggle()
-  defaultBuild:toggle()
-end
-
-local fastBuild = Terminal:new({
-  cmd = "autoninja -C out/Fast",
-  direction = "float",
-  float_opts = {
-    width = function(term)
-      local width = math.ceil(vim.o.columns / 4)
-      term.float_opts.col = vim.o.columns - width
-      return width
-    end,
-    height = function(term)
-      local height = 15
-      term.float_opts.row = vim.o.lines - height
-      return height
-    end,
-  },
-  close_on_exit = false,
-  on_open = function(term)
-    vim.api.nvim_buf_set_keymap(term.bufnr, "n", "q", "<cmd>close<CR>", { noremap = true, silent = true })
-  end,
-})
-function FastBuildToggle()
-  fastBuild:toggle()
-end
-
-vim.api.nvim_set_keymap("n", "<leader>ad", "<cmd>lua DefaultBuildToggle()<CR>", { noremap = true, silent = true })
-vim.api.nvim_set_keymap("n", "<leader>af", "<cmd>lua FastBuildToggle()<CR>", { noremap = true, silent = true })

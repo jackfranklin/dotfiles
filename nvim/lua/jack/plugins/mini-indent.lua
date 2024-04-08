@@ -27,4 +27,4 @@ vim.keymap.set("n", "<leader>si", function()
   else
     vim.b.miniindentscope_disable = true
   end
-end)
+end, { desc = "[set] indentlines on/off" })
