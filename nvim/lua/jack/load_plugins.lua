@@ -94,19 +94,10 @@ local base_plugins = function()
       },
     },
     -- FUZZY FINDERS
-    -- {
-    --   "ibhagwan/fzf-lua",
-    --   keys = "<leader>t",
-    --   config = function()
-    --     require("jack.plugins.fzf-lua").setup({})
-    --   end,
-    -- },
     {
-      "nvim-telescope/telescope.nvim",
-      tag = "0.1.6",
-      dependencies = { "nvim-lua/plenary.nvim", { "nvim-telescope/telescope-fzf-native.nvim", build = "make" } },
+      "ibhagwan/fzf-lua",
       config = function()
-        require("jack.plugins.telescope").setup({})
+        require("jack.plugins.fzf-lua").setup({})
       end,
     },
     --

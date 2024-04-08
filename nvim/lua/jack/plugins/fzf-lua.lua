@@ -7,22 +7,11 @@ M.setup = function(config)
       file_icons = false,
       no_header_i = true,
     })
-  end)
-  vim.keymap.set("n", "<leader>o", function()
-    require("fzf-lua").oldfiles({ cwd_only = true })
-  end)
-  vim.keymap.set("n", "<leader>fw", function()
-    require("fzf-lua").lsp_live_workspace_symbols({
-      symbol_style = 3,
-      winopts = {
-        preview = { hidden = "nohidden" },
-      },
-      no_header_i = true,
-    })
-  end)
-  vim.keymap.set("n", "<leader>b", function()
+  end, { desc = "Find files" })
+  vim.keymap.set("n", "<leader>fb", function()
     require("fzf-lua").buffers()
-  end)
+  end, { desc = "Find [b]uffers" })
+
   vim.keymap.set("n", "<leader>fs", function()
     require("fzf-lua").lsp_document_symbols({
       symbol_style = 3,
@@ -31,7 +20,7 @@ M.setup = function(config)
       },
       no_header_i = true,
     })
-  end)
+  end, { desc = "[f]ind LSP [s]ymbols" })
 
   vim.keymap.set("n", "<leader>fd", function()
     local cwd_for_buf = vim.fn.expand("%:h")
@@ -41,15 +30,15 @@ M.setup = function(config)
       cwd = cwd_for_buf,
       no_header_i = true,
     })
-  end)
+  end, { desc = "Find [f]iles in [d]irectory" })
 
   vim.keymap.set("n", "gd", function()
     require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
-  end)
+  end, { desc = "Find LSP [d]efinitions" })
 
   vim.keymap.set("n", "gr", function()
     require("fzf-lua").lsp_references({ jump_to_single_result = true })
-  end)
+  end, { desc = "Find LSP [r]eferences" })
 
   local ignore = { "^node_modules/", "^.git/" }
   local extraIgnores = config.extra_ignore_patterns or {}
