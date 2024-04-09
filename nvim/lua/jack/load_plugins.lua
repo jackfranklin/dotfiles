@@ -24,7 +24,7 @@ local base_plugins = function()
     --
     -- TPOPE
     --
-    { "tpope/vim-commentary", keys = { { "gc", mode = "n" }, { "gcc", mode = "v" } } },
+    { "tpope/vim-commentary", event = { "BufReadPre" } },
     {
       "tpope/vim-fugitive",
       config = function()
@@ -121,13 +121,6 @@ local base_plugins = function()
     --
     -- LSP, auto-complete and snippets
     --
-    {
-      "dmmulroy/ts-error-translator.nvim",
-      ft = { "typescript" },
-      config = function()
-        require("ts-error-translator").setup()
-      end,
-    },
 
     {
       "mattn/emmet-vim",
