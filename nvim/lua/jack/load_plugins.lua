@@ -122,6 +122,14 @@ local base_plugins = function()
     -- LSP, auto-complete and snippets
     --
     {
+      "dmmulroy/ts-error-translator.nvim",
+      ft = { "typescript" },
+      config = function()
+        require("ts-error-translator").setup()
+      end,
+    },
+
+    {
       "mattn/emmet-vim",
       keys = { { "<C-e>", mode = { "i", "v" } } },
       init = function()
