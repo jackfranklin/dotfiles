@@ -13,27 +13,30 @@ cmp.setup({
       scrolloff = 2,
       side_padding = 2,
       max_height = 10,
-      scrollbar = false,
     }),
   },
   mapping = {
     ["<C-d>"] = cmp.mapping.scroll_docs(-4),
-    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-    ["<C-l>"] = cmp.mapping.complete(),
-    ["<C-e>"] = cmp.mapping.close(),
-    ["<C-y>"] = cmp.mapping(
-      cmp.mapping.confirm({
-        behavior = cmp.ConfirmBehavior.Insert,
-        select = true,
-      }),
-      { "i", "c" }
-    ),
-    ["<C-n>"] = {
-      i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
-    },
-    ["<C-p>"] = {
-      i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
-    },
+    ["<C-u>"] = cmp.mapping.scroll_docs(4),
+    ["<C-c>"] = cmp.mapping.close(),
+    -- ["<C-y>"] = cmp.mapping(
+    --   cmp.mapping.confirm({
+    --     behavior = cmp.ConfirmBehavior.Insert,
+    --     select = true,
+    --   }),
+    --   { "i", "c" }
+    -- ),
+    -- ["<C-n>"] = {
+    --   i = cmp.mapping.select_next_item({ behavior = cmp.SelectBehavior.Insert }),
+    -- },
+    -- ["<C-p>"] = {
+    --   i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
+    -- },
+    -- Trialling new settings
+    ["<C-space>"] = cmp.mapping.complete(), -- force the autocomplete popup
+    ["<CR>"] = cmp.mapping.confirm({ select = true }), -- select suggestion
+    ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
+    ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
   },
   performance = {
     max_view_entries = 20,
