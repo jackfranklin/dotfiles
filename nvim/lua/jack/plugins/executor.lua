@@ -50,8 +50,8 @@ M.setup = function(config)
   normal_key("<leader>er", executor.commands.run, "[r]un")
   normal_key("<leader>ev", executor.commands.toggle_detail, "[v]iew detail")
   normal_key("<leader>es", executor.commands.set_command, "[s]et command")
-  normal_key("<leader>ep", executor.commands.run, "show [p]resets")
-  normal_key("<leader>eh", executor.commands.run, "show [h]istory")
+  normal_key("<leader>ep", executor.commands.show_presets, "show [p]resets")
+  normal_key("<leader>eh", executor.commands.show_history, "show [h]istory")
 end
 
 return M
