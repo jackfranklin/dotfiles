@@ -4,20 +4,20 @@ require("mini.indentscope").setup({
   },
 })
 
--- Disable by default
+-- Disable by default in both buffers and terminal (which fzf-lua uses).
+-- Because the setting is per buffer this has to be done in an autocmd.
 local augroup = vim.api.nvim_create_augroup("DisableIndent", {})
 vim.api.nvim_clear_autocmds({ group = augroup })
+vim.api.nvim_create_autocmd({ "TermEnter" }, {
+  group = augroup,
+  callback = function()
+    vim.b.miniindentscope_disable = true
+  end,
+})
 vim.api.nvim_create_autocmd({ "BufWinEnter" }, {
   group = augroup,
   callback = function()
     vim.b.miniindentscope_disable = true
-
-    -- Disable indents when in terminal, executor windows (nofile) and help
-    -- local buftype = vim.api.nvim_get_option_value("buftype", { buf = data.buf })
-    -- local filetype = vim.api.nvim_get_option_value("filetype", { buf = data.buf })
-    -- if vim.tbl_contains({ "terminal", "help", "nofile" }, buftype) or vim.tbl_contains({ "css" }, filetype) then
-    -- vim.b.miniindentscope_disable = true
-    -- end
   end,
 })
 
