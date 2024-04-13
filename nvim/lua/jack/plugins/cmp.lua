@@ -35,8 +35,8 @@ cmp.setup({
     -- Trialling new settings
     ["<C-space>"] = cmp.mapping.complete(), -- force the autocomplete popup
     ["<CR>"] = cmp.mapping.confirm({ select = true }), -- select suggestion
-    ["<C-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
-    ["<C-j>"] = cmp.mapping.select_next_item(), -- next suggestion
+    ["<C-p>"] = cmp.mapping.select_prev_item(), -- previous suggestion
+    ["<C-n>"] = cmp.mapping.select_next_item(), -- next suggestion
   },
   performance = {
     max_view_entries = 20,
