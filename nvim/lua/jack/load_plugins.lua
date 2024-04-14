@@ -1,6 +1,6 @@
 local M = {}
 
-local base_plugins = function()
+local base_plugins = function(env)
   return {
     --
     -- THEME + COLOURS
@@ -10,8 +10,7 @@ local base_plugins = function()
       lazy = false,
       priority = 1000,
       config = function()
-        require("jack.theme")
-        -- require("jack.theme")
+        require("jack.theme").setup({ env = env })
       end,
     },
     {
@@ -207,9 +206,10 @@ M.load = function(config)
   config = config or {}
   local extra_plugins = config.extra_plugins or {}
   local config_overrides = config.config_overrides or {}
+  local env = config.env or "wsl_surface_pro"
 
   local final_plugins = {}
-  for k, v in pairs(base_plugins()) do
+  for k, v in pairs(base_plugins(env)) do
     final_plugins[k] = v
     local plugin_name = v[1] or v.dir
     local override_config = config_overrides[plugin_name]

@@ -23,9 +23,10 @@ local function load_dark_flat()
   })
 end
 
-local function load_kanagawa()
+local function load_kanagawa(env)
+  print("here " .. env)
   require("kanagawa").setup({
-    undercurl = false, -- TODO: find out how to make this true for Mac only.
+    undercurl = env == "work_macbook",
     dimInactive = true,
     overrides = function(colors)
       return {
@@ -130,13 +131,17 @@ local function load_tokyonight()
   })
 end
 
-load_kanagawa()
-vim.api.nvim_command("colorscheme kanagawa")
-local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
+local M = {}
 
-if theme == "catppuccin" and catppuccin_flavour == "latte" then
-  vim.api.nvim_exec(
-    [[
+M.setup = function(config)
+  config = config or {}
+  load_kanagawa(config.env)
+  vim.api.nvim_command("colorscheme kanagawa")
+  local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
+
+  if theme == "catppuccin" and catppuccin_flavour == "latte" then
+    vim.api.nvim_exec(
+      [[
 hi NormalFloat guibg=none
 hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#e6e9ef
 hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#e6e9ef
@@ -146,17 +151,20 @@ hi DiagnosticUnnecessary gui=underline,italic guisp=#d20f39 cterm=italic,underli
 hi JackStatusBarNavic cterm=italic gui=italic guibg=#e6e9ef
 hi Winbar guibg=#e6e9ef
 ]],
-    true
-  )
-end
+      true
+    )
+  end
 
-if theme == "dark_flat" then
-  vim.api.nvim_exec(
-    [[
+  if theme == "dark_flat" then
+    vim.api.nvim_exec(
+      [[
 hi JackStatusBarDiagnosticError guifg=#d54e53 guibg=#1e2024
 hi JackStatusBarDiagnosticWarn guifg=#d19a66 guibg=#1e2024
 hi JackStatusBarDiagnosticHint guifg=#676e7b guibg=#1e2024
   ]],
-    true
-  )
+      true
+    )
+  end
 end
+
+return M
