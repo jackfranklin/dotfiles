@@ -31,3 +31,5 @@ images/
 
 nvim-linux64*
 .luarc.json
+
+wezterm/per_machine.lua

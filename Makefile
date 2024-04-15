@@ -8,10 +8,6 @@ all:
 neovim:
 	@ln -nsf $(DIR)/nvim ~/.config/nvim
 
-packer:
-	git clone --depth 1 https://github.com/wbthomason/packer.nvim\
- ~/.local/share/nvim/site/pack/packer/start/packer.nvim
-
 fish:
 	@ln -nsf $(DIR)/fish ~/.config/fish
 
@@ -43,13 +39,10 @@ install_rust_analyzer:
 kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
 
-sync_alacritty_windows:
-	cp alacritty_windows/alacritty.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
-	cp alacritty_windows/cat-latte.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
-	cp alacritty_windows/cat-frappe.yml /mnt/c/Users/jack/AppData/Roaming/alacritty/
-
 sync_wezterm:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
+	mkdir -p /mnt/c/Users/jack/.wezterm/
+	test -f wezterm/per_machine.lua && cp wezterm/per_machine.lua /mnt/c/Users/jack/.wezterm/per_machine.lua
 
 
 update_neovim:

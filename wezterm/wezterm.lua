@@ -2,6 +2,7 @@
 local wezterm = require("wezterm")
 local act = wezterm.action
 
+local has_custom_config, custom_config = pcall(require, "per_machine")
 -- This table will hold the configuration.
 local config = {}
 
@@ -30,7 +31,7 @@ config.font = wezterm.font("DM Mono")
 -- Disable ligatures.
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
-config.font_size = 16
+config.font_size = has_custom_config and custom_config.font_size or 16
 config.window_padding = {
   left = 0,
   right = 0,
