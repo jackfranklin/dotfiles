@@ -24,7 +24,6 @@ local function load_dark_flat()
 end
 
 local function load_kanagawa(env)
-  print("here " .. env)
   require("kanagawa").setup({
     undercurl = env == "work_macbook",
     dimInactive = true,
