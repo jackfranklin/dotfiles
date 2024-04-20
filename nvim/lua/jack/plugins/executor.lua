@@ -1,4 +1,5 @@
 local M = {}
+local utils = require("jack.utils")
 
 local executor = require("executor")
 
@@ -8,6 +9,16 @@ M.setup = function(config)
       "make test",
     },
     ["routemaster"] = {
+      {
+        cmd = function()
+          local file_name = utils.make_path_relative_to_cwd(vim.api.nvim_buf_get_name(0))
+          return table.concat({
+            'make tests-with-glob GLOB="',
+            file_name,
+            '"',
+          })
+        end,
+      },
       { partial = true, cmd = 'make tests-with-glob GLOB="test/' },
       "npm run build-run-tests",
       "npm run build-run-tests-esbuild",
