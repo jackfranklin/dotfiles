@@ -56,7 +56,18 @@ local base_plugins = function(env)
         require("jack.plugins.mini-indent")
       end,
     },
-    { "ojroques/vim-oscyank", cmd = "OSCYankVisual" },
+    {
+      "ojroques/vim-oscyank",
+      cmd = "OSCYankVisual",
+      keys = {
+        { "<leader>yo", mode = "v" },
+      },
+      config = function()
+        vim.keymap.set("v", "<leader>yo", "<Plug>OSCYankVisual", {
+          desc = "[Y]ank [O]ut text to the system clipboard",
+        })
+      end,
+    },
     {
       "mileszs/ack.vim",
       lazy = true,
