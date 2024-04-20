@@ -30,22 +30,10 @@ language_servers_global:
 elm_language_servers:
 	npm install -g elm elm-test elm-format @elm-tooling/elm-language-server
 
-install_rust_analyzer:
-	rustup component add rust-src
-	mkdir -p ~/.local/bin
-	curl -L https://github.com/rust-analyzer/rust-analyzer/releases/latest/download/rust-analyzer-x86_64-unknown-linux-gnu.gz | gunzip -c - > ~/.local/bin/rust-analyzer
-	chmod +x ~/.local/bin/rust-analyzer
-
 kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
 
 sync_wezterm:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
 	mkdir -p /mnt/c/Users/jack/.wezterm/
-	test -f wezterm/per_machine.lua && cp wezterm/per_machine.lua /mnt/c/Users/jack/.wezterm/per_machine.lua
-
-
-update_neovim:
-	cd ${NEOVIM_GIT_DIR} && git pull
-	cd ${NEOVIM_GIT_DIR} && make
-	cd ${NEOVIM_GIT_DIR} && make install
+	@test -f wezterm/per_machine.lua && cp wezterm/per_machine.lua /mnt/c/Users/jack/.wezterm/per_machine.lua
