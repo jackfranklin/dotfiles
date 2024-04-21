@@ -7,7 +7,10 @@ M.custom_ui_input = function(opts, callback_func)
   local Input = require("nui.input")
   local input_component = Input({
     relative = "editor",
-    position = "50%",
+    position = {
+      row = "100%",
+      col = 0.5,
+    },
     size = {
       width = width,
     },
