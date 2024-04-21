@@ -1,5 +1,6 @@
 local Path = require("plenary.path")
 require("jack.plugins.globals")
+local ui = require("jack.notes.ui")
 
 local M = {}
 
@@ -46,63 +47,38 @@ M._default_settings = {
   notes_dir = default_notes_dir,
 }
 
+M._state = {
+  recent_notes = {},
+}
+
 M.setup = function(config)
   M._settings = vim.tbl_deep_extend("force", M._default_settings, config or {})
 end
 
+M._store_recent_note = function(file_path)
+  if M._state.recent_notes[file_path] then
+    return
+  end
+  M._state.recent_notes[file_path] = file_path
+  P(M._state.recent_notes)
+end
+
 M.open_daily_notes = function()
   local file_name = Path:new(current_date_for_filename() .. ".md")
+  M._store_recent_note(tostring(file_name))
   open_notes_file(M._settings.notes_dir, file_name)
 end
 
-M.input_prompt = function(callback_func)
-  local Input = require("nui.input")
-  local event = require("nui.utils.autocmd").event
-
-  local input = Input({
-    relative = "editor",
-    position = "50%",
-    size = {
-      width = 50,
-    },
-    border = {
-      style = "single",
-      text = {
-        top = "Name of notes file",
-        top_align = "center",
-      },
-    },
-    win_options = {
-      winhighlight = "Normal:Normal,FloatBorder:Normal",
-    },
-  }, {
-    prompt = "> ",
-    default_value = "",
-    on_submit = function(value)
-      callback_func(value)
-    end,
-  })
-
-  -- mount/open the component
-  input:mount()
-
-  -- unmount component when cursor leaves buffer
-  input:on(event.BufLeave, function()
-    input:unmount()
+M.open_note_by_name = function()
+  ui.input_prompt(function(input_name)
+    local file_name = Path:new(input_name .. ".md")
+    M._store_recent_note(tostring(file_name))
+    open_notes_file(M._settings.notes_dir, file_name)
   end)
-  input:map("n", "<Esc>", function()
-    input:unmount()
-  end, { noremap = true })
-
-  -- Make q close the input.
-  input:map("n", "q", function()
-    input:unmount()
-  end, { noremap = true })
 end
 
-M.open_note_by_name = function()
-  M.input_prompt(function(input_name)
-    local file_name = Path:new(input_name .. ".md")
+M.open_from_recent_notes = function()
+  ui.history_list(M._state.recent_notes, function(file_name)
     open_notes_file(M._settings.notes_dir, file_name)
   end)
 end

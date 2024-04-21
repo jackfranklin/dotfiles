@@ -14,3 +14,4 @@ vim.keymap.set("n", "<leader>nn", notes.open_note_by_name, { desc = "[n]ote [n]e
 vim.keymap.set("n", "<leader>ng", notes.commit_notes, { desc = "[n]otes [g]it: update and push notes to repo" })
 vim.keymap.set("n", "<leader>nf", notes.list_daily_notes_fzf, { desc = "[n]otes [f]iles: search for notes file" })
 vim.keymap.set("n", "<leader>ns", notes.search_daily_notes_fzf, { desc = "[n]otes [s]earch: text search all notes" })
+vim.keymap.set("n", "<leader>nr", notes.open_from_recent_notes, { desc = "[n]otes [r]ecent: list recent note files" })

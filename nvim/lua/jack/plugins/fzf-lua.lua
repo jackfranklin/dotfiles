@@ -63,6 +63,8 @@ M.setup = function(config)
       cwd_only = true,
     },
   })
+
+  require("fzf-lua").register_ui_select()
 end
 
 return M
