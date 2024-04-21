@@ -54,7 +54,9 @@ M.setup = function(config)
       },
     },
     winopts = {
-      height = 0.4,
+      height = 0.3,
+      width = 1,
+      row = 1,
       preview = {
         hidden = "hidden",
       },
