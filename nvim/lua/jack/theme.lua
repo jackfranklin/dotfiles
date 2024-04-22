@@ -30,6 +30,7 @@ local function load_kanagawa(env)
     overrides = function(colors)
       return {
         ["@comment.todo"] = { fg = colors.palette.lotusRed },
+        Boolean = { bold = false },
         JackStatusBarDiagnosticError = { fg = colors.theme.diag.error, bg = colors.theme.ui.bg_m3 },
         JackStatusBarDiagnosticWarn = { fg = colors.theme.diag.warn, bg = colors.theme.ui.bg_m3 },
         JackStatusBarDiagnosticHint = { fg = colors.theme.diag.hint, bg = colors.theme.ui.bg_m3 },
