@@ -144,6 +144,10 @@ customElements.define({}, {})]],
         { i(1), i(0) }
       )
     ),
+    -- if return
+    s("ifr", fmt([[if(!{}) {{return;}}]])),
+    -- if not return
+    s("ifnr", fmt([[if(!{}) {{return;}}]])),
     -- for const of
     s(
       "fforof",
