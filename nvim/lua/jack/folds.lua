@@ -14,5 +14,5 @@ local function open_all_folds()
   vim.api.nvim_exec2("%foldo!", { output = false })
 end
 
-vim.keymap.set("n", "<leader>C", close_all_folds, { desc = "[C]lose all folds" })
-vim.keymap.set("n", "<leader>O", open_all_folds, { desc = "[O]pen all folds" })
+vim.keymap.set("n", "<leader>cs", close_all_folds, { desc = "[C]ode [s]hut folds (tenuous!)" })
+vim.keymap.set("n", "<leader>co", open_all_folds, { desc = "[C]ode [o]pen all folds" })
