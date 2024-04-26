@@ -28,7 +28,7 @@ local on_attach = function(client, bufnr)
   map("<leader>ca", vim.lsp.buf.code_action, "[c]ode [a]ction")
   map("<leader>cc", vim.diagnostic.open_float, "[c]ode [c]riticism (diagnostics)")
   map("ge", vim.diagnostic.goto_next, "[g]o to next [e]rror (diagnostics)")
-  map("gE", vim.diagnostic.goto_next, "[g]o to previous [E]rror (diagnostics)")
+  map("gE", vim.diagnostic.goto_prev, "[g]o to previous [E]rror (diagnostics)")
 
   -- Disable formatexpr to allow Vim's built in gq to work.
   -- See: https://github.com/neovim/neovim/pull/19677
