@@ -25,11 +25,12 @@ local function load_kanagawa(env)
         JackStatusBarDiagnosticError = { fg = colors.theme.diag.error, bg = colors.theme.ui.bg_m3 },
         JackStatusBarDiagnosticWarn = { fg = colors.theme.diag.warn, bg = colors.theme.ui.bg_m3 },
         JackStatusBarDiagnosticHint = { fg = colors.theme.diag.hint, bg = colors.theme.ui.bg_m3 },
-        JackStatusBarDiagnosticInfo = { fg = colors.theme.diag.info, bg = colors.theme.ui.bg_m3 },
+        JackStatusBarDiagnosticInfo = { fg = colors.theme.diag.hint, bg = colors.theme.ui.bg_m3 },
         JackStatusBarNavic = { italic = true, bg = colors.theme.ui.bg_m3, fg = colors.theme.fg_dim },
         DiagnosticUnnecessary = { underline = true, fg = colors.theme.syn.comment },
         ExecutorFail = { fg = colors.theme.diag.error, bg = colors.theme.ui.bg_m3 },
         ExecutorPass = { fg = colors.theme.diag.ok, bg = colors.theme.ui.bg_m3 },
+        ExecutorLastCommand = { fg = colors.theme.ui.fg_dim, bg = colors.theme.ui.bg_m3, italic = true },
         Folded = {
           italic = true,
           bg = colors.theme.ui.bg_m3,

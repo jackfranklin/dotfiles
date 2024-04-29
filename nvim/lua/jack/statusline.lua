@@ -79,19 +79,22 @@ function StatusBarNavic()
   return without_callbacks
 end
 
-function StatusBarExecutor()
-  local text = executor.statusline()
-  if text == "" then
-    return ""
-  else
-    -- Put another empty space on to split it from the next part
-    return text .. " "
-  end
+local function is_outputting_executor_status()
+  local status = executor.current_status()
+  return status == "FAILED" or status == "IN_PROGRESS" or status == "PASSED"
+end
+
+local function is_outputting_executor_last_cmd()
+  local data = executor.last_command()
+  return data.one_off and data.cmd ~= nil
 end
 
 local function executor_text(inner_text)
-  -- Purposeful end space to pad out status bar items
-  return "[" .. inner_text .. "] "
+  local suffix = ""
+  if is_outputting_executor_last_cmd() == false then
+    suffix = " "
+  end
+  return "[" .. inner_text .. "]" .. suffix
 end
 
 function ExecutorPassOutput()
@@ -118,16 +121,34 @@ function ExecutorInProgressOutput()
   return ""
 end
 
+function ExecutorLastCommandOutput()
+  if is_outputting_executor_last_cmd() == false then
+    return ""
+  end
+  local data = executor.last_command()
+  if data.one_off and data.cmd ~= nil then
+    -- Purposeful start space to push it away from the [P] and end space to
+    -- push the stuff to the right away
+    -- (not sure why but it needs two spaces to look right!)
+    return "  (" .. data.cmd .. ") "
+  end
+
+  return ""
+end
+
 local executor_status = table.concat({
   "%#ExecutorPass#",
   "%{v:lua.ExecutorPassOutput()}",
-  "%#Normal#",
+  "%*",
   "%#ExecutorFail#",
   "%{v:lua.ExecutorFailOutput()}",
-  "%#Normal#",
+  "%*",
   "%#ExecutorInProgress#",
   "%{v:lua.ExecutorInProgressOutput()}",
-  "%#Normal#",
+  "%*",
+  "%#ExecutorLastCommand#",
+  "%{v:lua.ExecutorLastCommandOutput()}",
+  "%*",
 }, "")
 
 local status_line_parts = {
