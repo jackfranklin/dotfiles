@@ -15,6 +15,7 @@ config.colors = {
   -- cursor_bg = "#787669",
 }
 config.use_fancy_tab_bar = false
+config.tab_max_width = 32
 
 config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.default_domain = "WSL:Ubuntu"
