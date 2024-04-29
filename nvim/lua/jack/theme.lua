@@ -85,6 +85,8 @@ local function load_catppuccin()
           JackStatusBarDiagnosticError = { bg = latte.mantle, fg = latte.red },
           JackStatusBarDiagnosticWarn = { bg = latte.mantle, fg = latte.pink },
           JackStatusBarDiagnosticHint = { bg = latte.mantle, fg = latte.yellow },
+          ExecutorFail = { bg = latte.mantle, fg = latte.red },
+          ExecutorPass = { fg = latte.green, bg = latte.mantle },
           JackStatusBarNavic = { style = { "italic" }, bg = latte.mantle },
           NormalFloat = { bg = "none" },
         }
