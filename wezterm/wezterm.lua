@@ -3,25 +3,22 @@ local wezterm = require("wezterm")
 local act = wezterm.action
 
 local has_custom_config, custom_config = pcall(require, "per_machine")
--- This table will hold the configuration.
+
 local config = {}
 
--- For example, changing the color scheme:
--- config.color_scheme = "Catppuccin Frappe"
--- config.color_scheme = "Darkside"
--- config.color_scheme = "Darktooth (base16)"
--- config.color_scheme = "deep"
--- config.color_scheme = "Tokyo Night"
-config.color_scheme = "Kanagawa (Gogh)"
+config.color_scheme = has_custom_config and custom_config.color_scheme or "Kanagawa (Gogh)"
 
 config.colors = {
   -- ENABLE ME if using Kanagawa (default cursor is too bright for me)
-  cursor_bg = "#787669",
+  -- cursor_bg = "#787669",
   -- ENABLE ME if using Darkside
   -- cursor_bg = "#787669",
 }
+config.use_fancy_tab_bar = false
+
 config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
 config.default_domain = "WSL:Ubuntu"
+
 -- config.font = wezterm.font("IntelOne Mono")
 -- config.font = wezterm.font("Comic Code")
 -- config.font = wezterm.font("Hack")
