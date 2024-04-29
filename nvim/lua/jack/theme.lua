@@ -1,12 +1,3 @@
-local catppuccin_flavour = "frappe"
-vim.g.catppuccin_flavour = catppuccin_flavour
-
-if catppuccin_flavour == "latte" then
-  vim.api.nvim_exec([[set background=light]], false)
-elseif catppuccin_flavour == "frappe" then
-  vim.api.nvim_exec([[set background=dark]], false)
-end
-
 local function load_dark_flat()
   require("dark_flat").setup({
     themes = function(colors)
@@ -86,6 +77,18 @@ local function load_catppuccin()
           JackStatusBarNavic = { style = { "italic" }, bg = frappe.mantle },
         }
       end,
+      latte = function(latte)
+        return {
+          WinBar = { bg = latte.mantle, fg = latte.green },
+          WinBarFile = { bg = latte.mantle, fg = latte.green },
+          WinBarPath = { bg = latte.mantle, fg = latte.text },
+          JackStatusBarDiagnosticError = { bg = latte.mantle, fg = latte.red },
+          JackStatusBarDiagnosticWarn = { bg = latte.mantle, fg = latte.pink },
+          JackStatusBarDiagnosticHint = { bg = latte.mantle, fg = latte.yellow },
+          JackStatusBarNavic = { style = { "italic" }, bg = latte.mantle },
+          NormalFloat = { bg = "none" },
+        }
+      end,
     },
   })
   -- Generate a set of colors to look at:
@@ -93,78 +96,19 @@ local function load_catppuccin()
   -- local frappe = require("catppuccin.palettes").get_palette("frappe")
 end
 
-local function load_tokyonight()
-  require("tokyonight").setup({
-    on_highlights = function(hl, colors)
-      hl.JackStatusBarDiagnosticError = { fg = colors.red, bg = colors.bg_statusline }
-      hl.JackStatusBarDiagnosticWarn = { fg = colors.orange, bg = colors.bg_statusline }
-      hl.JackStatusBarDiagnosticHint = { fg = colors.fg, bg = colors.bg_statusline }
-      hl.JackStatusBarNavic = {
-        style = {
-          italic = true,
-        },
-        bg = colors.bg_statusline,
-        fg = colors.teal,
-      }
-
-      hl.DiagnosticUnderlineError = {
-        style = {
-          underline = true,
-        },
-      }
-      hl.DiagnosticUnderlineWarn = {
-        style = {
-          underline = true,
-        },
-      }
-      hl.DiagnosticUnderlineHint = {
-        style = {
-          underline = true,
-        },
-      }
-      hl.DiagnosticUnderlineInfo = {
-        style = {
-          underline = true,
-        },
-      }
-    end,
-  })
-end
-
 local M = {}
 
-M.setup = function(config)
+M.load_kanagawa = function(config)
   config = config or {}
   load_kanagawa(config.env)
   vim.api.nvim_command("colorscheme kanagawa")
-  local theme = vim.api.nvim_cmd({ cmd = "colorscheme" }, { output = true })
+end
 
-  if theme == "catppuccin" and catppuccin_flavour == "latte" then
-    vim.api.nvim_exec(
-      [[
-hi NormalFloat guibg=none
-hi JackStatusBarDiagnosticError guifg=#e45649 guibg=#e6e9ef
-hi JackStatusBarDiagnosticWarn guifg=#ca1243 guibg=#e6e9ef
-hi JackStatusBarDiagnosticHint guifg=#8B0000 guibg=#e6e9ef
-    " Make the DiagnosticUnnecessary look like the one used for eslint errors too.
-hi DiagnosticUnnecessary gui=underline,italic guisp=#d20f39 cterm=italic,underline guifg=#9ca0b0
-hi JackStatusBarNavic cterm=italic gui=italic guibg=#e6e9ef
-hi Winbar guibg=#e6e9ef
-]],
-      true
-    )
-  end
-
-  if theme == "dark_flat" then
-    vim.api.nvim_exec(
-      [[
-hi JackStatusBarDiagnosticError guifg=#d54e53 guibg=#1e2024
-hi JackStatusBarDiagnosticWarn guifg=#d19a66 guibg=#1e2024
-hi JackStatusBarDiagnosticHint guifg=#676e7b guibg=#1e2024
-  ]],
-      true
-    )
-  end
+M.load_catppuccin_light = function(config)
+  load_catppuccin()
+  vim.g.catppuccin_flavour = "latte"
+  vim.api.nvim_exec2([[set background=light]], { output = false })
+  vim.api.nvim_command("colorscheme catppuccin-latte")
 end
 
 return M

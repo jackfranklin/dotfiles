@@ -1,6 +1,6 @@
 local M = {}
 
-local base_plugins = function(env)
+local base_plugins = function()
   return {
     --
     -- THEME + COLOURS
@@ -9,10 +9,8 @@ local base_plugins = function(env)
       "rebelot/kanagawa.nvim",
       lazy = false,
       priority = 1000,
-      config = function()
-        require("jack.theme").setup({ env = env })
-      end,
     },
+    { "catppuccin/nvim", name = "catppuccin", priority = 1000, lazy = false },
     {
       "jackfranklin/winbar.nvim",
       -- dir = "~/git/winbar.nvim",
@@ -214,13 +212,11 @@ local base_plugins = function(env)
 end
 
 M.load = function(config)
-  config = config or {}
   local extra_plugins = config.extra_plugins or {}
   local config_overrides = config.config_overrides or {}
-  local env = config.env or "wsl_surface_pro"
 
   local final_plugins = {}
-  for k, v in pairs(base_plugins(env)) do
+  for k, v in pairs(base_plugins()) do
     final_plugins[k] = v
     local plugin_name = v[1] or v.dir
     local override_config = config_overrides[plugin_name]

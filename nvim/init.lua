@@ -1,6 +1,7 @@
 require("jack.base-settings")
 
 require("jack.load_plugins").load()
+require("jack.theme").load_kanagawa({ env = "wsl_surface_pro" })
 
 require("jack.statusline")
 require("jack.maps")
