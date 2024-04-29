@@ -212,6 +212,7 @@ local base_plugins = function()
 end
 
 M.load = function(config)
+  config = config or {}
   local extra_plugins = config.extra_plugins or {}
   local config_overrides = config.config_overrides or {}
 
