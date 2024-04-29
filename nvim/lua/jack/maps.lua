@@ -87,4 +87,13 @@ local function confirm_and_delete_buffer()
     vim.api.nvim_buf_delete(0, { force = true })
   end
 end
-vim.keymap.set("n", "<leader>df", confirm_and_delete_buffer, { desc = "[d]elete [f]ile" })
+vim.keymap.set("n", "<leader>bd", confirm_and_delete_buffer, { desc = "[b]uffer [d]elete [FROM DISK]" })
+
+local function clear_all_open_buffers()
+  local bufs = vim.api.nvim_list_bufs()
+  for _, i in ipairs(bufs) do
+    vim.api.nvim_buf_delete(i, {})
+  end
+end
+
+vim.keymap.set("n", "<leader>bc", clear_all_open_buffers, { desc = "[b]uf [c]lear: clear all neovim buffers" })
