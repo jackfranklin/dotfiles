@@ -21,7 +21,7 @@ local base_plugins = function()
     --
     -- TPOPE
     --
-    { "tpope/vim-commentary", event = { "BufReadPre" } },
+    -- { "tpope/vim-commentary", event = { "BufReadPre" } },
     {
       "tpope/vim-fugitive",
       config = function()
