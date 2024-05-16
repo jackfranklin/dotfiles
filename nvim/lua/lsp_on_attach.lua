@@ -1,11 +1,6 @@
 local navic = require("nvim-navic")
 local M = {}
 local on_attach = function(client, bufnr)
-  -- By binding these keys here, we ensure they are bound only once the language server is ready for them.
-  local function buf_set_keymap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
-
   local map = function(keys, func, desc)
     vim.keymap.set("n", keys, func, { buffer = bufnr, desc = "LSP: " .. desc, silent = true, noremap = true })
   end
@@ -14,7 +9,6 @@ local on_attach = function(client, bufnr)
     navic.attach(client, bufnr)
   end
 
-  local opts = { noremap = true, silent = true }
   -- These are now set in fzf-lua.lua.
   -- buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
   -- buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)

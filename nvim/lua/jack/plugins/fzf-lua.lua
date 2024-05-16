@@ -36,6 +36,11 @@ M.setup = function(config)
     require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
   end, { desc = "Find LSP [d]efinitions" })
 
+  -- Overwrites gt (go to next tab) but I have PageDown mapped to that.
+  vim.keymap.set("n", "gt", function()
+    require("fzf-lua").lsp_typedefs({ jump_to_single_result = true })
+  end, { desc = "Find LSP [t]ypedefs" })
+
   vim.keymap.set("n", "gr", function()
     require("fzf-lua").lsp_references({ jump_to_single_result = true })
   end, { desc = "Find LSP [r]eferences" })
