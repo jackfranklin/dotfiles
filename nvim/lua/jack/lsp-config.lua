@@ -16,14 +16,17 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
 
 local M = {}
 M.typescript = function(config)
+  local setup_opts = {
+    on_attach = config.on_attach,
+    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+    capabilities = capabilities,
+  }
+
   if config.cmd ~= nil then
-    nvim_lsp.tsserver.setup({
-      on_attach = config.on_attach,
-      filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-      cmd = config.cmd,
-      capabilities = capabilities,
-    })
+    setup_opts.cmd = config.cmd
   end
+
+  nvim_lsp.tsserver.setup(setup_opts)
 end
 
 M.css = function(config)
