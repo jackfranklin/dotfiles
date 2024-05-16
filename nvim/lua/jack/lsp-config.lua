@@ -25,6 +25,11 @@ M.typescript = function(config)
   if config.cmd ~= nil then
     setup_opts.cmd = config.cmd
   end
+  if config.custom_tsserver_path ~= nil then
+    setup_opts.init_opts = {
+      tsserver = config.custom_tsserver_path
+    }
+  end
 
   nvim_lsp.tsserver.setup(setup_opts)
 end
