@@ -1,14 +1,11 @@
 local nvim_lsp = require("lspconfig")
 local util = require("lspconfig.util")
-local config_paths = require("config_paths")
 local on_attach = require("lsp_on_attach").on_attach
 local lsp_config = require("jack.lsp-config")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local tsserver_command = config_paths.typescript_lsp_cmd()
 
 lsp_config.typescript({
   on_attach = on_attach,
-  cmd = tsserver_command,
 })
 
 lsp_config.eslint({})
