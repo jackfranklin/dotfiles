@@ -8,7 +8,7 @@ lsp_config.typescript({
   on_attach = on_attach,
 })
 
-lsp_config.eslint({})
+-- lsp_config.eslint({})
 lsp_config.lua({ on_attach = on_attach })
 -- TODO: figure out if this is possible to have but not have completions appear
 -- in nvim-cmp, because in TypeScript files they appear above most useful

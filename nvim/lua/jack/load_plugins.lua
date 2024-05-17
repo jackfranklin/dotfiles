@@ -196,17 +196,24 @@ local base_plugins = function()
       config = function()
         require("jack.plugins.treesitter")
       end,
-    },
-
-    --
+    }, --
     -- AUTO FORMATTING
     --
+    -- {
+    --   "stevearc/conform.nvim",
+    --   config = function()
+    --     require("jack.plugins.conform").setup({})
+    --   end,
+    --   event = "BufWritePre",
+    -- },
     {
-      "stevearc/conform.nvim",
+      "nvimtools/none-ls.nvim",
+      dependencies = {
+        "nvimtools/none-ls-extras.nvim",
+      },
       config = function()
-        require("jack.plugins.conform").setup({})
+        require("jack.plugins.nonels").setup()
       end,
-      event = "BufWritePre",
     },
   }
 end

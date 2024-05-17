@@ -10,18 +10,18 @@ M.setup = function(config)
         "stylua",
       },
       javascript = {
-        "eslint_d",
-        "prettierd",
+        -- "eslint_d",
+        -- "prettierd",
       },
       typescript = {
-        "eslint_d",
-        "prettierd",
+        -- "eslint_d",
+        -- "prettierd",
       },
       markdown = {
-        "prettierd",
+        -- "prettierd",
       },
       css = {
-        "prettierd",
+        -- "prettierd",
       },
     },
     format_on_save = {
