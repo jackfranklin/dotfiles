@@ -37,3 +37,6 @@ sync_wezterm:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
 	mkdir -p /mnt/c/Users/jack/.wezterm/
 	@test -f wezterm/per_machine.lua && cp wezterm/per_machine.lua /mnt/c/Users/jack/.wezterm/per_machine.lua
+
+lua_specs:
+	cd nvim/lua/jack && busted "alternate-files_spec.lua"
