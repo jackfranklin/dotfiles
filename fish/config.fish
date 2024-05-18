@@ -46,14 +46,14 @@ fish_config theme choose "Catppuccin Frappe"
 set fish_greeting
 
 # $PATH
-# Note that fish_add_path prepends by default, so the -a flag is used to
-# signify amend, so that the order the lines are here is the order that they
-# are in the $PATH
+# Note that fish_add_path prepends by default, use -a flag to --amend
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.fzf/bin
 fish_add_path $HOME/git/private-dotfiles/bin
 fish_add_path (npm get prefix)/bin
 fish_add_path $HOME/.local/bin
+# For Lua Language server
+fish_add_path $HOME/.local/bin/lua-ls/bin
 # For computers where I build Neovim from source.
 fish_add_path $HOME/neovim/bin
 # Installing neovim via the appimage + extracting it

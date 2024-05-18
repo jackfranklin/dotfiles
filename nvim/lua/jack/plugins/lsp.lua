@@ -1,3 +1,4 @@
+require("neodev").setup()
 local nvim_lsp = require("lspconfig")
 local util = require("lspconfig.util")
 local on_attach = require("lsp_on_attach").on_attach

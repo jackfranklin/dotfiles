@@ -27,7 +27,7 @@ M.typescript = function(config)
   end
   if config.custom_tsserver_path ~= nil then
     setup_opts.init_opts = {
-      tsserver = config.custom_tsserver_path
+      tsserver = config.custom_tsserver_path,
     }
   end
 
@@ -57,29 +57,15 @@ end
 
 M.lua = function(config)
   nvim_lsp.lua_ls.setup({
+    root_dir = function(name)
+      -- When loading up my dotfiles, the Lua LS root should always be the nvim/ directory.
+      if name:find("dotfiles", 1, true) then
+        return os.getenv("HOME") .. "/dotfiles/nvim"
+      end
+      local result = util.root_pattern({ "stylua.toml", ".luarc.json", ".git" })(name)
+      return result
+    end,
     on_attach = config.on_attach,
-    settings = {
-      Lua = {
-        runtime = {
-          -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-          version = "LuaJIT",
-        },
-
-        diagnostics = {
-          -- Get the language server to recognize the `vim` global
-          globals = { "vim" },
-        },
-        workspace = {
-          -- Make the server aware of Neovim runtime files
-          library = vim.api.nvim_get_runtime_file("", true),
-          checkThirdParty = false,
-        },
-        -- Do not send telemetry data containing a randomized but unique identifier
-        telemetry = {
-          enable = false,
-        },
-      },
-    },
   })
 end
 

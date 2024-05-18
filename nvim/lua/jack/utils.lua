@@ -7,4 +7,8 @@ M.make_path_relative_to_cwd = function(file_name)
   return tostring(Path:new(file_name):make_relative(cwd))
 end
 
+M.path_exists = function(path)
+  return Path:new(path):exists()
+end
+
 return M

@@ -15,6 +15,7 @@
   "mini.diff": { "branch": "main", "commit": "10cc9d370737b8b8c8d996fc537394635da0a4b1" },
   "mini.files": { "branch": "main", "commit": "17684f78d0499f11e54fc980838cfef3cf5c7c72" },
   "mini.indentscope": { "branch": "main", "commit": "a8274b6ea2d868198d27bd91a31ed5ea3a6a5744" },
+  "neodev.nvim": { "branch": "main", "commit": "ce9a2e8eaba5649b553529c5498acb43a6c317cd" },
   "none-ls-extras.nvim": { "branch": "main", "commit": "336e84b9e43c0effb735b08798ffac382920053b" },
   "none-ls.nvim": { "branch": "main", "commit": "a0c30205edc07e4d54a2eeb72adb7e59cdcfcf9d" },
   "nui.nvim": { "branch": "main", "commit": "a3597dc88b53489d3fddbddbbd13787355253bb0" },

@@ -19,3 +19,16 @@ vim.keymap.set("n", "<leader>ng", notes.commit_notes, { desc = "[n]otes [g]it: u
 vim.keymap.set("n", "<leader>nl", notes.list_daily_notes_fzf, { desc = "[n]otes [l]ist: search for notes file" })
 vim.keymap.set("n", "<leader>ns", notes.search_daily_notes_fzf, { desc = "[n]otes [s]earch: text search all notes" })
 vim.keymap.set("n", "<leader>nr", notes.open_from_recent_notes, { desc = "[n]otes [r]ecent: list recent note files" })
+
+local alternate_files = require("jack.alternate-files")
+
+vim.keymap.set("n", "<leader>fa", function()
+  local alternative_files = alternate_files.get_alternative_files({
+    [".test.ts"] = { ".ts" },
+    [".ts"] = { ".test.ts", ".css" },
+    [".css"] = { ".ts" },
+  })
+  -- TODO: if only 1, go to it
+  -- else: vim.ui.select
+  print(vim.inspect(alternative_files))
+end, { desc = "Jump to the [A]lternative file" })

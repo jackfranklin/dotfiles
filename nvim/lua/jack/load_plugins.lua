@@ -101,6 +101,10 @@ local base_plugins = function()
         -- refer to the configuration section below
       },
     },
+    {
+      "folke/neodev.nvim",
+      lazy = false,
+    },
     -- FUZZY FINDERS
     {
       "ibhagwan/fzf-lua",
@@ -167,6 +171,7 @@ local base_plugins = function()
     {
       "neovim/nvim-lspconfig",
       event = "BufReadPre",
+      -- event = "BufReadPre",
       dependencies = {
         -- This plugin does not depend on this, but my
         -- config does.
