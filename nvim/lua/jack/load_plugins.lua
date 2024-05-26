@@ -202,7 +202,15 @@ local base_plugins = function()
       config = function()
         require("jack.plugins.treesitter")
       end,
-    }, --
+    },
+    {
+      "windwp/nvim-ts-autotag",
+      event = "BufReadPre",
+      config = function()
+        require("jack.plugins.autoclose-tag")
+      end,
+    },
+    --
     -- AUTO FORMATTING
     --
     -- {
