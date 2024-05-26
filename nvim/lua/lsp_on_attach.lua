@@ -24,6 +24,10 @@ local on_attach = function(client, bufnr)
   map("ge", vim.diagnostic.goto_next, "[g]o to next [e]rror (diagnostics)")
   map("gE", vim.diagnostic.goto_prev, "[g]o to previous [E]rror (diagnostics)")
 
+  map("gx", function()
+    require("treesitter-context").go_to_context(vim.v.count1)
+  end, "[g]o to the conte[x]t")
+
   -- Disable formatexpr to allow Vim's built in gq to work.
   -- See: https://github.com/neovim/neovim/pull/19677
   -- In theory this idea works great but the TS language server doesn't wrap comments.
