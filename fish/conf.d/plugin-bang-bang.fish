@@ -1,6 +1,6 @@
 function _plugin-bang-bang_key_bindings --on-variable fish_key_bindings
-    bind --erase --all !
-    bind --erase --all '$'
+    bind --erase !
+    bind --erase '$'
     switch "$fish_key_bindings"
     case 'fish_default_key_bindings'
         bind --mode default ! __history_previous_command
@@ -12,8 +12,8 @@ function _plugin-bang-bang_key_bindings --on-variable fish_key_bindings
 end
 
 function _plugin-bang-bang_uninstall --on-event plugin-bang-bang_uninstall
-    bind --erase --all !
-    bind --erase --all '$'
+    bind --erase !
+    bind --erase '$'
     functions --erase _plugin-bang-bang_uninstall
 end
 
