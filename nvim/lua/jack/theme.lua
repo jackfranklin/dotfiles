@@ -16,7 +16,7 @@ end
 
 local function load_kanagawa(env)
   require("kanagawa").setup({
-    undercurl = env == "work_macbook",
+    undercurl = env ~= "wsl",
     dimInactive = true,
     overrides = function(colors)
       return {

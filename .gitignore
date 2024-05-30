@@ -33,3 +33,4 @@ nvim-linux64*
 .luarc.json
 
 wezterm/per_machine.lua
+nvim/lua/jack/per_machine.lua

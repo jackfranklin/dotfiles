@@ -1,7 +1,10 @@
-require("jack.base-settings")
+local has_per_machine, per_machine = pcall(require, "jack.per_machine")
 
+local machine_env = has_per_machine and per_machine.machine_name or "default"
+
+require("jack.base-settings")
 require("jack.load_plugins").load()
-require("jack.theme").load_kanagawa({ env = "wsl_surface_pro" })
+require("jack.theme").load_kanagawa({ env = machine_env })
 
 require("jack.statusline")
 require("jack.maps")
