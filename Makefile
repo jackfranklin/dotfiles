@@ -33,10 +33,14 @@ elm_language_servers:
 kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
 
-sync_wezterm:
+sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
 	mkdir -p /mnt/c/Users/jack/.wezterm/
 	@test -f wezterm/per_machine.lua && cp wezterm/per_machine.lua /mnt/c/Users/jack/.wezterm/per_machine.lua
+
+symlink_windows_linux:
+	@ln -nsf $(DIR)/wezterm ~/.config/wezterm
+
 
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"

@@ -17,8 +17,11 @@ config.colors = {
 config.use_fancy_tab_bar = false
 config.tab_max_width = 32
 
-config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
-config.default_domain = "WSL:Ubuntu"
+local is_wsl = has_custom_config and custom_config.is_wsl == true
+if is_wsl then
+  config.default_prog = { "C:\\Windows\\System32\\wsl.exe" }
+  config.default_domain = "WSL:Ubuntu"
+end
 
 -- config.font = wezterm.font("IntelOne Mono")
 -- config.font = wezterm.font("Comic Code")
