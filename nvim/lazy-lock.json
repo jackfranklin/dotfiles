@@ -11,7 +11,7 @@
   "fzf-lua": { "branch": "main", "commit": "e412b1b0db62ccfccee41d994da87923eb2d8abd" },
   "goto-preview": { "branch": "main", "commit": "3552fad4a0244ffd9ac86508e29ccc5166f19eb8" },
   "kanagawa.nvim": { "branch": "master", "commit": "860e4f80df71221d18bf2cd9ef1deb4d364274d2" },
-  "lazy.nvim": { "branch": "main", "commit": "05240b41548c4245a04d34ee54f789e824129991" },
+  "lazy.nvim": { "branch": "main", "commit": "24fa2a97085ca8a7220b5b078916f81e316036fd" },
   "mini.diff": { "branch": "main", "commit": "10cc9d370737b8b8c8d996fc537394635da0a4b1" },
   "mini.files": { "branch": "main", "commit": "17684f78d0499f11e54fc980838cfef3cf5c7c72" },
   "mini.indentscope": { "branch": "main", "commit": "a8274b6ea2d868198d27bd91a31ed5ea3a6a5744" },
