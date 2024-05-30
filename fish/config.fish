@@ -27,7 +27,6 @@ alias df="cd ~/dotfiles"
 set EDITOR 'nvim'
 
 set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
-set -gx TERM alacritty;
 
 
 source ~/.asdf/asdf.fish
@@ -61,6 +60,8 @@ fish_add_path $HOME/squashfs-root/usr/bin
 # (Now deprecated) installing Neovim via a tarball
 # fish_add_path $HOME/nvim-linux64/bin
 fish_add_path $HOME/cargo/bin
+# Lua language server from release tar
+fish_add_path $HOME/lua-language-server/bin
 
 if type -q "setxkbmap"
   # Remaps caps-lock to escape.
