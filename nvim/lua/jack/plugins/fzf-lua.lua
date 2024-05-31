@@ -58,6 +58,9 @@ M.setup = function(config)
         ["ctrl-q"] = "select-all+accept",
       },
     },
+    fzf_opts = {
+      ["--color"] = config.fzf_theme or "dark",
+    },
     winopts = {
       height = 0.3,
       width = 1,

@@ -90,6 +90,8 @@ local function load_catppuccin()
           ExecutorPass = { fg = latte.green, bg = latte.mantle },
           JackStatusBarNavic = { style = { "italic" }, bg = latte.mantle },
           NormalFloat = { bg = "none" },
+          FzfLuaPathLineNr = { fg = latte.blue },
+          FzfLuaCursor = { bg = latte.crust },
           Folded = {
             italic = true,
           },
