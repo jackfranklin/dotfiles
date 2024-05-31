@@ -90,6 +90,9 @@ local function load_catppuccin()
           ExecutorPass = { fg = latte.green, bg = latte.mantle },
           JackStatusBarNavic = { style = { "italic" }, bg = latte.mantle },
           NormalFloat = { bg = "none" },
+          Folded = {
+            italic = true,
+          },
         }
       end,
     },

@@ -84,6 +84,17 @@ connectedCallback() {{
       )
     ),
 
+    -- it, with async callback function rather than arrow
+    s(
+      "specf",
+      fmt(
+        [[it('{}', {}function() {{
+  {}
+}});]],
+        { i(1), c(2, { t("async "), t("") }), i(0) }
+      )
+    ),
+
     s(
       "custom-element",
       fmt(
