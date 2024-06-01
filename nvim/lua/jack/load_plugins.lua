@@ -21,7 +21,17 @@ local base_plugins = function()
     --
     -- TPOPE
     --
-    -- { "tpope/vim-commentary", event = { "BufReadPre" } },
+    -- Nvim 0.10 does have commenting built in, but it uses the Treesitter
+    -- comment string, and in lit-html typescript files it will always use
+    -- the HTML comment string.
+    -- With this plugin, it uses the Vim commentstring, which does set the
+    -- commentstring to JavaScript. In an ideal world I'd have something
+    -- that adjusts the comment string to be JS/HTML depending on the
+    -- cursor, but I think that's an issue in nvim-treesitter which doesn't
+    -- do that correctly yet...whatever, it's more useful to have JS
+    -- comments than HTML comments.
+    -- Tpope's commentary seems to just do the right thing.
+    { "tpope/vim-commentary", event = { "BufReadPre" } },
     {
       "tpope/vim-fugitive",
       config = function()
