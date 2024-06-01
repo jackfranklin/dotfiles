@@ -41,6 +41,8 @@ config.window_padding = {
   top = 0,
 }
 
+config.window_decorations = "RESIZE"
+
 config.keys = {
   -- Shift + Control + R to rename tab
   {
