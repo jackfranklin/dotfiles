@@ -17,7 +17,7 @@ end
 local function load_kanagawa(env)
   require("kanagawa").setup({
     undercurl = env ~= "wsl",
-    dimInactive = true,
+    dimInactive = false,
     overrides = function(colors)
       return {
         ["@comment.todo"] = { fg = colors.palette.lotusRed },
