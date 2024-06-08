@@ -51,13 +51,20 @@ require("nvim-treesitter.configs").setup({
       enable = true,
       lookahead = true,
       keymaps = {
-        -- You can use the capture groups defined in textobjects.scm
-        ["af"] = "@function.outer",
-        ["if"] = "@function.inner",
-        ["ac"] = "@class.outer",
-        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class region" },
-        -- You can also use captures from other query groups like `locals.scm`
-        ["as"] = { query = "@scope", query_group = "locals", desc = "Select language scope" },
+        ["aa"] = { query = "@parameter.outer", desc = "Select outer part of a parameter/argument" },
+        ["ia"] = { query = "@parameter.inner", desc = "Select inner part of a parameter/argument" },
+
+        ["ai"] = { query = "@conditional.outer", desc = "Select outer part of a conditional" },
+        ["ii"] = { query = "@conditional.inner", desc = "Select inner part of a conditional" },
+
+        ["al"] = { query = "@loop.outer", desc = "Select outer part of a loop" },
+        ["il"] = { query = "@loop.inner", desc = "Select inner part of a loop" },
+
+        ["af"] = { query = "@function.outer", desc = "Select outer part of a method/function definition" },
+        ["if"] = { query = "@function.inner", desc = "Select inner part of a method/function definition" },
+
+        ["ac"] = { query = "@class.outer", desc = "Select outer part of a class" },
+        ["ic"] = { query = "@class.inner", desc = "Select inner part of a class" },
       },
       -- If you set this to `true` (default is `false`) then any textobject is
       -- extended to include preceding or succeeding whitespace. Succeeding
@@ -68,14 +75,19 @@ require("nvim-treesitter.configs").setup({
     move = {
       enable = true,
       set_jumps = true, -- whether to set jumps in the jumplist
-
       goto_next_start = {
-        ["]m"] = "@function.outer",
-        ["]]"] = { query = "@class.outer", desc = "Next class start" },
+        ["ggf"] = { query = "@call.outer", desc = "Next function call start" },
+        ["ggm"] = { query = "@function.outer", desc = "Next method/function def start" },
+        ["ggc"] = { query = "@class.outer", desc = "Next class start" },
+        ["ggi"] = { query = "@conditional.outer", desc = "Next conditional start" },
+        ["ggl"] = { query = "@loop.outer", desc = "Next loop start" },
       },
       goto_previous_start = {
-        ["[m"] = "@function.outer",
-        ["[["] = "@class.outer",
+        ["ggF"] = { query = "@call.outer", desc = "Prev function call start" },
+        ["ggM"] = { query = "@function.outer", desc = "Prev method/function def start" },
+        ["ggC"] = { query = "@class.outer", desc = "Prev class start" },
+        ["ggI"] = { query = "@conditional.outer", desc = "Prev conditional start" },
+        ["ggL"] = { query = "@loop.outer", desc = "Prev loop start" },
       },
     },
   },
