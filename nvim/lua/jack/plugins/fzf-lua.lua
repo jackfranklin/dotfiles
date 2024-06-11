@@ -6,18 +6,25 @@ M.setup = function(config)
       git_icons = false,
       file_icons = false,
       no_header_i = true,
+      winopts = {
+        preview = { hidden = "hidden" },
+      },
     })
   end, { desc = "Find files" })
   vim.keymap.set("n", "<leader>fb", function()
-    require("fzf-lua").buffers()
+    require("fzf-lua").buffers({
+      git_icons = false,
+      file_icons = false,
+      no_header_i = true,
+      winopts = {
+        preview = { hidden = "hidden" },
+      },
+    })
   end, { desc = "Find [b]uffers" })
 
   vim.keymap.set("n", "<leader>fs", function()
     require("fzf-lua").lsp_document_symbols({
       symbol_style = 3,
-      winopts = {
-        preview = { hidden = "nohidden" },
-      },
       no_header_i = true,
     })
   end, { desc = "[f]ind LSP [s]ymbols" })
@@ -29,6 +36,9 @@ M.setup = function(config)
       file_icons = false,
       cwd = cwd_for_buf,
       no_header_i = true,
+      winopts = {
+        preview = { hidden = "hidden" },
+      },
     })
   end, { desc = "Find [f]iles in [d]irectory" })
 
@@ -65,9 +75,6 @@ M.setup = function(config)
       height = 0.3,
       width = 1,
       row = 1,
-      preview = {
-        hidden = "hidden",
-      },
     },
     oldfiles = {
       cwd_only = true,
