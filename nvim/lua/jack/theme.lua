@@ -95,6 +95,9 @@ local function load_catppuccin()
           Folded = {
             italic = true,
           },
+          DiagnosticUnnecessary = {
+            underline = true,
+          },
         }
       end,
     },
