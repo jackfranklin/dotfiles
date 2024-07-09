@@ -96,6 +96,7 @@ local function load_catppuccin()
             italic = true,
           },
           DiagnosticUnnecessary = {
+            fg = latte.overlay0,
             underline = true,
           },
         }
