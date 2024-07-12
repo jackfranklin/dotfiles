@@ -21,6 +21,7 @@ M.all = function()
   return {
     s("todobug", fmt([[ TODO({}): {}]], { i(1), i(0) })),
     s("todoplain", fmt([[ TODO: {}]], { i(0) })),
+    s("dns", fmt([[// DO NOT SUBMIT]], {})),
   }
 end
 
@@ -188,7 +189,7 @@ customElements.define({}, {})]],
       )
     ),
     s("ccon", fmt([[const {} = {}]], { i(1), i(0) })),
-    s("destruct", fmt([[const {{ {} }} = {}]], { i(1), i(0) })),
+    s("destruct", fmt([[const {{ {} }} = {}{}]], { i(2), i(1), i(0) })),
     s("ase", fmt([[assert.strictEqual({}, {})]], { i(1), i(0) })),
     s("ade", fmt([[assert.deepEqual({}, {})]], { i(1), i(0) })),
     s("ait", fmt([[assert.isTrue({})]], { i(0) })),
