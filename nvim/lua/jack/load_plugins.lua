@@ -239,6 +239,12 @@ local base_plugins = function()
         require("jack.plugins.nonels").setup()
       end,
     },
+    {
+      "supermaven-inc/supermaven-nvim",
+      config = function()
+        require("jack.plugins.supermaven").setup()
+      end,
+    },
   }
 end
 
@@ -246,15 +252,22 @@ M.load = function(config)
   config = config or {}
   local extra_plugins = config.extra_plugins or {}
   local config_overrides = config.config_overrides or {}
+  local delete_plugins = config.delete_plugins or {}
 
   local final_plugins = {}
   for k, v in pairs(base_plugins()) do
+    if delete_plugins[k] then
+      goto continue
+    end
+
     final_plugins[k] = v
     local plugin_name = v[1] or v.dir
     local override_config = config_overrides[plugin_name]
     if override_config then
       final_plugins[k].config = override_config
     end
+
+    ::continue::
   end
   for k, v in pairs(extra_plugins) do
     final_plugins[k] = v
