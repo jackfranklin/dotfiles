@@ -7,6 +7,7 @@ M.setup = function(config)
       file_icons = false,
       no_header_i = true,
       winopts = {
+        backdrop = false,
         preview = { hidden = "hidden" },
       },
     })
@@ -17,6 +18,7 @@ M.setup = function(config)
       file_icons = false,
       no_header_i = true,
       winopts = {
+        backdrop = false,
         preview = { hidden = "hidden" },
       },
     })
@@ -26,6 +28,9 @@ M.setup = function(config)
     require("fzf-lua").lsp_document_symbols({
       symbol_style = 3,
       no_header_i = true,
+      winopts = {
+        backdrop = false,
+      },
     })
   end, { desc = "[f]ind LSP [s]ymbols" })
 
@@ -37,22 +42,23 @@ M.setup = function(config)
       cwd = cwd_for_buf,
       no_header_i = true,
       winopts = {
+        backdrop = false,
         preview = { hidden = "hidden" },
       },
     })
   end, { desc = "Find [f]iles in [d]irectory" })
 
   vim.keymap.set("n", "gd", function()
-    require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
+    require("fzf-lua").lsp_definitions({ jump_to_single_result = true, winopts = { backdrop = false } })
   end, { desc = "Find LSP [d]efinitions" })
 
   -- Overwrites gt (go to next tab) but I have PageDown mapped to that.
   vim.keymap.set("n", "gt", function()
-    require("fzf-lua").lsp_typedefs({ jump_to_single_result = true })
+    require("fzf-lua").lsp_typedefs({ jump_to_single_result = true, winopts = { backdrop = false } })
   end, { desc = "Find LSP [t]ypedefs" })
 
   vim.keymap.set("n", "gr", function()
-    require("fzf-lua").lsp_references({ jump_to_single_result = true })
+    require("fzf-lua").lsp_references({ jump_to_single_result = true, winopts = { backdrop = false } })
   end, { desc = "Find LSP [r]eferences" })
 
   local ignore = { "^node_modules/", "^.git/" }
