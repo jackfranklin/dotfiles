@@ -48,7 +48,7 @@ set splitright
 autocmd VimResized * :wincmd =
 
 " Don't add the comment prefix when I hit enter or o/O on a comment line.
-"autocmd FileType * setlocal formatoptions-=r formatoptions-=o
+autocmd FileType * setlocal formatoptions-=r formatoptions-=o
 
 " Better wrapping
 set breakindent
