@@ -220,16 +220,6 @@ local base_plugins = function()
         require("jack.plugins.autoclose-tag")
       end,
     },
-    --
-    -- AUTO FORMATTING
-    --
-    -- {
-    --   "stevearc/conform.nvim",
-    --   config = function()
-    --     require("jack.plugins.conform").setup({})
-    --   end,
-    --   event = "BufWritePre",
-    -- },
     {
       "nvimtools/none-ls.nvim",
       dependencies = {
