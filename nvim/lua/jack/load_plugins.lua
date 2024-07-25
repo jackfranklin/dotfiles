@@ -246,12 +246,12 @@ M.load = function(config)
 
   local final_plugins = {}
   for k, v in pairs(base_plugins()) do
-    if delete_plugins[k] then
+    local plugin_name = type(v) == "string" and v or v[1] or v.dir
+    if delete_plugins[plugin_name] then
       goto continue
     end
 
     final_plugins[k] = v
-    local plugin_name = v[1] or v.dir
     local override_config = config_overrides[plugin_name]
     if override_config then
       final_plugins[k].config = override_config
