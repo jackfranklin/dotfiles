@@ -14,6 +14,10 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "rounded",
 })
 
+-- vim.lsp.handlers["$/typescriptVersion"] = function(_, result)
+--   vim.notify("TypeScript loaded: " .. vim.inspect(result))
+-- end
+
 local M = {}
 M.typescript = function(config)
   local setup_opts = {
