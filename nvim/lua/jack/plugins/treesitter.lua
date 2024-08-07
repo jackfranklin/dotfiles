@@ -117,3 +117,6 @@ require("treesitter-context").setup({
   zindex = 20, -- The Z-index of the context window
   on_attach = nil, -- (fun(buf: integer): boolean) return false to disable attaching
 })
+vim.keymap.set("n", "gx", function()
+  require("treesitter-context").go_to_context(vim.v.count1)
+end, { silent = true, desc = "[g]o to the conte[x]t" })
