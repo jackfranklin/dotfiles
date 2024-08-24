@@ -235,6 +235,12 @@ local base_plugins = function()
         require("jack.plugins.supermaven").setup()
       end,
     },
+    {
+      "smoka7/hop.nvim",
+      config = function()
+        require("jack.plugins.hop").setup()
+      end,
+    },
   }
 end
 
