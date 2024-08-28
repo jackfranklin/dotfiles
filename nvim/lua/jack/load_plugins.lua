@@ -265,8 +265,8 @@ M.load = function(config)
 
     ::continue::
   end
-  for k, v in pairs(extra_plugins) do
-    final_plugins[k] = v
+  for _, v in pairs(extra_plugins) do
+    table.insert(final_plugins, v)
   end
 
   require("jack.lazy").run_lazy(final_plugins)
