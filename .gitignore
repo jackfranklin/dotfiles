@@ -18,6 +18,7 @@ bin/hub
 fish/fishd.*
 fish/fisher_files
 fish/fish_variables
+fish/secrets.fish
 
 # Files created by fisher plugins
 fish/functions/__z*

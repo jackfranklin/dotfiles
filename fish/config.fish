@@ -30,6 +30,7 @@ set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
 
 
 source ~/.asdf/asdf.fish
+source $HOME/dotfiles/fish/secrets.fish
 
 # set -g fisher_path $HOME/dotfiles/fish/fisher_files
 
