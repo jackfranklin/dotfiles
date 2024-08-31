@@ -12,17 +12,17 @@ M.setup = function()
       null_ls.builtins.formatting.prettierd,
       require("none-ls.formatting.eslint_d").with({
         condition = function(utils)
-          return utils.root_has_file(".eslintrc.js")
+          return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" })
         end,
       }),
       require("none-ls.diagnostics.eslint_d").with({
         condition = function(utils)
-          return utils.root_has_file(".eslintrc.js")
+          return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" })
         end,
       }),
       require("none-ls.code_actions.eslint_d").with({
         condition = function(utils)
-          return utils.root_has_file(".eslintrc.js")
+          return utils.root_has_file({ ".eslintrc.js", ".eslintrc.cjs", ".eslintrc.json" })
         end,
       }),
     },
