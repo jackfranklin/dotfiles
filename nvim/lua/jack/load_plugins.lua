@@ -251,17 +251,18 @@ M.load = function(config)
   local delete_plugins = config.delete_plugins or {}
 
   local final_plugins = {}
-  for k, v in pairs(base_plugins()) do
-    local plugin_name = type(v) == "string" and v or v[1] or v.dir
+
+  for _, plugin_data in pairs(base_plugins()) do
+    local plugin_name = type(plugin_data) == "string" and plugin_data or plugin_data[1] or plugin_data.dir
     if delete_plugins[plugin_name] then
       goto continue
     end
 
-    final_plugins[k] = v
     local override_config = config_overrides[plugin_name]
     if override_config then
-      final_plugins[k].config = override_config
+      plugin_data.config = override_config
     end
+    table.insert(final_plugins, plugin_data)
 
     ::continue::
   end
