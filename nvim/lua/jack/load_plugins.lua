@@ -241,6 +241,13 @@ local base_plugins = function()
         require("jack.plugins.hop").setup()
       end,
     },
+    {
+      "ThePrimeagen/harpoon",
+      config = function()
+        require("jack.plugins.harpoon").setup()
+      end,
+    },
+
   }
 end
 
