@@ -67,14 +67,15 @@ end
 local diagnostic_status_line =
   [[%#JackStatusBarDiagnosticError#%{v:lua.LSPCount('error', 'E')}%*%#JackStatusBarDiagnosticWarn#%{v:lua.LSPCount('warning', 'W')}%*%#JackStatusBarDiagnosticHint#%{v:lua.LSPCount('hint', 'H')}%*]]
 
+local navicLimit = math.floor(vim.o.columns / 3)
 function StatusBarNavic()
   local text = navic.get_location()
   if text == "" then
     return ""
   end
   local without_callbacks = text:gsub(" callback", "")
-  if string.len(without_callbacks) >= 90 then
-    without_callbacks = "…" .. without_callbacks:sub(-85)
+  if string.len(without_callbacks) >= navicLimit then
+    without_callbacks = "…" .. without_callbacks:sub((navicLimit - 5) * -1)
   end
   return without_callbacks
 end
