@@ -33,7 +33,7 @@ cmp.setup({
     --   i = cmp.mapping.select_prev_item({ behavior = cmp.SelectBehavior.Insert }),
     -- },
     -- Trialling new settings
-    ["<C-space>"] = cmp.mapping.complete(), -- force the autocomplete popup
+    ["<C-y>"] = cmp.mapping.complete(), -- force the autocomplete popup
     ["<CR>"] = cmp.mapping.confirm({ select = true }), -- select suggestion
     ["<C-p>"] = cmp.mapping.select_prev_item(), -- previous suggestion
     ["<C-n>"] = cmp.mapping.select_next_item(), -- next suggestion
@@ -42,11 +42,11 @@ cmp.setup({
     max_view_entries = 20,
   },
   sources = {
-    { name = "nvim_lsp", max_item_count = 10, priority = 5 },
-    { name = "luasnip", max_item_count = 5, priority = 4 },
-
-    { name = "nvim_lua", max_item_count = 4, keyword_length = 2, priority = 4 },
-    { name = "path", keyword_length = 3, max_item_count = 10, priority = 3 },
-    { name = "buffer", max_item_count = 10, keyword_length = 5, priority = 1 },
+    { name = "codeium", max_item_count = 3, priority = 6 },
+    { name = "nvim_lsp", max_item_count = 6, priority = 5 },
+    { name = "luasnip", max_item_count = 2, priority = 4 },
+    { name = "nvim_lua", max_item_count = 4, keyword_length = 2, priority = 2 },
+    { name = "path", keyword_length = 3, max_item_count = 5, priority = 2 },
+    { name = "buffer", max_item_count = 4, keyword_length = 5, priority = 1 },
   },
 })

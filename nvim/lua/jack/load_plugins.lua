@@ -229,10 +229,28 @@ local base_plugins = function()
         require("jack.plugins.nonels").setup()
       end,
     },
+    -- {
+    --   "supermaven-inc/supermaven-nvim",
+    --   config = function()
+    --     require("jack.plugins.supermaven").setup()
+    --   end,
+    -- },
+    -- {
+    --   "Exafunction/codeium.vim",
+    --   config = function()
+    --     vim.keymap.set("i", "<C-y>", function()
+    --       return vim.fn["codeium#Accept"]()
+    --     end, { expr = true, silent = true })
+    --   end,
+    -- },
     {
-      "supermaven-inc/supermaven-nvim",
+      "Exafunction/codeium.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "hrsh7th/nvim-cmp",
+      },
       config = function()
-        require("jack.plugins.supermaven").setup()
+        require("codeium").setup({})
       end,
     },
     {
@@ -247,7 +265,6 @@ local base_plugins = function()
         require("jack.plugins.harpoon").setup()
       end,
     },
-
   }
 end
 
