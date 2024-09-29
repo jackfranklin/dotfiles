@@ -42,7 +42,7 @@ cmp.setup({
     max_view_entries = 20,
   },
   sources = {
-    { name = "codeium", max_item_count = 3, priority = 6 },
+    { name = "codeium", max_item_count = 3, priority = 6, keyword_length = 4 },
     { name = "nvim_lsp", max_item_count = 6, priority = 5 },
     { name = "luasnip", max_item_count = 2, priority = 4 },
     { name = "nvim_lua", max_item_count = 4, keyword_length = 2, priority = 2 },
