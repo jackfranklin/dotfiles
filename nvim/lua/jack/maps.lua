@@ -66,12 +66,15 @@ vim.api.nvim_create_autocmd("TextYankPost", {
 -- Map <CR> to ciw, but avoid certain buffers.
 local augroup = vim.api.nvim_create_augroup("EnterRemap", {})
 vim.api.nvim_clear_autocmds({ group = augroup })
-vim.api.nvim_create_autocmd({ "BufNewFile", "BufReadPost" }, {
+vim.api.nvim_create_autocmd({ "BufEnter" }, {
   group = augroup,
   callback = function(data)
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = data.buf })
-    -- acwrite is the buftype for oil.nvim
-    if buftype == "quickfix" or buftype == "acwrite" or buftype == "terminal" then
+    local filetype = vim.api.nvim_get_option_value("filetype", { buf = data.buf })
+    if buftype == "quickfix" or buftype == "acwrite" or buftype == "terminal" or buftype == "nowrite" then
+      return
+    end
+    if filetype == "fugitiveblame" then
       return
     end
     vim.api.nvim_buf_set_keymap(data.buf, "n", "<CR>", "ciw", { noremap = true })
