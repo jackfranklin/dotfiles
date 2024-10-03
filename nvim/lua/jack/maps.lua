@@ -69,6 +69,9 @@ vim.api.nvim_clear_autocmds({ group = augroup })
 vim.api.nvim_create_autocmd({ "BufEnter" }, {
   group = augroup,
   callback = function(data)
+    if data.file == "" then
+      return
+    end
     local buftype = vim.api.nvim_get_option_value("buftype", { buf = data.buf })
     local filetype = vim.api.nvim_get_option_value("filetype", { buf = data.buf })
     if buftype == "quickfix" or buftype == "acwrite" or buftype == "terminal" or buftype == "nowrite" then
