@@ -35,7 +35,7 @@ M.typescript = function(config)
     }
   end
 
-  nvim_lsp.tsserver.setup(setup_opts)
+  nvim_lsp.ts_ls.setup(setup_opts)
 end
 
 M.css = function(config)
