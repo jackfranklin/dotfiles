@@ -229,12 +229,12 @@ local base_plugins = function()
         require("jack.plugins.nonels").setup()
       end,
     },
-    -- {
-    --   "supermaven-inc/supermaven-nvim",
-    --   config = function()
-    --     require("jack.plugins.supermaven").setup()
-    --   end,
-    -- },
+    {
+      "supermaven-inc/supermaven-nvim",
+      config = function()
+        require("jack.plugins.supermaven").setup()
+      end,
+    },
     -- {
     --   "Exafunction/codeium.vim",
     --   config = function()
@@ -243,16 +243,16 @@ local base_plugins = function()
     --     end, { expr = true, silent = true })
     --   end,
     -- },
-    {
-      "Exafunction/codeium.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "hrsh7th/nvim-cmp",
-      },
-      config = function()
-        require("codeium").setup({})
-      end,
-    },
+    -- {
+    --   "Exafunction/codeium.nvim",
+    --   dependencies = {
+    --     "nvim-lua/plenary.nvim",
+    --     "hrsh7th/nvim-cmp",
+    --   },
+    --   config = function()
+    --     require("codeium").setup({})
+    --   end,
+    -- },
     {
       "smoka7/hop.nvim",
       config = function()
