@@ -52,7 +52,6 @@ tnoremap <C-l> <C-\><C-n><C-w>l
 
 vim.api.nvim_set_keymap("n", "cn", ":cnext<CR>", { noremap = true, desc = "Quickfix [n]ext" })
 vim.api.nvim_set_keymap("n", "cp", ":cprev<CR>", { noremap = true, desc = "Quickfix [p]revious" })
-vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
 -- Highlight text when yanking it
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -103,3 +102,7 @@ local function clear_all_open_buffers()
 end
 
 vim.keymap.set("n", "<leader>bc", clear_all_open_buffers, { desc = "[b]uf [c]lear: clear all neovim buffers" })
+
+vim.keymap.set("n", "<leader>wl", "<C-w>L", {
+  desc = "Move [w] to right hand split",
+})

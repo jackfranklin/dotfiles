@@ -165,7 +165,8 @@ local base_plugins = function()
       end,
     },
     {
-      "hrsh7th/nvim-cmp",
+      "iguanacucumber/magazine.nvim",
+      name = "nvim-cmp", -- Otherwise highlighting gets messed up
       event = "InsertEnter",
       dependencies = {
         "hrsh7th/cmp-nvim-lsp",
@@ -265,6 +266,13 @@ local base_plugins = function()
         require("jack.plugins.harpoon").setup()
       end,
     },
+    {
+      "jake-stewart/multicursor.nvim",
+      branch = "1.0",
+      config = function()
+        require("jack.plugins.multicursor")
+      end,
+    },
   }
 end
 
@@ -279,16 +287,14 @@ M.load = function(config)
   for _, plugin_data in pairs(base_plugins()) do
     local plugin_name = type(plugin_data) == "string" and plugin_data or plugin_data[1] or plugin_data.dir
     if delete_plugins[plugin_name] then
-      goto continue
+      -- Do nothing: this plugin should not appear in the final config
+    else
+      local override_config = config_overrides[plugin_name]
+      if override_config then
+        plugin_data.config = override_config
+      end
+      table.insert(final_plugins, plugin_data)
     end
-
-    local override_config = config_overrides[plugin_name]
-    if override_config then
-      plugin_data.config = override_config
-    end
-    table.insert(final_plugins, plugin_data)
-
-    ::continue::
   end
   for _, v in pairs(extra_plugins) do
     table.insert(final_plugins, v)
