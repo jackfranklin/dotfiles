@@ -13,7 +13,3 @@ goto_preview.setup({
 vim.keymap.set("n", "gp", function()
   goto_preview.goto_preview_definition()
 end, { desc = "LSP [g]oto [p]review" })
-
-vim.keymap.set("n", "<leader>wl", "<C-w>L", {
-  desc = "Move [window] to right hand split",
-})
