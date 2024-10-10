@@ -9,23 +9,20 @@ require("toggleterm").setup({
       guibg = "#1e2024",
     },
   },
+  persist_mode = true,
 })
 
-vim.api.nvim_exec(
+vim.api.nvim_exec2(
   [[
-autocmd BufEnter * if &filetype == 'toggleterm' | :startinsert | endif
 autocmd BufEnter * if &filetype == 'toggleterm' | :set cursorline | endif
 autocmd BufLeave * if &filetype == 'toggleterm' | :set nocursorline | endif
 ]],
-  false
+  { output = false }
 )
 local Terminal = require("toggleterm.terminal").Terminal
 local side_terminal = Terminal:new({
   direction = "vertical",
   hidden = true,
-  on_open = function(term)
-    vim.cmd("startinsert!")
-  end,
   close_on_exit = true,
   start_in_insert = true,
 })
