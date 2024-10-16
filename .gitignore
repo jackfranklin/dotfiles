@@ -36,3 +36,5 @@ nvim-linux64*
 wezterm/per_machine.lua
 nvim/lua/jack/per_machine.lua
 nvim/lazy-lock.json
+node_modules
+package-lock.json
