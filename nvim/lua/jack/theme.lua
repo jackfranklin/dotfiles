@@ -48,6 +48,17 @@ local function load_catppuccin()
       -- Prevent conditionals from being italic
       conditionals = {},
     },
+    integrations = {
+      native_lsp = {
+        underlines = {
+          errors = { "undercurl" },
+          hints = { "undercurl" },
+          warnings = { "undercurl" },
+          information = { "undercurl" },
+          ok = { "undercurl" },
+        },
+      },
+    },
     custom_highlights = function(colors)
       return {
         ["@tag.attribute.tsx"] = { style = { "italic" } },
