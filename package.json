@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "prettier": "3.3.3",
+    "yargs": "17.7.2"
+  }
+}
