@@ -17,6 +17,11 @@ const FONTS_IN_ROTATION = [
   "DM Mono",
   "MonoLisa script",
   "Dank Mono",
+  "Monaspace Argon",
+  "Monaspace Neon",
+  "Monaspace Xenon",
+  "Fantasque Sans Mono",
+  "IntelOne Mono",
 ];
 
 const argv = yargs(hideBin(process.argv))
