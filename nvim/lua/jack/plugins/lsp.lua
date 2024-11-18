@@ -32,7 +32,28 @@ nvim_lsp.svelte.setup({
 })
 
 nvim_lsp.rust_analyzer.setup({
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    on_attach(client, bufnr)
+
+    local augroup = vim.api.nvim_create_augroup("RustLspFormatting", {})
+    if client.supports_method("textDocument/formatting") then
+      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+      vim.api.nvim_create_autocmd("BufWritePre", {
+        group = augroup,
+        buffer = bufnr,
+        callback = function()
+          vim.lsp.buf.format({
+            bufnr = bufnr,
+            async = false,
+            filter = function(current_client)
+              print(current_client.name)
+              return current_client.name == "rust_analyzer"
+            end,
+          })
+        end,
+      })
+    end
+  end,
   capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
