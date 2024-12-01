@@ -59,12 +59,6 @@ local base_plugins = function()
       end,
     },
     {
-      "echasnovski/mini.indentscope",
-      config = function()
-        require("jack.plugins.mini-indent")
-      end,
-    },
-    {
       "ojroques/vim-oscyank",
       cmd = "OSCYankVisual",
       keys = {
@@ -236,41 +230,10 @@ local base_plugins = function()
         require("jack.plugins.supermaven").setup()
       end,
     },
-    -- {
-    --   "Exafunction/codeium.vim",
-    --   config = function()
-    --     vim.keymap.set("i", "<C-y>", function()
-    --       return vim.fn["codeium#Accept"]()
-    --     end, { expr = true, silent = true })
-    --   end,
-    -- },
-    -- {
-    --   "Exafunction/codeium.nvim",
-    --   dependencies = {
-    --     "nvim-lua/plenary.nvim",
-    --     "hrsh7th/nvim-cmp",
-    --   },
-    --   config = function()
-    --     require("codeium").setup({})
-    --   end,
-    -- },
     {
       "smoka7/hop.nvim",
       config = function()
         require("jack.plugins.hop").setup()
-      end,
-    },
-    {
-      "ThePrimeagen/harpoon",
-      config = function()
-        require("jack.plugins.harpoon").setup()
-      end,
-    },
-    {
-      "jake-stewart/multicursor.nvim",
-      branch = "1.0",
-      config = function()
-        require("jack.plugins.multicursor")
       end,
     },
   }
