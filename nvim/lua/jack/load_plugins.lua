@@ -130,6 +130,7 @@ local base_plugins = function()
       dependencies = {
         "MunifTanjim/nui.nvim",
       },
+      event = "BufReadPre",
       config = function()
         require("jack.plugins.executor").setup({})
       end,
@@ -176,7 +177,6 @@ local base_plugins = function()
     {
       "neovim/nvim-lspconfig",
       event = "BufReadPre",
-      -- event = "BufReadPre",
       dependencies = {
         -- This plugin does not depend on this, but my
         -- config does.
@@ -226,6 +226,7 @@ local base_plugins = function()
     },
     {
       "supermaven-inc/supermaven-nvim",
+      event = "BufReadPre",
       config = function()
         require("jack.plugins.supermaven").setup()
       end,
