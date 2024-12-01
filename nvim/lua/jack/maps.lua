@@ -54,6 +54,7 @@ vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]])
 vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]])
 vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]])
 vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]])
+vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
 vim.api.nvim_set_keymap("n", "cn", ":cnext<CR>", { noremap = true, desc = "Quickfix [n]ext" })
 vim.api.nvim_set_keymap("n", "cp", ":cprev<CR>", { noremap = true, desc = "Quickfix [p]revious" })
