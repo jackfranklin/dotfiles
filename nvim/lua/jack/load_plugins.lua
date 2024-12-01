@@ -236,6 +236,12 @@ local base_plugins = function()
         require("jack.plugins.hop").setup()
       end,
     },
+    {
+      "Goose97/timber.nvim",
+      config = function()
+        require("timber").setup({})
+      end,
+    },
   }
 end
 
