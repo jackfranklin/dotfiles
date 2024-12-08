@@ -45,6 +45,27 @@ local base_plugins = function()
     -- HANDY UTILS
     --
     {
+      "folke/todo-comments.nvim",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      event = "BufReadPre",
+      keys = { "<leader>xt", "<leader>xl" },
+      config = function()
+        require("jack.plugins.todo")
+      end,
+    },
+    {
+      "duane9/nvim-rg",
+      cmd = "Rg",
+      keys = {
+        { "<leader>rw", desc = "search for word under cursor with ripgrep" },
+        { "<leader>rg", desc = "search with rg" },
+        { "<leader>/", desc = "search current project with ripgrep" },
+      },
+      config = function()
+        require("jack.plugins.rg")
+      end,
+    },
+    {
       "echasnovski/mini.files",
       keys = "-",
       config = function()
@@ -68,15 +89,6 @@ local base_plugins = function()
         vim.keymap.set("v", "<leader>yo", "<Plug>OSCYankVisual", {
           desc = "[Y]ank [O]ut text to the system clipboard",
         })
-      end,
-    },
-    {
-      "mileszs/ack.vim",
-      lazy = true,
-      cmd = { "Ack" },
-      keys = { { "<leader>/", desc = "Search with Ack!" } },
-      config = function()
-        require("jack.plugins.ack")
       end,
     },
     "farmergreg/vim-lastplace",
