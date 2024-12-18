@@ -49,7 +49,7 @@ M.setup = function(config)
 
   -- Overwrites gt (go to next tab) but I have PageDown mapped to that.
   vim.keymap.set("n", "gt", function()
-    require("fzf-lua").lsp_typedefs({ jump_to_single_result = true })
+    require("fzf-lua").lsp_typedefs()
   end, { desc = "Find LSP [t]ypedefs" })
 
   vim.keymap.set("n", "gr", function()
