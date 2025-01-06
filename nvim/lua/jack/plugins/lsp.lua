@@ -46,7 +46,6 @@ nvim_lsp.rust_analyzer.setup({
             bufnr = bufnr,
             async = false,
             filter = function(current_client)
-              print(current_client.name)
               return current_client.name == "rust_analyzer"
             end,
           })

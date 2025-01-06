@@ -91,6 +91,7 @@ function runAndUpdateFile(existingContents, { force }) {
   console.log(
     `Font for today chosen! You will be using ${newContents.lastFontChoice}.`,
   );
+  console.log("Use shift-ctrl-c to reload WezTerm's config.");
   console.log("Not keen? Re-run with --force.");
   process.exit(0);
 }

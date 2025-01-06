@@ -252,7 +252,11 @@ local base_plugins = function()
     {
       "Goose97/timber.nvim",
       config = function()
-        require("timber").setup({})
+        require("timber").setup({
+          highlight = {
+            on_insert = false,
+          },
+        })
       end,
     },
   }
