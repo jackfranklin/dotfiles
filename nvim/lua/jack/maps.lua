@@ -41,7 +41,9 @@ tnoremap <S-Down> :resize+5<CR>
 inoremap <S-Up> :resize-5<CR>
 inoremap <S-Down> :resize+5<CR>
 
-tnoremap <Esc> <C-\><C-n>
+" Mapping a single Esc messes up Neovim within a terminal which is useful
+" sometimes for Git based things
+tnoremap <Esc><Esc> <C-\><C-n>
 "tnoremap <C-h> <C-\><C-n><C-w>h
 "tnoremap <C-j> <C-\><C-n><C-w>j
 "tnoremap <C-k> <C-\><C-n><C-w>k
