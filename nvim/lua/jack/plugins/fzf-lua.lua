@@ -56,6 +56,12 @@ M.setup = function(config)
     require("fzf-lua").lsp_references({ jump_to_single_result = true })
   end, { desc = "Find LSP [r]eferences" })
 
+  vim.keymap.set("n", "<leader>gb", function()
+    require("fzf-lua").git_branches({
+      cmd = "git branch --color", -- default config includes --all which adds remote branches, which I don't want.
+    })
+  end, { desc = "Change [g]it [b]ranch" })
+
   local ignore = { "^node_modules/", "^.git/" }
   local extraIgnores = config.extra_ignore_patterns or {}
   for _, value in ipairs(extraIgnores) do
