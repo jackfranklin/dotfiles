@@ -8,6 +8,21 @@ M.setup = function()
       },
     },
     hooks = {
+      Outline = function(prt, params)
+        local template = [[
+        I want you to act as {{filetype}} expert.
+        Review the entire code in this file, carefully examine it, and then
+        report an outline of the core parts of the code.
+        Keep your explanation short and to the point and format it using markdown:
+
+        ```{{filetype}}
+        {{filecontent}}
+        ```
+        ]]
+        local model_obj = prt.get_model("command")
+        prt.logger.info("Outlining file with model: " .. model_obj.name)
+        prt.Prompt(params, prt.ui.Target.vnew, model_obj, nil, template)
+      end,
       Debug = function(prt, params)
         local template = [[
         I want you to act as {{filetype}} expert.
