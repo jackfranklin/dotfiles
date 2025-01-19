@@ -266,6 +266,12 @@ local base_plugins = function()
         require("jack.plugins.parrot-ai").setup()
       end,
     },
+    {
+      "milanglacier/minuet-ai.nvim",
+      config = function()
+        require("jack.plugins.minuet-ai").setup()
+      end,
+    },
   }
 end
 

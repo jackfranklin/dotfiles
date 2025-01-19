@@ -37,12 +37,14 @@ cmp.setup({
     ["<CR>"] = cmp.mapping.confirm({ select = true }), -- select suggestion
     ["<C-p>"] = cmp.mapping.select_prev_item(), -- previous suggestion
     ["<C-n>"] = cmp.mapping.select_next_item(), -- next suggestion
+    ["<C-m>"] = require("minuet").make_cmp_map(),
   },
   performance = {
     max_view_entries = 20,
   },
   sources = {
     -- { name = "codeium", max_item_count = 3, priority = 6, keyword_length = 4 },
+    -- { name = "minuet" },
     { name = "luasnip", max_item_count = 2, priority = 10 },
     { name = "nvim_lsp", max_item_count = 6, priority = 5 },
     { name = "nvim_lua", max_item_count = 4, keyword_length = 2, priority = 2 },
