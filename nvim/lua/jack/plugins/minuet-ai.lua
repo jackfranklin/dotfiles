@@ -1,21 +1,22 @@
 local M = {}
 
 M.setup = function()
-  print("I am being setup!")
   require("minuet").setup({
-    -- virtualtext = {
-    --   auto_trigger_ft = {},
-    --   keymap = {
-    --     accept = "<A-A>",
-    --     accept_line = "<A-a>",
-    --     -- Cycle to prev completion item, or manually invoke completion
-    --     prev = "<A-[>",
-    --     -- Cycle to next completion item, or manually invoke completion
-    --     next = "<A-]>",
-    --     dismiss = "<A-e>",
-    --   },
-    -- },
+    virtualtext = {
+      auto_trigger_ft = {}, -- do not enable by default. Use prev/next to trigger.
+      keymap = {
+        accept = "<A-a>",
+        accept_line = "<A-l>",
+        -- Cycle to prev completion item, or manually invoke completion
+        prev = "<A-p>",
+        -- Cycle to next completion item, or manually invoke completion
+        next = "<A-n>",
+        dismiss = "<A-e>",
+      },
+    },
     cmp = {
+      -- This means that it is not auto-executed by cmp. But the ctrl-m
+      -- keybinding (set in cmp.lua) triggers it.
       enable_auto_complete = false,
     },
     provider = "gemini",

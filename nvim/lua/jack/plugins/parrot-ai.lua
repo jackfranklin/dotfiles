@@ -7,6 +7,44 @@ M.setup = function()
         api_key = os.getenv("GEMINI_API_KEY"),
       },
     },
+    hooks = {
+      Debug = function(prt, params)
+        local template = [[
+        I want you to act as {{filetype}} expert.
+        Review the following code, carefully examine it, and report potential
+        bugs and edge cases alongside solutions to resolve them.
+        Keep your explanation short and to the point:
+
+        ```{{filetype}}
+        {{selection}}
+        ```
+        ]]
+        local model_obj = prt.get_model("command")
+        prt.logger.info("Debugging selection with model: " .. model_obj.name)
+        prt.Prompt(params, prt.ui.Target.enew, model_obj, nil, template)
+      end,
+      CommitMsg = function(prt, params)
+        local futils = require("parrot.file_utils")
+        if futils.find_git_root() == "" then
+          prt.logger.warning("Not in a git repository")
+          return
+        else
+          local template = [[
+          I want you to act as a commit message generator. I will provide you
+          with information about the task and the prefix for the task code, and
+          I would like you to generate an appropriate commit message using the
+          conventional commit format. Do not write any explanations or other
+          words, just reply with the commit message.
+          Start with a short headline as summary but then list the individual
+          changes in more detail.
+
+          Here are the changes that should be considered by this message:
+          ]] .. vim.fn.system("git diff --no-color --no-ext-diff --staged")
+          local model_obj = prt.get_model("command")
+          prt.Prompt(params, prt.ui.Target.rewrite, model_obj, nil, template)
+        end
+      end,
+    },
   })
   vim.keymap.set("n", "<leader>ln", ":PrtChatNew<CR>", {
     desc = "Open a new chat with Parrot",
