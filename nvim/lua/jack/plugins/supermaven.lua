@@ -9,6 +9,10 @@ M.setup = function()
     ignore_filetypes = {
       gitcommit = true,
     },
+    condition = function()
+      -- Disable for Parrot nvim chats
+      return string.match(vim.fn.expand("%"), "nvim/parrot/chats")
+    end,
   })
 end
 

@@ -259,6 +259,13 @@ local base_plugins = function()
         })
       end,
     },
+    {
+      "frankroeder/parrot.nvim",
+      dependencies = { "ibhagwan/fzf-lua", "nvim-lua/plenary.nvim" },
+      config = function()
+        require("jack.plugins.parrot-ai").setup()
+      end,
+    },
   }
 end
 
