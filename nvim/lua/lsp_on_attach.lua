@@ -28,11 +28,6 @@ local on_attach = function(client, bufnr)
     require("treesitter-context").go_to_context(vim.v.count1)
   end, "[g]o to the conte[x]t")
 
-  -- Disable formatexpr to allow Vim's built in gq to work.
-  -- See: https://github.com/neovim/neovim/pull/19677
-  -- In theory this idea works great but the TS language server doesn't wrap comments.
-  vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
-
   -- Semantic highlighting
   -- :h lsp-semantic-highlight gives the following suggestion for disabling:
   -- You can disable semantic highlights by clearing the highlight groups: >lua

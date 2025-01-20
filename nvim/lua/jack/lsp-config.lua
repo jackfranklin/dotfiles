@@ -14,6 +14,17 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "rounded",
 })
 
+-- Disable formatexpr to allow Vim's built in gq to work.
+-- See: https://github.com/neovim/neovim/pull/19677 &&
+-- https://vi.stackexchange.com/questions/39200/wrapping-comment-in-visual-mode-not-working-with-gq
+-- In theory this idea works great but the TS language server doesn't wrap comments.
+-- vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
+vim.api.nvim_create_autocmd("LspAttach", {
+  callback = function(args)
+    vim.bo[args.buf].formatexpr = nil
+  end,
+})
+
 -- vim.lsp.handlers["$/typescriptVersion"] = function(_, result)
 --   vim.notify("TypeScript loaded: " .. vim.inspect(result))
 -- end
