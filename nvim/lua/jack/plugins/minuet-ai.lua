@@ -5,7 +5,7 @@ M.setup = function()
     virtualtext = {
       auto_trigger_ft = {}, -- do not enable by default. Use prev/next to trigger.
       keymap = {
-        accept = "<A-a>",
+        accept = "<A-y>",
         accept_line = "<A-l>",
         -- Cycle to prev completion item, or manually invoke completion
         prev = "<A-p>",

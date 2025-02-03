@@ -23,6 +23,26 @@ M.setup = function()
         prt.logger.info("Outlining file with model: " .. model_obj.name)
         prt.Prompt(params, prt.ui.Target.vnew, model_obj, nil, template)
       end,
+      SpellCheck = function(prt, params)
+        local template = [[
+        Your task is to look through the code provided in the file and list any
+        potential spelling mistakes. Quote each part that you think is
+        incorrect. Suggest the correct
+        spelling. Correct any spelling mistakes, punctuation
+        errors, verb tense issues, word choice problems, and other
+        grammatical mistakes. Return your answer as a formatted markdown list.
+        The start of each item should follow the format "Line X", replacing "X"
+        with the actual line number, and make the "Line X" part bold. Return
+        the lines sorted in ascending order.
+
+        Here is the input to check:
+        ```{{filetype}}
+        {{filecontent}}
+        ```
+        ]]
+        local model_obj = prt.get_model("command")
+        prt.Prompt(params, prt.ui.Target.vnew, model_obj, nil, template)
+      end,
       Debug = function(prt, params)
         local template = [[
         I want you to act as {{filetype}} expert.
@@ -36,7 +56,22 @@ M.setup = function()
         ]]
         local model_obj = prt.get_model("command")
         prt.logger.info("Debugging selection with model: " .. model_obj.name)
-        prt.Prompt(params, prt.ui.Target.enew, model_obj, nil, template)
+        prt.Prompt(params, prt.ui.Target.vnew, model_obj, nil, template)
+      end,
+      DebugFile = function(prt, params)
+        local template = [[
+        I want you to act as {{filetype}} expert.
+        Review the following code, carefully examine it, and report potential
+        bugs and edge cases alongside solutions to resolve them.
+        Keep your explanation short and to the point:
+
+        ```{{filetype}}
+        {{filecontent}}
+        ```
+        ]]
+        local model_obj = prt.get_model("command")
+        prt.logger.info("Debugging selection with model: " .. model_obj.name)
+        prt.Prompt(params, prt.ui.Target.vnew, model_obj, nil, template)
       end,
       CommitMsg = function(prt, params)
         local futils = require("parrot.file_utils")
@@ -47,11 +82,11 @@ M.setup = function()
           local template = [[
           I want you to act as a commit message generator. I will provide you
           with information about the task and the prefix for the task code, and
-          I would like you to generate an appropriate commit message and do not use the
-          conventional commit format. Do not write any explanations or other
-          words, just reply with the commit message.
-          Start with a short headline as summary and then list the individual
-          changes in more detail.
+          I would like you to generate an appropriate commit message.
+
+          IMPORTANT: do not use the conventional commit format or any other format that prefixes the commit message.
+          Do not write any explanations or other words, just reply with the commit message.
+          Start with a short headline as summary and then list the individual changes in more detail.
 
           Here are the changes that should be considered by this message:
           ]] .. vim.fn.system("git diff --no-color --no-ext-diff --staged")
@@ -62,13 +97,13 @@ M.setup = function()
     },
   })
   vim.keymap.set("n", "<leader>lcn", ":PrtChatNew<CR>", {
-    desc = "Open a new chat with Parrot",
+    desc = "[c]hat [n]ew: Open a new chat with Parrot",
   })
-  vim.keymap.set("n", "<leader>lct<CR>", ":PrtChatToggle<CR>", {
-    desc = "Toggle chat with Parrot",
+  vim.keymap.set("n", "<leader>lct", ":PrtChatToggle<CR>", {
+    desc = "[c]hat [t]oggle with Parrot",
   })
-  vim.keymap.set("n", "<leader>lgm<CR>", ":PrtCommitMsg<CR>", {
-    desc = "Generate a commit message with Parrot",
+  vim.keymap.set("n", "<leader>lgm", ":PrtCommitMsg<CR>", {
+    desc = "[g]it [m]essage: Generate a commit message with Parrot",
   })
 end
 
