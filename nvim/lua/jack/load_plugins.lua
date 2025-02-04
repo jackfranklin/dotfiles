@@ -272,6 +272,14 @@ local base_plugins = function()
         require("jack.plugins.minuet-ai").setup()
       end,
     },
+    {
+      "dlants/magenta.nvim",
+      lazy = false,
+      build = "npm install --frozen-lockfile",
+      config = function()
+        require("jack.plugins.magenta-ai").setup()
+      end,
+    },
   }
 end
 
