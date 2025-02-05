@@ -20,6 +20,16 @@ M.setup = function()
       enable_auto_complete = false,
     },
     provider = "gemini",
+    provider_options = {
+      gemini = {
+        optional = {
+          generationConfig = {
+            -- Gemini really likes long responses
+            maxOutputTokens = 64,
+          },
+        },
+      },
+    },
   })
 end
 
