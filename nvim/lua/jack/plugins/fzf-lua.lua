@@ -11,6 +11,16 @@ M.setup = function(config)
       },
     })
   end, { desc = "Find files" })
+  vim.keymap.set("n", "<leader>ff", function()
+    require("fzf-lua").oldfiles({
+      -- git_icons = false,
+      file_icons = false,
+      no_header_i = true,
+      winopts = {
+        preview = { hidden = "hidden" },
+      },
+    })
+  end, { desc = "Find recent files" })
   vim.keymap.set("n", "<leader>fb", function()
     require("fzf-lua").buffers({
       git_icons = false,
