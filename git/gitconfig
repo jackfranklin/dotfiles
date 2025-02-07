@@ -14,6 +14,31 @@
   fa = fetch --all
   b = branch
   wip = for-each-ref --sort='authordate:iso8601' --format=' %(color:green)%(authordate:relative)%09%(color:white)%(refname:short)' refs/heads
+
+	# `git log` with patches shown with difftastic.
+	dl = -c diff.external=difft log -p --ext-diff
+
+	# Show the most recent commit with difftastic.
+	ds = -c diff.external=difft show --ext-diff
+
+	# `git diff` with difftastic.
+	dft = -c diff.external=difft diff
+
+	# show recent commits - thanks Connor! https://gist.github.com/connorjclark/4d772331c567aa488f6775fd6702b4b4
+	# configure: news-less or news-fzf? see below
+	news-impl = news-fzf
+
+	# configure: how many days ago do you wanna see?
+	news = !git news-impl --since '3 days ago'
+	# configure: make your own alias to scope to folders you care about
+	rpp = !git news \"$@\" front_end/models/trace front_end/panels/timeline/ front_end/panels/lighthouse/ front_end/ui/legacy/components/perf_ui "#"
+
+	# one-line commit summary, followed by longer commit descriptions
+	# no external dependencies
+	news-less = !(git --no-pager log --color --pretty=format:'%C(yellow)%h%Creset %C(auto)%<(14)%cr%Creset %C(blue)%<(12,trunc)%an%Creset    %<(72,trunc)%s' \"$@\" && echo '\\n' && git --no-pager log --color \"$@\" | grep -vE '(Change-Id|Auto-Submit|Commit-Queue):') | less -R "#"
+	# terminal app experience. shows commits in split-pane, and displays selected commit's diff
+	# requires fzf. osx: 'brew install fzf'
+	news-fzf = !git log --color=always --pretty=format:'%C(yellow)%h%Creset %C(auto)%<(14)%cr%Creset %C(blue)%<(12,trunc)%an%Creset    %<(72,trunc)%s' \"$@\" | fzf --layout=reverse --multi  --ansi --preview 'git --no-pager show --color=always $(echo {} | cut -d \" \" -f 1)  | grep -vE \"(Change-Id|Auto-Submit|Commit-Queue):\" | tail -n +5' --preview-window=bottom,50% "#"
   
 [push]
 	default = simple
