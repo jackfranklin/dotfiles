@@ -269,7 +269,8 @@ local base_plugins = function()
     {
       "milanglacier/minuet-ai.nvim",
       config = function()
-        require("jack.plugins.minuet-ai").setup()
+        -- Disabled as copilot.lua is doing a better job for me right now.
+        -- require("jack.plugins.minuet-ai").setup()
       end,
     },
     {
@@ -278,6 +279,14 @@ local base_plugins = function()
       build = "npm install --frozen-lockfile",
       config = function()
         require("jack.plugins.magenta-ai").setup()
+      end,
+    },
+    {
+      "zbirenbaum/copilot.lua",
+      cmd = "Copilot",
+      event = "InsertEnter",
+      config = function()
+        require("jack.plugins.copilot-config").setup()
       end,
     },
   }
