@@ -237,13 +237,6 @@ local base_plugins = function()
       end,
     },
     {
-      "supermaven-inc/supermaven-nvim",
-      event = "BufReadPre",
-      config = function()
-        require("jack.plugins.supermaven").setup()
-      end,
-    },
-    {
       "smoka7/hop.nvim",
       config = function()
         require("jack.plugins.hop").setup()
@@ -264,13 +257,6 @@ local base_plugins = function()
       dependencies = { "ibhagwan/fzf-lua", "nvim-lua/plenary.nvim" },
       config = function()
         require("jack.plugins.parrot-ai").setup()
-      end,
-    },
-    {
-      "milanglacier/minuet-ai.nvim",
-      config = function()
-        -- Disabled as copilot.lua is doing a better job for me right now.
-        -- require("jack.plugins.minuet-ai").setup()
       end,
     },
     {
