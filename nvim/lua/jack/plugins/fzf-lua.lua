@@ -40,6 +40,13 @@ M.setup = function(config)
     })
   end, { desc = "[f]ind LSP [s]ymbols" })
 
+  vim.keymap.set("n", "<leader>fe", function()
+    require("fzf-lua").lsp_document_diagnostics({
+      no_header_i = true,
+      winopts = {},
+    })
+  end, { desc = "[f]ind LSP [s]ymbols" })
+
   vim.keymap.set("n", "<leader>fd", function()
     local cwd_for_buf = vim.fn.expand("%:h")
     require("fzf-lua").files({
@@ -54,7 +61,7 @@ M.setup = function(config)
   end, { desc = "Find [f]iles in [d]irectory" })
 
   vim.keymap.set("n", "gd", function()
-    require("fzf-lua").lsp_definitions({ jump_to_single_result = true })
+    require("fzf-lua").lsp_definitions({ jump1 = true })
   end, { desc = "Find LSP [d]efinitions" })
 
   -- Overwrites gt (go to next tab) but I have PageDown mapped to that.
@@ -63,7 +70,7 @@ M.setup = function(config)
   end, { desc = "Find LSP [t]ypedefs" })
 
   vim.keymap.set("n", "gr", function()
-    require("fzf-lua").lsp_references({ jump_to_single_result = true })
+    require("fzf-lua").lsp_references({ jump1 = true })
   end, { desc = "Find LSP [r]eferences" })
 
   vim.keymap.set("n", "<leader>gb", function()
@@ -85,9 +92,7 @@ M.setup = function(config)
         ["ctrl-q"] = "select-all+accept",
       },
     },
-    fzf_opts = {
-      ["--color"] = config.fzf_theme or "dark",
-    },
+    fzf_colors = true,
     winopts = {
       height = 0.3,
       width = 1,
