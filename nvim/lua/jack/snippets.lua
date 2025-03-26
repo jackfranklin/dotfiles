@@ -62,6 +62,16 @@ connectedCallback() {{
         { i(1) }
       )
     ),
+    s(
+      "raf",
+      fmt(
+        [[requestAnimationFrame(() => {{
+  {}
+}});{}
+    ]],
+        { i(1), i(0) }
+      )
+    ),
 
     -- describe
     s(
