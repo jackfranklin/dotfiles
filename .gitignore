@@ -38,3 +38,5 @@ nvim/lua/jack/per_machine.lua
 nvim/lazy-lock.json
 node_modules
 package-lock.json
+
+scripts/what_alias_cache*
