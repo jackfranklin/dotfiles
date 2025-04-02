@@ -139,10 +139,7 @@ Here is the shell file content:
 ${allShellContent}
 \`\`\`
 
-Return only the JSON output.
-
-**CRITICAL** if the function is more than 5 lines, do not include it in the output.
-**CRITICAL**: return only JSON, do not return it wrapped in code blocks.`;
+Return only the JSON output`;
 
   const jsonSchema = {
     type: 'array',
@@ -374,6 +371,7 @@ export async function main(filesToProcess) {
   }
 
   const cacheFileName = generateCacheFilename(filesToProcess);
+  console.log('cache file', cacheFileName);
 
   let allItemsData = await loadCachedData(
     cacheFileName,
