@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 
-const yargs = require("yargs/yargs");
-const { hideBin } = require("yargs/helpers");
-const path = require("path");
-const fs = require("fs");
+const yargs = require('yargs/yargs');
+const { hideBin } = require('yargs/helpers');
+const path = require('path');
+const fs = require('fs');
 
 /**
  * A function that runs to change the font used in WezTerm to a random one.
@@ -11,30 +11,33 @@ const fs = require("fs");
  */
 
 const FONTS_IN_ROTATION = [
-  "Cartograph CF",
-  "Berkeley Mono",
-  "Comic Code",
-  "DM Mono",
-  "MonoLisa script",
-  "Dank Mono",
-  "Monaspace Argon",
-  "Monaspace Neon",
-  "Monaspace Xenon",
-  "Fantasque Sans Mono",
-  "IntelOne Mono",
+  'Cartograph CF',
+  'Berkeley Mono',
+  'Comic Code',
+  'DM Mono',
+  'MonoLisa script',
+  'Dank Mono',
+  'Monaspace Argon',
+  'Monaspace Neon',
+  'Monaspace Xenon',
+  'Fantasque Sans Mono',
+  'IntelOne Mono',
+  'CommitMono',
+  'Input Mono',
+  'Maple Mono NL',
 ];
 
 const argv = yargs(hideBin(process.argv))
-  .option("force", {
-    alias: "f",
+  .option('force', {
+    alias: 'f',
     description:
-      "Force a re-run. Else this will not run if it has run already today",
-    type: "boolean",
+      'Force a re-run. Else this will not run if it has run already today',
+    type: 'boolean',
     default: false,
   })
   .help().argv;
 
-const FILE_LOCATION = path.join(process.env.HOME, ".font-picker.json");
+const FILE_LOCATION = path.join(process.env.HOME, '.font-picker.json');
 
 const EMPTY_FILE = {
   lastRunDate: undefined,
@@ -48,7 +51,7 @@ function getContents() {
   }
 
   try {
-    const content = fs.readFileSync(FILE_LOCATION, "utf8");
+    const content = fs.readFileSync(FILE_LOCATION, 'utf8');
     return JSON.parse(content);
   } catch {
     return EMPTY_FILE;
@@ -69,7 +72,7 @@ function runAndUpdateFile(existingContents, { force }) {
     const lastRunDate = new Date(lastRunDateTime);
     if (datesEqualDay(lastRunDate, new Date())) {
       console.log(
-        "Already run today; bailing.\nRun with --force to force me to make a new choice",
+        'Already run today; bailing.\nRun with --force to force me to make a new choice',
       );
       process.exit(1);
     }
@@ -86,13 +89,13 @@ function runAndUpdateFile(existingContents, { force }) {
     lastRunDate: date,
   };
   fs.writeFileSync(FILE_LOCATION, JSON.stringify(newContents), {
-    encoding: "utf8",
+    encoding: 'utf8',
   });
   console.log(
     `Font for today chosen! You will be using ${newContents.lastFontChoice}.`,
   );
   console.log("Use shift-ctrl-c to reload WezTerm's config.");
-  console.log("Not keen? Re-run with --force.");
+  console.log('Not keen? Re-run with --force.');
   process.exit(0);
 }
 
