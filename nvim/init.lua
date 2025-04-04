@@ -10,6 +10,8 @@ require("jack.statusline")
 require("jack.maps")
 require("jack.folds")
 
+local format_on_save = require("jack.format-on-save")
+
 local custom_input = require("jack.custom-input")
 vim.ui.input = custom_input.custom_ui_input
 
@@ -56,3 +58,5 @@ vim.keymap.set("n", "<leader>fa", function()
     end)
   end
 end, { desc = "Jump to the [A]lternative file" })
+
+format_on_save.create_autocmd()

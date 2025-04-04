@@ -228,12 +228,9 @@ local base_plugins = function()
       end,
     },
     {
-      "nvimtools/none-ls.nvim",
-      dependencies = {
-        "nvimtools/none-ls-extras.nvim",
-      },
+      "stevearc/conform.nvim",
       config = function()
-        require("jack.plugins.nonels").setup()
+        require("jack.plugins.conform-config").setup()
       end,
     },
     {
