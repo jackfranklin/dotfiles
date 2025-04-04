@@ -240,6 +240,16 @@ local base_plugins = function()
       end,
     },
     {
+      "olimorris/codecompanion.nvim",
+      config = function()
+        require("jack.plugins.codecompanion-ai").setup()
+      end,
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+        "nvim-treesitter/nvim-treesitter",
+      },
+    },
+    {
       "Goose97/timber.nvim",
       config = function()
         require("timber").setup({
