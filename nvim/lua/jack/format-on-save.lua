@@ -3,7 +3,7 @@ local M = {}
 local lsp_clients_that_format = {}
 
 M.register_lsp_for_autoformat = function(name)
-  table.insert(lsp_clients_that_format, name, true)
+  lsp_clients_that_format[name] = true
 end
 
 M.create_autocmd = function()
