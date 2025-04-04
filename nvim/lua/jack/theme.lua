@@ -124,6 +124,7 @@ local M = {}
 M.load_kanagawa = function(config)
   config = config or {}
   load_kanagawa(config.env)
+  vim.api.nvim_exec2([[set background=dark]], { output = false })
   vim.api.nvim_command("colorscheme kanagawa")
 end
 
