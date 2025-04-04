@@ -80,11 +80,6 @@ function StatusBarNavic()
   return without_callbacks
 end
 
-local function is_outputting_executor_status()
-  local status = executor.current_status()
-  return status == "FAILED" or status == "IN_PROGRESS" or status == "PASSED"
-end
-
 local function is_outputting_executor_last_cmd()
   local data = executor.last_command()
   return data.one_off and data.cmd ~= nil
@@ -97,6 +92,32 @@ local function executor_text(inner_text)
   end
   return "[" .. inner_text .. "]" .. suffix
 end
+
+local codecompanion_is_processing = false
+
+local function setup_code_companion_status()
+  local success, cc = pcall(require, "codecompanion")
+  if not success then
+    return
+  end
+
+  local group = vim.api.nvim_create_augroup("CodeCompanionHooks", {})
+
+  vim.api.nvim_create_autocmd({ "User" }, {
+    pattern = "CodeCompanionRequest*",
+    group = group,
+    callback = function(request)
+      if request.match == "CodeCompanionRequestStarted" then
+        codecompanion_is_processing = true
+      elseif request.match == "CodeCompanionRequestFinished" then
+        codecompanion_is_processing = false
+      end
+      vim.api.nvim_exec2("let &stl=&stl", { output = false }) --redraw status line
+    end,
+  })
+end
+
+setup_code_companion_status()
 
 function ExecutorPassOutput()
   local status = executor.current_status()
@@ -137,6 +158,15 @@ function ExecutorLastCommandOutput()
   return ""
 end
 
+function CodeCompanionStatus()
+  if codecompanion_is_processing == false then
+    return ""
+  end
+
+  -- prefix space because it goes on the far RHS
+  return " [CC…]"
+end
+
 local executor_status = table.concat({
   "%#ExecutorPass#",
   "%{v:lua.ExecutorPassOutput()}",
@@ -159,6 +189,7 @@ local status_line_parts = {
   "%#JackStatusBarNavic#%{v:lua.StatusBarNavic()}%*",
   " ", -- Padding between navic + fugitive
   "%#JackStatusBarFugitive#%{FugitiveStatusline()}%*",
+  "%#JackStatusBarCodeCompanion#%{v:lua.CodeCompanionStatus()}%*",
 }
 
 vim.o.statusline = table.concat(status_line_parts, "")

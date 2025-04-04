@@ -84,7 +84,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     if buftype == "quickfix" or buftype == "acwrite" or buftype == "terminal" or buftype == "nowrite" then
       return
     end
-    if filetype == "fugitiveblame" then
+    if filetype == "fugitiveblame" or filetype == "codecompanion" then
       return
     end
     vim.api.nvim_buf_set_keymap(data.buf, "n", "<CR>", "ciw", { noremap = true })
