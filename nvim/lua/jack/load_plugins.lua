@@ -262,6 +262,8 @@ local base_plugins = function()
     {
       "frankroeder/parrot.nvim",
       dependencies = { "ibhagwan/fzf-lua", "nvim-lua/plenary.nvim" },
+      cmd = { "PrtChatNew", "PrtRewrite" },
+      keys = { "<leader>lcn" },
       config = function()
         require("jack.plugins.parrot-ai").setup()
       end,
@@ -281,6 +283,13 @@ local base_plugins = function()
       config = function()
         require("jack.plugins.copilot-config").setup()
       end,
+    },
+    {
+      "leath-dub/snipe.nvim",
+      config = function()
+        require("jack.plugins.snipe-config").setup()
+      end,
+      keys = { "<leader><leader>" },
     },
   }
 end
