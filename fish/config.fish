@@ -1,26 +1,26 @@
-alias ga="git add"
+# git add all
 alias gaa="git aa"
+# git add by patch
 alias gap="git add -p"
-alias gci="git ci"
-alias gco="git co"
-alias gcom="git co master"
+# git checkout
+alias gco="git checkout"
+# git checkout new branch
 alias gcob="git co -b"
 alias gd="git diff"
+# staged diff
 alias gds="git diff --staged"
 alias gpu="git push"
 alias grm="git rm"
 alias grh="git reset HEAD"
+# git push tags
 alias gput="git push --tags"
 alias gpl="git pull"
-alias gt="git tag"
 alias gl="git log"
-alias gnrt="git-new-remote-tracking"
-alias hpr="hub pull-request"
-alias hb="hub browse"
-alias hc="hub compare"
+# amend last commit
 alias gca="git commit --amend"
+# amend last commit with no edit
 alias gcan="git commit --amend --no-edit"
-alias gsp="git stash pop"
+# list conflicting files
 alias gconflict="git diff --name-only --diff-filter=U"
 alias df="cd ~/dotfiles"
 
