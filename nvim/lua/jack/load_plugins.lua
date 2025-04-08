@@ -268,14 +268,14 @@ local base_plugins = function()
         require("jack.plugins.parrot-ai").setup()
       end,
     },
-    {
-      "dlants/magenta.nvim",
-      lazy = false,
-      build = "npm install --frozen-lockfile",
-      config = function()
-        require("jack.plugins.magenta-ai").setup()
-      end,
-    },
+    -- {
+    --   "dlants/magenta.nvim",
+    --   lazy = false,
+    --   build = "npm install --frozen-lockfile",
+    --   config = function()
+    --     require("jack.plugins.magenta-ai").setup()
+    --   end,
+    -- },
     {
       "zbirenbaum/copilot.lua",
       cmd = "Copilot",
