@@ -262,7 +262,7 @@ local base_plugins = function()
     {
       "frankroeder/parrot.nvim",
       dependencies = { "ibhagwan/fzf-lua", "nvim-lua/plenary.nvim" },
-      cmd = { "PrtChatNew", "PrtRewrite" },
+      cmd = { "PrtChatNew", "PrtRewrite", "PrtAppend", "PrtPrepend" },
       keys = { "<leader>lcn" },
       config = function()
         require("jack.plugins.parrot-ai").setup()
