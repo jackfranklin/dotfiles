@@ -271,19 +271,27 @@ function findClosestMatches(itemsData, searchString, maxResults = 10) {
 }
 
 /**
- * Recursively finds all files with a specific extension within a directory.
+ * Recursively finds all files with a specific extension within a directory,
+ * optionally filtering them by a provided function.
  *
  * @async
  * @param {string} dirPath - The absolute or relative path to the directory to search.
  * @param {string} extension - The desired file extension (e.g., '.txt', 'js', '.json').
  * The leading dot is optional and will be added if missing.
+ * @param {(filePath: string) => boolean} [filterFn=(filePath) => true] - An optional
+ * function that takes the full file path as an argument. If it returns `false`,
+ * the file will be excluded from the results. Defaults to including all found files.
  * @returns {Promise<string[]>} A promise that resolves with an array of full file paths
- * matching the extension. Returns an empty array if the
+ * matching the extension and filter. Returns an empty array if the
  * directory doesn't exist or is inaccessible.
  * @throws {Error} Throws errors for issues other than directory not found or access denied.
  */
-async function findFilesByExtension(dirPath, extension) {
-  // 1. Normalize the extension: Ensure it starts with a '.'
+async function findFilesByExtension(
+  dirPath,
+  extension,
+  filterFn = (_filePath) => true, // Default filter includes everything
+) {
+  // 1. Normalize the extension
   const normalizedExtension = extension.startsWith('.')
     ? extension
     : `.${extension}`;
@@ -292,30 +300,30 @@ async function findFilesByExtension(dirPath, extension) {
 
   try {
     // 2. Read the directory contents
-    //    Using { withFileTypes: true } is more efficient as it provides Dirent objects
-    //    which tell us if an entry is a file or directory without needing fs.stat.
     const entries = await fs.readdir(dirPath, { withFileTypes: true });
 
-    // 3. Iterate through each entry in the directory
+    // 3. Iterate through each entry
     for (const entry of entries) {
-      const fullPath = path.join(dirPath, entry.name); // Construct the full path
+      const fullPath = path.join(dirPath, entry.name);
 
       if (entry.isDirectory()) {
-        // 4. If it's a directory, recursively call the function
-        //    and add the results found in the subdirectory to our list.
+        // 4. If it's a directory, recurse, passing the filter function
         const subDirFiles = await findFilesByExtension(
           fullPath,
           normalizedExtension,
+          filterFn, // Pass the filter down
         );
         filesFound = filesFound.concat(subDirFiles);
       } else if (entry.isFile()) {
-        // 5. If it's a file, check if the extension matches
+        // 5. If it's a file, check extension and apply filter
         if (path.extname(fullPath) === normalizedExtension) {
-          filesFound.push(fullPath); // Add the full path to the list
+          if (filterFn(fullPath)) {
+            // Apply the filter function
+            filesFound.push(fullPath);
+          }
         }
       }
-      // Note: This ignores other types like symbolic links.
-      // You could add handling for entry.isSymbolicLink() if needed.
+      // Ignore other types like symbolic links
     }
   } catch (err) {
     // 6. Handle potential errors
@@ -324,19 +332,17 @@ async function findFilesByExtension(dirPath, extension) {
       err.code === 'EACCES' ||
       err.code === 'ENOTDIR'
     ) {
-      // Directory doesn't exist, is not accessible, or path is not a directory
       console.warn(
         `Warning: Could not read directory ${dirPath}: ${err.message}`,
       );
-      return []; // Return an empty array in these common cases
+      return []; // Return empty array for common issues
     } else {
-      // For other unexpected errors, re-throw them
       console.error(`Error processing directory ${dirPath}: ${err.message}`);
-      throw err;
+      throw err; // Re-throw unexpected errors
     }
   }
 
-  // 7. Return the list of found files
+  // 7. Return the list of found and filtered files
   return filesFound;
 }
 
@@ -421,8 +427,14 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const fishFunctionsFiles = await findFilesByExtension(
     fishFunctionsDir,
     '.fish',
+    (file) => {
+      const fileName = path.basename(file);
+      if (fileName.startsWith('__')) {
+        return false;
+      }
+      return true;
+    },
   );
-  // TODO: read all the fish function files
   const defaultShellFiles = [
     fishAliases,
     ...fishFunctionsFiles,
