@@ -61,9 +61,9 @@ end
 
 M.eslint = function(config)
   local eslint_setup = {
-    root_dir = function(name)
-      return util.root_pattern("package.json")(name)
-    end,
+    -- root_dir = function(name)
+    --   return util.root_pattern("package.json")(name)
+    -- end,
   }
 
   local final_setup = vim.tbl_deep_extend("force", eslint_setup, config or {})
