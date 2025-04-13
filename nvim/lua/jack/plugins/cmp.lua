@@ -1,18 +1,14 @@
 local cmp = require("cmp")
-local has_minuet, minuet = pcall(require, "minuet")
 
 local cmp_mappings = {
   ["<C-d>"] = cmp.mapping.scroll_docs(-4),
   ["<C-u>"] = cmp.mapping.scroll_docs(4),
   ["<C-c>"] = cmp.mapping.close(),
-  ["<C-y>"] = cmp.mapping.complete(),
+  ["<C-space>"] = cmp.mapping.complete(),
   ["<CR>"] = cmp.mapping.confirm({ select = true }),
   ["<C-p>"] = cmp.mapping.select_prev_item(),
   ["<C-n>"] = cmp.mapping.select_next_item(),
 }
-if has_minuet then
-  cmp_mappings["<C-m>"] = minuet.make_cmp_map()
-end
 
 cmp.setup({
   completion = {

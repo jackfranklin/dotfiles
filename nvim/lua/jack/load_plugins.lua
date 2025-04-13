@@ -147,6 +147,13 @@ local base_plugins = function()
         require("jack.plugins.executor").setup({})
       end,
     },
+    {
+      dir = "~/git/next-edit.nvim",
+      event = "BufReadPre",
+      config = function()
+        require("jack.plugins.next-edit").setup({})
+      end,
+    },
     --
     -- LSP, auto-complete and snippets
     --

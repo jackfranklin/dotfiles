@@ -7,8 +7,8 @@ M.setup = function()
     suggestion = {
       auto_trigger = true,
       keymap = {
-        accept = "<A-y>",
-        accept_line = "<A-l>",
+        accept = "<C-y>",
+        accept_line = "<C-t>",
         -- Cycle to prev completion item, or manually invoke completion
         prev = "<A-p>",
         -- Cycle to next completion item, or manually invoke completion

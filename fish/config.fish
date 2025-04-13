@@ -1,5 +1,5 @@
 # git add all
-alias gaa="git aa"
+alias gaa="git add --all"
 # git add by patch
 alias gap="git add -p"
 # git checkout
