@@ -61,6 +61,9 @@ end
 
 M.eslint = function(config)
   local eslint_setup = {
+    settings = {
+      run = "onSave",
+    },
     -- root_dir = function(name)
     --   return util.root_pattern("package.json")(name)
     -- end,
