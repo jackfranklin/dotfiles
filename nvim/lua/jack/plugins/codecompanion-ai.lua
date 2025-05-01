@@ -1,4 +1,16 @@
 local cc = require("codecompanion")
+local keys = require("jack.llm-keys")
+
+local adapter = nil
+if keys.has_gemini then
+  adapter = "gemini"
+elseif keys.has_github then
+  adapter = "copilot"
+else
+  print(
+    "CodeCompanion: No API key found for Gemini or GitHub Copilot. Please set the GEMINI_API_KEY or GITHUB_TOKEN environment variable."
+  )
+end
 
 local M = {}
 M.setup = function()
@@ -19,7 +31,6 @@ M.setup = function()
     },
     strategies = {
       chat = {
-        adapter = "gemini",
         tools = {
           ["mcp"] = {
             -- Prevent mcphub from loading before needed
@@ -29,12 +40,13 @@ M.setup = function()
             description = "Call tools and resources from the MCP Servers",
           },
         },
+        adapter = adapter,
       },
       inline = {
-        adapter = "gemini",
+        adapter = adapter,
       },
       cmd = {
-        adapter = "gemini",
+        adapter = adapter,
       },
     },
   })

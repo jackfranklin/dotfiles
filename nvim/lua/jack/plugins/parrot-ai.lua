@@ -1,12 +1,21 @@
+local keys = require("jack.llm-keys")
 local M = {}
+
+local providers = {}
+
+if keys.has_gemini then
+  providers.gemini = {
+    api_key = os.getenv(keys.env.gemini),
+  }
+elseif keys.has_github then
+  providers.github = {
+    api_key = os.getenv(keys.env.github),
+  }
+end
 
 M.setup = function()
   require("parrot").setup({
-    providers = {
-      gemini = {
-        api_key = os.getenv("GEMINI_API_KEY"),
-      },
-    },
+    providers = providers,
     hooks = {
       Outline = function(prt, params)
         local template = [[
