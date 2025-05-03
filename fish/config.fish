@@ -28,8 +28,15 @@ set EDITOR 'nvim'
 
 set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
 
+# Because of
+# https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
+# and running Puppeteer on Ubuntu.
+# (only needed on actual Ubuntu, works fine via WSL)
+if test -e '/opt/google/chrome/chrome-sandbox'
+    set -gx CHROME_DEVEL_SANDBOX '/opt/google/chrome/chrome-sandbox'
+end
 
-source ~/.asdf/asdf.fish
+
 source $HOME/dotfiles/fish/secrets.fish
 
 # set -g fisher_path $HOME/dotfiles/fish/fisher_files
@@ -45,12 +52,25 @@ fish_config theme choose "Catppuccin Frappe"
 
 set fish_greeting
 
+# ASDF configuration code
+if test -z $ASDF_DATA_DIR
+    set _asdf_shims "$HOME/.asdf/shims"
+else
+    set _asdf_shims "$ASDF_DATA_DIR/shims"
+end
+
+# Do not use fish_add_path (added in Fish 3.2) because it
+# potentially changes the order of items in PATH
+if not contains $_asdf_shims $PATH
+    set -gx --prepend PATH $_asdf_shims
+end
+set --erase _asdf_shims
+
 # $PATH
 # Note that fish_add_path prepends by default, use -a flag to --amend
 fish_add_path $HOME/.cargo/bin
 fish_add_path $HOME/.fzf/bin
 fish_add_path $HOME/git/private-dotfiles/bin
-fish_add_path (npm get prefix)/bin
 fish_add_path $HOME/.local/bin
 # For Lua Language server
 fish_add_path $HOME/.local/bin/lua-ls/bin
@@ -63,8 +83,5 @@ fish_add_path $HOME/squashfs-root/usr/bin
 fish_add_path $HOME/cargo/bin
 # Lua language server from release tar
 fish_add_path $HOME/lua-language-server/bin
-
-if type -q "setxkbmap"
-  # Remaps caps-lock to escape.
-  setxkbmap -option caps:escape
-end
+# has to be after the asdf setup
+fish_add_path (npm get prefix)/bin
