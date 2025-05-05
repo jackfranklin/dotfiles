@@ -5,7 +5,7 @@ alias gap="git add -p"
 # git checkout
 alias gco="git checkout"
 # git checkout new branch
-alias gcob="git co -b"
+alias gcob="git checkout -b"
 alias gd="git diff"
 # staged diff
 alias gds="git diff --staged"
