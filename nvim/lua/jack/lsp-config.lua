@@ -14,6 +14,12 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "rounded",
 })
 
+local version = vim.version()
+-- TODO: remove once I am exclusively on 0.11
+if version.minor == 11 and version.major == 0 then
+  vim.o.winborder = "single"
+end
+
 -- Disable formatexpr to allow Vim's built in gq to work.
 -- See: https://github.com/neovim/neovim/pull/19677 &&
 -- https://vi.stackexchange.com/questions/39200/wrapping-comment-in-visual-mode-not-working-with-gq
