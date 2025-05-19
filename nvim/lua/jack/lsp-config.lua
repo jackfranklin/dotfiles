@@ -1,6 +1,7 @@
 local nvim_lsp = require("lspconfig")
 local capabilities = require("cmp_nvim_lsp").default_capabilities()
 local util = require("lspconfig.util")
+local utils = require("jack.utils")
 
 vim.diagnostic.config({
   virtual_text = false,
@@ -10,17 +11,14 @@ vim.diagnostic.config({
     border = "rounded",
   },
 })
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "rounded",
-})
 
-local function is_at_least_neovim_0_11()
-  local version = vim.version()
-  return version.major == 0 and version.minor >= 11 or version.major > 0
-end
-
-if is_at_least_neovim_0_11() and vim.o.winborder == "" then
+if utils.at_least_nvim_0_11() then
   vim.o.winborder = "single"
+else
+  -- TODO: remove when I run only 0.11
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+    border = "rounded",
+  })
 end
 
 -- Disable formatexpr to allow Vim's built in gq to work.
