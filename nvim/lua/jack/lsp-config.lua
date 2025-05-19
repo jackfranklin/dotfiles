@@ -14,9 +14,12 @@ vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
   border = "rounded",
 })
 
-local version = vim.version()
--- TODO: remove once I am exclusively on 0.11
-if version.minor == 11 and version.major == 0 then
+local function is_at_least_neovim_0_11()
+  local version = vim.version()
+  return version.major == 0 and version.minor >= 11 or version.major > 0
+end
+
+if is_at_least_neovim_0_11() and vim.o.winborder == "" then
   vim.o.winborder = "single"
 end
 
