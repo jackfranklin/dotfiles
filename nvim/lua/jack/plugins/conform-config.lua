@@ -16,6 +16,8 @@ M.setup = function()
     formatters_by_ft = {
       typescript = { "clang-format", "prettierd" },
       javascript = { "clang-format", "prettierd" },
+      -- To install: pipx install black
+      python = { "black" },
       css = { "prettierd" },
       markdown = { "prettierd" },
       lua = { "stylua" },

@@ -30,6 +30,10 @@ nvim_lsp.elmls.setup({
   on_attach = on_attach,
 })
 
+nvim_lsp.pylsp.setup({
+  on_attach = on_attach,
+})
+
 nvim_lsp.svelte.setup({
   on_attach = on_attach,
   capabilities = capabilities,
