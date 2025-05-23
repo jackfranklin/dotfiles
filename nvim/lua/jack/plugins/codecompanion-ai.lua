@@ -32,12 +32,8 @@ M.setup = function()
     strategies = {
       chat = {
         tools = {
-          ["mcp"] = {
-            -- Prevent mcphub from loading before needed
-            callback = function()
-              return require("mcphub.extensions.codecompanion")
-            end,
-            description = "Call tools and resources from the MCP Servers",
+          opts = {
+            auto_submit_success = true,
           },
         },
         adapter = adapter,
@@ -49,6 +45,24 @@ M.setup = function()
         adapter = adapter,
       },
     },
+    extensions = {
+      mcphub = {
+        callback = "mcphub.extensions.codecompanion",
+        opts = {
+          show_result_in_chat = true, -- Show the mcp tool result in the chat buffer
+          make_vars = true, -- make chat #variables from MCP server resources
+          make_slash_commands = true, -- make /slash_commands from MCP server prompts
+        },
+      },
+    },
+  })
+
+  M.bind_keymaps()
+end
+
+M.bind_keymaps = function()
+  vim.keymap.set("n", "<leader>xct", ":CodeCompanionChat toggle<CR>", {
+    desc = "[x] [c]hat [t]oggle: toggle the current CodeCompanionChat (or create a new one)",
   })
 end
 
