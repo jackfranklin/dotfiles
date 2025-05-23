@@ -13,6 +13,7 @@ const fs = require('fs');
 const FONTS_IN_ROTATION = [
   'Cartograph CF',
   'Berkeley Mono',
+  'Cascadia Mono',
   'Comic Code',
   'DM Mono',
   'MonoLisa script',
