@@ -11,7 +11,6 @@ vim.diagnostic.config({
     border = "rounded",
   },
 })
-
 if utils.at_least_nvim_0_11() then
   vim.o.winborder = "single"
 else
