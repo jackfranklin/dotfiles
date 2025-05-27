@@ -44,11 +44,7 @@ inoremap <S-Down> :resize+5<CR>
 " Mapping a single Esc messes up Neovim within a terminal which is useful
 " sometimes for Git based things
 tnoremap <Esc><Esc> <C-\><C-n>
-"tnoremap <C-h> <C-\><C-n><C-w>h
-"tnoremap <C-j> <C-\><C-n><C-w>j
-"tnoremap <C-k> <C-\><C-n><C-w>k
-"tnoremap <C-l> <C-\><C-n><C-w>l
-	]],
+]],
   false
 )
 vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]])
