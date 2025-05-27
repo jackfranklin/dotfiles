@@ -11,6 +11,8 @@ M.setup = function()
           verbose = false,
         },
       },
+      window_navigation = false,
+      scrolling = false,
     },
     window = {
       position = "vsplit",
