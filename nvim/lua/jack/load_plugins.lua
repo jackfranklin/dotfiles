@@ -308,6 +308,15 @@ local base_plugins = function()
         require("jack.plugins.mcphub-config").setup()
       end,
     },
+    {
+      "greggh/claude-code.nvim",
+      dependencies = {
+        "nvim-lua/plenary.nvim",
+      },
+      config = function()
+        require("jack.plugins.claude-code").setup()
+      end,
+    },
   }
 end
 
