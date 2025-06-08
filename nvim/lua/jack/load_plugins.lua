@@ -317,6 +317,21 @@ local base_plugins = function()
         require("jack.plugins.claude-code").setup()
       end,
     },
+    {
+      "azorng/goose.nvim",
+      config = function()
+        require("jack.plugins.goose-config")
+      end,
+      -- dependencies = {
+      --   "nvim-lua/plenary.nvim",
+      --   {
+      --     "MeanderingProgrammer/render-markdown.nvim",
+      --     opts = {
+      --       anti_conceal = { enabled = false },
+      --     },
+      --   }
+      -- },
+    },
   }
 end
 
