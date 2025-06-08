@@ -319,6 +319,11 @@ local base_plugins = function()
     },
     {
       "azorng/goose.nvim",
+      keys = {
+        { "<leader>oo", "<cmd>GooseToggle<cr>", desc = "[Goose] Toggle" },
+        { "<leader>oi", "<cmd>GooseInput<cr>", desc = "[Goose] Focus Input" },
+        { "<leader>od", "<cmd>GooseDiffOpen<cr>", desc = "[Goose] Diff" },
+      },
       config = function()
         require("jack.plugins.goose-config")
       end,
