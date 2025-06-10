@@ -25,6 +25,7 @@ M.create_autocmd = function()
       if found_formatting_client then
         vim.lsp.buf.format({
           bufnr = args.buf,
+          timeout_ms = 5000,
           async = false,
 
           filter = function(current_client)
