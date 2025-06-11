@@ -25,7 +25,7 @@ end
 
 M.bind_keymaps = function()
   vim.keymap.set("n", "<leader>xcc", ":ClaudeCode<CR>", {
-    desc = "[claude [c]ode: open Claude Code interface",
+    desc = "[claude [c]ode: open/toggle Claude Code interface",
   })
   vim.keymap.set("n", "<leader>xcr", ":ClaudeCodeResume<CR>", {
     desc = "[claude [r]esume: resume a previous Claude Code session",
