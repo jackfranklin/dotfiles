@@ -255,6 +255,7 @@ local base_plugins = function()
         "nvim-lua/plenary.nvim",
         "nvim-treesitter/nvim-treesitter",
       },
+      keys = { "<leader>xct" },
     },
     {
       "Goose97/timber.nvim",
