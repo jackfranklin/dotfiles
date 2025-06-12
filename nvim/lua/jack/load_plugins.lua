@@ -307,6 +307,7 @@ local base_plugins = function()
       config = function()
         require("jack.plugins.mcphub-config").setup()
       end,
+      cmd = "MCPHub",
     },
     {
       "greggh/claude-code.nvim",
