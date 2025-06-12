@@ -22,6 +22,12 @@ M.create_autocmd = function()
         end
       end
 
+      -- TODO: I think when I migrate the LSP stuff to Neovim 0.11 then this
+      -- will need updating
+      if vim.fn.exists(":EslintFixAll") ~= 0 then
+        vim.cmd("EslintFixAll")
+      end
+
       if found_formatting_client then
         vim.lsp.buf.format({
           bufnr = args.buf,

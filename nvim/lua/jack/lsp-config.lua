@@ -70,6 +70,13 @@ M.eslint = function(config)
     settings = {
       run = "onSave",
     },
+    -- TODO: do these actually work?
+    -- Or they might work but only once I swap to the Neovim 0.11 setup
+    -- https://neovim.io/doc/user/lsp.html#lsp-client
+    flags = {
+      debounce_text_changes = 250,
+      allow_incremental_sync = false,
+    },
     -- root_dir = function(name)
     --   return util.root_pattern("package.json")(name)
     -- end,
