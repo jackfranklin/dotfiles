@@ -23,7 +23,7 @@ M.setup = function()
         return require("codecompanion.adapters").extend("gemini", {
           schema = {
             model = {
-              default = "gemini-2.0-flash",
+              default = "gemini-2.5-flash",
             },
           },
         })
@@ -40,6 +40,16 @@ M.setup = function()
       },
       inline = {
         adapter = adapter,
+        keymaps = {
+          accept_change = {
+            modes = { n = "gA" },
+            description = "Accept the suggested change",
+          },
+          reject_change = {
+            modes = { n = "gR" },
+            description = "Reject the suggested change",
+          },
+        },
       },
       cmd = {
         adapter = adapter,
