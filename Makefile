@@ -41,6 +41,9 @@ sync_wezterm_windows:
 symlink_windows_linux:
 	@ln -nsf $(DIR)/wezterm ~/.config/wezterm
 
-
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
+
+npm_globals:
+	# https://github.com/paulirish/git-recent
+	npm install --global git-recent
