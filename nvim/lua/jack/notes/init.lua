@@ -60,7 +60,6 @@ M._store_recent_note = function(file_path)
     return
   end
   M._state.recent_notes[file_path] = file_path
-  P(M._state.recent_notes)
 end
 
 M.open_daily_notes = function()
