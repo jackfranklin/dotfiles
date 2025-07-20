@@ -48,7 +48,7 @@ source $HOME/dotfiles/fish/secrets.fish
 #   builtin source $file 2> /dev/null
 # end
 
-fish_config theme choose "Catppuccin Frappe"
+# fish_config theme choose "Catppuccin Frappe"
 
 set fish_greeting
 
