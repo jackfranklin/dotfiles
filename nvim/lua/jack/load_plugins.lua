@@ -18,6 +18,11 @@ local base_plugins = function()
         require("jack.plugins.winbar")
       end,
     },
+    {
+      dir = "~/git/dracula-pro-color",
+      lazy = false,
+      priority = 1000,
+    },
     --
     -- TPOPE
     --

@@ -119,4 +119,17 @@ M.load_catppuccin_light = function(config)
   vim.api.nvim_command("colorscheme catppuccin-latte")
 end
 
+M.load_dracula_light = function(config)
+  vim.api.nvim_exec2([[set background=light]], { output = false })
+  vim.api.nvim_command("colorscheme dracula_pro_alucard")
+  -- Make comments italic
+  vim.api.nvim_set_hl(0, "Comment", { italic = true })
+  local palette = vim.g["dracula_pro#palette"]
+  -- print(vim.inspect(palette.red[1]))
+
+  vim.api.nvim_set_hl(0, "JackStatusBarDiagnosticError", { fg = palette.red[1], bold = false })
+  vim.api.nvim_set_hl(0, "JackStatusBarDiagnosticWarn", { fg = palette.orange[1], bold = false })
+  vim.api.nvim_set_hl(0, "JackStatusBarDiagnosticHint", { fg = palette.yellow[1], bold = false })
+end
+
 return M
