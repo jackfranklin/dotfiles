@@ -58,12 +58,24 @@ M.setup = function(config)
     vim.keymap.set("n", lhs, func, opts)
   end
 
-  normal_key("<leader>er", executor.commands.run, "[r]un")
+  normal_key("<leader>er", function()
+    vim.cmd("write")
+    executor.commands.run()
+  end, "[r]un")
   normal_key("<leader>ev", executor.commands.toggle_detail, "[v]iew detail")
   normal_key("<leader>es", executor.commands.set_command, "[s]et command")
-  normal_key("<leader>en", executor.commands.run_with_new_command, "[n]ew command and run")
-  normal_key("<leader>ep", executor.commands.show_presets, "show [p]resets")
-  normal_key("<leader>eh", executor.commands.show_history, "show [h]istory")
+  normal_key("<leader>en", function()
+    vim.cmd("write")
+    executor.commands.run_with_new_command()
+  end, "[n]ew command and run")
+  normal_key("<leader>ep", function()
+    vim.cmd("write")
+    executor.commands.show_presets()
+  end, "show [p]resets")
+  normal_key("<leader>eh", function()
+    vim.cmd("write")
+    executor.commands.show_history()
+  end, "show [h]istory")
 end
 
 return M
