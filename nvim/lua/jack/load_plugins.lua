@@ -19,7 +19,7 @@ local base_plugins = function()
       end,
     },
     {
-      dir = "~/git/dracula-pro-color",
+      "~/git/dracula-pro-color",
       lazy = false,
       priority = 1000,
     },
