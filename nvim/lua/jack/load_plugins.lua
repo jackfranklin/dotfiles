@@ -19,7 +19,7 @@ local base_plugins = function()
       end,
     },
     {
-      "~/git/dracula-pro-color",
+      "jackfranklin/dracula-pro-colour.nvim",
       lazy = false,
       priority = 1000,
     },
