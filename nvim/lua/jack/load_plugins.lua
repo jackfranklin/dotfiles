@@ -78,6 +78,20 @@ local base_plugins = function()
       end,
     },
     {
+      "echasnovski/mini.ai",
+      version = false,
+      config = function()
+        require("jack.plugins.mini-ai")
+      end,
+    },
+    -- TODO: decide if I prefer this or mini-ai
+    -- {
+    --   "kylechui/nvim-surround",
+    --   config = function()
+    --     require("jack.plugins.surround")
+    --   end,
+    -- },
+    {
       "echasnovski/mini.diff",
       event = { "BufReadPre" },
       config = function()
@@ -97,12 +111,6 @@ local base_plugins = function()
       end,
     },
     "farmergreg/vim-lastplace",
-    {
-      "kylechui/nvim-surround",
-      config = function()
-        require("jack.plugins.surround")
-      end,
-    },
     {
       "windwp/nvim-autopairs",
       config = function()
