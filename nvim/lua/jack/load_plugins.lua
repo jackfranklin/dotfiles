@@ -84,6 +84,13 @@ local base_plugins = function()
         require("jack.plugins.mini-ai")
       end,
     },
+    {
+      "echasnovski/mini.surround",
+      version = false,
+      config = function()
+        require("jack.plugins.mini-surround")
+      end,
+    },
     -- TODO: decide if I prefer this or mini-ai
     -- {
     --   "kylechui/nvim-surround",
@@ -96,6 +103,14 @@ local base_plugins = function()
       event = { "BufReadPre" },
       config = function()
         require("jack.plugins.mini-diff")
+      end,
+    },
+    {
+      "ThePrimeagen/harpoon",
+      branch = "harpoon2",
+      dependencies = { "nvim-lua/plenary.nvim" },
+      config = function()
+        require("jack.plugins.harpoon-config")
       end,
     },
     {
@@ -322,6 +337,11 @@ local base_plugins = function()
         require("jack.plugins.mcphub-config").setup()
       end,
       cmd = "MCPHub",
+    },
+    -- Needed for MCPHub to parse out .vscode MCP config
+    {
+      "Joakker/lua-json5",
+      build = "./install.sh",
     },
     {
       "greggh/claude-code.nvim",

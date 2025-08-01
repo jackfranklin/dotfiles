@@ -2,6 +2,7 @@ local M = {}
 
 M.setup = function()
   require("mcphub").setup({
+    json_decode = require("json5").parse,
     -- extensions = {
     --   codecompanion = {
     --     -- Show the mcp tool result in the chat buffer
