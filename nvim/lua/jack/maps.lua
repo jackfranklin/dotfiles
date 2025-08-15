@@ -98,6 +98,25 @@ local function confirm_and_delete_buffer()
 end
 vim.keymap.set("n", "<leader>bd", confirm_and_delete_buffer, { desc = "[b]uffer [d]elete [FROM DISK]" })
 
+local function rename_buffer()
+  -- Get the current filename and the directory path.
+  local old_name = vim.fn.expand("%:t")
+  local current_dir = vim.fn.fnamemodify(vim.fn.expand("%"), ":p:h")
+
+  -- Get the new name from the user.
+  vim.ui.input({
+    prompt = "New name:",
+    default = old_name,
+  }, function(new_name)
+    -- Check if a new name was provided and if it's different from the old name.
+    if new_name and new_name ~= "" and new_name ~= old_name then
+      local full_path = current_dir .. "/" .. new_name
+      vim.cmd("saveas " .. full_path)
+    end
+  end)
+end
+vim.keymap.set("n", "<leader>br", rename_buffer, { desc = "[b]uffer [r]ename" })
+
 local function clear_all_open_buffers()
   local bufs = vim.api.nvim_list_bufs()
   for _, i in ipairs(bufs) do
