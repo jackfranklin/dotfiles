@@ -12,9 +12,6 @@ require("jack.folds")
 
 local format_on_save = require("jack.format-on-save")
 
-local custom_input = require("jack.custom-input")
-vim.ui.input = custom_input.custom_ui_input
-
 local notes = require("jack.notes")
 
 notes.setup()
