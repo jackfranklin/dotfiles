@@ -22,6 +22,7 @@ M.all = function()
     s("todobug", fmt([[ TODO({}): {}]], { i(1), i(0) })),
     s("todoplain", fmt([[ TODO: {}]], { i(0) })),
     s("dns", fmt([[// DO NOT SUBMIT]], {})),
+    s("dnstodo", fmt([[// DO NOT SUBMIT TODO: {}]], { i(0) })),
   }
 end
 
