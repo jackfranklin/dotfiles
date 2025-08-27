@@ -10,10 +10,8 @@ lsp_config.typescript({
   on_attach = on_attach,
 })
 
--- using the eslnt.nvim plugin; might not be useful
--- TODO: decide on that plugin vs just sticking with this
--- lsp_config.eslint({ on_attach = on_attach })
--- format_on_save.register_lsp_for_autoformat("eslint")
+lsp_config.eslint({ on_attach = on_attach })
+format_on_save.register_lsp_for_autoformat("eslint")
 
 lsp_config.lua({ on_attach = on_attach })
 

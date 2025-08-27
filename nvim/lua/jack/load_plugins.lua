@@ -114,12 +114,6 @@ local base_plugins = function()
         require("jack.plugins.mini-surround")
       end,
     },
-    {
-      "esmuellert/nvim-eslint",
-      config = function()
-        require("jack.plugins.eslint").setup({}, true)
-      end,
-    },
     -- TODO: decide if I prefer this or mini-ai
     -- {
     --   "kylechui/nvim-surround",
