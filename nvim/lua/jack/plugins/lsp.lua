@@ -11,6 +11,8 @@ lsp_config.typescript({
 })
 
 lsp_config.eslint({ on_attach = on_attach })
+-- TODO: does this work with the eslint server?
+-- Or do we need to use the special ESLintFixAll command?
 format_on_save.register_lsp_for_autoformat("eslint")
 
 lsp_config.lua({ on_attach = on_attach })
