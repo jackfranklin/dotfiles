@@ -10,6 +10,9 @@ require("toggleterm").setup({
     },
   },
   persist_mode = true,
+  insert_mappings = false,
+  open_mappings = false,
+  open_mapping = nil,
 })
 
 vim.api.nvim_exec2(
