@@ -13,9 +13,7 @@ local on_attach = function(client, bufnr)
   -- buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
   -- buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
   map("K", vim.lsp.buf.hover, "hover information")
-
-  -- buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
-  map("<leader>sh", vim.lsp.buf.signature_help, "[s]ignature [h]help")
+  map("sh", vim.lsp.buf.signature_help, "[s]ignature [h]help")
   map("gi", vim.lsp.buf.implementation, "[g]oto [i]mplementation")
 
   map("<leader>cr", vim.lsp.buf.rename, "[c]hange [r]ename")
@@ -27,17 +25,6 @@ local on_attach = function(client, bufnr)
   map("gx", function()
     require("treesitter-context").go_to_context(vim.v.count1)
   end, "[g]o to the conte[x]t")
-
-  -- Semantic highlighting
-  -- :h lsp-semantic-highlight gives the following suggestion for disabling:
-  -- You can disable semantic highlights by clearing the highlight groups: >lua
-
-  --     -- Hide all semantic highlights
-  -- for _, group in ipairs(vim.fn.getcompletion("@lsp", "highlight")) do
-  --   vim.api.nvim_set_hl(0, group, {})
-  -- end
-  --  But for now I will instead try it out and see how it feels :)
-  -- client.server_capabilities.semanticTokensProvider = nil
 end
 
 M.on_attach = on_attach
