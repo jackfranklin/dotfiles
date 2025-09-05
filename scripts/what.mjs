@@ -377,7 +377,6 @@ export async function main(filesToProcess) {
   }
 
   const cacheFileName = generateCacheFilename(filesToProcess);
-  console.log('cache file', cacheFileName);
 
   let allItemsData = await loadCachedData(
     cacheFileName,

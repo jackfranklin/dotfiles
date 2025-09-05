@@ -36,7 +36,7 @@ M.create_autocmd = function()
 
       local success, conform = pcall(require, "conform")
       if success then
-        conform.format({ bufnr = args.buf })
+        conform.format({ bufnr = args.buf, timeout_ms = 5000 })
       end
     end,
   })
