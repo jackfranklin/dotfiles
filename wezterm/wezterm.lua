@@ -6,7 +6,7 @@ local has_custom_config, custom_config = pcall(require, "per_machine")
 
 local config = {}
 
-config.color_scheme = has_custom_config and custom_config.color_scheme or "Catppuccin Latte"
+config.color_scheme = has_custom_config and custom_config.color_scheme or "Mar (Gogh)"
 
 config.colors = {
   -- ENABLE ME if using Kanagawa (default cursor is too bright for me)
