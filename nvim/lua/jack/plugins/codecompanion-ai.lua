@@ -19,15 +19,17 @@ M.setup = function()
       -- log_level = "DEBUG",
     },
     adapters = {
-      gemini = function()
-        return require("codecompanion.adapters").extend("gemini", {
-          schema = {
-            model = {
-              default = "gemini-2.5-flash",
+      http = {
+        gemini = function()
+          return require("codecompanion.adapters").extend("gemini", {
+            schema = {
+              model = {
+                default = "gemini-2.5-flash",
+              },
             },
-          },
-        })
-      end,
+          })
+        end,
+      },
     },
     strategies = {
       chat = {

@@ -354,17 +354,13 @@ local base_plugins = function()
       "ravitemer/mcphub.nvim",
       dependencies = {
         "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
+        { "Joakker/lua-json5", build = "./install.sh" },
       },
       build = "npm install -g mcp-hub@latest",
       config = function()
         require("jack.plugins.mcphub-config").setup()
       end,
       cmd = "MCPHub",
-    },
-    -- Needed for MCPHub to parse out .vscode MCP config
-    {
-      "Joakker/lua-json5",
-      build = "./install.sh",
     },
     {
       "greggh/claude-code.nvim",
