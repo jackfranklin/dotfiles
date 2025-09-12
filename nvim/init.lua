@@ -9,6 +9,7 @@ require("jack.theme").load_dracula_light({ env = machine_env })
 require("jack.statusline")
 require("jack.maps")
 require("jack.folds")
+require("jack.terminal").setup()
 
 local format_on_save = require("jack.format-on-save")
 
@@ -72,3 +73,4 @@ vim.api.nvim_create_autocmd("FileType", {
     -- )
   end,
 })
+
