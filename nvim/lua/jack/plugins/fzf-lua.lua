@@ -21,6 +21,11 @@ M.setup = function(config)
       },
     })
   end, { desc = "Find recent files" })
+  vim.keymap.set("n", "<leader>fi", function()
+    require("fzf-lua").diagnostics_document({
+      no_header_i = true,
+    })
+  end, { desc = "[f]ind [i]ssues" })
   vim.keymap.set("n", "<leader>fb", function()
     require("fzf-lua").buffers({
       git_icons = false,
