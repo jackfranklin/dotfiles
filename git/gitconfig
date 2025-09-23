@@ -31,7 +31,16 @@
 	# terminal app experience. shows commits in split-pane, and displays selected commit's diff
 	# requires fzf. osx: 'brew install fzf'
 	news-fzf = !git log --color=always --pretty=format:'%C(yellow)%h%Creset %C(auto)%<(14)%cr%Creset %C(blue)%<(12,trunc)%an%Creset    %<(72,trunc)%s' \"$@\" | fzf --layout=reverse --multi  --ansi --preview 'git --no-pager show --color=always $(echo {} | cut -d \" \" -f 1)  | grep -vE \"(Change-Id|Auto-Submit|Commit-Queue):\" | tail -n +5' --preview-window=bottom,50% "#"
-  
+
+  # Thanks paulirish: https://github.com/paulirish/dotfiles/blob/23e2b824291b610a61208a4e8f31a4408cced208/.gitconfig#L25
+  # Essentially GitHub's compare view: show all 'ahead' changes (incl working tree) vs the merge-base
+  diffbranch = !"git diff  $(git diffbase)"
+
+  # Two utils:
+  #   What's the ancestor commit this branch shares with (the parent branch, or, more likely...) main?
+  diffbase = !"git merge-base origin/$(git mainormaster) HEAD"
+  #   Is it a `main` or a `master` repo? Will default to main if neither is found.
+  mainormaster = !"(git branch --format '%(refname:short)' --sort=-committerdate --list master main; echo main) | head -n1 || echo main"
 [push]
 	default = simple
 [help]
