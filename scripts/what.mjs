@@ -100,7 +100,6 @@ When you parse this you should produce JSON that looks like this:
 {
   name: 'gs',
   type: 'alias',
-  definition: 'git status',
   keywords: 'check git status'
 }
 \`\`\`
@@ -121,17 +120,13 @@ When you parse this you should produce JSON that looks like this:
 {
   name: 'pickclbranch',
   type: 'function',
-  definition: "function pickclbranch() {\n  branch_name=$(git cl status --no-branch-color --date-order | awk '/ : / {print $0}' | fzf | awk '{print $1}')\n  git checkout $branch_name\n}",
   keywords: 'pick a branch that is on gerrit as a CL'
 }
 \`\`\`
 
-Important: make sure you include the entire function definition and maintain the right level of indentation in the definition string.
-
 Your task is to process this text and return a JSON data structure as an array of objects. Each object should represent either an alias or a function and have the following keys:
 - "type": Either "alias" or "function".
 - "name": The name of the alias or function.
-- "definition": The full command or function definition.
 - "keywords": A string containing the keywords from the comment(s) immediately preceding the alias or function.
 
 Here is the shell file content:
@@ -155,16 +150,12 @@ Return only the JSON output`;
           type: 'string',
           description: 'The name of the alias or function',
         },
-        definition: {
-          type: 'string',
-          description: 'The full command or function definition',
-        },
         keywords: {
           type: 'string',
           description: 'Keywords from preceding comments',
         },
       },
-      required: ['type', 'name', 'definition', 'keywords'],
+      required: ['type', 'name', 'keywords'],
     },
   };
 
@@ -407,7 +398,6 @@ export async function main(filesToProcess) {
       closestMatches.forEach((match) => {
         console.log(`  Type: ${match.type}`);
         console.log(`  Name: ${match.name}`);
-        console.log(`  Definition: ${match.definition}`);
         console.log('-'.repeat(40));
       });
     } else {
