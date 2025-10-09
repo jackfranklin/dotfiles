@@ -1,8 +1,3 @@
-local nvim_lsp = require("lspconfig")
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
-local util = require("lspconfig.util")
-local utils = require("jack.utils")
-
 vim.diagnostic.config({
   virtual_text = false,
   signs = false,
@@ -11,14 +6,7 @@ vim.diagnostic.config({
     border = "rounded",
   },
 })
-if utils.at_least_nvim_0_11() then
-  vim.o.winborder = "single"
-else
-  -- TODO: remove when I run only 0.11
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-    border = "rounded",
-  })
-end
+vim.o.winborder = "single"
 
 -- Disable formatexpr to allow Vim's built in gq to work.
 -- See: https://github.com/neovim/neovim/pull/19677 &&
@@ -37,12 +25,7 @@ vim.api.nvim_create_autocmd("LspAttach", {
 
 local M = {}
 M.typescript = function(config)
-  local setup_opts = {
-    on_attach = config.on_attach,
-    filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-    capabilities = capabilities,
-  }
-
+  local setup_opts = {}
   if config.cmd ~= nil then
     setup_opts.cmd = config.cmd
   end
@@ -52,17 +35,18 @@ M.typescript = function(config)
     }
   end
 
-  nvim_lsp.ts_ls.setup(setup_opts)
+  vim.lsp.config("ts_ls", setup_opts)
+  vim.lsp.enable("ts_ls")
 end
 
-M.css = function(config)
+M.css = function()
   -- We do have snippet support
   local css_capabilities = vim.lsp.protocol.make_client_capabilities()
   css_capabilities.textDocument.completion.completionItem.snippetSupport = true
-  nvim_lsp.cssls.setup({
+  vim.lsp.config("cssls", {
     capabilities = css_capabilities,
-    on_attach = config.on_attach,
   })
+  vim.lsp.enable("cssls")
 end
 
 M.eslint = function(config)
@@ -83,31 +67,53 @@ M.eslint = function(config)
   }
 
   local final_setup = vim.tbl_deep_extend("force", eslint_setup, config or {})
-  nvim_lsp.eslint.setup(final_setup)
+  vim.lsp.config("eslint", final_setup)
+  vim.lsp.enable("eslint")
 end
 
-M.lua = function(config)
-  nvim_lsp.lua_ls.setup({
-    root_dir = function(name)
-      -- When loading up my dotfiles, the Lua LS root should always be the nvim/ directory.
-      if name:find("dotfiles", 1, true) then
-        return os.getenv("HOME") .. "/dotfiles/nvim"
+M.lua = function()
+  vim.lsp.config("lua_ls", {
+    on_init = function(client)
+      if client.workspace_folders then
+        local path = client.workspace_folders[1].name
+        if
+          path ~= vim.fn.stdpath("config")
+          and (vim.uv.fs_stat(path .. "/.luarc.json") or vim.uv.fs_stat(path .. "/.luarc.jsonc"))
+        then
+          return
+        end
       end
-      local result = util.root_pattern({ "stylua.toml", ".luarc.json", ".git" })(name)
-      return result
+
+      client.config.settings.Lua = vim.tbl_deep_extend("force", client.config.settings.Lua, {
+        runtime = {
+          -- Tell the language server which version of Lua you're using (most
+          -- likely LuaJIT in the case of Neovim)
+          version = "LuaJIT",
+          -- Tell the language server how to find Lua modules same way as Neovim
+          -- (see `:h lua-module-load`)
+          path = {
+            "lua/?.lua",
+            "lua/?/init.lua",
+          },
+        },
+        -- Make the server aware of Neovim runtime files
+        workspace = {
+          checkThirdParty = false,
+          library = {
+            vim.env.VIMRUNTIME,
+            -- Depending on the usage, you might want to add additional paths
+            -- here.
+            -- '${3rd}/luv/library'
+            -- '${3rd}/busted/library'
+          },
+        },
+      })
     end,
-    on_attach = config.on_attach,
+    settings = {
+      Lua = {},
+    },
   })
+  vim.lsp.enable("lua_ls")
 end
 
-M.emmet = function(config)
-  local emmet_capabilities = require("cmp_nvim_lsp").default_capabilities()
-  emmet_capabilities.textDocument.completion.completionItem.snippetSupport = true
-
-  nvim_lsp.emmet_ls.setup({
-    on_attach = config.on_attach,
-    capabilities = emmet_capabilities,
-    filetypes = { "html", "typescriptreact", "javascriptreact", "css", "typescript" },
-  })
-end
 return M

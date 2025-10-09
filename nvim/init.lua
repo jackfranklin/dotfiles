@@ -11,6 +11,10 @@ require("jack.maps")
 require("jack.folds")
 require("jack.terminal").setup()
 
+local lsp_attach = require("lsp_on_attach")
+lsp_attach.bind_on_attach_auto_cmd()
+lsp_attach.register_lsp_keymaps()
+
 local format_on_save = require("jack.format-on-save")
 
 local notes = require("jack.notes")
@@ -73,4 +77,3 @@ vim.api.nvim_create_autocmd("FileType", {
     -- )
   end,
 })
-
