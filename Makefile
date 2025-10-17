@@ -33,6 +33,10 @@ elm_language_servers:
 kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
 
+amp:
+	npm install --global @sourcegraph/amp
+	@ln -nsf ${DIR}/amp ~/.config/amp
+
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
 	@mkdir -p /mnt/c/Users/jack/.wezterm/
