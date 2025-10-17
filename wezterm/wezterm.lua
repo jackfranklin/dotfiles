@@ -14,6 +14,7 @@ config.colors = {
   -- ENABLE ME if using Darkside
   -- cursor_bg = "#787669",
 }
+config.audible_bell = "Disabled"
 config.use_fancy_tab_bar = false
 config.tab_max_width = 32
 
