@@ -34,7 +34,6 @@ kitty:
 	@ln -nsf ${DIR}/kitty ~/.config/kitty
 
 amp:
-	npm install --global @sourcegraph/amp
 	@ln -nsf ${DIR}/amp ~/.config/amp
 
 sync_wezterm_windows:
@@ -51,3 +50,4 @@ lua_specs:
 npm_globals:
 	# https://github.com/paulirish/git-recent
 	npm install --global git-recent
+	npm install --global @sourcegraph/amp
