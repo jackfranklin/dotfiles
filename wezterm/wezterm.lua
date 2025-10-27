@@ -45,6 +45,8 @@ config.window_padding = {
 config.window_decorations = "RESIZE"
 
 config.keys = {
+  -- Shift + Enter sends a new line
+  { key = "Enter", mods = "SHIFT", action = wezterm.action({ SendString = "\x1b\r" }) },
   -- Shift + Control + R to rename tab
   {
     key = "R",
