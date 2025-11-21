@@ -34,6 +34,13 @@ M.create_autocmd = function()
         })
       end
 
+      -- If the file is small and LspEslintFixAll exists, run it before other
+      -- formatters.
+      local line_count = vim.api.nvim_buf_line_count(args.buf)
+      if line_count < 500 and vim.fn.exists(":LspEslintFixAll") ~= 0 then
+        vim.cmd("LspEslintFixAll")
+      end
+
       local success, conform = pcall(require, "conform")
       if success then
         conform.format({ bufnr = args.buf, timeout_ms = 5000 })
