@@ -13,10 +13,12 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 import process from 'node:process';
+import { execSync } from 'node:child_process';
 import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import { GoogleGenAI } from '@google/genai';
 import Fuse from 'fuse.js';
+import yoctoSpinner from 'yocto-spinner';
 
 // --- Configuration ---
 const __filename = fileURLToPath(import.meta.url);
@@ -338,6 +340,21 @@ async function findFilesByExtension(
 }
 
 /**
+ * Detects the shell type ('fish' or 'zsh') based on the file paths.
+ * @param {string[]} filepaths - An array of paths to the shell files.
+ * @returns {('fish'|'zsh'|null)} The detected shell type, or null if it cannot be determined.
+ */
+function detectShellFromFiles(filepaths) {
+  if (filepaths.some(p => p.includes('fish'))) {
+    return 'fish';
+  }
+  if (filepaths.some(p => p.includes('zsh'))) {
+    return 'zsh';
+  }
+  return null;
+}
+
+/**
  * The main function of the script, which uses Yargs to parse command-line arguments,
  * loads or fetches alias and function data from the provided shell files,
  * and performs the search. This function is exported for potential re-use.
@@ -392,14 +409,38 @@ export async function main(filesToProcess) {
   if (searchTerm) {
     const closestMatches = findClosestMatches(allItemsData, searchTerm);
     if (closestMatches.length > 0) {
-      console.log(
-        `\nTop ${closestMatches.length} matches for '${searchTerm}':`,
-      );
-      closestMatches.forEach((match) => {
-        console.log(`  Type: ${match.type}`);
-        console.log(`  Name: ${match.name}`);
-        console.log('-'.repeat(40));
+      const spinner = yoctoSpinner({
+        text: 'Looking up commands...',
+        color: 'magenta',
       });
+      spinner.start();
+      const outputLines = [];
+      outputLines.push(`\nTop ${closestMatches.length} matches for '${searchTerm}':`);
+      const shellType = detectShellFromFiles(filesToProcess);
+      closestMatches.forEach((match) => {
+        outputLines.push(`  Type: ${match.type}`);
+        outputLines.push(`  Name: ${match.name}`);
+        try {
+          let command;
+          if (shellType === 'fish') {
+            command = `fish -i -c "type ${match.name}"`;
+          } else if (shellType === 'zsh') {
+            command = `zsh -i -c "which ${match.name}"`;
+          } else {
+            command = `which ${match.name}`;
+          }
+          const whichOutput = execSync(command, {
+            encoding: 'utf8',
+            stdio: ['pipe', 'pipe', 'ignore'],
+          }).trim();
+          outputLines.push(`  Info: ${whichOutput}`);
+        } catch (error) {
+          // Ignore errors if 'which' or 'type' command fails
+        }
+        outputLines.push('-'.repeat(40));
+      });
+      spinner.stop();
+      console.log(outputLines.join('\n'));
     } else {
       console.log(`No matches found for '${searchTerm}'.`);
     }
