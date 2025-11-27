@@ -3,11 +3,13 @@ local M = {}
 
 M.setup = function()
   conform.setup({
+    -- log_level = vim.log.levels.DEBUG,
     formatters = {
       ["clang-format"] = {
         condition = function(_, context)
           return string.find(context.dirname, "devtools-frontend", 1, true) ~= nil
         end,
+        command = "/Users/jacktfranklin/src/depot_tools/clang-format",
       },
       prettierd = {
         require_cwd = true,
