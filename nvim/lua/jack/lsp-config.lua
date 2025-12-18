@@ -39,6 +39,10 @@ M.typescript = function(config)
   vim.lsp.enable("ts_ls")
 end
 
+M.deno = function()
+  vim.lsp.enable("denols")
+end
+
 M.css = function()
   -- We do have snippet support
   local css_capabilities = vim.lsp.protocol.make_client_capabilities()
