@@ -1,3 +1,6 @@
 {
-  "amp.notifications.system.enabled": false
+  "amp.notifications.system.enabled": false,
+  "amp.tools.disable": [
+    "librarian"
+  ]
 }
