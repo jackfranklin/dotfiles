@@ -1,6 +1,10 @@
 # gwm - Git Worktree Move
 #
-# Moves the current branch into a new worktree in a sibling directory.
+# Moves the current branch into a new worktree in a sibling directory,
+# renaming the branch with a worktree/ prefix to match gwn conventions.
+#
+# The directory is named <repo>-<branch> and the branch is renamed to
+# worktree/<branch>.
 #
 # This is useful when you've started working on a branch in the main checkout
 # and want to move it into its own worktree to free up the main checkout.
@@ -12,18 +16,20 @@
 #   1. Detects the current branch name
 #   2. Stashes any uncommitted changes (if present)
 #   3. Detaches HEAD to free the branch
-#   4. Creates a new worktree at ../<branch> for the branch
-#   5. Restores stashed changes in the new worktree
-#   6. Changes directory to the new worktree
+#   4. Renames the branch to worktree/<branch>
+#   5. Creates a new worktree at ../<repo>-<branch> for the renamed branch
+#   6. Restores stashed changes in the new worktree
+#   7. Changes directory to the new worktree
 #
 # Example:
-#   (on branch feature-auth with uncommitted changes)
+#   (on branch feature-auth with uncommitted changes, in repo ~/code/myapp)
 #   gwm
 #   # Stashes changes
 #   # Detaches HEAD in the original checkout
-#   # Creates ../feature-auth/ worktree on branch feature-auth
+#   # Renames branch to worktree/feature-auth
+#   # Creates ../myapp-feature-auth/ worktree on branch worktree/feature-auth
 #   # Pops stash in the new worktree
-#   # cd's into ../feature-auth/
+#   # cd's into ../myapp-feature-auth/
 #
 # Note: You cannot move the main/master branch or a detached HEAD.
 #
@@ -49,7 +55,11 @@ function gwm --description "Move current branch into a new worktree"
         return 1
     end
 
-    set -l worktree_path (dirname $repo_root)/$branch
+    set -l root_name (basename $repo_root)
+    # Strip worktree/ prefix if already present, then apply naming convention
+    set -l short_name (string replace 'worktree/' '' $branch)
+    set -l new_branch worktree/$short_name
+    set -l worktree_path (dirname $repo_root)/$root_name-$short_name
 
     if test -d $worktree_path
         echo "Error: Directory already exists: $worktree_path"
@@ -89,12 +99,29 @@ function gwm --description "Move current branch into a new worktree"
         return 1
     end
 
+    # Rename the branch to add worktree/ prefix
+    if test "$branch" != "$new_branch"
+        echo "Renaming branch to $new_branch..."
+        git branch -m $branch $new_branch
+        if test $status -ne 0
+            echo "Error: Failed to rename branch"
+            git checkout $branch
+            if test $has_changes = true
+                git stash pop
+            end
+            return 1
+        end
+    end
+
     # Create the worktree
     echo "Creating worktree..."
-    git worktree add $worktree_path $branch
+    git worktree add $worktree_path $new_branch
     if test $status -ne 0
         echo "Error: Failed to create worktree"
-        # Try to recover: go back to the branch
+        # Try to recover: rename branch back and check it out
+        if test "$branch" != "$new_branch"
+            git branch -m $new_branch $branch
+        end
         git checkout $branch
         if test $has_changes = true
             git stash pop
@@ -113,7 +140,7 @@ function gwm --description "Move current branch into a new worktree"
     end
 
     echo ""
-    echo "Moved branch '$branch' to worktree: $worktree_path"
+    echo "Moved branch '$branch' to worktree: $worktree_path (branch: $new_branch)"
 
     cd $worktree_path
     echo "Switched to: $worktree_path"

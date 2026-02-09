@@ -1,17 +1,19 @@
 # gwn - Git Worktree New
 #
-# Creates a new git worktree in a sibling directory with a new branch of the same name.
+# Creates a new git worktree in a sibling directory with a new branch.
+#
+# The directory is named <repo>-<name> and the branch is worktree/<name>.
 #
 # Usage:
 #   gwn <name>
 #
 # Arguments:
-#   name - The name for both the worktree directory and the new branch
+#   name - The name for the worktree (used in both directory and branch names)
 #
 # Example:
-#   gwn feature-auth
-#   # Creates ../feature-auth/ directory
-#   # Creates and checks out new branch 'feature-auth'
+#   gwn feature-auth     (in a repo rooted at ~/code/myapp)
+#   # Creates ../myapp-feature-auth/ directory
+#   # Creates and checks out new branch 'worktree/feature-auth'
 #
 # The worktree is created as a sibling to the current repository root,
 # making it easy to switch between worktrees with cd ../other-branch.
@@ -25,7 +27,7 @@ function gwn --description "Create a new git worktree with a new branch"
     if test (count $argv) -eq 0
         echo "Usage: gwn <name>"
         echo ""
-        echo "Creates a new worktree at ../<name> with a new branch called <name>"
+        echo "Creates a new worktree at ../<repo>-<name> with a new branch called worktree/<name>"
         return 1
     end
 
@@ -37,7 +39,9 @@ function gwn --description "Create a new git worktree with a new branch"
         return 1
     end
 
-    set -l worktree_path (dirname $repo_root)/$name
+    set -l root_name (basename $repo_root)
+    set -l branch_name worktree/$name
+    set -l worktree_path (dirname $repo_root)/$root_name-$name
 
     if test -d $worktree_path
         echo "Error: Directory already exists: $worktree_path"
@@ -45,18 +49,18 @@ function gwn --description "Create a new git worktree with a new branch"
     end
 
     # Check if branch already exists
-    if git show-ref --verify --quiet refs/heads/$name
-        echo "Error: Branch '$name' already exists"
-        echo "Hint: Use 'git worktree add $worktree_path $name' to create a worktree for an existing branch"
+    if git show-ref --verify --quiet refs/heads/$branch_name
+        echo "Error: Branch '$branch_name' already exists"
+        echo "Hint: Use 'git worktree add $worktree_path $branch_name' to create a worktree for an existing branch"
         return 1
     end
 
-    git worktree add -b $name $worktree_path
+    git worktree add -b $branch_name $worktree_path
 
     if test $status -eq 0
         echo ""
         echo "Created worktree at: $worktree_path"
-        echo "On new branch: $name"
+        echo "On new branch: $branch_name"
         echo ""
         echo "To switch to it: cd $worktree_path"
     end
