@@ -40,6 +40,15 @@ M.typescript = function(config)
 end
 
 M.deno = function()
+  vim.lsp.config("denols", {
+    -- Only run if we find Deno files; else this runs too eagerly on any package.json by default
+    root_dir = function(bufnr, on_dir)
+      local project_root = vim.fs.root(bufnr, { "deno.lock", "deno.json" })
+      if project_root then
+        on_dir(project_root)
+      end
+    end,
+  })
   vim.lsp.enable("denols")
 end
 
