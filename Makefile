@@ -1,3 +1,5 @@
+.PHONY: all neovim fish git bin claude kitty amp
+
 DIR="${HOME}/dotfiles"
 
 NEOVIM_GIT_DIR="${HOME}/git/neovim"
@@ -35,6 +37,11 @@ kitty:
 
 amp:
 	@ln -nsf ${DIR}/amp ~/.config/amp
+
+claude:
+	@mkdir -p ~/.claude
+	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
+	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua

@@ -1,0 +1,8 @@
+{
+  "enabledPlugins": {
+    "typescript-lsp@claude-plugins-official": true
+  },
+  "env": {
+    "EDITOR": "nvim"
+  }
+}
