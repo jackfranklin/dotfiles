@@ -40,6 +40,33 @@
 #   gwd - Delete a worktree and its branch
 
 function gwm --description "Move current branch into a new worktree"
+    argparse 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo "Usage: gwm"
+        echo ""
+        echo "Moves the current branch into a new worktree in a sibling directory,"
+        echo "renaming the branch with a worktree/ prefix to match gwn conventions."
+        echo ""
+        echo "Options:"
+        echo "  --help, -h    Show this help message"
+        echo ""
+        echo "What it does:"
+        echo "  1. Stashes any uncommitted changes (if present)"
+        echo "  2. Detaches HEAD to free the branch"
+        echo "  3. Renames the branch to worktree/<branch>"
+        echo "  4. Creates a new worktree at ../<repo>-<branch>"
+        echo "  5. Restores stashed changes in the new worktree"
+        echo "  6. Changes directory to the new worktree"
+        echo ""
+        echo "Example:"
+        echo "  gwm    # On branch feature-auth, creates ../<repo>-feature-auth/ on worktree/feature-auth"
+        echo ""
+        echo "Note: You cannot move the main/master branch or a detached HEAD."
+        return 0
+    end
+
     set -l repo_root (git rev-parse --show-toplevel 2>/dev/null)
 
     if test -z "$repo_root"

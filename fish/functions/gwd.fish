@@ -39,18 +39,28 @@
 #   gwj - Jump to a worktree interactively
 
 function gwd --description "Delete a git worktree and its branch"
-    argparse 'f/force' 'r/remote' -- $argv
+    argparse 'h/help' 'f/force' 'r/remote' -- $argv
     or return 1
 
-    if test (count $argv) -eq 0
+    if set -q _flag_help; or test (count $argv) -eq 0
         echo "Usage: gwd <name> [--force] [--remote]"
         echo ""
-        echo "Deletes the worktree at ../<repo>-<name> and the branch worktree/<name>"
+        echo "Deletes a git worktree and its associated branch."
+        echo "The directory is expected at ../<repo>-<name> and the branch at worktree/<name>."
+        echo ""
+        echo "Arguments:"
+        echo "  name    The worktree name (as passed to gwn)"
         echo ""
         echo "Options:"
+        echo "  --help, -h    Show this help message"
         echo "  --force, -f   Skip confirmation prompt"
-        echo "  --remote, -r  Also delete the remote branch"
-        return 1
+        echo "  --remote, -r  Also delete the remote tracking branch (origin/worktree/<name>)"
+        echo ""
+        echo "Examples:"
+        echo "  gwd feature-auth             # Prompts for confirmation, then removes worktree and branch"
+        echo "  gwd feature-auth --force     # Removes without confirmation"
+        echo "  gwd feature-auth --remote    # Also deletes origin/worktree/feature-auth"
+        return 0
     end
 
     set -l name $argv[1]

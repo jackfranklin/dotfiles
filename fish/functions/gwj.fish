@@ -20,6 +20,22 @@
 #   gwd - Delete a worktree and its branch
 
 function gwj --description "Jump to a git worktree using fzf"
+    argparse 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help
+        echo "Usage: gwj"
+        echo ""
+        echo "Interactively select a worktree using fzf and cd into it."
+        echo ""
+        echo "Options:"
+        echo "  --help, -h    Show this help message"
+        echo ""
+        echo "Dependencies:"
+        echo "  fzf - Command-line fuzzy finder (https://github.com/junegunn/fzf)"
+        return 0
+    end
+
     if not command -q fzf
         echo "Error: fzf is required but not installed"
         echo "Install it with your package manager, e.g.:"

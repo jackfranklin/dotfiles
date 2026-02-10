@@ -24,11 +24,24 @@
 #   gwd - Delete a worktree and its branch
 
 function gwn --description "Create a new git worktree with a new branch"
-    if test (count $argv) -eq 0
+    argparse 'h/help' -- $argv
+    or return 1
+
+    if set -q _flag_help; or test (count $argv) -eq 0
         echo "Usage: gwn <name>"
         echo ""
-        echo "Creates a new worktree at ../<repo>-<name> with a new branch called worktree/<name>"
-        return 1
+        echo "Creates a new git worktree in a sibling directory with a new branch."
+        echo "The directory is named <repo>-<name> and the branch is worktree/<name>."
+        echo ""
+        echo "Arguments:"
+        echo "  name    The name for the worktree (used in both directory and branch names)"
+        echo ""
+        echo "Options:"
+        echo "  --help, -h    Show this help message"
+        echo ""
+        echo "Example:"
+        echo "  gwn feature-auth    # Creates ../<repo>-feature-auth/ on branch worktree/feature-auth"
+        return 0
     end
 
     set -l name $argv[1]
