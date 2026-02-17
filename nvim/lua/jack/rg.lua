@@ -1,6 +1,11 @@
 local M = {}
 
-local default_flags = { "--vimgrep", "--smart-case", "--fixed-strings" }
+local defaults = {
+  flags = { "--vimgrep", "--smart-case", "--fixed-strings" },
+  highlight_matches = true,
+}
+
+local config = {}
 
 local function parse_args(args_string)
   local pattern = nil
@@ -44,7 +49,7 @@ local function run_rg(pattern, opts)
   end
 
   local cmd = { "rg" }
-  for _, f in ipairs(default_flags) do
+  for _, f in ipairs(config.flags) do
     table.insert(cmd, f)
   end
   for _, f in ipairs(extra_flags) do
@@ -77,6 +82,10 @@ local function run_rg(pattern, opts)
         lines = lines,
         efm = "%f:%l:%c:%m",
       })
+      if config.highlight_matches then
+        vim.fn.setreg("/", pattern)
+        vim.opt.hlsearch = true
+      end
       vim.cmd("copen")
     end)
   end)
@@ -103,7 +112,9 @@ function M.word()
   run_rg(word, { flags = { "--word-regexp" } })
 end
 
-function M.setup()
+function M.setup(user_config)
+  config = vim.tbl_deep_extend("force", defaults, user_config or {})
+
   vim.api.nvim_create_user_command("Rg", function(cmd_opts)
     local pattern, flags, dir = parse_args(cmd_opts.args)
     M.search(pattern, { flags = flags, dir = dir or "" })
