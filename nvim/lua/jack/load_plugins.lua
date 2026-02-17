@@ -82,18 +82,6 @@ local base_plugins = function()
       end,
     },
     {
-      "duane9/nvim-rg",
-      cmd = "Rg",
-      keys = {
-        { "<leader>rw", desc = "search for word under cursor with ripgrep" },
-        { "<leader>rg", desc = "search with rg" },
-        { "<leader>/", desc = "search current project with ripgrep" },
-      },
-      config = function()
-        require("jack.plugins.rg")
-      end,
-    },
-    {
       "echasnovski/mini.files",
       keys = "-",
       config = function()

@@ -15,6 +15,12 @@ local lsp_attach = require("lsp_on_attach")
 lsp_attach.bind_on_attach_auto_cmd()
 lsp_attach.register_lsp_keymaps()
 
+local rg = require("jack.rg")
+rg.setup()
+vim.keymap.set("n", "<leader>/", ":Rg<Space>", { desc = "Search with Rg" })
+vim.keymap.set("n", "<leader>rg", rg.prompt, { desc = "Rg prompt" })
+vim.keymap.set("n", "<leader>rw", rg.word, { desc = "Rg word under cursor" })
+
 local format_on_save = require("jack.format-on-save")
 
 local notes = require("jack.notes")
