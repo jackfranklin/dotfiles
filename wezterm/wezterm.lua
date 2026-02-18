@@ -63,6 +63,32 @@ config.keys = {
       end),
     }),
   },
+  {
+    -- Ctrl-M to make a new tab to the right of the current window
+    key = "m",
+    mods = "CTRL",
+    action = wezterm.action_callback(function(window, pane)
+      local mux_window = window:mux_window()
+
+      -- determine the index of the current tab
+      -- https://wezfurlong.org/wezterm/config/lua/mux-window/tabs_with_info.html
+      local tabs = mux_window:tabs_with_info()
+      local current_index = 0
+      for _, tab_info in ipairs(tabs) do
+        if tab_info.is_active then
+          current_index = tab_info.index
+          break
+        end
+      end
+
+      -- spawn a new tab; it will be made active
+      -- https://wezfurlong.org/wezterm/config/lua/mux-window/spawn_tab.html
+      mux_window:spawn_tab({})
+
+      -- Move the new active tab to the right of the previously active tab
+      window:perform_action(act.MoveTab(current_index + 1), pane)
+    end),
+  },
 }
 
 -- and finally, return the configuration to wezterm
