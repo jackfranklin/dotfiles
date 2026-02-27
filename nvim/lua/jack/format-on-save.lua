@@ -5,6 +5,16 @@ local lsp_clients_that_format = {}
 M.register_lsp_for_autoformat = function(name)
   lsp_clients_that_format[name] = true
 end
+local buffer_has_client = function(all_clients, target_client_name)
+  local found = false
+  for _, client in pairs(all_clients) do
+    if client.name == target_client_name then
+      found = true
+      break
+    end
+  end
+  return found
+end
 
 M.create_autocmd = function()
   local augroup = vim.api.nvim_create_augroup("JackAutoFormat", {})
@@ -37,8 +47,9 @@ M.create_autocmd = function()
       -- If the file is small and LspEslintFixAll exists, run it before other
       -- formatters.
       local line_count = vim.api.nvim_buf_line_count(args.buf)
-      if line_count < 1000 and vim.fn.exists(":LspEslintFixAll") ~= 0 then
-        vim.cmd("LspEslintFixAll")
+      if line_count < 1000 and buffer_has_client(clients, "eslint") then
+        -- Wrap in pcall to prevent save-errors if ESLint crashes
+        pcall(vim.cmd, "LspEslintFixAll")
       end
 
       local success, conform = pcall(require, "conform")
