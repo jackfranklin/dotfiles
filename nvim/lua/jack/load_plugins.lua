@@ -369,6 +369,15 @@ local base_plugins = function()
       config = function()
         require("jack.plugins.goose-config")
       end,
+      {
+        "Sang-it/fluoride",
+        config = function()
+          require("fluoride").setup()
+        end,
+        keys = {
+          { "<leader>fo", "<cmd>Fluoride<cr>", desc = "[f]luoride [o]pen" },
+        },
+      },
       -- dependencies = {
       --   "nvim-lua/plenary.nvim",
       --   {
