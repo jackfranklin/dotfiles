@@ -116,14 +116,14 @@ local base_plugins = function()
         require("jack.plugins.mini-diff")
       end,
     },
-    {
-      "ThePrimeagen/harpoon",
-      branch = "harpoon2",
-      dependencies = { "nvim-lua/plenary.nvim" },
-      config = function()
-        require("jack.plugins.harpoon-config")
-      end,
-    },
+    -- {
+    --   "ThePrimeagen/harpoon",
+    --   branch = "harpoon2",
+    --   dependencies = { "nvim-lua/plenary.nvim" },
+    --   config = function()
+    --     require("jack.plugins.harpoon-config")
+    --   end,
+    -- },
     {
       "ojroques/vim-oscyank",
       cmd = "OSCYankVisual",
