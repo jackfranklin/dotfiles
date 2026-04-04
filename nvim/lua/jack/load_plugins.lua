@@ -257,11 +257,11 @@ local base_plugins = function()
     --
     {
       "nvim-treesitter/nvim-treesitter",
+      branch = "main",
       dependencies = {
-        "nvim-treesitter/nvim-treesitter-textobjects",
+        -- "nvim-treesitter/nvim-treesitter-textobjects",
         "nvim-treesitter/nvim-treesitter-context",
       },
-      build = ":TSUpdate",
       config = function()
         require("jack.plugins.treesitter")
       end,
@@ -285,17 +285,17 @@ local base_plugins = function()
         require("jack.plugins.hop").setup()
       end,
     },
-    {
-      "olimorris/codecompanion.nvim",
-      config = function()
-        require("jack.plugins.codecompanion-ai").setup()
-      end,
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-      },
-      keys = { "<leader>xct" },
-    },
+    -- {
+    --   "olimorris/codecompanion.nvim",
+    --   config = function()
+    --     require("jack.plugins.codecompanion-ai").setup()
+    --   end,
+    --   dependencies = {
+    --     "nvim-lua/plenary.nvim",
+    --     -- "nvim-treesitter/nvim-treesitter",
+    --   },
+    --   keys = { "<leader>xct" },
+    -- },
     {
       "Goose97/timber.nvim",
       config = function()
