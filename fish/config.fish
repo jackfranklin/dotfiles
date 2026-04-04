@@ -23,6 +23,7 @@ alias gcan="git commit --amend --no-edit"
 # list conflicting files
 alias gconflict="git diff --name-only --diff-filter=U"
 alias df="cd ~/dotfiles"
+alias nvim012="/home/jack/nvim012/bin/nvim"
 
 set EDITOR 'nvim'
 
