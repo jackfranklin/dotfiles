@@ -4,22 +4,22 @@ description: Manage feedback and bug reports for a project using a local SQLite 
 user-invocable: false
 ---
 
-You have access to a feedback tracking CLI at `~/dotfiles/claude/skills/feedback/cli.ts`.
+You have access to a feedback tracking CLI at `~/dotfiles/claude/skills/feedback/feedback`.
 
 Run it with:
 ```
-deno run --allow-read --allow-write --allow-env --allow-net --allow-ffi ~/dotfiles/claude/skills/feedback/cli.ts <command>
+~/dotfiles/claude/skills/feedback/feedback <command>
 ```
 
 ## Commands
 
 ```
-cli.ts add --project <name> --title "..." [--detail "..."] [--priority low|medium|high]
-cli.ts list [--project <name>] [--all]
-cli.ts show <id>
-cli.ts done <id>
-cli.ts edit <id> [--title "..."] [--detail "..."] [--priority low|medium|high]
-cli.ts projects
+feedback add --project <name> --title "..." [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
+feedback list [--project <name>] [--all]
+feedback show <id>
+feedback done <id>
+feedback edit <id> [--title "..."] [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
+feedback projects
 ```
 
 ## Rules
@@ -31,6 +31,10 @@ cli.ts projects
 **Always pass `--project`.** Infer the project name from the current working directory or from context the user has provided. If ambiguous, ask the user before running any command.
 
 **Priorities:** `high` for bugs or blockers, `medium` for improvements (default), `low` for nice-to-haves.
+
+**Statuses:** `open` (default), `in-progress`, `blocked`, `done`. Use `done <id>` or `edit <id> --status done` to close items. The `list` command excludes `done` items unless `--all` is passed.
+
+**Categories:** Free-text tag (e.g. `bug`, `ux`, `performance`, `gameplay`). Shown in list output as `{category}`.
 
 ## Typical flows
 

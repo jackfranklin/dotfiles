@@ -2,5 +2,10 @@
   "env": {
     "EDITOR": "nvim"
   },
-  "enabledPlugins": {}
+  "enabledPlugins": {},
+  "permissions": {
+    "allow": [
+      "Bash(~/dotfiles/claude/skills/feedback/feedback *)"
+    ]
+  }
 }

@@ -10,12 +10,13 @@ import {
   markDone,
   showFeedback,
 } from "./db.ts";
-import type { Priority } from "./models.ts";
+import type { Priority, Status } from "./models.ts";
 
 const db = getDb();
 initSchema(db);
 
 const PRIORITIES = ["low", "medium", "high"] as const;
+const STATUSES = ["open", "in-progress", "blocked", "done"] as const;
 
 yargs(Deno.args)
   .scriptName("feedback")
@@ -28,13 +29,17 @@ yargs(Deno.args)
         .option("project", { alias: "p", type: "string", demandOption: true, description: "Project name" })
         .option("title", { alias: "t", type: "string", demandOption: true, description: "Short summary" })
         .option("detail", { alias: "d", type: "string", description: "Full detail" })
-        .option("priority", { choices: PRIORITIES, default: "medium" as Priority, description: "Priority level" }),
+        .option("priority", { choices: PRIORITIES, default: "medium" as Priority, description: "Priority level" })
+        .option("status", { choices: STATUSES, default: "open" as Status, description: "Status" })
+        .option("category", { alias: "c", type: "string", description: "Category tag (e.g. bug, ux, performance)" }),
     (argv) => {
       addFeedback(db, {
         project: argv.project,
         title: argv.title,
         detail: argv.detail ?? null,
         priority: argv.priority as Priority,
+        status: argv.status as Status,
+        category: argv.category ?? null,
         done: false,
       });
       console.log(`Added: ${argv.title}`);
@@ -42,7 +47,7 @@ yargs(Deno.args)
   )
   .command(
     "list",
-    "List feedback items (open only by default)",
+    "List feedback items (open/in-progress/blocked by default)",
     (y) =>
       y
         .option("project", { alias: "p", type: "string", description: "Filter by project" })
@@ -54,7 +59,10 @@ yargs(Deno.args)
         return;
       }
       for (const item of items) {
-        console.log(`[${item.id}] (${item.priority}) [${item.project}] ${item.title}`);
+        const statusBadge = item.status !== "open" ? ` [${item.status}]` : "";
+        const categoryBadge = item.category ? ` {${item.category}}` : "";
+        const projectBadge = argv.project ? "" : ` [${item.project}]`;
+        console.log(`[${item.id}] (${item.priority})${statusBadge}${projectBadge}${categoryBadge} ${item.title}`);
       }
     },
   )
@@ -71,7 +79,8 @@ yargs(Deno.args)
       console.log(`[${item.id}] ${item.title}`);
       console.log(`Project:  ${item.project}`);
       console.log(`Priority: ${item.priority}`);
-      console.log(`Status:   ${item.done ? "done" : "open"}`);
+      console.log(`Status:   ${item.status}`);
+      if (item.category) console.log(`Category: ${item.category}`);
       console.log(`Created:  ${item.created_at}`);
       if (item.detail) {
         console.log(`---`);
@@ -96,12 +105,16 @@ yargs(Deno.args)
         .positional("id", { type: "number", demandOption: true })
         .option("title", { alias: "t", type: "string" })
         .option("detail", { alias: "d", type: "string" })
-        .option("priority", { choices: PRIORITIES }),
+        .option("priority", { choices: PRIORITIES })
+        .option("status", { choices: STATUSES })
+        .option("category", { alias: "c", type: "string" }),
     (argv) => {
       editFeedback(db, argv.id as number, {
         title: argv.title,
         detail: argv.detail,
         priority: argv.priority as Priority | undefined,
+        status: argv.status as Status | undefined,
+        category: argv.category,
       });
       console.log(`Updated ${argv.id}.`);
     },
