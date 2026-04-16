@@ -42,6 +42,7 @@ claude:
 	@mkdir -p ~/.claude
 	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
+	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua

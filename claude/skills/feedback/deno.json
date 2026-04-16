@@ -1,0 +1,7 @@
+{
+  "imports": {
+    "yargs": "npm:yargs@17",
+    "yargs/helpers": "npm:yargs@17/helpers",
+    "@db/sqlite": "jsr:@db/sqlite@^0.12"
+  }
+}

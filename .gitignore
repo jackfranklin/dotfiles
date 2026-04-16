@@ -42,5 +42,7 @@ package-lock.json
 
 scripts/what_alias_cache*
 
+claude/skills/feedback/feedback.db
+
 .claude/
 jackclaude/
