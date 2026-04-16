@@ -14,14 +14,19 @@ Determine what code to review:
 
 ## Step 2: Review
 
-Spawn an Explore subagent via the Agent tool with the diff/file contents and the following instructions:
+Spawn an Explore subagent via the Agent tool. Give it the diff/file contents, the repo root path, and these instructions:
 
-Review the changes for code reuse opportunities:
+Review the changes for code reuse opportunities. You have access to the full repo — use Grep and Glob to search it.
 
-1. Search for existing utilities and helpers that could replace newly written code. Use grep/glob to find similar patterns elsewhere in the codebase — common locations are utility directories, shared modules, and files adjacent to the changed ones.
+1. Search for existing utilities and helpers that could replace newly written code. Use Grep to find similar patterns elsewhere in the codebase — common locations are utility directories, shared modules, and files adjacent to the changed ones.
 2. Flag any new function that duplicates existing functionality. Suggest the existing function to use instead.
 3. Flag any inline logic that could use an existing utility — hand-rolled string manipulation, manual path handling, custom environment checks, ad-hoc type guards, and similar patterns are common candidates.
 
-## Step 3: Report and fix
+## Step 3: Report findings
 
-Present findings to the user. If they ask to fix, apply each fix directly. Skip false positives without arguing — just note and move on.
+Present findings as a list. For each finding include:
+- File path and line number
+- What the issue is
+- Concrete suggestion (e.g. the existing function/utility to use instead)
+
+Do not make any changes. If the user asks to fix specific items, apply those fixes directly.

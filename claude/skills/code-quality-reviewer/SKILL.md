@@ -14,9 +14,9 @@ Determine what code to review:
 
 ## Step 2: Review
 
-Spawn an Explore subagent via the Agent tool with the diff/file contents and the following instructions:
+Spawn an Explore subagent via the Agent tool. Give it the diff/file contents, the repo root path, and these instructions:
 
-Review the changes for hacky patterns:
+Review the changes for hacky patterns. You have access to the full repo — use Grep and Glob when you need to check how existing patterns are used elsewhere.
 
 1. Redundant state: state that duplicates existing state, cached values that could be derived, observers/effects that could be direct calls
 2. Parameter sprawl: adding new parameters to a function instead of generalizing or restructuring existing ones
@@ -24,6 +24,11 @@ Review the changes for hacky patterns:
 4. Leaky abstractions: exposing internal details that should be encapsulated, or breaking existing abstraction boundaries
 5. Stringly-typed code: using raw strings where constants, enums (string unions), or branded types already exist in the codebase
 
-## Step 3: Report and fix
+## Step 3: Report findings
 
-Present findings to the user. If they ask to fix, apply each fix directly. Skip false positives without arguing — just note and move on.
+Present findings as a list. For each finding include:
+- File path and line number
+- What the issue is
+- Concrete suggestion for how to fix it
+
+Do not make any changes. If the user asks to fix specific items, apply those fixes directly.
