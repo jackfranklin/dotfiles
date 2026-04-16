@@ -1,3 +1,3 @@
-vim.api.nvim_set_keymap("n", "<leader>gs", ":tab G<CR>", { desc = "[g]it [s]tatus" })
-vim.api.nvim_set_keymap("n", "<leader>gc", ":Git checkout -b ", { desc = "[g]it [c]heckout -b <>" })
-vim.api.nvim_set_keymap("n", "<leader>gp", ":Git push", { desc = "[g]it [p]ush" })
+vim.keymap.set("n", "<leader>gs", ":tab G<CR>", { desc = "[g]it [s]tatus" })
+vim.keymap.set("n", "<leader>gc", ":Git checkout -b ", { desc = "[g]it [c]heckout -b <>" })
+vim.keymap.set("n", "<leader>gp", ":Git push", { desc = "[g]it [p]ush" })

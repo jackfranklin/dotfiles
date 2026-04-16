@@ -68,19 +68,3 @@ vim.keymap.set("n", "<leader>fa", function()
 end, { desc = "Jump to the [A]lternative file" })
 
 format_on_save.create_autocmd()
-
--- Fix for flickering in Neovim when there are multiple parsers; this mostly impacts Markdown and its nested syntax highlighting in code blocks.
--- Context: https://github.com/neovim/neovim/issues/32660#comment-composer-heading
--- TODO: that bug is now fixed; once a new Neovim release is out this can be removed
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "*",
-  callback = function()
-    vim.g._ts_force_sync_parsing = vim.bo.filetype == "markdown"
-    -- print(
-    --   "Setting _ts_force_sync_parsing to "
-    --     .. tostring(vim.g._ts_force_sync_parsing)
-    --     .. " for filetype: "
-    --     .. vim.bo.filetype
-    -- )
-  end,
-})

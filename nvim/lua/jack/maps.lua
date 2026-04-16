@@ -1,52 +1,37 @@
--- TODO: convert these to use NeoVim API methods directly.
 vim.keymap.set("n", "<leader>nf", ':e <C-R>=expand("%:p:h") . "/" <CR>', { desc = "Create [n]ew [f]ile in directory" })
 vim.keymap.set("n", "<leader>v", ":vsplit<CR>", { desc = ":vsplit" })
 
-vim.api.nvim_exec(
-  [[
-" ACK (well, Ag)
-let g:ackprg = 'ag --vimgrep --smart-case'
+-- ACK (well, Ag)
+vim.g.ackprg = "ag --vimgrep --smart-case"
 
-nnoremap <silent> <PageUp> :tabprevious<CR>
-nnoremap <silent> <PageDown> :tabnext<CR>
-tnoremap <PageUp> <C-\><C-n>:tabprevious<CR>
-tnoremap <PageDown> <C-\><C-n>:tabnext<CR>
+vim.keymap.set("n", "<PageUp>", ":tabprevious<CR>", { silent = true })
+vim.keymap.set("n", "<PageDown>", ":tabnext<CR>", { silent = true })
+vim.keymap.set("t", "<PageUp>", [[<C-\><C-n>:tabprevious<CR>]])
+vim.keymap.set("t", "<PageDown>", [[<C-\><C-n>:tabnext<CR>]])
 
-noremap H ^
-noremap L $
-noremap Y y$
+vim.keymap.set({ "n", "x", "o" }, "H", "^")
+vim.keymap.set({ "n", "x", "o" }, "L", "$")
+vim.keymap.set({ "n", "x", "o" }, "Y", "y$")
 
-" http://blog.petrzemek.net/2016/04/06/things-about-vim-i-wish-i-knew-earlier/
-" better jk normally but don't remap when it's called with a count
-noremap <silent> <expr> j (v:count == 0 ? 'gj' : 'j')
-noremap <silent> <expr> k (v:count == 0 ? 'gk' : 'k')
+-- http://blog.petrzemek.net/2016/04/06/things-about-vim-i-wish-i-knew-earlier/
+-- better jk normally but don't remap when it's called with a count
+vim.keymap.set({ "n", "x", "o" }, "j", function() return vim.v.count == 0 and "gj" or "j" end, { expr = true, silent = true })
+vim.keymap.set({ "n", "x", "o" }, "k", function() return vim.v.count == 0 and "gk" or "k" end, { expr = true, silent = true })
 
-" More undo break points in insert mode
-inoremap , ,<c-g>u
-inoremap . .<c-g>u
-inoremap ! !<c-g>u
-inoremap ? ?<c-g>u
+-- More undo break points in insert mode
+vim.keymap.set("i", ",", ",<c-g>u")
+vim.keymap.set("i", ".", ".<c-g>u")
+vim.keymap.set("i", "!", "!<c-g>u")
+vim.keymap.set("i", "?", "?<c-g>u")
 
-nnoremap <S-Left> :vertical resize-5<CR>
-nnoremap <S-Right> :vertical resize+5<CR>
-tnoremap <S-Left> :vertical resize-5<CR>
-tnoremap <S-Right> :vertical resize+5<CR>
-inoremap <S-Left> :vertical resize-5<CR>
-inoremap <S-Right> :vertical resize+5<CR>
+vim.keymap.set({ "n", "t", "i" }, "<S-Left>", ":vertical resize-5<CR>")
+vim.keymap.set({ "n", "t", "i" }, "<S-Right>", ":vertical resize+5<CR>")
+vim.keymap.set({ "n", "t", "i" }, "<S-Up>", ":resize-5<CR>")
+vim.keymap.set({ "n", "t", "i" }, "<S-Down>", ":resize+5<CR>")
 
-nnoremap <S-Up> :resize-5<CR>
-nnoremap <S-Down> :resize+5<CR>
-tnoremap <S-Up> :resize-5<CR>
-tnoremap <S-Down> :resize+5<CR>
-inoremap <S-Up> :resize-5<CR>
-inoremap <S-Down> :resize+5<CR>
-
-" Mapping a single Esc messes up Neovim within a terminal which is useful
-" sometimes for Git based things
-tnoremap <Esc><Esc> <C-\><C-n>
-]],
-  false
-)
+-- Mapping a single Esc messes up Neovim within a terminal which is useful
+-- sometimes for Git based things
+vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]])
 vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]])
 vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]])
 vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]])
@@ -54,8 +39,8 @@ vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]])
 vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]])
 vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
-vim.api.nvim_set_keymap("n", "cn", ":cnext<CR>", { noremap = true, desc = "Quickfix [n]ext" })
-vim.api.nvim_set_keymap("n", "cp", ":cprev<CR>", { noremap = true, desc = "Quickfix [p]revious" })
+vim.keymap.set("n", "cn", ":cnext<CR>", { desc = "Quickfix [n]ext" })
+vim.keymap.set("n", "cp", ":cprev<CR>", { desc = "Quickfix [p]revious" })
 
 -- Highlight text when yanking it
 vim.api.nvim_create_autocmd("TextYankPost", {
@@ -83,7 +68,7 @@ vim.api.nvim_create_autocmd({ "BufEnter" }, {
     if filetype == "fugitiveblame" or filetype == "codecompanion" then
       return
     end
-    vim.api.nvim_buf_set_keymap(data.buf, "n", "<CR>", "ciw", { noremap = true })
+    vim.keymap.set("n", "<CR>", "ciw", { buffer = data.buf })
   end,
 })
 

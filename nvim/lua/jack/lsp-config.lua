@@ -23,9 +23,23 @@ vim.api.nvim_create_autocmd("LspAttach", {
 --   vim.notify("TypeScript loaded: " .. vim.inspect(result))
 -- end
 
+local function get_deno_root(bufnr)
+  return vim.fs.root(bufnr, { "deno.lock", "deno.json" })
+end
+
 local M = {}
 M.typescript = function(config)
-  local setup_opts = {}
+  local setup_opts = {
+    root_dir = function(bufnr, on_dir)
+      if get_deno_root(bufnr) then
+        return
+      end
+      local root = vim.fs.root(bufnr, { "package.json", "tsconfig.json" })
+      if root then
+        on_dir(root)
+      end
+    end,
+  }
   if config.cmd ~= nil then
     setup_opts.cmd = config.cmd
   end
@@ -41,9 +55,8 @@ end
 
 M.deno = function()
   vim.lsp.config("denols", {
-    -- Only run if we find Deno files; else this runs too eagerly on any package.json by default
     root_dir = function(bufnr, on_dir)
-      local project_root = vim.fs.root(bufnr, { "deno.lock", "deno.json" })
+      local project_root = get_deno_root(bufnr)
       if project_root then
         on_dir(project_root)
       end

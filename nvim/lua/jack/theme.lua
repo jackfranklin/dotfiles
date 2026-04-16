@@ -108,20 +108,20 @@ local M = {}
 M.load_kanagawa = function(config)
   config = config or {}
   load_kanagawa(config.env)
-  vim.api.nvim_exec2([[set background=dark]], { output = false })
-  vim.api.nvim_command("colorscheme kanagawa")
+  vim.o.background = "dark"
+  vim.cmd.colorscheme("kanagawa")
 end
 
 M.load_catppuccin_light = function(config)
   load_catppuccin()
   vim.g.catppuccin_flavour = "latte"
-  vim.api.nvim_exec2([[set background=light]], { output = false })
-  vim.api.nvim_command("colorscheme catppuccin-latte")
+  vim.o.background = "light"
+  vim.cmd.colorscheme("catppuccin-latte")
 end
 
 M.load_dracula_light = function(config)
-  vim.api.nvim_exec2([[set background=light]], { output = false })
-  vim.api.nvim_command("colorscheme dracula_pro_alucard")
+  vim.o.background = "light"
+  vim.cmd.colorscheme("dracula_pro_alucard")
   local palette = vim.g["dracula_pro#palette"]
   print(vim.inspect(palette))
 

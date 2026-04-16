@@ -1,63 +1,73 @@
-vim.api.nvim_exec(
-  [[
-filetype plugin indent on
-set termguicolors
-set autoread
+vim.o.termguicolors = true
+vim.o.autoread = true
+vim.o.switchbuf = "useopen,usetab"
+vim.o.laststatus = 3
 
-set switchbuf=useopen,usetab
-set laststatus=3
+-- Indents
+vim.o.expandtab = true
+vim.o.tabstop = 2
+vim.o.shiftwidth = 2
+vim.o.softtabstop = 2
+vim.o.autoindent = true
 
-" INDENTS + STUFF
-set expandtab
-set tabstop=2
-set shiftwidth=2
-set softtabstop=2
-set autoindent
+-- Do not autowrap comments onto the next line
+vim.opt.formatoptions:remove("t")
 
-" Do not autowrap comments onto the next line
-set formatoptions-=t
+vim.o.inccommand = "split"
 
-set inccommand=split
+-- Search settings
+vim.o.incsearch = true
+vim.o.hlsearch = true
+vim.o.scrolloff = 5
+vim.o.gdefault = true
+vim.o.ignorecase = true
 
-" SEARCH SETTINGS
-set incsearch
-set hlsearch
-set scrolloff=5
-set gdefault
-set ignorecase
+vim.o.swapfile = false
+vim.opt.wildignore:append({ "*.o", "*.obj", ".git", "node_modules", "_site", "*.class", "*.zip", "*.aux" })
 
-set noswapfile
-set wildignore+=*.o,*.obj,.git,node_modules,_site,*.class,*.zip,*.aux
+vim.o.number = true
+vim.o.relativenumber = true
+vim.o.cursorline = true
 
-set number
-set relativenumber
-set cursorline
+vim.o.ttimeoutlen = 1
 
-set ttimeoutlen=1
+-- Trailing whitespace
+vim.o.list = true
+vim.o.listchars = "tab:»·,trail:·"
 
-" TRAILING WHITESPACE
-set list listchars=tab:»·,trail:·
+vim.g.mapleader = " "
 
-" let mapleader=","
-let mapleader = "\<Space>"
+vim.o.splitbelow = true
+vim.o.splitright = true
 
-set splitbelow
-set splitright
+-- Automatically rebalance windows on resize
+vim.api.nvim_create_autocmd("VimResized", {
+  callback = function()
+    vim.cmd("wincmd =")
+  end,
+})
 
-" automatically rebalance windows on vim resize
-autocmd VimResized * :wincmd =
+-- Don't add the comment prefix when pressing enter or o/O on a comment line
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    vim.opt_local.formatoptions:remove({ "r", "o" })
+  end,
+})
 
-" Don't add the comment prefix when I hit enter or o/O on a comment line.
-autocmd FileType * setlocal formatoptions-=r formatoptions-=o
+-- Better wrapping
+vim.o.breakindent = true
+vim.o.breakindentopt = "shift:2"
 
-" Better wrapping
-set breakindent
-set breakindentopt=shift:2
+-- Eta templates: use HTML highlighting (no dedicated TS parser available)
+vim.filetype.add({
+  extension = {
+    eta = "html",
+  },
+})
 
-nnoremap <C-h> <C-w>h
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-l> <C-w>l
-]],
-  false
-)
+-- Window navigation
+vim.keymap.set("n", "<C-h>", "<C-w>h")
+vim.keymap.set("n", "<C-j>", "<C-w>j")
+vim.keymap.set("n", "<C-k>", "<C-w>k")
+vim.keymap.set("n", "<C-l>", "<C-w>l")
