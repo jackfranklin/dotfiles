@@ -14,11 +14,11 @@ A personal CLI for tracking feedback and bugs across projects, backed by SQLite.
 
 | Command | Description |
 |---|---|
-| `add --project <p> --title <t> [--detail <d>] [--priority low\|medium\|high]` | Add a feedback item |
+| `add --project <p> --title <t> [--detail <d>] [--priority low\|medium\|high] [--status open\|in-progress\|blocked\|done] [--category <c>]` | Add a feedback item |
 | `list [--project <p>] [--all]` | List open items (titles + IDs only) |
 | `show <id>` | Show full detail for one item |
 | `done <id>` | Mark an item as done |
-| `edit <id> [--title <t>] [--detail <d>] [--priority <p>]` | Edit an item |
+| `edit <id> [--title <t>] [--detail <d>] [--priority low\|medium\|high] [--status open\|in-progress\|blocked\|done] [--category <c>]` | Edit an item |
 | `projects` | List all project names |
 
 `list` defaults to open items only. Pass `--all` to include done items.
