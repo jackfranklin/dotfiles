@@ -5,10 +5,10 @@ A personal CLI for tracking feedback and bugs across projects, backed by SQLite.
 ## Usage
 
 ```
-~/dotfiles/claude/skills/feedback/cli.ts <command>
+~/dotfiles/claude/skills/feedback/run <command>
 ```
 
-On first run, Deno will download the SQLite native library and cache it. Subsequent runs are instant.
+`run` is a thin wrapper that passes the required Deno permission flags automatically. On first run, Deno will download the SQLite native library and cache it. Subsequent runs are instant.
 
 ## Commands
 
