@@ -315,6 +315,12 @@ local base_plugins = function()
       end,
     },
     {
+      "jackfranklin/alternate-files.nvim",
+      config = function()
+        require("jack.plugins.alternate-files").setup()
+      end,
+    },
+    {
       "Sang-it/fluoride",
       config = function()
         require("fluoride").setup()
