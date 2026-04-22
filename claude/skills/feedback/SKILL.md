@@ -4,7 +4,7 @@ description: Manage feedback and bug reports for a project using a local SQLite 
 user-invocable: false
 ---
 
-You have access to a feedback tracking CLI at `~/dotfiles/claude/skills/feedback/feedback`.
+You have access to a feedback tracking CLI at `~/dotfiles/claude/skills/feedback/run`.
 
 Run it with:
 
