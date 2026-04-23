@@ -89,26 +89,12 @@ local base_plugins = function()
       end,
     },
     {
-      "echasnovski/mini.ai",
-      version = false,
-      config = function()
-        require("jack.plugins.mini-ai")
-      end,
-    },
-    {
       "echasnovski/mini.surround",
       version = false,
       config = function()
         require("jack.plugins.mini-surround")
       end,
     },
-    -- TODO: decide if I prefer this or mini-ai
-    -- {
-    --   "kylechui/nvim-surround",
-    --   config = function()
-    --     require("jack.plugins.surround")
-    --   end,
-    -- },
     {
       "echasnovski/mini.diff",
       event = { "BufReadPre" },
@@ -257,11 +243,11 @@ local base_plugins = function()
     --
     {
       "nvim-treesitter/nvim-treesitter",
+      branch = "main",
       dependencies = {
         "nvim-treesitter/nvim-treesitter-textobjects",
         "nvim-treesitter/nvim-treesitter-context",
       },
-      build = ":TSUpdate",
       config = function()
         require("jack.plugins.treesitter")
       end,
@@ -286,17 +272,6 @@ local base_plugins = function()
       end,
     },
     {
-      "olimorris/codecompanion.nvim",
-      config = function()
-        require("jack.plugins.codecompanion-ai").setup()
-      end,
-      dependencies = {
-        "nvim-lua/plenary.nvim",
-        "nvim-treesitter/nvim-treesitter",
-      },
-      keys = { "<leader>xct" },
-    },
-    {
       "Goose97/timber.nvim",
       config = function()
         require("timber").setup({
@@ -315,14 +290,6 @@ local base_plugins = function()
         require("jack.plugins.parrot-ai").setup()
       end,
     },
-    -- {
-    --   "dlants/magenta.nvim",
-    --   lazy = false,
-    --   build = "npm install --frozen-lockfile",
-    --   config = function()
-    --     require("jack.plugins.magenta-ai").setup()
-    --   end,
-    -- },
     {
       "zbirenbaum/copilot.lua",
       cmd = "Copilot",
@@ -339,18 +306,6 @@ local base_plugins = function()
       keys = { "<leader><leader>" },
     },
     {
-      "ravitemer/mcphub.nvim",
-      dependencies = {
-        "nvim-lua/plenary.nvim", -- Required for Job and HTTP requests
-        { "Joakker/lua-json5", build = "./install.sh" },
-      },
-      build = "npm install -g mcp-hub@latest",
-      config = function()
-        require("jack.plugins.mcphub-config").setup()
-      end,
-      cmd = "MCPHub",
-    },
-    {
       "greggh/claude-code.nvim",
       dependencies = {
         "nvim-lua/plenary.nvim",
@@ -360,33 +315,19 @@ local base_plugins = function()
       end,
     },
     {
-      "azorng/goose.nvim",
-      keys = {
-        { "<leader>oo", "<cmd>GooseToggle<cr>", desc = "[Goose] Toggle" },
-        { "<leader>oi", "<cmd>GooseInput<cr>", desc = "[Goose] Focus Input" },
-        { "<leader>od", "<cmd>GooseDiffOpen<cr>", desc = "[Goose] Diff" },
-      },
+      "jackfranklin/alternate-files.nvim",
       config = function()
-        require("jack.plugins.goose-config")
+        require("jack.plugins.alternate-files").setup()
       end,
-      {
-        "Sang-it/fluoride",
-        config = function()
-          require("fluoride").setup()
-        end,
-        keys = {
-          { "<leader>fo", "<cmd>Fluoride<cr>", desc = "[f]luoride [o]pen" },
-        },
+    },
+    {
+      "Sang-it/fluoride",
+      config = function()
+        require("fluoride").setup()
+      end,
+      keys = {
+        { "<leader>fo", "<cmd>Fluoride<cr>", desc = "[f]luoride [o]pen" },
       },
-      -- dependencies = {
-      --   "nvim-lua/plenary.nvim",
-      --   {
-      --     "MeanderingProgrammer/render-markdown.nvim",
-      --     opts = {
-      --       anti_conceal = { enabled = false },
-      --     },
-      --   }
-      -- },
     },
   }
 end

@@ -14,8 +14,8 @@ local terminal_buf_id = nil
 --- @return number The created buffer ID
 local function create_terminal_buffer()
   local buf_id = vim.api.nvim_create_buf(false, false)
-  vim.api.nvim_buf_set_option(buf_id, "buflisted", false)
-  vim.api.nvim_buf_set_option(buf_id, "bufhidden", "wipe")
+  vim.bo[buf_id].buflisted = false
+  vim.bo[buf_id].bufhidden = "wipe"
   return buf_id
 end
 
@@ -35,7 +35,7 @@ local function create_split_window(buf_id, window_config)
 
   vim.api.nvim_win_set_buf(0, buf_id)
   local win_id = vim.api.nvim_get_current_win()
-  vim.api.nvim_win_set_option(win_id, "winbar", "")
+  vim.wo[win_id].winbar = ""
   return win_id
 end
 
@@ -74,9 +74,9 @@ local function configure_terminal(buf_id, win_id, cmd, close_on_exit)
   else
     vim.cmd.terminal()
   end
-  vim.api.nvim_buf_set_option(buf_id, "filetype", "terminal")
+  vim.bo[buf_id].filetype = "terminal"
   -- Ensure winbar is cleared after terminal setup
-  vim.api.nvim_win_set_option(win_id, "winbar", "")
+  vim.wo[win_id].winbar = ""
   vim.cmd.startinsert()
 end
 
@@ -183,7 +183,7 @@ local function create_float_window(buf_id, window_config)
 
   -- Create the floating window
   local win_id = vim.api.nvim_open_win(buf_id, true, float_opts)
-  vim.api.nvim_win_set_option(win_id, "winbar", "")
+  vim.wo[win_id].winbar = ""
 
   return win_id
 end

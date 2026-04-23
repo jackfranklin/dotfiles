@@ -3,6 +3,7 @@ local lsp_config = require("jack.lsp-config")
 local format_on_save = require("jack.format-on-save")
 
 lsp_config.typescript({})
+lsp_config.deno()
 lsp_config.eslint()
 -- TODO: does this work with the eslint server?
 -- Or do we need to use the special ESLintFixAll command?

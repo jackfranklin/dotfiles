@@ -22,6 +22,7 @@ bin:
 
 ubuntu-deps:
 	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep zip
+	sudo apt install clang libclang-dev
 
 fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
@@ -59,3 +60,6 @@ npm_globals:
 	# https://github.com/paulirish/git-recent
 	npm install --global git-recent
 	npm install --global @sourcegraph/amp
+
+neovim_deps:
+	cargo install --locked tree-sitter-cli
