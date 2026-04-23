@@ -41,8 +41,11 @@ feedback projects
 
 **Logging new feedback from a conversation:**
 
-1. For each item the user wants to record, run `add` with an appropriate title, detail, and priority.
-2. Confirm how many items were added.
+1. Run `list --project <name>` to retrieve open items.
+2. Scan the titles for any that overlap with or closely resemble the item(s) the user wants to log.
+3. If you spot a potential duplicate or near-duplicate, call `show <id>` on the overlapping item, then present your findings to the user and ask: "This looks similar to #<id> — do you want to update that existing item or log a new one?"
+4. Only proceed with `add` once the user has confirmed there is no overlap, or has explicitly asked for a new item.
+5. Confirm how many items were added or updated.
 
 **Working through feedback:**
 
