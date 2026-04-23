@@ -4,7 +4,7 @@
   },
   "permissions": {
     "allow": [
-      "Bash(~/dotfiles/claude/skills/feedback/feedback *)"
+      "Bash(~/dotfiles/claude/skills/feedback/run *)"
     ]
   },
   "enabledPlugins": {},
