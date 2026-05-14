@@ -9,7 +9,7 @@ M.setup = function()
         condition = function(_, context)
           return string.find(context.dirname, "devtools-frontend", 1, true) ~= nil
         end,
-        command = "/Users/jacktfranklin/src/depot_tools/clang-format",
+        command = "/Users/jacktfranklin/git/depot_tools/clang-format",
       },
       prettierd = {
         require_cwd = true,
