@@ -8,5 +8,6 @@
     ]
   },
   "enabledPlugins": {},
-  "effortLevel": "medium"
+  "effortLevel": "medium",
+  "theme": "light"
 }
