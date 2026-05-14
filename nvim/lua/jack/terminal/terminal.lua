@@ -14,8 +14,8 @@ local terminal_buf_id = nil
 --- @return number The created buffer ID
 local function create_terminal_buffer()
   local buf_id = vim.api.nvim_create_buf(false, false)
-  vim.bo[buf_id].buflisted = false
-  vim.bo[buf_id].bufhidden = "wipe"
+  vim.api.nvim_set_option_value("buflisted", false, { buf = buf_id })
+  vim.api.nvim_set_option_value("bufhidden", "wipe", { buf = buf_id })
   return buf_id
 end
 
@@ -74,7 +74,7 @@ local function configure_terminal(buf_id, win_id, cmd, close_on_exit)
   else
     vim.cmd.terminal()
   end
-  vim.bo[buf_id].filetype = "terminal"
+  vim.api.nvim_set_option_value("filetype", "terminal", { buf = buf_id })
   -- Ensure winbar is cleared after terminal setup
   vim.wo[win_id].winbar = ""
   vim.cmd.startinsert()

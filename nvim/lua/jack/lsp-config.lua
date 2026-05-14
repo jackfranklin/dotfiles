@@ -12,7 +12,7 @@ vim.o.winborder = "single"
 -- See: https://github.com/neovim/neovim/pull/19677 &&
 -- https://vi.stackexchange.com/questions/39200/wrapping-comment-in-visual-mode-not-working-with-gq
 -- In theory this idea works great but the TS language server doesn't wrap comments.
--- vim.api.nvim_buf_set_option(bufnr, "formatexpr", "")
+-- vim.api.nvim_set_option_value("formatexpr", "", { buf = bufnr })
 vim.api.nvim_create_autocmd("LspAttach", {
   callback = function(args)
     vim.bo[args.buf].formatexpr = nil
