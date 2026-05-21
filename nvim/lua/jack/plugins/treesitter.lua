@@ -5,6 +5,7 @@ tree.setup()
 local ignored_filetypes = {
   fzf = true,
   fugitive = true,
+  conf = true,
 }
 
 vim.api.nvim_create_autocmd("FileType", {
