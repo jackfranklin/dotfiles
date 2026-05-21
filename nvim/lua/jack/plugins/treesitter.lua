@@ -2,10 +2,18 @@ local tree = require("nvim-treesitter")
 
 tree.setup()
 
+local ignored_filetypes = {
+  fzf = true,
+  fugitive = true,
+}
+
 vim.api.nvim_create_autocmd("FileType", {
   pattern = "*",
   callback = function()
     local ft = vim.bo.filetype
+    if ignored_filetypes[ft] then
+      return
+    end
     local lang = vim.treesitter.language.get_lang(ft)
     if not lang then
       return
