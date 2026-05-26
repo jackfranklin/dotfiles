@@ -1,0 +1,4 @@
+# Hunk config
+# See https://github.com/modem-dev/hunk for documentation
+
+theme = "paper"

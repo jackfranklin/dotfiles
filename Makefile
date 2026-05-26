@@ -1,4 +1,4 @@
-.PHONY: all neovim fish git bin claude kitty amp
+.PHONY: all neovim fish git bin claude kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
@@ -38,6 +38,10 @@ kitty:
 
 amp:
 	@ln -nsf ${DIR}/amp ~/.config/amp
+
+hunk:
+	@mkdir -p ~/.config/hunk
+	@ln -sf $(DIR)/hunk/config.toml ~/.config/hunk/config.toml
 
 claude:
 	@mkdir -p ~/.claude
