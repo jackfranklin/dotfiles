@@ -245,11 +245,17 @@ local base_plugins = function()
       "nvim-treesitter/nvim-treesitter",
       branch = "main",
       dependencies = {
-        "nvim-treesitter/nvim-treesitter-textobjects",
         "nvim-treesitter/nvim-treesitter-context",
       },
       config = function()
         require("jack.plugins.treesitter")
+      end,
+    },
+    {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+      branch = "main",
+      config = function()
+        require("jack.plugins.treesitter-textobjects-config")
       end,
     },
     {
