@@ -98,6 +98,17 @@ If random errors are seen during syntax highlighting, it might be that the Trees
 
 To fix, load up NeoVim and run `:TSUpdate` to force them to be updated. See https://github.com/nvim-treesitter/nvim-treesitter/issues/3092 for more.
 
+## Installing `tree-sitter-cli`
+
+Install instructions: https://github.com/tree-sitter/tree-sitter/blob/master/crates/cli/README.md
+
+When installing via `cargo install tree-sitter-cli`, the build requires `clang` to generate bindings. Without it you'll get a `fatal error: 'stdbool.h' file not found` error.
+
+```bash
+sudo apt-get update
+sudo apt install clang libclang-dev
+```
+
 ## Installing `fd`
 
 Installing `fd` swaps fzf-lua to use it and it is a bit snappier than the find command.
