@@ -7,7 +7,7 @@ plan", or when you want the user to annotate a plan before you proceed:
    ```
 2. Run the tool and capture its stdout:
    ```
-   node /home/jack/git/ai-plan-reviewer/dist/cli.js /tmp/plan-review-<timestamp>.md
+   node /home/jack/git/ai-review-plan/dist/cli.js /tmp/plan-review-<timestamp>.md
    ```
    The CLI will open the browser. Block until it exits (the user clicking "Done"
    causes it to exit).
