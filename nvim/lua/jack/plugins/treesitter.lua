@@ -42,6 +42,7 @@ local ensure_installed_langs = {
   "gitattributes",
   "gitcommit",
   "gitignore",
+  "gn",
   "html",
   "javascript",
   "json",
