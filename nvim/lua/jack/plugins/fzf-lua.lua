@@ -65,6 +65,15 @@ M.setup = function(config)
     })
   end, { desc = "Find [f]iles in [d]irectory" })
 
+  vim.keymap.set("n", "<leader>fj", function()
+    require("fzf-lua").files({
+      cwd = vim.fn.getcwd() .. "/.jai",
+      git_icons = false,
+      file_icons = false,
+      no_header_i = true,
+    })
+  end, { desc = "Find files in .jai" })
+
   vim.keymap.set("n", "gd", function()
     require("fzf-lua").lsp_definitions({ jump1 = true })
   end, { desc = "Find LSP [d]efinitions" })
