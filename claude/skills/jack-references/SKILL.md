@@ -1,17 +1,25 @@
 ---
 name: jack-references
-description: Manage Jack's personal technical reference library at ~/git/references. Use for searching/reading existing references, or adding new ones. Invoke with /jack-references and optional keywords to search, or when the user wants to save a new reference guide.
+description: Manage Jack's personal technical reference library at ~/git/references. Use for searching/reading existing references, or adding new ones. Invoke with /jack-references and optional keywords to search, or when the user wants to save a new reference guide. PROACTIVELY suggest saving a new reference whenever the conversation involves figuring out how a library, API, or tool works — especially after debugging, reading docs, or solving a non-obvious integration problem. A good prompt: "Want me to save this as a reference for next time?"
 ---
 
 # Jack References
 
 Personal technical reference library at `~/git/references`. Each file is a focused Markdown cheatsheet for a library, API, or tool.
 
-## Shared Setup: Repo Path and Clone/Pull
+## Shared Setup: Resolve Repo Path
 
-The repo lives at `$HOME/git/references`.
+First, resolve the absolute path to the references repo:
 
-First check if it exists:
+```bash
+echo $HOME/git/references
+```
+
+Use the output of this command (e.g. `/home/jack/git/references`) as the literal path for **all subsequent commands** in this skill. Never use `$HOME` again after this step — always substitute the resolved absolute path.
+
+## Shared Setup: Clone/Pull
+
+Check if the repo exists:
 
 ```bash
 ls $HOME/git/references/.git 2>/dev/null && echo "exists" || echo "missing"
