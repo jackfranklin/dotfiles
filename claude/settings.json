@@ -10,7 +10,8 @@
       "Bash(grep -ril * /home/jack/git/references/)",
       "Bash(git -C /home/jack/git/references *)",
       "Bash(gh repo clone jackfranklin/references /home/jack/git/references)",
-      "Bash(mkdir -p /home/jack/git)"
+      "Bash(mkdir -p /home/jack/git)",
+      "Bash(ls /home/jack/.claude/skills*)"
     ]
   },
   "enabledPlugins": {},
