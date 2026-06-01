@@ -15,9 +15,9 @@ You are presenting a plan for human review using the review-plan CLI.
    and specific to the current task — the user may have multiple review tabs open
    at once and needs to tell them apart at a glance:
    ```
-   review-plan plan --title "<short task-specific title>" --theme light /tmp/plan-<timestamp>.md
+   review-plan plan --comments-only --title "<short task-specific title>" --theme light /tmp/plan-<timestamp>.md
    ```
-   Always use `--theme light`.
+   Always use `--theme light` and `--comments-only` — the plan is already in your context, echoing it back wastes tokens.
 3. Wait for the CLI to exit. It blocks until the user clicks Done.
 4. If the CLI prints nothing to stdout, the user had no comments — proceed with the plan as-is.
 5. If the CLI prints annotated output, read each comment carefully and revise the plan to address it. Show the revised plan to the user before proceeding.
