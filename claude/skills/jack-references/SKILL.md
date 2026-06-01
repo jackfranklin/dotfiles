@@ -9,7 +9,7 @@ Personal technical reference library at `~/git/references`. Each file is a focus
 
 ## Shared Setup: Repo Path and Clone/Pull
 
-The repo lives at `$HOME/git/references`. Expand `$HOME` to a literal path in every Bash command.
+The repo lives at `$HOME/git/references`.
 
 First check if it exists:
 
