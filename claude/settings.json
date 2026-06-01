@@ -4,7 +4,13 @@
   },
   "permissions": {
     "allow": [
-      "Bash(~/dotfiles/claude/skills/feedback/run *)"
+      "Bash(~/dotfiles/claude/skills/feedback/run *)",
+      "Bash(echo /home/jack/git/references)",
+      "Bash(ls /home/jack/git/references*)",
+      "Bash(grep -ril * /home/jack/git/references/)",
+      "Bash(git -C /home/jack/git/references *)",
+      "Bash(gh repo clone jackfranklin/references /home/jack/git/references)",
+      "Bash(mkdir -p /home/jack/git)"
     ]
   },
   "enabledPlugins": {},
