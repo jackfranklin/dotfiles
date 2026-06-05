@@ -44,6 +44,31 @@ config.window_padding = {
 
 config.window_decorations = "RESIZE"
 
+local function make_new_tab_on_right_action(opts)
+  local command = opts.command
+  return wezterm.action_callback(function(window, pane)
+    local mux_window = window:mux_window()
+    local tabs = mux_window:tabs()
+    local active_tab = window:active_tab()
+    local active_tab_id = active_tab:tab_id()
+    local current_idx = nil
+    for i, t in ipairs(tabs) do
+      if t:tab_id() == active_tab_id then
+        current_idx = i - 1
+        break
+      end
+    end
+
+    local tab, new_pane, _ = mux_window:spawn_tab({})
+    if command then
+      new_pane:send_text(command .. "\n")
+    end
+    if current_idx then
+      window:perform_action(wezterm.action.MoveTab(current_idx + 1), new_pane)
+    end
+  end)
+end
+
 config.keys = {
   -- Shift + Enter to send a literal newline
   { mods = "SHIFT", key = "Enter", action = act.SendString("\\\n") },
@@ -88,6 +113,11 @@ config.keys = {
       -- Move the new active tab to the right of the previously active tab
       window:perform_action(act.MoveTab(current_index + 1), pane)
     end),
+  },
+  {
+    key = "T",
+    mods = "SHIFT|CTRL",
+    action = make_new_tab_on_right_action({}),
   },
 }
 
