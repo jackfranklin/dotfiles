@@ -86,8 +86,11 @@ Rules for writing the document:
 
 ### 3. Open the review UI
 
+Resolve the binary: if `~/git/ai-plan-reviewer/dist/cli.js` exists, use
+`node ~/git/ai-plan-reviewer/dist/cli.js`; otherwise use `review-plan`.
+
 ```bash
-review-plan plan \
+<bin> plan \
   --title "Walkthrough: <feature name>" \
   --theme light \
   /tmp/walkthrough-<timestamp>.md
