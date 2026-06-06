@@ -1,7 +1,7 @@
 ---
 name: later
 description: Log and track items to come back to later — bugs found mid-task, feature ideas, project feedback — using a local SQLite database. Use when the user asks to log, list, view, resolve, or work through items saved for later.
-user-invocable: false
+user-invocable: true
 ---
 
 You have access to a CLI at `~/dotfiles/claude/skills/later/run`.
