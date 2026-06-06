@@ -7,23 +7,45 @@ import {
   initSchema,
   listFeedback,
   listProjects,
+  LOCAL_DB_NAME,
   markDone,
+  resolveDbPath,
   showFeedback,
 } from "./db.ts";
 import type { Priority, Status } from "./models.ts";
 
-const db = getDb();
+const dbPath = resolveDbPath();
+const db = getDb(dbPath);
 initSchema(db);
 
 const PRIORITIES = ["low", "medium", "high"] as const;
 const STATUSES = ["open", "in-progress", "blocked", "done"] as const;
 
 yargs(Deno.args)
-  .scriptName("feedback")
+  .scriptName("later")
   .strict()
   .command(
+    "init",
+    `Create a local ${LOCAL_DB_NAME} in the current directory`,
+    () => {},
+    () => {
+      const localPath = `${Deno.cwd()}/${LOCAL_DB_NAME}`;
+      try {
+        Deno.statSync(localPath);
+        console.error(`${LOCAL_DB_NAME} already exists in this directory.`);
+        Deno.exit(1);
+      } catch {
+        const localDb = getDb(localPath);
+        initSchema(localDb);
+        localDb.close();
+        console.log(`Created ${LOCAL_DB_NAME} in ${Deno.cwd()}`);
+        console.log(`Commit it to git to sync items across machines.`);
+      }
+    },
+  )
+  .command(
     "add",
-    "Add a feedback item",
+    "Add an item",
     (y) =>
       y
         .option("project", { alias: "p", type: "string", demandOption: true, description: "Project name" })
@@ -47,7 +69,7 @@ yargs(Deno.args)
   )
   .command(
     "list",
-    "List feedback items (open/in-progress/blocked by default)",
+    "List items (open/in-progress/blocked by default)",
     (y) =>
       y
         .option("project", { alias: "p", type: "string", description: "Filter by project" })

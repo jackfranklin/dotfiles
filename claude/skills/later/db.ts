@@ -1,10 +1,35 @@
 import { Database } from "@db/sqlite";
-import type { Feedback, FeedbackSummary, Priority, Status } from "./models.ts";
+import type { Item, ItemSummary, Priority, Status } from "./models.ts";
 
-const DB_PATH = new URL("./feedback.db", import.meta.url).pathname;
+const GLOBAL_DB_PATH = new URL("./feedback.db", import.meta.url).pathname;
+const OLD_DB_PATH = new URL("../feedback/feedback.db", import.meta.url).pathname;
+export const LOCAL_DB_NAME = ".later.db";
 
-export function getDb(): Database {
-  return new Database(DB_PATH);
+export function resolveDbPath(): string {
+  const localPath = `${Deno.cwd()}/${LOCAL_DB_NAME}`;
+  try {
+    Deno.statSync(localPath);
+    return localPath;
+  } catch {
+    return GLOBAL_DB_PATH;
+  }
+}
+
+export function getDb(dbPath: string): Database {
+  if (dbPath === GLOBAL_DB_PATH) {
+    try {
+      Deno.statSync(dbPath);
+    } catch {
+      try {
+        Deno.statSync(OLD_DB_PATH);
+        Deno.renameSync(OLD_DB_PATH, dbPath);
+        console.error(`Note: migrated database from skills/feedback/feedback.db to skills/later/feedback.db`);
+      } catch {
+        // no old DB either — fresh install, let SQLite create it
+      }
+    }
+  }
+  return new Database(dbPath);
 }
 
 export function initSchema(db: Database): void {
@@ -38,7 +63,7 @@ export function initSchema(db: Database): void {
 
 export function addFeedback(
   db: Database,
-  item: Omit<Feedback, "id" | "created_at">,
+  item: Omit<Item, "id" | "created_at">,
 ): void {
   db.prepare(
     "INSERT INTO feedback (project, title, detail, priority, status, category, done) VALUES (?, ?, ?, ?, ?, ?, ?)",
@@ -57,7 +82,7 @@ export function listFeedback(
   db: Database,
   project?: string,
   includeAll = false,
-): FeedbackSummary[] {
+): ItemSummary[] {
   const conditions: string[] = [];
   const params: unknown[] = [];
 
@@ -74,12 +99,12 @@ export function listFeedback(
     CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 END,
     created_at ASC`;
 
-  return db.prepare(sql).all<FeedbackSummary>(...params);
+  return db.prepare(sql).all<ItemSummary>(...params);
 }
 
-export function showFeedback(db: Database, id: number): Feedback | null {
+export function showFeedback(db: Database, id: number): Item | null {
   return (
-    db.prepare("SELECT * FROM feedback WHERE id = ?").get<Feedback>(id) ?? null
+    db.prepare("SELECT * FROM feedback WHERE id = ?").get<Item>(id) ?? null
   );
 }
 

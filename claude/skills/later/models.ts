@@ -1,7 +1,7 @@
 export type Priority = "low" | "medium" | "high";
 export type Status = "open" | "in-progress" | "blocked" | "done";
 
-export interface Feedback {
+export interface Item {
   id: number;
   project: string;
   title: string;
@@ -13,7 +13,7 @@ export interface Feedback {
   created_at: string;
 }
 
-export type FeedbackSummary = Pick<
-  Feedback,
+export type ItemSummary = Pick<
+  Item,
   "id" | "project" | "title" | "priority" | "status" | "category"
 >;
