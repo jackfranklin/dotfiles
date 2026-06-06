@@ -167,9 +167,17 @@ export function migrateProjectToLocal(localDbPath: string, project: string): num
   const globalDb = new Database(GLOBAL_DB_PATH);
   globalDb.exec(`ATTACH DATABASE '${localDbPath}' AS local`);
   globalDb.exec("BEGIN");
-  globalDb.prepare("INSERT INTO local.feedback SELECT * FROM feedback WHERE project = ?").run(project);
-  globalDb.prepare("DELETE FROM feedback WHERE project = ?").run(project);
-  globalDb.exec("COMMIT");
+  try {
+    globalDb.prepare(
+      "INSERT INTO local.feedback SELECT id, project, title, detail, priority, status, category, done, COALESCE(created_at, datetime('now')) FROM feedback WHERE project = ?"
+    ).run(project);
+    globalDb.prepare("DELETE FROM feedback WHERE project = ?").run(project);
+    globalDb.exec("COMMIT");
+  } catch (err) {
+    globalDb.exec("ROLLBACK");
+    globalDb.close();
+    throw err;
+  }
   globalDb.close();
 
   return count;
