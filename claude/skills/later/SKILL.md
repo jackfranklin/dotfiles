@@ -16,6 +16,7 @@ Run it with:
 
 ```
 later init
+later migrate --project <name>
 later add --project <name> --title "..." [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
 later list [--project <name>] [--all]
 later show <id>
@@ -67,6 +68,12 @@ The CLI supports two database modes, selected automatically:
 2. Present the titles to the user and ask which to tackle.
 3. Run `show <id>` only for items being actively discussed.
 4. After an item is resolved, run `done <id>`.
+
+**User wants to move a project from global to local:**
+
+1. If no `.later.db` exists in the CWD, run `later init`.
+2. Run `later migrate --project <name>`. This moves all items for that project out of the global database and into `.later.db`, then deletes them from the global database.
+3. Remind the user to commit `.later.db` to git so it syncs across machines.
 
 **User asks "what's left?":**
 
