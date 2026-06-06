@@ -42,7 +42,7 @@ config.window_padding = {
   top = 0,
 }
 
-config.window_decorations = "RESIZE"
+config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
 
 local function make_new_tab_on_right_action(opts)
   local command = opts.command
