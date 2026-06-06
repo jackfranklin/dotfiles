@@ -157,3 +157,20 @@ export function listProjects(db: Database): string[] {
     .all<{ project: string }>()
     .map((r) => r.project);
 }
+
+export function migrateProjectToLocal(localDbPath: string, project: string): number {
+  const count = new Database(GLOBAL_DB_PATH)
+    .prepare("SELECT COUNT(*) as n FROM feedback WHERE project = ?")
+    .get<{ n: number }>(project)?.n ?? 0;
+  if (count === 0) return 0;
+
+  const globalDb = new Database(GLOBAL_DB_PATH);
+  globalDb.exec(`ATTACH DATABASE '${localDbPath}' AS local`);
+  globalDb.exec("BEGIN");
+  globalDb.prepare("INSERT INTO local.feedback SELECT * FROM feedback WHERE project = ?").run(project);
+  globalDb.prepare("DELETE FROM feedback WHERE project = ?").run(project);
+  globalDb.exec("COMMIT");
+  globalDb.close();
+
+  return count;
+}

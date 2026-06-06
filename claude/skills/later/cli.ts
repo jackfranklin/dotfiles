@@ -9,6 +9,7 @@ import {
   listProjects,
   LOCAL_DB_NAME,
   markDone,
+  migrateProjectToLocal,
   resolveDbPath,
   showFeedback,
 } from "./db.ts";
@@ -139,6 +140,27 @@ yargs(Deno.args)
         category: argv.category,
       });
       console.log(`Updated ${argv.id}.`);
+    },
+  )
+  .command(
+    "migrate",
+    `Move a project's items from the global database into the local ${LOCAL_DB_NAME}`,
+    (y) =>
+      y.option("project", { alias: "p", type: "string", demandOption: true, description: "Project to migrate" }),
+    (argv) => {
+      const localPath = `${Deno.cwd()}/${LOCAL_DB_NAME}`;
+      try {
+        Deno.statSync(localPath);
+      } catch {
+        console.error(`No ${LOCAL_DB_NAME} found in this directory. Run 'later init' first.`);
+        Deno.exit(1);
+      }
+      const count = migrateProjectToLocal(localPath, argv.project);
+      if (count === 0) {
+        console.error(`No items found for project "${argv.project}" in the global database.`);
+        Deno.exit(1);
+      }
+      console.log(`Moved ${count} item${count === 1 ? "" : "s"} for "${argv.project}" to ${LOCAL_DB_NAME}.`);
     },
   )
   .command(
