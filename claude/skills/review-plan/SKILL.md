@@ -11,8 +11,8 @@ You are presenting a plan for human review using the review-plan CLI.
 ## Steps
 
 1. Write the plan to a temporary file (e.g. `/tmp/plan-<timestamp>.md`).
-2. Resolve the binary: if `~/git/ai-plan-reviewer/dist/cli.js` exists, use
-   `node ~/git/ai-plan-reviewer/dist/cli.js`; otherwise use `review-plan`.
+2. Resolve the binary: if `~/git/ai-review-plan/dist/cli.js` exists, use
+   `node ~/git/ai-review-plan/dist/cli.js`; otherwise use `review-plan`.
 3. Run the CLI with a title and theme. Choose a title that is short (3–6 words)
    and specific to the current task — the user may have multiple review tabs open
    at once and needs to tell them apart at a glance:
