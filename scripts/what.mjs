@@ -23,7 +23,7 @@ import yoctoSpinner from 'yocto-spinner';
 // --- Configuration ---
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const GEMINI_MODEL = 'gemini-2.0-flash';
+const GEMINI_MODEL = 'gemini-2.5-flash';
 
 /**
  * Calculates the MD5 hash of the content of multiple files.
