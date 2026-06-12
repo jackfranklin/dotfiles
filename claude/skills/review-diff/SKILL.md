@@ -1,11 +1,11 @@
 ---
 name: review-diff
 description: >
-  Present a git diff to the user for inline annotation via the review-plan UI.
+  Present a git diff to the user for inline annotation via the ai-review UI.
   Use when you want to review code changes before committing or requesting review.
 ---
 
-You are presenting a git diff for human review using the review-plan CLI.
+You are presenting a git diff for human review using the ai-review CLI.
 
 ## Steps
 
@@ -13,21 +13,19 @@ You are presenting a git diff for human review using the review-plan CLI.
    for all uncommitted changes use `git diff HEAD`; for a specific range use
    `git diff <base>..<head>`.
    **Note**: Run `git add -N .` first to include untracked files in the diff. This records the intent to add the files, making them visible to `git diff` without fully staging them.
-2. Resolve the binary: if `~/git/ai-plan-reviewer/dist/cli.js` exists, use
-   `node ~/git/ai-plan-reviewer/dist/cli.js`; otherwise use `review-plan`.
-3. Run the CLI, piping the diff to stdin:
+2. Run the CLI, piping the diff to stdin:
+   ```bash
+   git diff HEAD | node /Users/jacktfranklin/git/ai-review-plan/dist/cli.js diff --title "<short task-specific title>" --theme <dark|light>
    ```
-   git diff HEAD | <bin> diff --comments-only --title "<short task-specific title>" --theme light
-   ```
-   Always use `--theme light` and `--comments-only` — the diff is already in your context, echoing it back wastes tokens.
-4. Wait for the CLI to exit. It blocks until the user clicks Done.
-5. If the CLI prints nothing to stdout, the user had no comments — proceed.
-6. If the CLI prints annotated output, read each comment carefully and address it in code.
-   Commit any fixes and re-run the skill if the user asked for another review pass.
+   Use `--theme light` unless the user has expressed a preference for dark mode.
+3. Wait for the CLI to exit. It blocks until the user submits their review.
+4. Check the exit code and stdout:
+   - **Exit 0 (Approved):** The user approved the diff. Address any inline comments in code, then proceed.
+   - **Exit 1 (Rejected):** The user rejected the diff. Do not commit or push. Show the user the comments from stdout, address them in code, and offer to run another review pass.
+5. The stdout always begins with `## Review: APPROVED` or `## Review: REJECTED`, followed by any comments as a numbered list. Read each comment carefully.
 
 ## Notes
 
 - Always pass `--title`. Derive it from the branch name or the work being done (e.g. "Auth middleware changes", "Dark mode CSS") — never use a generic title like "Diff review".
-- Always pass `--theme light`.
+- Always pass `--theme`. Default to `light`; switch to `dark` if the user has indicated a preference.
 - If the diff is very large (hundreds of files), warn the user before opening and offer to scope it to specific paths: `git diff HEAD -- src/`.
-- `--comments-only` is always passed. It omits the full diff from the output and returns only the comment summary, since the diff is already in your context.

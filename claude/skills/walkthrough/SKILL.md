@@ -28,7 +28,7 @@ If the user specified a scope (a branch, a commit, a set of files), use it.
 
 ### 2. Generate the walkthrough document
 
-Analyse the diff and write a markdown document to `/tmp/walkthrough-<timestamp>.md`.
+Analyse the diff and write a markdown document to a file in the `.jai/tmp/` directory in the current workspace (e.g. `.jai/tmp/walkthrough-<timestamp>.md`). Ensure the directory exists or create it.
 Structure it as a sequence of logical steps — not one step per file, but one step
 per *concept* or *concern*. A single step might touch several files; a large file
 change might warrant two steps. Aim for 3–8 steps total.
@@ -86,17 +86,14 @@ Rules for writing the document:
 
 ### 3. Open the review UI
 
-Resolve the binary: if `~/git/ai-plan-reviewer/dist/cli.js` exists, use
-`node ~/git/ai-plan-reviewer/dist/cli.js`; otherwise use `review-plan`.
-
 ```bash
-<bin> plan \
+node /Users/jacktfranklin/git/ai-review-plan/dist/cli.js plan \
   --title "Walkthrough: <feature name>" \
-  --theme light \
-  /tmp/walkthrough-<timestamp>.md
+  --theme <dark|light> \
+  .jai/tmp/walkthrough-<timestamp>.md
 ```
 
-Always use `--theme light`.
+Use `--theme light` unless the user has expressed a preference for dark mode.
 
 ### 4. Read the annotated output
 
@@ -132,3 +129,4 @@ Delete the temp file once the developer confirms they're done.
   confident explanation of the wrong thing.
 - Line numbers should match the post-change state of the file, not the diff
   hunk headers, so the developer can open the file and land on the right line.
+- **Diagrams**: Use Mermaid diagrams (e.g. `sequenceDiagram`, `flowchart TD`, `stateDiagram-v2` in a fenced code block with language `mermaid`) inside your steps when explaining the sequence of events, data structures, or code architecture introduced by the change.
