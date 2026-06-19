@@ -12,6 +12,12 @@ Run it with:
 ~/dotfiles/claude/skills/later/run <command>
 ```
 
+**IMPORTANT:** The CLI selects the database based on the current working directory — if a `.later.db` exists there, it uses it; otherwise it falls back to the global database. Always run commands from the primary project working directory to ensure the local database is used. Prefix every command with `cd <primary-working-directory> &&`, for example:
+
+```
+cd /home/jack/git/routemaster && ~/dotfiles/claude/skills/later/run list --project routemaster
+```
+
 ## Commands
 
 ```
