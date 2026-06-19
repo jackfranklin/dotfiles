@@ -1,34 +1,9 @@
 import { Database } from "@db/sqlite";
 import type { Item, ItemSummary, Priority, Status } from "./models.ts";
 
-const GLOBAL_DB_PATH = new URL("./feedback.db", import.meta.url).pathname;
-const OLD_DB_PATH = new URL("../feedback/feedback.db", import.meta.url).pathname;
 export const LOCAL_DB_NAME = ".later.db";
 
-export function resolveDbPath(): string {
-  const localPath = `${Deno.cwd()}/${LOCAL_DB_NAME}`;
-  try {
-    Deno.statSync(localPath);
-    return localPath;
-  } catch {
-    return GLOBAL_DB_PATH;
-  }
-}
-
 export function getDb(dbPath: string): Database {
-  if (dbPath === GLOBAL_DB_PATH) {
-    try {
-      Deno.statSync(dbPath);
-    } catch {
-      try {
-        Deno.statSync(OLD_DB_PATH);
-        Deno.renameSync(OLD_DB_PATH, dbPath);
-        console.error(`Note: migrated database from skills/feedback/feedback.db to skills/later/feedback.db`);
-      } catch {
-        // no old DB either — fresh install, let SQLite create it
-      }
-    }
-  }
   return new Database(dbPath);
 }
 
@@ -84,7 +59,7 @@ export function listFeedback(
   includeAll = false,
 ): ItemSummary[] {
   const conditions: string[] = [];
-  const params: unknown[] = [];
+  const params: string[] = [];
 
   if (!includeAll) {
     conditions.push("status != 'done'");
@@ -118,7 +93,7 @@ export function editFeedback(
   fields: { title?: string; detail?: string; priority?: Priority; status?: Status; category?: string },
 ): void {
   const updates: string[] = [];
-  const params: unknown[] = [];
+  const params: (string | number)[] = [];
 
   if (fields.title !== undefined) {
     updates.push("title = ?");
@@ -156,29 +131,4 @@ export function listProjects(db: Database): string[] {
     .prepare("SELECT DISTINCT project FROM feedback ORDER BY project ASC")
     .all<{ project: string }>()
     .map((r) => r.project);
-}
-
-export function migrateProjectToLocal(localDbPath: string, project: string): number {
-  const count = new Database(GLOBAL_DB_PATH)
-    .prepare("SELECT COUNT(*) as n FROM feedback WHERE project = ?")
-    .get<{ n: number }>(project)?.n ?? 0;
-  if (count === 0) return 0;
-
-  const globalDb = new Database(GLOBAL_DB_PATH);
-  globalDb.exec(`ATTACH DATABASE '${localDbPath}' AS local`);
-  globalDb.exec("BEGIN");
-  try {
-    globalDb.prepare(
-      "INSERT INTO local.feedback SELECT id, project, title, detail, priority, status, category, done, COALESCE(created_at, datetime('now')) FROM feedback WHERE project = ?"
-    ).run(project);
-    globalDb.prepare("DELETE FROM feedback WHERE project = ?").run(project);
-    globalDb.exec("COMMIT");
-  } catch (err) {
-    globalDb.exec("ROLLBACK");
-    globalDb.close();
-    throw err;
-  }
-  globalDb.close();
-
-  return count;
 }

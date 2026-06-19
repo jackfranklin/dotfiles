@@ -9,40 +9,36 @@ You have access to a CLI at `~/dotfiles/claude/skills/later/run`.
 Run it with:
 
 ```
-~/dotfiles/claude/skills/later/run <command>
+~/dotfiles/claude/skills/later/run <command> --dir <absolute-path-to-project>
 ```
 
-**IMPORTANT:** The CLI selects the database based on the current working directory — if a `.later.db` exists there, it uses it; otherwise it falls back to the global database. Always run commands from the primary project working directory to ensure the local database is used. Prefix every command with `cd <primary-working-directory> &&`, for example:
+**IMPORTANT:** Always pass `--dir` with an absolute path to the project directory. This is how the CLI finds the project's `.later.db`. Omitting it falls back to CWD, which is unreliable in AI contexts and will produce a clear error if run from the home or skill directory.
 
 ```
-cd /home/jack/git/routemaster && ~/dotfiles/claude/skills/later/run list --project routemaster
+~/dotfiles/claude/skills/later/run list --project routemaster --dir /home/jack/git/routemaster
 ```
 
 ## Commands
 
 ```
-later init
-later migrate --project <name>
-later add --project <name> --title "..." [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
-later list [--project <name>] [--all]
-later show <id>
-later done <id>
-later edit <id> [--title "..."] [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
-later projects
+later init --dir <path>
+later add --dir <path> --project <name> --title "..." [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
+later list --dir <path> [--project <name>] [--all]
+later show <id> --dir <path>
+later done <id> --dir <path>
+later edit <id> --dir <path> [--title "..."] [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
+later projects --dir <path>
 ```
 
-## Database modes
+## Database
 
-The CLI supports two database modes, selected automatically:
+Each project stores its items in a `.later.db` SQLite file in the project root. This file can be committed to git and synced across machines.
 
-- **Local** — if a `.later.db` file exists in the current directory, it is used. This file can be committed to git and synced across machines.
-- **Global** — fallback to `~/dotfiles/claude/skills/later/feedback.db`, a personal cross-project store (gitignored).
-
-`later init` creates a `.later.db` in the current directory, opting the project into local mode.
+`later init --dir <path>` creates a `.later.db` in the given directory.
 
 ## Rules
 
-**Ask the user about database mode at the start of each session.** Before running any command for the first time, ask: "Do you want to use the global database (personal, cross-project) or a local `.later.db` in this repository (committable, synced across machines)?" If they say local and no `.later.db` exists in the CWD, run `later init` first.
+**Always pass `--dir <absolute-path>`.** Derive the path from the primary working directory the user is in. Never omit it.
 
 **Always `list` before `show`.** The list command returns only titles and IDs — it is token-efficient. Only call `show <id>` when you need the full detail of a specific item.
 
@@ -60,27 +56,24 @@ The CLI supports two database modes, selected automatically:
 
 **Logging something to come back to:**
 
-1. Ask the user about database mode (global vs local) if not already established this session.
-2. If local mode and no `.later.db` exists, run `later init`.
-3. Run `list --project <name>` to retrieve open items.
-4. Scan the titles for any that overlap with or closely resemble the item(s) the user wants to log.
-5. If you spot a potential duplicate or near-duplicate, call `show <id>` on the overlapping item, then present your findings to the user and ask: "This looks similar to #<id> — do you want to update that existing item or log a new one?"
-6. Only proceed with `add` once the user has confirmed there is no overlap, or has explicitly asked for a new item.
-7. Confirm how many items were added or updated.
+1. Run `list --project <name> --dir <path>` to retrieve open items.
+2. Scan the titles for any that overlap with or closely resemble the item(s) the user wants to log.
+3. If you spot a potential duplicate or near-duplicate, call `show <id> --dir <path>` on the overlapping item, then present your findings to the user and ask: "This looks similar to #<id> — do you want to update that existing item or log a new one?"
+4. Only proceed with `add` once the user has confirmed there is no overlap, or has explicitly asked for a new item.
+5. Confirm how many items were added or updated.
 
 **Working through items:**
 
-1. Run `list --project <name>` to get open items.
+1. Run `list --project <name> --dir <path>` to get open items.
 2. Present the titles to the user and ask which to tackle.
-3. Run `show <id>` only for items being actively discussed.
-4. After an item is resolved, run `done <id>`.
-
-**User wants to move a project from global to local:**
-
-1. If no `.later.db` exists in the CWD, run `later init`.
-2. Run `later migrate --project <name>`. This moves all items for that project out of the global database and into `.later.db`, then deletes them from the global database.
-3. Remind the user to commit `.later.db` to git so it syncs across machines.
+3. Run `show <id> --dir <path>` only for items being actively discussed.
+4. After an item is resolved, run `done <id> --dir <path>`.
 
 **User asks "what's left?":**
 
-1. Run `list --project <name>` and present the output directly.
+1. Run `list --project <name> --dir <path>` and present the output directly.
+
+**No .later.db exists yet:**
+
+1. Run `later init --dir <path>`.
+2. Remind the user to commit `.later.db` to git so it syncs across machines.
