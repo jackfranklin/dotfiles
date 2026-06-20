@@ -9,7 +9,6 @@ export interface Item {
   priority: Priority;
   status: Status;
   category: string | null;
-  done: boolean;
   created_at: string;
 }
 

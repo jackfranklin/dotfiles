@@ -1,134 +1,84 @@
-import { Database } from "@db/sqlite";
 import type { Item, ItemSummary, Priority, Status } from "./models.ts";
 
-export const LOCAL_DB_NAME = ".later.db";
+export const LOCAL_JSON_NAME = ".later.json";
 
-export function getDb(dbPath: string): Database {
-  return new Database(dbPath);
-}
-
-export function initSchema(db: Database): void {
-  db.exec(`
-    CREATE TABLE IF NOT EXISTS feedback (
-      id          INTEGER PRIMARY KEY AUTOINCREMENT,
-      project     TEXT    NOT NULL,
-      title       TEXT    NOT NULL,
-      detail      TEXT,
-      priority    TEXT    NOT NULL DEFAULT 'medium',
-      status      TEXT    NOT NULL DEFAULT 'open',
-      category    TEXT,
-      done        INTEGER NOT NULL DEFAULT 0,
-      created_at  TEXT    NOT NULL DEFAULT (datetime('now'))
-    )
-  `);
-
-  const cols = db
-    .prepare("PRAGMA table_info(feedback)")
-    .all<{ name: string }>()
-    .map((c) => c.name);
-
-  if (!cols.includes("status")) {
-    db.exec("ALTER TABLE feedback ADD COLUMN status TEXT NOT NULL DEFAULT 'open'");
-    db.exec("UPDATE feedback SET status = 'done' WHERE done = 1");
-  }
-  if (!cols.includes("category")) {
-    db.exec("ALTER TABLE feedback ADD COLUMN category TEXT");
+export function loadStore(path: string): Item[] {
+  try {
+    return JSON.parse(Deno.readTextFileSync(path)) as Item[];
+  } catch {
+    return [];
   }
 }
 
-export function addFeedback(
-  db: Database,
+export function saveStore(path: string, items: Item[]): void {
+  Deno.writeTextFileSync(path, JSON.stringify(items, null, 2) + "\n");
+}
+
+function nextId(items: Item[]): number {
+  return items.length === 0 ? 1 : Math.max(...items.map((i) => i.id)) + 1;
+}
+
+export function addItem(
+  items: Item[],
   item: Omit<Item, "id" | "created_at">,
-): void {
-  db.prepare(
-    "INSERT INTO feedback (project, title, detail, priority, status, category, done) VALUES (?, ?, ?, ?, ?, ?, ?)",
-  ).run(
-    item.project,
-    item.title,
-    item.detail ?? null,
-    item.priority,
-    item.status,
-    item.category ?? null,
-    item.status === "done" ? 1 : 0,
-  );
+): Item[] {
+  return [
+    ...items,
+    { ...item, id: nextId(items), created_at: new Date().toISOString() },
+  ];
 }
 
-export function listFeedback(
-  db: Database,
+export function listItems(
+  items: Item[],
   project?: string,
   includeAll = false,
 ): ItemSummary[] {
-  const conditions: string[] = [];
-  const params: string[] = [];
-
-  if (!includeAll) {
-    conditions.push("status != 'done'");
-  }
-  if (project) {
-    conditions.push("project = ?");
-    params.push(project);
-  }
-
-  const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
-  const sql = `SELECT id, project, title, priority, status, category FROM feedback ${where} ORDER BY
-    CASE priority WHEN 'high' THEN 1 WHEN 'medium' THEN 2 WHEN 'low' THEN 3 END,
-    created_at ASC`;
-
-  return db.prepare(sql).all<ItemSummary>(...params);
+  const priorityOrder = { high: 1, medium: 2, low: 3 } as const;
+  return items
+    .filter(
+      (i) =>
+        (includeAll || i.status !== "done") &&
+        (!project || i.project === project),
+    )
+    .sort(
+      (a, b) =>
+        priorityOrder[a.priority] - priorityOrder[b.priority] ||
+        a.created_at.localeCompare(b.created_at),
+    )
+    .map(({ id, project, title, priority, status, category }) => ({
+      id,
+      project,
+      title,
+      priority,
+      status,
+      category,
+    }));
 }
 
-export function showFeedback(db: Database, id: number): Item | null {
-  return (
-    db.prepare("SELECT * FROM feedback WHERE id = ?").get<Item>(id) ?? null
+export function getItem(items: Item[], id: number): Item | null {
+  return items.find((i) => i.id === id) ?? null;
+}
+
+export function setDone(items: Item[], id: number): Item[] {
+  return items.map((i) =>
+    i.id === id ? { ...i, status: "done" as Status } : i
   );
 }
 
-export function markDone(db: Database, id: number): void {
-  db.prepare("UPDATE feedback SET status = 'done', done = 1 WHERE id = ?").run(id);
-}
-
-export function editFeedback(
-  db: Database,
+export function editItem(
+  items: Item[],
   id: number,
-  fields: { title?: string; detail?: string; priority?: Priority; status?: Status; category?: string },
-): void {
-  const updates: string[] = [];
-  const params: (string | number)[] = [];
-
-  if (fields.title !== undefined) {
-    updates.push("title = ?");
-    params.push(fields.title);
-  }
-  if (fields.detail !== undefined) {
-    updates.push("detail = ?");
-    params.push(fields.detail);
-  }
-  if (fields.priority !== undefined) {
-    updates.push("priority = ?");
-    params.push(fields.priority);
-  }
-  if (fields.status !== undefined) {
-    updates.push("status = ?");
-    params.push(fields.status);
-    updates.push("done = ?");
-    params.push(fields.status === "done" ? 1 : 0);
-  }
-  if (fields.category !== undefined) {
-    updates.push("category = ?");
-    params.push(fields.category);
-  }
-
-  if (updates.length === 0) return;
-
-  params.push(id);
-  db.prepare(`UPDATE feedback SET ${updates.join(", ")} WHERE id = ?`).run(
-    ...params,
-  );
+  fields: {
+    title?: string;
+    detail?: string;
+    priority?: Priority;
+    status?: Status;
+    category?: string;
+  },
+): Item[] {
+  return items.map((i) => (i.id === id ? { ...i, ...fields } : i));
 }
 
-export function listProjects(db: Database): string[] {
-  return db
-    .prepare("SELECT DISTINCT project FROM feedback ORDER BY project ASC")
-    .all<{ project: string }>()
-    .map((r) => r.project);
+export function listProjects(items: Item[]): string[] {
+  return [...new Set(items.map((i) => i.project))].sort();
 }

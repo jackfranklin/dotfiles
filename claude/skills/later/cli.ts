@@ -1,15 +1,15 @@
 #!/usr/bin/env -S deno run --allow-read --allow-write --allow-env --allow-net --allow-ffi
 import yargs, { type Argv, type ArgumentsCamelCase } from "yargs";
 import {
-  addFeedback,
-  editFeedback,
-  getDb,
-  initSchema,
-  listFeedback,
+  addItem,
+  editItem,
+  getItem,
+  listItems,
   listProjects,
-  LOCAL_DB_NAME,
-  markDone,
-  showFeedback,
+  LOCAL_JSON_NAME,
+  loadStore,
+  saveStore,
+  setDone,
 } from "./db.ts";
 import type { Priority, Status } from "./models.ts";
 
@@ -24,14 +24,14 @@ function extractRawDir(args: string[]): string {
   return idx !== -1 && idx + 1 < args.length ? args[idx + 1] : Deno.cwd();
 }
 
-function validateDir(dir: string, isInit: boolean): void {
+function validateDir(dir: string, command: string): void {
   const home = Deno.env.get("HOME") ?? "";
 
   if (dir === home) {
     console.error(
       `Error: Running from your home directory — this is almost certainly wrong.\n` +
-      `Pass --dir <absolute-path> to specify the project directory.\n` +
-      `Example: later init --dir /home/jack/git/myproject`,
+        `Pass --dir <absolute-path> to specify the project directory.\n` +
+        `Example: later init --dir /home/jack/git/myproject`,
     );
     Deno.exit(1);
   }
@@ -39,33 +39,44 @@ function validateDir(dir: string, isInit: boolean): void {
   if (dir === SKILL_DIR || dir.startsWith(SKILL_DIR + "/")) {
     console.error(
       `Error: Running from the later skill directory — this is almost certainly wrong.\n` +
-      `Pass --dir <absolute-path> to specify the project directory.\n` +
-      `Example: later init --dir /home/jack/git/myproject`,
+        `Pass --dir <absolute-path> to specify the project directory.\n` +
+        `Example: later init --dir /home/jack/git/myproject`,
     );
     Deno.exit(1);
   }
 
-  if (!isInit) {
+  if (command === "init") return;
+
+  if (command === "migrate") {
     try {
-      Deno.statSync(`${dir}/${LOCAL_DB_NAME}`);
+      Deno.statSync(`${dir}/.later.db`);
     } catch {
       console.error(
-        `Error: No ${LOCAL_DB_NAME} found in ${dir}.\n` +
-        `To create one: later init --dir ${dir}\n` +
-        `Or pass --dir <absolute-path> to point to a different project.`,
+        `Error: No .later.db found in ${dir}.\n` +
+          `The migrate command converts an existing .later.db to ${LOCAL_JSON_NAME}.`,
       );
       Deno.exit(1);
     }
+    return;
+  }
+
+  try {
+    Deno.statSync(`${dir}/${LOCAL_JSON_NAME}`);
+  } catch {
+    console.error(
+      `Error: No ${LOCAL_JSON_NAME} found in ${dir}.\n` +
+        `To create one: later init --dir ${dir}\n` +
+        `Or pass --dir <absolute-path> to point to a different project.`,
+    );
+    Deno.exit(1);
   }
 }
 
 const dir = resolveDir(extractRawDir(Deno.args));
-const isInit = Deno.args[0] === "init";
-validateDir(dir, isInit);
+const command = Deno.args[0];
+validateDir(dir, command);
 
-const dbPath = `${dir}/${LOCAL_DB_NAME}`;
-const db = getDb(dbPath);
-initSchema(db);
+const jsonPath = `${dir}/${LOCAL_JSON_NAME}`;
 
 const PRIORITIES = ["low", "medium", "high"] as const;
 const STATUSES = ["open", "in-progress", "blocked", "done"] as const;
@@ -97,31 +108,63 @@ interface EditArgv {
   category?: string;
 }
 
-yargs(Deno.args)
+await yargs(Deno.args)
   .scriptName("later")
   .strict()
   .option("dir", {
     type: "string",
-    description: "Project directory containing .later.db (default: cwd)",
+    description: `Project directory containing ${LOCAL_JSON_NAME} (default: cwd)`,
     global: true,
   })
   .command(
     "init",
-    `Create a local ${LOCAL_DB_NAME} in the project directory`,
+    `Create a ${LOCAL_JSON_NAME} in the project directory`,
     () => {},
     () => {
-      const localPath = `${dir}/${LOCAL_DB_NAME}`;
       try {
-        Deno.statSync(localPath);
-        console.error(`${LOCAL_DB_NAME} already exists in ${dir}.`);
+        Deno.statSync(jsonPath);
+        console.error(`${LOCAL_JSON_NAME} already exists in ${dir}.`);
         Deno.exit(1);
       } catch {
-        const localDb = getDb(localPath);
-        initSchema(localDb);
-        localDb.close();
-        console.log(`Created ${LOCAL_DB_NAME} in ${dir}`);
+        saveStore(jsonPath, []);
+        console.log(`Created ${LOCAL_JSON_NAME} in ${dir}`);
         console.log(`Commit it to git to sync items across machines.`);
       }
+    },
+  )
+  .command(
+    "migrate",
+    "Migrate a .later.db SQLite file to .later.json",
+    () => {},
+    async () => {
+      const { Database } = await import("@db/sqlite");
+      const db = new Database(`${dir}/.later.db`, { readonly: true });
+      const rows = db
+        .prepare("SELECT * FROM feedback ORDER BY id ASC")
+        .all<{
+          id: number;
+          project: string;
+          title: string;
+          detail: string | null;
+          priority: string;
+          status: string;
+          category: string | null;
+          done: number;
+          created_at: string;
+        }>();
+      db.close();
+
+      const items = rows.map(({ done: _done, ...row }) => ({
+        ...row,
+        priority: row.priority as Priority,
+        status: row.status as Status,
+      }));
+
+      saveStore(jsonPath, items);
+      console.log(`Migrated ${items.length} item(s) to ${LOCAL_JSON_NAME}.`);
+      console.log(
+        `You can now delete .later.db and commit ${LOCAL_JSON_NAME}.`,
+      );
     },
   )
   .command<AddArgv>(
@@ -129,22 +172,47 @@ yargs(Deno.args)
     "Add an item",
     (y: Argv): Argv<AddArgv> =>
       y
-        .option("project", { alias: "p", type: "string", demandOption: true, description: "Project name" })
-        .option("title", { alias: "t", type: "string", demandOption: true, description: "Short summary" })
+        .option("project", {
+          alias: "p",
+          type: "string",
+          demandOption: true,
+          description: "Project name",
+        })
+        .option("title", {
+          alias: "t",
+          type: "string",
+          demandOption: true,
+          description: "Short summary",
+        })
         .option("detail", { alias: "d", type: "string", description: "Full detail" })
-        .option("priority", { choices: PRIORITIES, default: "medium" as Priority, description: "Priority level" })
-        .option("status", { choices: STATUSES, default: "open" as Status, description: "Status" })
-        .option("category", { alias: "c", type: "string", description: "Category tag (e.g. bug, ux, performance)" }) as unknown as Argv<AddArgv>,
+        .option("priority", {
+          choices: PRIORITIES,
+          default: "medium" as Priority,
+          description: "Priority level",
+        })
+        .option("status", {
+          choices: STATUSES,
+          default: "open" as Status,
+          description: "Status",
+        })
+        .option("category", {
+          alias: "c",
+          type: "string",
+          description: "Category tag (e.g. bug, ux, performance)",
+        }) as unknown as Argv<AddArgv>,
     (argv: ArgumentsCamelCase<AddArgv>) => {
-      addFeedback(db, {
-        project: argv.project,
-        title: argv.title,
-        detail: argv.detail ?? null,
-        priority: argv.priority as Priority,
-        status: argv.status as Status,
-        category: argv.category ?? null,
-        done: false,
-      });
+      const items = loadStore(jsonPath);
+      saveStore(
+        jsonPath,
+        addItem(items, {
+          project: argv.project,
+          title: argv.title,
+          detail: argv.detail ?? null,
+          priority: argv.priority as Priority,
+          status: argv.status as Status,
+          category: argv.category ?? null,
+        }),
+      );
       console.log(`Added: ${argv.title}`);
     },
   )
@@ -154,9 +222,14 @@ yargs(Deno.args)
     (y: Argv): Argv<ListArgv> =>
       y
         .option("project", { alias: "p", type: "string", description: "Filter by project" })
-        .option("all", { alias: "a", type: "boolean", default: false, description: "Include done items" }) as unknown as Argv<ListArgv>,
+        .option("all", {
+          alias: "a",
+          type: "boolean",
+          default: false,
+          description: "Include done items",
+        }) as unknown as Argv<ListArgv>,
     (argv: ArgumentsCamelCase<ListArgv>) => {
-      const items = listFeedback(db, argv.project, argv.all);
+      const items = listItems(loadStore(jsonPath), argv.project, argv.all);
       if (items.length === 0) {
         console.log("No items found.");
         return;
@@ -165,16 +238,22 @@ yargs(Deno.args)
         const statusBadge = item.status !== "open" ? ` [${item.status}]` : "";
         const categoryBadge = item.category ? ` {${item.category}}` : "";
         const projectBadge = argv.project ? "" : ` [${item.project}]`;
-        console.log(`[${item.id}] (${item.priority})${statusBadge}${projectBadge}${categoryBadge} ${item.title}`);
+        console.log(
+          `[${item.id}] (${item.priority})${statusBadge}${projectBadge}${categoryBadge} ${item.title}`,
+        );
       }
     },
   )
   .command<IdArgv>(
     "show <id>",
     "Show full detail for an item",
-    (y: Argv): Argv<IdArgv> => y.positional("id", { type: "number", demandOption: true }) as unknown as Argv<IdArgv>,
+    (y: Argv): Argv<IdArgv> =>
+      y.positional("id", {
+        type: "number",
+        demandOption: true,
+      }) as unknown as Argv<IdArgv>,
     (argv: ArgumentsCamelCase<IdArgv>) => {
-      const item = showFeedback(db, argv.id);
+      const item = getItem(loadStore(jsonPath), argv.id);
       if (!item) {
         console.error(`No item with id ${argv.id}`);
         Deno.exit(1);
@@ -194,9 +273,13 @@ yargs(Deno.args)
   .command<IdArgv>(
     "done <id>",
     "Mark an item as done",
-    (y: Argv): Argv<IdArgv> => y.positional("id", { type: "number", demandOption: true }) as unknown as Argv<IdArgv>,
+    (y: Argv): Argv<IdArgv> =>
+      y.positional("id", {
+        type: "number",
+        demandOption: true,
+      }) as unknown as Argv<IdArgv>,
     (argv: ArgumentsCamelCase<IdArgv>) => {
-      markDone(db, argv.id);
+      saveStore(jsonPath, setDone(loadStore(jsonPath), argv.id));
       console.log(`Marked ${argv.id} as done.`);
     },
   )
@@ -210,15 +293,21 @@ yargs(Deno.args)
         .option("detail", { alias: "d", type: "string" })
         .option("priority", { choices: PRIORITIES })
         .option("status", { choices: STATUSES })
-        .option("category", { alias: "c", type: "string" }) as unknown as Argv<EditArgv>,
+        .option("category", {
+          alias: "c",
+          type: "string",
+        }) as unknown as Argv<EditArgv>,
     (argv: ArgumentsCamelCase<EditArgv>) => {
-      editFeedback(db, argv.id, {
-        title: argv.title,
-        detail: argv.detail,
-        priority: argv.priority as Priority | undefined,
-        status: argv.status as Status | undefined,
-        category: argv.category,
-      });
+      saveStore(
+        jsonPath,
+        editItem(loadStore(jsonPath), argv.id, {
+          title: argv.title,
+          detail: argv.detail,
+          priority: argv.priority as Priority | undefined,
+          status: argv.status as Status | undefined,
+          category: argv.category,
+        }),
+      );
       console.log(`Updated ${argv.id}.`);
     },
   )
@@ -227,7 +316,7 @@ yargs(Deno.args)
     "List all projects",
     () => {},
     () => {
-      const projects = listProjects(db);
+      const projects = listProjects(loadStore(jsonPath));
       if (projects.length === 0) {
         console.log("No projects yet.");
         return;
@@ -237,6 +326,23 @@ yargs(Deno.args)
       }
     },
   )
+  .command(
+    "archive",
+    "Remove done items from .later.json (appends them to .later.archive.json)",
+    () => {},
+    () => {
+      const items = loadStore(jsonPath);
+      const done = items.filter((i) => i.status === "done");
+      if (done.length === 0) {
+        console.log("No done items to archive.");
+        return;
+      }
+      const archivePath = `${dir}/.later.archive.json`;
+      saveStore(archivePath, [...loadStore(archivePath), ...done]);
+      saveStore(jsonPath, items.filter((i) => i.status !== "done"));
+      console.log(`Archived ${done.length} item(s) to .later.archive.json.`);
+    },
+  )
   .demandCommand(1, "Please specify a command.")
   .help()
-  .parse();
+  .parseAsync();

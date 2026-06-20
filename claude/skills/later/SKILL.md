@@ -1,6 +1,6 @@
 ---
 name: later
-description: Log and track items to come back to later — bugs found mid-task, feature ideas, project feedback — using a local SQLite database. Use when the user asks to log, list, view, resolve, or work through items saved for later.
+description: Log and track items to come back to later — bugs found mid-task, feature ideas, project feedback — using a local JSON file. Use when the user asks to log, list, view, resolve, or work through items saved for later.
 user-invocable: true
 ---
 
@@ -12,7 +12,7 @@ Run it with:
 ~/dotfiles/claude/skills/later/run <command> --dir <absolute-path-to-project>
 ```
 
-**IMPORTANT:** Always pass `--dir` with an absolute path to the project directory. This is how the CLI finds the project's `.later.db`. Omitting it falls back to CWD, which is unreliable in AI contexts and will produce a clear error if run from the home or skill directory.
+**IMPORTANT:** Always pass `--dir` with an absolute path to the project directory. This is how the CLI finds the project's `.later.json`. Omitting it falls back to CWD, which is unreliable in AI contexts and will produce a clear error if run from the home or skill directory.
 
 ```
 ~/dotfiles/claude/skills/later/run list --project routemaster --dir /home/jack/git/routemaster
@@ -28,13 +28,19 @@ later show <id> --dir <path>
 later done <id> --dir <path>
 later edit <id> --dir <path> [--title "..."] [--detail "..."] [--priority low|medium|high] [--status open|in-progress|blocked|done] [--category "..."]
 later projects --dir <path>
+later archive --dir <path>
+later migrate --dir <path>
 ```
 
-## Database
+## Storage
 
-Each project stores its items in a `.later.db` SQLite file in the project root. This file can be committed to git and synced across machines.
+Each project stores its items in a `.later.json` file in the project root. This file is plain JSON, human-readable, git-diffable, and can be committed to git and synced across machines without binary conflicts.
 
-`later init --dir <path>` creates a `.later.db` in the given directory.
+`later init --dir <path>` creates an empty `.later.json` in the given directory.
+
+`later archive --dir <path>` removes all done items from `.later.json` and appends them to `.later.archive.json`, keeping the active file small. Run periodically to keep the file tidy.
+
+`later migrate --dir <path>` converts a legacy `.later.db` SQLite file to `.later.json`. After running, delete `.later.db` and commit `.later.json`.
 
 ## Rules
 
@@ -73,7 +79,8 @@ Each project stores its items in a `.later.db` SQLite file in the project root. 
 
 1. Run `list --project <name> --dir <path>` and present the output directly.
 
-**No .later.db exists yet:**
+**No .later.json exists yet — check for .later.db first:**
 
-1. Run `later init --dir <path>`.
-2. Remind the user to commit `.later.db` to git so it syncs across machines.
+1. Check whether a `.later.db` file exists in the project directory.
+2. If it does: run `later migrate --dir <path>`, then delete `.later.db` and remind the user to commit `.later.json`.
+3. If it does not: run `later init --dir <path>` and remind the user to commit `.later.json` to git.
