@@ -3,8 +3,21 @@ import type { Item, ItemSummary, Priority, Status } from "./models.ts";
 export const LOCAL_JSON_NAME = ".later.json";
 
 export function loadStore(path: string): Item[] {
+  let content: string;
   try {
-    return JSON.parse(Deno.readTextFileSync(path)) as Item[];
+    content = Deno.readTextFileSync(path);
+  } catch {
+    return [];
+  }
+  if (content.includes("<<<<<<<")) {
+    console.error(
+      `Error: ${path} has git merge conflicts.\n` +
+        `Resolve the conflict markers (<<<<<<<, =======, >>>>>>>) then re-run.`,
+    );
+    Deno.exit(1);
+  }
+  try {
+    return JSON.parse(content) as Item[];
   } catch {
     return [];
   }
