@@ -16,3 +16,5 @@ _site/
 JACK_NOTES.txt
 .lvimrc
 .tern-project
+
+**/.claude/settings.local.json

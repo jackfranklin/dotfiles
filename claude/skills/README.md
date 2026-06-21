@@ -4,6 +4,8 @@ Custom skills for Claude Code. Each subdirectory is a skill with a `SKILL.md` ma
 
 Skills are symlinked into `~/.claude/skills/` via `make claude`.
 
+See [WORKFLOW.md](./WORKFLOW.md) for how the skills fit together across the engineering cycle.
+
 ## Skills
 
 | Skill | Description |
@@ -15,7 +17,7 @@ Skills are symlinked into `~/.claude/skills/` via `make claude`.
 | `code-simplifier` | Run reuse, quality, and efficiency reviewers together |
 | `doc-clarity-opportunity` | Find opportunities to improve documentation and code clarity |
 | `efficiency-reviewer` | Review for performance and efficiency improvements |
-| `excavate-assumptions` | Audit a plan against the live codebase for stale assumptions |
+| `verify-plan-assumptions` | Audit a spec or plan against the live codebase for stale assumptions |
 | `feedback` | Log and retrieve feedback on AI-assisted work sessions |
 | `fresh-eyes-amend` | Review recent changes as if seeing them for the first time |
 | `grill-me` | Stress-test a plan via relentless interviewing |
@@ -27,18 +29,23 @@ Skills are symlinked into `~/.claude/skills/` via `make claude`.
 | `new-deno-app` | Scaffold a new Deno application |
 | `new-lit-pwa` | Scaffold a new Lit PWA |
 | `nuclear-code-review` | Aggressive maintainability review focused on deleting complexity |
-| `plan-ponytail` | Minimalism-first implementation planning (see below) |
+| `preflight` | Minimalism ladder check before planning or implementation (see below) |
 | `review-diff` | Review a git diff |
 | `review-plan` | Present a plan for inline human annotation via browser UI |
 | `verify-mechanical-change` | Verify a change is purely mechanical with no behavioural impact |
 | `walkthrough` | Interactive walkthrough of a git diff for the developer |
+| `write-detailed-implementation-plan` | Write a rigorous TDD implementation plan saved to `.jai/detailed-plans/` (see below) |
 
 ## Inspiration
 
-### Ponytail
+### Ponytail → `preflight`
 
-[`plan-ponytail`](./plan-ponytail/) is inspired by the [Ponytail plugin](https://github.com/DietrichGebert/ponytail), which advocates running a minimalism decision ladder before writing any code:
+[`preflight`](./preflight/) is inspired by the [Ponytail plugin](https://github.com/DietrichGebert/ponytail), which advocates running a minimalism decision ladder before writing any code:
 
 > Is it necessary? → stdlib? → native platform feature? → existing dep? → one-liner? → only then: minimal implementation.
 
-Rather than adopting Ponytail's lifecycle hooks, the concept is captured as a deliberate skill invoked when kicking off an implementation — the ladder runs first, its findings shape the plan, and the plan records what was consciously left out.
+Rather than adopting Ponytail's lifecycle hooks, the concept is captured as a deliberate skill invoked before planning — the ladder runs, produces findings, and the verdict feeds into `write-detailed-implementation-plan` or directly into implementation.
+
+### obra/superpowers → `write-detailed-implementation-plan`
+
+[`write-detailed-implementation-plan`](./write-detailed-implementation-plan/) is adapted from the [obra/superpowers writing-plans skill](https://github.com/obra/superpowers/blob/main/skills/writing-plans/SKILL.md). The core ideas are preserved — no placeholders, TDD cycle in every task, exact file paths and code in every step, interface contracts between tasks, and a self-review pass — with superpowers-specific scaffolding removed and the output path adjusted to `.jai/detailed-plans/`.
