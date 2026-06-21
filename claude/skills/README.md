@@ -11,6 +11,7 @@ See [WORKFLOW.md](./WORKFLOW.md) for how the skills fit together across the engi
 | Skill | Description |
 |-------|-------------|
 | `adr` | Capture an Architecture Decision Record for a significant decision |
+| `design-discussion` | Collaborative design discussion mode — explores alternatives and trade-offs rather than defaulting to agreement |
 | `automated-doubt` | Post-implementation audit from multiple critical perspectives |
 | `code-quality-reviewer` | Review for hacky patterns, redundant state, and leaky abstractions |
 | `code-reuse-reviewer` | Identify opportunities to reuse existing utilities and helpers |
