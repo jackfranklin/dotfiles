@@ -116,3 +116,10 @@ Installing `fd` swaps fzf-lua to use it and it is a bit snappier than the find c
 - Ubuntu install: https://github.com/sharkdp/fd#on-ubuntu
 - Mac install: https://github.com/sharkdp/fd#on-macos
 
+## Voice Input
+
+Software I use for voice-to-text input:
+
+- **Linux**: [Vocalinux](https://vocalinux.com/#install)
+- **Mac & Windows**: [Handy](https://handy.computer/) — also has Linux support but it didn't work for me
+
