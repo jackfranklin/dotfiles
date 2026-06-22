@@ -1,5 +1,5 @@
 ---
-name: write-detailed-implementation-plan
+name: write-plan
 description: >
   Write a comprehensive, no-placeholder implementation plan as a series of
   bite-sized tasks, each with exact file paths, real code, TDD steps, and
@@ -8,7 +8,7 @@ description: >
   what to build.
 ---
 
-# Write Detailed Implementation Plan
+# Write Plan
 
 Write a rigorous implementation plan assuming the engineer has zero context
 about the codebase and will execute tasks in isolation. Every step must

@@ -87,7 +87,7 @@ Rules for writing the document:
 ### 3. Open the review UI
 
 ```bash
-node /Users/jacktfranklin/git/ai-review-plan/dist/cli.js plan \
+node ~/git/ai-review-plan/dist/cli.js plan \
   --title "Walkthrough: <feature name>" \
   --theme <dark|light> \
   .jai/tmp/walkthrough-<timestamp>.md

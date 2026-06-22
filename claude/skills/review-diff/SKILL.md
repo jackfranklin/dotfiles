@@ -15,14 +15,14 @@ You are presenting a git diff for human review using the ai-review CLI.
    **Note**: Run `git add -N .` first to include untracked files in the diff. This records the intent to add the files, making them visible to `git diff` without fully staging them.
 2. Run the CLI, piping the diff to stdin:
    ```bash
-   git diff HEAD | node /Users/jacktfranklin/git/ai-review-plan/dist/cli.js diff --title "<short task-specific title>" --theme <dark|light>
+   git diff HEAD | node ~/git/ai-review-plan/dist/cli.js diff --title "<short task-specific title>" --theme <dark|light>
    ```
    Use `--theme light` unless the user has expressed a preference for dark mode.
 3. Wait for the CLI to exit. It blocks until the user submits their review.
 4. Check the exit code and stdout:
    - **Exit 0 (Approved):** The user approved the diff. Address any inline comments in code, then proceed.
-   - **Exit 1 (Rejected):** The user rejected the diff. Do not commit or push. Show the user the comments from stdout, address them in code, and offer to run another review pass.
-5. The stdout always begins with `## Review: APPROVED` or `## Review: REJECTED`, followed by any comments as a numbered list. Read each comment carefully.
+   - **Exit 1 (Changes Requested):** The user requested changes. Do not commit or push. Show the user the comments from stdout, address them in code, and offer to run another review pass.
+5. The stdout always begins with `## Review: APPROVED` or `## Review: CHANGES REQUESTED`, followed by any comments as a numbered list. Read each comment carefully.
 
 ## Notes
 
