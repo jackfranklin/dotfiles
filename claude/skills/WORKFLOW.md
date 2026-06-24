@@ -29,6 +29,14 @@ Run these before writing a plan or any code.
 
 ---
 
+## 3a. Starting a fresh implementation session
+
+Open a new conversation and run this before any code is written.
+
+- `/onboard-plan <path or description>` — reads the plan cold via two independent sub-agents, surfaces every comprehension gap (ambiguous terms, undefined references, missing context), and resolves them with you before execution begins. Focuses on *understanding*, not critique — use `/preflight`, `/verify-plan-assumptions`, or `/design-discussion` for that.
+
+---
+
 ## 4. During implementation
 
 - `/verify-mechanical-change` — confirm a change is purely mechanical before treating it as safe to land without review

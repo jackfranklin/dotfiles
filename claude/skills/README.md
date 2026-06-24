@@ -18,6 +18,7 @@ See [WORKFLOW.md](./WORKFLOW.md) for how the skills fit together across the engi
 | `code-simplifier` | Run reuse, quality, and efficiency reviewers together |
 | `doc-clarity-opportunity` | Find opportunities to improve documentation and code clarity |
 | `efficiency-reviewer` | Review for performance and efficiency improvements |
+| `onboard-plan` | Establish shared understanding of a plan in a fresh conversation — surfaces comprehension gaps via two independent sub-agents |
 | `verify-plan-assumptions` | Audit a spec or plan against the live codebase for stale assumptions |
 | `feedback` | Log and retrieve feedback on AI-assisted work sessions |
 | `fresh-eyes-amend` | Review recent changes as if seeing them for the first time |
