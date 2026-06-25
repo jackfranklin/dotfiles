@@ -14,6 +14,30 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ...and so on
 ```
 
+## Claude / MCP servers
+
+Claude config is installed via `make claude` (symlinks `settings.json`, `CLAUDE.md`, and `skills/`).
+
+MCP servers are tracked separately in `claude/mcp.json` and synced via:
+
+```
+make claude-mcp
+```
+
+This compares `claude/mcp.json` against the live config in `~/.claude.json` and adds or updates servers as needed — servers already configured correctly are skipped. It will warn about any servers configured on the machine that aren't in the file, but won't remove them automatically.
+
+To add a new MCP server, add an entry to `claude/mcp.json`:
+
+```json
+// Remote HTTP server
+"my-server": { "transport": "http", "url": "https://example.com/mcp" }
+
+// Local stdio server
+"my-local": { "transport": "stdio", "command": "npx", "args": ["my-mcp-package"], "env": { "API_KEY": "xxx" } }
+```
+
+Then run `make claude-mcp`.
+
 ## Windows & WSL
 - Install Windows Terminal experimental (currently need the new text rendering engine with better cursor colour contrast)
 - Add Catpuccin theme for Win terminal + enable. Set Ubuntu as the default profile when opening the terminal / new tab.

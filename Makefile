@@ -1,4 +1,4 @@
-.PHONY: all neovim fish git bin claude kitty amp hunk
+.PHONY: all neovim fish git bin claude claude-mcp kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
@@ -48,6 +48,9 @@ claude:
 	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
+
+claude-mcp:
+	@node $(DIR)/scripts/sync-mcp.mjs
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
