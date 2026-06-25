@@ -22,6 +22,7 @@ Harsh, expert code review focused on implementation quality, aggressive simplifi
 3.  **Review Individually:** Process each changed file one by one.
 4.  **Gather Full Context:** For each file, get its specific code diff. Crucially, to understand the full impact of a change, use tools to read other, unchanged files in the repository as needed (e.g., to see a function definition, a class signature, or a constant that is referenced in the changed code).
 5.  **Static Review Only:** Do not build the project or run tests. Assume that the code compiles successfully and all tests pass. Focus your review entirely on static analysis (logic, design patterns, readability, maintainability, type safety, correctness).
+6.  **Parallel Quality Reviews (Optional)**: For complex changes, invoke parallel subagents (`code_reuse_reviewer`, `code_quality_reviewer`, `efficiency_reviewer`, `test_reviewer`) using the `invoke_subagent` tool. Pass each agent the diff of the changes to review, then aggregate and address their findings.
 
 ## Review Checklist & Approval Bar
 
@@ -42,4 +43,3 @@ Analyze the changes against the following checklist. Do not approve merely becau
     - Examine test changes for deleted assertions (`assert`, `expect`), setup/teardown deletion, or test cases removed without corresponding feature removal.
     - **Test Bloat & Complexity:** Flag newly added unit test files or individual test cases that are excessively long (e.g., adding hundreds of lines of code, or massive test cases on their own), suggesting they be refactored, parameterized, or split into smaller, more focused tests.
 9.  **Code Style, Readability & Naming:** Vague names (`data`, `result`), inconsistent casing, negative boolean names (`isNotLoading`), or missing comments for complex logic.
-
