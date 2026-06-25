@@ -17,5 +17,6 @@
   },
   "enabledPlugins": {},
   "effortLevel": "medium",
-  "theme": "light"
+  "theme": "light",
+  "tui": "fullscreen"
 }
