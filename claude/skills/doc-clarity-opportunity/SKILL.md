@@ -18,12 +18,13 @@ Invoke the following specialized review agents concurrently via the `invoke_suba
 
 Pass each agent the relevant code context or diff.
 
-## 3. Aggregate Findings
-Wait for all subagents to complete their analysis. Gather and synthesize all suggested opportunities for:
-- Adding or updating JSDoc comments.
-- Adding inline comments for complex logic.
-- Updating or creating README files in relevant directories.
+## 3. Aggregate and Filter Findings
+Wait for all subagents to complete their analysis. Gather and critically synthesize all suggested opportunities.
+**CRITICAL FILTERING**:
+- Filter out any suggestions that recommend low-value, descriptive, plain-English comments for obvious or self-documenting code.
+- Maintain a high bar. If a subagent suggests a comment that does not provide net-new context (such as rationale, invariants, workarounds, or hidden side effects), reject and discard it.
+- Compile only the highly necessary documentation improvements (e.g. for JSDoc, inline comments, or README files).
 
 ## 4. Present Suggestions & Await Approval
-Present the aggregated, non-prescriptive list of documentation and clarity improvements to the user.
+Present the filtered list of high-value documentation and clarity improvements to the user.
 **CRITICAL**: Do NOT apply any changes directly. State your plan based on these suggestions and await the user's explicit approval before proceeding with any implementation.
