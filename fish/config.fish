@@ -28,6 +28,9 @@ set EDITOR 'nvim'
 
 set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
 
+set -gx CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY 1
+set -gx CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC 1
+
 # Because of
 # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
 # and running Puppeteer on Ubuntu.
