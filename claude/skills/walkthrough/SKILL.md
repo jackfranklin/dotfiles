@@ -97,7 +97,7 @@ Use `--theme light` unless the user has expressed a preference for dark mode.
 
 ### 4. Read the annotated output
 
-Wait for the CLI to exit. It blocks until the developer clicks Done.
+Once the CLI launches, check its initial output (e.g. `Opening http://localhost:<port>`) and tell the user what port the review is active on. Wait for the CLI to exit. It blocks until the developer clicks Done.
 
 - **No output** — the developer had no questions. Confirm they're happy to proceed
   and delete the temp file.
