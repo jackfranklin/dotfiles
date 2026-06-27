@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: efficiency-reviewer
 description: Reviews code changes for efficiency issues, unnecessary work, missed concurrency, and memory leaks. Use when the user asks to "review for efficiency", "check for performance issues", "find memory leaks", or wants an efficiency-focused code review.
 ---

@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: summarize-conversation
 description: Use when the user requests a summary of the current conversation, or when the conversation context is full and needs to be summarized before clearing.
 ---

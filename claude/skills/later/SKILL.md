@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: later
 description: Log and track items to come back to later — bugs found mid-task, feature ideas, project feedback — using a local JSON file. Use when the user asks to log, list, view, resolve, or work through items saved for later.
 user-invocable: true

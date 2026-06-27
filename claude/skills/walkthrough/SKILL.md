@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: walkthrough
 description: >
   Generate an interactive walkthrough of a git diff so the developer can

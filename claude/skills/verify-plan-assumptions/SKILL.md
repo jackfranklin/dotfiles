@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: verify-plan-assumptions
 description: Audits a spec, plan, or PRD by spawning a subagent to cross-reference it with the live codebase, identifying mismatches in APIs, schemas, configurations, and file structures.
 ---

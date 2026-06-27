@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: design-discussion
 description: Enter a collaborative design discussion mode — like pair programming or a design review with a colleague. Claude proposes alternatives, pushes back on ideas, and trades off options rather than defaulting to agreement. Use when the user wants to think through a decision together rather than be handed an answer. End when the user explicitly says the decision is made.
 ---

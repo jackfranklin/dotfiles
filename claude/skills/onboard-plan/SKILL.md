@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: onboard-plan
 description: >
   Gives a fresh agent a plan and has it surface every comprehension gap —

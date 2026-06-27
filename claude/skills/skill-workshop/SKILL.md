@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: skill-workshop
 description: Iteratively improve a skill using subagent consensus and simulation testing. Use when a skill is producing bad outputs, has unclear instructions, or you want to stress-test it before shipping. Runs proposal evaluation and scenario simulation rounds with multiple agents to surface issues and build confidence.
 ---

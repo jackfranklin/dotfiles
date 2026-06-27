@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: review-plan
 description: >
   Present a plan to the user for inline annotation via the ai-review UI.

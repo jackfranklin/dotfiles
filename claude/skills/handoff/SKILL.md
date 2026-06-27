@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: handoff
 description: Summarize the current conversation, generate a short name for it, and save it or update an existing handoff in the .jai folder. Use this when you want to hand off the current state or update progress.
 ---

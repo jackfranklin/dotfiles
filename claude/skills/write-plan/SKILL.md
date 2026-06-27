@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: write-plan
 description: >
   Write a comprehensive, no-placeholder implementation plan as a series of

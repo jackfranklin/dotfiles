@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: preflight
 description: >
   Run the Ponytail minimalism ladder and a codebase assumption check against a

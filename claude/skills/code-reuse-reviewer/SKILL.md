@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: code-reuse-reviewer
 description: Reviews code changes to identify opportunities for reusing existing utilities and helpers. Use when the user asks to "review for reuse", "check for duplicate code", "find existing utilities", or wants a reuse-focused code review.
 ---

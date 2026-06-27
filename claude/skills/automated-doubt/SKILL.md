@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: automated-doubt
 description: Runs a pipeline of specialized validator subagents post-implementation to audit the code from various critical perspectives (Scope, Type Safety, Security, Accessibility, Localization, Resource Management, Anxiety/Concurrency, and Public Interfaces).
 ---

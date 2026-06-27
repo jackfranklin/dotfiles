@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: verify-mechanical-change
 description: Spawns two independent subagents to verify if the staged or specified git diff is purely mechanical (no behavior or UI changes), then synthesizes their findings to ensure high accuracy.
 ---

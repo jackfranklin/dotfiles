@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: code-quality-reviewer
 description: Reviews code changes for hacky patterns, redundant state, parameter sprawl, and leaky abstractions. Use when the user asks to "review code quality", "check for hacky patterns", "quality review", or wants a quality-focused code review.
 ---

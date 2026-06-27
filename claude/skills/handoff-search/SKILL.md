@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: handoff-search
 description: Find and list handed off conversations in the current workspace to resume work.
 ---

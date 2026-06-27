@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: ideate
 description: Spawns 3 subagents (Innovator, Skeptic, Pragmatist) to explore different approaches to a problem or question, then synthesizes their findings and recommends the best approach.
 ---

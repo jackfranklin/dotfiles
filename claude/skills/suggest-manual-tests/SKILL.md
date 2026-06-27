@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: suggest-manual-tests
 description: Use when the user wants to generate manual test cases, QA steps, or test plans based on a git diff of latest commits, branch comparison, or unstaged changes.
 ---

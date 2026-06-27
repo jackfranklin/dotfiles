@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: doc-clarity-opportunity
 description: Looks for opportunities to improve documentation and code clarity by spawning specialized subagents for JSDoc, inline comments, and README updates, then synthesizing their findings for user review and approval.
 ---

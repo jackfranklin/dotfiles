@@ -1,6 +1,7 @@
 ---
+disable-model-invocation: true
 name: one-by-one
-description: Walk through a list of findings (e.g. from a code review) one at a time, giving full context, background, and discussion for each before moving to the next. Use when the user wants to deeply understand each finding rather than scan a summary list.
+description: Walk through a list of items (e.g. code review findings, design questions, open decisions) one at a time, giving full context and discussion for each before moving to the next. Use when the user wants to work through a structured list interactively rather than scan it all at once.
 ---
 
 # One-by-One
@@ -45,7 +46,7 @@ Present each finding like this:
 
 ## Flow
 
-1. If a list of findings exists (e.g. from a prior `/nuclear-code-review`), start directly with Finding 1. Otherwise ask the user to share the list.
+1. Scan the recent conversation for anything list-like: code review findings, design questions, numbered items, bulleted points, or any set of distinct questions or topics raised in the prior message. If you find one, start directly with item 1 — don't ask the user to share it again. Only ask the user to share a list if there is genuinely nothing list-like in context.
 2. Present each finding using the format above and wait for a decision.
 3. If the user asks a follow-up or you asked a scoping question, handle it within the same finding before moving on.
 4. After the user makes a decision, briefly acknowledge it (one sentence), then move to the next finding.

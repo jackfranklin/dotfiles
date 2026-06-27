@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: fresh-eyes-amend
 description: Amends the previous commit with current changes, then spawns two subagents to independently review the full git diff and propose fresh commit messages. Synthesizes the best parts into a final, accurate commit message without recency bias.
 ---

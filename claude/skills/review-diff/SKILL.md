@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: review-diff
 description: >
   Present a git diff to the user for inline annotation via the ai-review UI.

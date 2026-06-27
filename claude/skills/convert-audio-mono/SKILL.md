@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: convert-audio-mono
 description: Use when the user wants to convert a video or audio file's stereo audio to mono, or fix audio that only plays in one ear.
 ---

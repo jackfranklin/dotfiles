@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: code-simplifier
 description: Runs the Code Simplifier subagents (Code Reuse Reviewer, Code Quality Reviewer, and Efficiency Reviewer) to review and clean up code changes. Trigger this skill when the user asks to "simplify code", "run code simplifier", or "review changes for quality".
 ---

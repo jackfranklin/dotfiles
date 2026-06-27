@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: writing-skills
 description: Use when creating new skills or editing existing skills in the gemini/skills directory
 ---
