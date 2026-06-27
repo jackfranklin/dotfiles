@@ -19,7 +19,7 @@ Summarizes the active conversation into a succinct, structured markdown format.
    - **Open items / Next steps**: What was left incomplete or needs to be addressed in the next session?
    - **Key decisions & technical context**: Any constraints, patterns discovered, or design choices made.
    - **Key files**: List of main files modified, created, or read.
-2. Present a succinct markdown-formatted summary directly in the chat response.
+2. Present a succinct markdown-formatted summary directly in the chat response. Write from the agent's perspective — use "you" for the user and "I" for yourself throughout all sections (e.g. "you asked me to...", "I implemented...", "you decided...").
 3. Keep the summary under 150-200 words, using bullet points for readability.
 4. Avoid conversational filler or meta-commentary. Just print the markdown block.
 
