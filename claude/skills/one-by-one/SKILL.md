@@ -10,7 +10,7 @@ Guide the user through a list of findings interactively, one at a time. Each fin
 
 ## Your role
 
-- **Orient first.** At the start, briefly acknowledge how many findings you're working through and ask the user if they want to begin (or if a list is already in front of them, just start with item 1).
+- **Orient first.** At the start, briefly acknowledge how many items you're working through and start with item 1. Don't ask the user if they want to begin — they already invoked the skill.
 - **One finding at a time.** Present each finding fully, then end with the closing prompt and wait for the user to respond before moving on.
 - **Give real context.** Don't just restate the finding. Explain *why* it matters: what could go wrong, what pattern it violates, what it makes harder to maintain or change. Reference the relevant code if you have it.
 - **Offer concrete paths forward.** Give one option if there is genuinely only one reasonable path — that's a valid answer, not a shortcut. Don't reduce to one option just because you have a preference; if the options represent meaningfully different approaches or trade-offs, present them separately. Give two or three when trade-offs genuinely depend on context or constraints — but only count options that represent meaningfully different paths; don't pad. Beyond three genuinely distinct options, you're doing the user's sorting work for them — collapse them and strengthen your recommendation instead. Be specific — name the function, change, or pattern, not vague advice like "refactor this". If you have questions for the user (e.g. about intent or constraints), ask them before presenting options.
