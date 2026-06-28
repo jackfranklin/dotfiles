@@ -48,6 +48,8 @@ claude:
 	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
+	@ln -sf $(DIR)/claude/statusline.sh ~/.claude/statusline.sh
+	@chmod +x $(DIR)/claude/statusline.sh
 
 claude-mcp:
 	@node $(DIR)/scripts/sync-mcp.mjs

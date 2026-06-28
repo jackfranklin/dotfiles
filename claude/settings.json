@@ -2,6 +2,11 @@
   "env": {
     "EDITOR": "nvim"
   },
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
+  "disableClaudeAiConnectors": true,
   "permissions": {
     "allow": [
       "Bash(~/dotfiles/claude/skills/feedback/run *)",
