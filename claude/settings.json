@@ -7,6 +7,7 @@
     "command": "~/.claude/statusline.sh"
   },
   "disableClaudeAiConnectors": true,
+  "disableBundledSkills": true,
   "permissions": {
     "allow": [
       "Bash(~/dotfiles/claude/skills/feedback/run *)",
