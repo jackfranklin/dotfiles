@@ -11,24 +11,24 @@ description: >
 
 # Plan Briefing
 
-Use this skill when you have a plan on disk and want to begin a fresh
-implementation session with zero ambiguity. The goal is comprehension, not
-critique — use `/preflight`, `/verify-plan-assumptions`, or
+Use this skill when you have a plan saved as a GitHub Issue and want to begin
+a fresh implementation session with zero ambiguity. The goal is comprehension,
+not critique — use `/preflight`, `/verify-plan-assumptions`, or
 `/design-discussion` for that.
 
-## Step 1: Resolve the Plan File
+## Step 1: Resolve the Plan Issue
 
 The skill argument may be:
 
-- An exact file path: use it directly.
-- A fuzzy description (e.g. "the plan about auth refactor"): list
-  `.jai/detailed-plans/` and pick the best match by name similarity. If more
-  than one file is plausible, ask the user to choose before proceeding.
+- A GitHub issue number: fetch it directly with `gh issue view <number> --json title,body`.
+- A fuzzy description (e.g. "the plan about auth refactor"): search with
+  `gh issue list --search "[PLAN] <description>" --state open --json number,title`
+  and pick the best match by title similarity. If more than one is plausible,
+  ask the user to choose before proceeding.
 
 ## Step 2: Read the Plan
 
-Read the full plan file into your context. Do not summarise or paraphrase it
-at this stage.
+Read the full issue body. Do not summarise or paraphrase it at this stage.
 
 ## Step 3: Spawn Two Independent Sub-agents
 
@@ -82,7 +82,7 @@ Once both agents respond:
 ## Step 5: Present to the User
 
 Display the synthesised question list clearly, numbered. Add a one-line
-header stating which plan was reviewed.
+header stating which plan issue was reviewed.
 
 Invite the user to answer each question. As they do, note the answers so
 that by the end of the conversation both you and the user have a fully

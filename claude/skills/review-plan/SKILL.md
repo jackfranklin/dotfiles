@@ -11,12 +11,12 @@ You are presenting a plan for human review using the ai-review CLI.
 
 ## Steps
 
-1. Write the plan to a file in the `.jai/tmp/` directory in the current workspace (e.g. `.jai/tmp/plan-<timestamp>.md`). Ensure the directory exists or create it.
+1. Write the plan to a temp file at `/tmp/plan-<timestamp>.md`.
 2. Run the CLI with a title and theme. Choose a title that is short (3–6 words)
    and specific to the current task — the user may have multiple review tabs open
    at once and needs to tell them apart at a glance:
    ```
-   node ~/git/ai-review-plan/dist/cli.js plan --title "<short task-specific title>" --theme <dark|light> .jai/tmp/plan-<timestamp>.md
+   node ~/git/ai-review-plan/dist/cli.js plan --title "<short task-specific title>" --theme <dark|light> /tmp/plan-<timestamp>.md
    ```
    Use `--theme light` unless the user has expressed a preference for dark mode.
 3. Once the CLI launches, check its initial output (e.g. `Opening http://localhost:<port>`) and tell the user what port the review is active on. Wait for the CLI to exit. It blocks until the user submits their review.

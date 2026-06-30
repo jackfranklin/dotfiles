@@ -4,9 +4,8 @@ name: write-plan
 description: >
   Write a comprehensive, no-placeholder implementation plan as a series of
   bite-sized tasks, each with exact file paths, real code, TDD steps, and
-  commit instructions. Saves to .jai/detailed-plans/. Inspired by
-  obra/superpowers writing-plans skill. Use after preflight has established
-  what to build.
+  commit instructions. Saves as a GitHub Issue with a [PLAN] prefix.
+  Use after preflight has established what to build.
 ---
 
 # Write Plan
@@ -46,9 +45,7 @@ fresh reviewer's gate.
   approving its neighbour
 - Each task ends with an independently testable deliverable
 
-## Step 3: Write the Plan Document
-
-Save to `.jai/detailed-plans/YYYY-MM-DD-<feature-name>.md`.
+## Step 3: Write the Plan
 
 ### Document Header
 
@@ -146,7 +143,11 @@ fresh eyes.
 
 Fix issues inline. If a spec requirement has no task, add the task.
 
-## Step 5: Handoff
+## Step 5: Save as GitHub Issue
 
-After saving, tell the user the plan path and ask how they want to proceed:
-inline execution in this session, or they'll drive it themselves.
+1. Verify there is a GitHub remote: `gh repo view --json nameWithOwner` — if it fails, stop and tell the user.
+2. Create the issue:
+   ```
+   gh issue create --title "[PLAN] <feature-name>" --body "<full plan content>"
+   ```
+3. Tell the user the issue URL and ask how they want to proceed: inline execution in this session, or they'll drive it themselves.

@@ -1,18 +1,19 @@
 ---
 disable-model-invocation: true
 name: handoff-search
-description: Find and list handed off conversations in the current workspace to resume work.
+description: Find and list plans and handoffs saved as GitHub Issues in the current repo to resume work.
 ---
 
-To find a handoff or plan doc:
-1. Look for a directory named `.jai` in the current working directory.
-2. If it doesn't exist, inform the user that no saved handoffs or plans were found.
-3. List all markdown files (`*.md`) inside `.jai/conversations/` and `.jai/plans/`.
-4. For each file found, read its content to extract the `**Summary**:` section (typically in the first few lines).
-5. Present the list of files categorized under two distinct sections:
-    - **Active Plans** (files from `.jai/plans/`)
-    - **Recent Conversations** (files from `.jai/conversations/`)
-    Include the filename and its summary for each.
-6. If the user or context implies a specific topic, recommend the most relevant file from either category.
-7. Once the correct file is identified, read its full content to load the context.
+To find a handoff or plan:
 
+1. Verify there is a GitHub remote for the current repo. Run `gh repo view --json nameWithOwner` — if it fails, stop and tell the user there is no GitHub remote.
+2. Search for open issues with `[HANDOFF]` and `[PLAN]` prefixes:
+   ```
+   gh issue list --search "[HANDOFF] OR [PLAN]" --state open --json number,title,url,body
+   ```
+3. Present the results categorized under two sections:
+   - **Active Plans** (title starts with `[PLAN]`)
+   - **Recent Handoffs** (title starts with `[HANDOFF]`)
+   Include the issue number, title, URL, and the **Summary** line from the body for each.
+4. If the user or context implies a specific topic, recommend the most relevant issue.
+5. Once the correct issue is identified, read its full body with `gh issue view <number> --json body` to load the context.
