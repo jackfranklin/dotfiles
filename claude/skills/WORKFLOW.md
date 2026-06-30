@@ -24,7 +24,7 @@ Run these before writing a plan or any code.
 
 ## 3. Planning
 
-- `/write-detailed-implementation-plan` — rigorous TDD plan with exact file paths, real code in every step, interface contracts between tasks. Saves to `.jai/detailed-plans/`. Use after preflight has settled scope.
+- `/write-plan` — rigorous TDD plan with exact file paths, real code in every step, interface contracts between tasks. Saves as a GitHub Issue with a `[PLAN]` prefix. Use after preflight has settled scope.
 - `/review-plan` — open a plan in the browser for inline annotation before execution
 
 ---
@@ -33,7 +33,7 @@ Run these before writing a plan or any code.
 
 Open a new conversation and run this before any code is written.
 
-- `/onboard-plan <path or description>` — reads the plan cold via two independent sub-agents, surfaces every comprehension gap (ambiguous terms, undefined references, missing context), and resolves them with you before execution begins. Focuses on *understanding*, not critique — use `/preflight`, `/verify-plan-assumptions`, or `/design-discussion` for that.
+- `/onboard-plan <issue number or description>` — reads the plan cold via two independent sub-agents, surfaces every comprehension gap (ambiguous terms, undefined references, missing context), and resolves them with you before execution begins. Focuses on *understanding*, not critique — use `/preflight`, `/verify-plan-assumptions`, or `/design-discussion` for that.
 
 ---
 
@@ -47,8 +47,6 @@ Open a new conversation and run this before any code is written.
 ## 5. After implementation
 
 - `/nuclear-code-review` — aggressive review focused on deleting complexity and improving maintainability
-- `/automated-doubt` — audit from multiple critical perspectives (type safety, security, concurrency, public interfaces)
-- `/code-simplifier` — runs quality, reuse, and efficiency reviewers together
 - `/fresh-eyes-amend` — review recent changes as if seeing them for the first time
 - `/review-diff` — straightforward diff review
 
@@ -63,12 +61,12 @@ Open a new conversation and run this before any code is written.
 ## 7. Documentation and handoff
 
 - `/doc-clarity-opportunity` — find opportunities to improve docs and code clarity
-- `/handoff` — summarise in-progress work for a future session or another engineer
-- `/handoff-search` — search existing handoff documents
+- `/handoff` — summarise in-progress work as a GitHub Issue for a future session or another engineer
+- `/handoff-search` — search existing handoff and plan issues on GitHub
 
 ---
 
 ## 8. Ongoing
 
-- `/later` — log something to come back to without losing your current thread
+- `/later` — log something to come back to as a GitHub Issue without losing your current thread
 - `/jack-references` — save or search technical reference material

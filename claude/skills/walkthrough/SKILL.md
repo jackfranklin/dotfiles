@@ -29,7 +29,7 @@ If the user specified a scope (a branch, a commit, a set of files), use it.
 
 ### 2. Generate the walkthrough document
 
-Analyse the diff and write a markdown document to a file in the `.jai/tmp/` directory in the current workspace (e.g. `.jai/tmp/walkthrough-<timestamp>.md`). Ensure the directory exists or create it.
+Analyse the diff and write a markdown document to `/tmp/walkthrough-<timestamp>.md`.
 Structure it as a sequence of logical steps — not one step per file, but one step
 per *concept* or *concern*. A single step might touch several files; a large file
 change might warrant two steps. Aim for 3–8 steps total.
@@ -91,7 +91,7 @@ Rules for writing the document:
 node ~/git/ai-review-plan/dist/cli.js plan \
   --title "Walkthrough: <feature name>" \
   --theme <dark|light> \
-  .jai/tmp/walkthrough-<timestamp>.md
+  /tmp/walkthrough-<timestamp>.md
 ```
 
 Use `--theme light` unless the user has expressed a preference for dark mode.
