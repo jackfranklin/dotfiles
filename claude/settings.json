@@ -20,7 +20,8 @@
       "Bash(ls /home/jack/.claude/skills*)",
       "Bash(~/dotfiles/claude/skills/later/run *)",
       "Bash(gh issue list *)",
-      "Bash(gh issue view *)"
+      "Bash(gh issue view *)",
+      "Bash(git log *)"
     ]
   },
   "enabledPlugins": {},
