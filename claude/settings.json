@@ -18,7 +18,9 @@
       "Bash(gh repo clone jackfranklin/references /home/jack/git/references)",
       "Bash(mkdir -p /home/jack/git)",
       "Bash(ls /home/jack/.claude/skills*)",
-      "Bash(~/dotfiles/claude/skills/later/run *)"
+      "Bash(~/dotfiles/claude/skills/later/run *)",
+      "Bash(gh issue list *)",
+      "Bash(gh issue view *)"
     ]
   },
   "enabledPlugins": {},
