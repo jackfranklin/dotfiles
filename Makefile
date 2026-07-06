@@ -1,4 +1,4 @@
-.PHONY: all neovim fish git bin claude claude-mcp kitty amp hunk
+.PHONY: all neovim fish tmux git bin claude claude-mcp kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
@@ -12,6 +12,10 @@ neovim:
 
 fish:
 	@ln -nsf $(DIR)/fish ~/.config/fish
+
+tmux:
+	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
+
 
 git:
 	@ln -sf $(DIR)/git/gitconfig ~/.gitconfig
