@@ -32,7 +32,7 @@ fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
 
 language_servers_global:
-	npm install --global typescript typescript-language-server svelte-language-server diagnostic-languageserver eslint_d vscode-langservers-extracted @johnnymorganz/stylua-bin @fsouza/prettierd emmet-ls
+	./scripts/install-npm-globals.sh
 
 elm_language_servers:
 	npm install -g elm elm-test elm-format @elm-tooling/elm-language-server
@@ -70,9 +70,7 @@ lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
 
 npm_globals:
-	# https://github.com/paulirish/git-recent
-	npm install --global git-recent
-	npm install --global @sourcegraph/amp
+	./scripts/install-npm-globals.sh
 
 neovim_deps:
 	cargo install --locked tree-sitter-cli
