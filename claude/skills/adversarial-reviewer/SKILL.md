@@ -1,6 +1,6 @@
 ---
 disable-model-invocation: true
-name: adversarial-audit
+name: adversarial-reviewer
 description: Use when planning code changes, writing an implementation plan, or reviewing code to identify potential edge cases, security vulnerabilities, input sanitization issues, race conditions, or boundary values.
 ---
 
