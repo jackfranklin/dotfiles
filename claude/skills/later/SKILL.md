@@ -32,6 +32,8 @@ gh issue list --state open
 gh issue view <number>
 ```
 
+**Never jump straight into implementation after reading an issue.** After `gh issue view`, always: summarise the issue in your own words, investigate the relevant code enough to explain *why* it happens (root cause, not just symptoms), then present your thoughts — options, tradeoffs, a recommendation if you have one — and ask the user how they'd like to proceed. Only start editing code once the user has confirmed a direction. This applies even if the fix looks small or obvious.
+
 ## Closing an item
 
 ```
@@ -42,7 +44,7 @@ gh issue close <number>
 
 1. Run `gh issue list --state open` to get open items.
 2. Present the titles and ask which to tackle.
-3. Run `gh issue view <number>` for items being actively discussed.
+3. Run `gh issue view <number>` for items being actively discussed, then follow the discuss-before-implementation rule above.
 4. After an item is resolved, run `gh issue close <number>`.
 
 ## Priorities
