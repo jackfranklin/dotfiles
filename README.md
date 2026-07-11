@@ -54,6 +54,26 @@ Then run `make claude-mcp`.
 1. `make install`
 
 
+## Building tmux from source
+
+Ubuntu's apt repos lag well behind upstream tmux releases (e.g. 22.04 "jammy" ships 3.2a, which is missing options like `allow-passthrough` needed by Claude Code). There's no trustworthy/maintained PPA for newer tmux, so build from the official release tarball instead:
+
+```bash
+sudo apt-get install -y libevent-dev ncurses-dev build-essential bison pkg-config autoconf automake
+
+cd /tmp
+curl -fsSL -o tmux.tar.gz https://github.com/tmux/tmux/releases/download/<VERSION>/tmux-<VERSION>.tar.gz
+tar xzf tmux.tar.gz
+cd tmux-<VERSION>
+./configure --prefix="$HOME/.local"
+make -j"$(nproc)"
+make install
+```
+
+`~/.local/bin` is already on the fish `$PATH` ahead of `/usr/bin`, so the new binary takes over automatically — check with `which tmux` / `tmux -V`.
+
+Note: an already-running tmux server keeps using the old binary/config until you `tmux kill-server` (this ends all panes) and start a fresh session.
+
 ## Fonts and Kitty terminal
 
 To get the MonoLisa font (note: do not commit the font files to this repo, it's a purchased font!) working, we need to (for whatever reason) convince Kitty that all its variants (including italic/script) are monospace.
