@@ -22,7 +22,7 @@ Harsh, expert code review focused on implementation quality, aggressive simplifi
 
 ## Workflow
 
-1.  **Context**: Read the commit message (if any) and identify staged/unstaged changes.
+1.  **Context**: Read the commit message (if any) and identify staged/unstaged changes. When diffing against a base branch, use `git diff <base>...HEAD` (three-dot range) rather than `git diff $(git merge-base <base> HEAD) HEAD` — the three-dot form avoids a subshell so it matches the Bash permission allowlist without extra prompts.
 2.  **Scope**: Review each changed file statically (do not build or run tests). Inspect the diff and read unchanged files (signatures, constants, types) to understand the full impact.
 3.  **Apply Checklists**: For each file, evaluate changes against the checklists below.
 4.  **Report**: Synthesize observations into a single cohesive report, grouped by impact (critical bugs, architectural, minor).

@@ -21,7 +21,9 @@
       "Bash(~/dotfiles/claude/skills/later/run *)",
       "Bash(gh issue list *)",
       "Bash(gh issue view *)",
-      "Bash(git log *)"
+      "Bash(git log *)",
+      "Bash(git diff *)",
+      "Bash(git merge-base *)"
     ]
   },
   "enabledPlugins": {},
