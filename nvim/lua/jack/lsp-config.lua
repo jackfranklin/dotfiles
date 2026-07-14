@@ -29,6 +29,7 @@ end
 
 local M = {}
 M.typescript = function(config)
+  config = config or {}
   local setup_opts = {
     root_dir = function(bufnr, on_dir)
       if get_deno_root(bufnr) then
@@ -36,7 +37,36 @@ M.typescript = function(config)
       end
       local root = vim.fs.root(bufnr, { "package.json", "tsconfig.json" })
       if root then
-        on_dir(root)
+        local has_ts = false
+        if config.custom_tsserver_path ~= nil then
+          has_ts = true
+        else
+          local buf_name = vim.api.nvim_buf_get_name(bufnr)
+          if buf_name ~= "" then
+            local buf_dir = vim.fs.dirname(buf_name)
+            local ts_dir =
+              vim.fs.find("node_modules/typescript", { path = buf_dir, upward = true, type = "directory" })
+            if #ts_dir > 0 then
+              has_ts = true
+            end
+          end
+        end
+
+        if has_ts then
+          on_dir(root)
+        else
+          local buf_name = vim.api.nvim_buf_get_name(bufnr)
+          if buf_name ~= "" then
+            local file_name = vim.fs.basename(buf_name)
+            local is_ts = string.match(file_name, "%.tsx?$") ~= nil
+            if is_ts then
+              vim.notify(
+                "TypeScript LSP not started: 'typescript' package not found in node_modules.",
+                vim.log.levels.WARN
+              )
+            end
+          end
+        end
       end
     end,
   }
