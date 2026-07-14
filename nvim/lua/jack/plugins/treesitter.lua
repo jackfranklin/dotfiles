@@ -1,34 +1,3 @@
-local tree = require("nvim-treesitter")
-
-tree.setup()
-
-local ignored_filetypes = {
-  fzf = true,
-  fugitive = true,
-  conf = true,
-}
-
-vim.api.nvim_create_autocmd("FileType", {
-  pattern = "*",
-  callback = function()
-    local ft = vim.bo.filetype
-    if ignored_filetypes[ft] then
-      return
-    end
-    local lang = vim.treesitter.language.get_lang(ft)
-    if not lang then
-      return
-    end
-    local installed = require("nvim-treesitter.config").get_installed()
-    if vim.tbl_contains(installed, lang) then
-      vim.treesitter.start()
-      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-    else
-      vim.notify("No treesitter parser installed for: " .. lang, vim.log.levels.WARN)
-    end
-  end,
-})
-
 local ensure_installed_langs = {
   "c",
   "comment",
@@ -67,6 +36,37 @@ local ensure_installed_langs = {
   "vimdoc",
   "yaml",
 }
+
+local tree = require("nvim-treesitter")
+
+tree.setup()
+
+local ignored_filetypes = {
+  fzf = true,
+  fugitive = true,
+  conf = true,
+}
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "*",
+  callback = function()
+    local ft = vim.bo.filetype
+    if ignored_filetypes[ft] then
+      return
+    end
+    local lang = vim.treesitter.language.get_lang(ft)
+    if not lang then
+      return
+    end
+    local installed = require("nvim-treesitter.config").get_installed()
+    if vim.tbl_contains(installed, lang) then
+      vim.treesitter.start()
+      vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+    elseif vim.tbl_contains(ensure_installed_langs, lang) then
+      vim.notify("No treesitter parser installed for: " .. lang, vim.log.levels.WARN)
+    end
+  end,
+})
 local alreadyInstalled = require("nvim-treesitter.config").get_installed()
 local parsersToInstall = vim
   .iter(ensure_installed_langs)
