@@ -44,6 +44,60 @@ export function splitCommand(command: string): string[] {
 		.filter((s) => s.length > 0);
 }
 
+/** Redirection targets that are never a real filesystem write we care about. */
+const BENIGN_REDIRECT_TARGETS = new Set(["/dev/null", "/dev/stdout", "/dev/stderr"]);
+
+function isBenignTarget(target: string): boolean {
+	return BENIGN_REDIRECT_TARGETS.has(target) || target.startsWith("/dev/fd/");
+}
+
+/**
+ * Remove all shell redirections (read and write) from a command so the
+ * remaining text is just the commands + args to match against globs. Handles
+ * forms like `> f`, `>> f`, `2> f`, `&> f`, `2>&1`, `< f`, `<<< s`. Quoting is
+ * not fully parsed; worst case this over-strips and causes an extra prompt.
+ */
+function stripRedirections(command: string): string {
+	const redir =
+		/(?:[0-9]+|&)?(?:>>?|<<?<?)\s*(?:&[0-9-]+|"[^"]*"|'[^']*'|[^\s|;&<>()]+)?/g;
+	return command.replace(redir, " ");
+}
+
+/** Unquote a captured redirection target. */
+function unquote(token: string): string {
+	if (
+		(token.startsWith('"') && token.endsWith('"')) ||
+		(token.startsWith("'") && token.endsWith("'"))
+	) {
+		return token.slice(1, -1);
+	}
+	return token;
+}
+
+/**
+ * Collect the targets of write redirections (`>`, `>>`, `2>`, `&>`) in a
+ * command. File-descriptor duplications like `2>&1` and `>&2` are not writes to
+ * a file, so they are excluded.
+ */
+export function redirectWriteTargets(command: string): string[] {
+	const re = /(?:^|[^<>&\d])(?:[0-9]+|&)?>>?\s*("[^"]*"|'[^']*'|[^\s|;&<>()]+)/g;
+	const targets: string[] = [];
+	let m: RegExpExecArray | null;
+	while ((m = re.exec(command)) !== null) {
+		targets.push(unquote(m[1]));
+	}
+	return targets;
+}
+
+/**
+ * True if the command writes (via `>`/`>>`) to a real file, as opposed to
+ * `/dev/null` and friends or a bare fd duplication. Such writes should always
+ * prompt, since the target file is not covered by the command's allow glob.
+ */
+export function hasRiskyRedirect(command: string): boolean {
+	return redirectWriteTargets(command).some((t) => !isBenignTarget(t));
+}
+
 /**
  * Decide for a tool call.
  *   - bash: every segment must be allowed to allow; any denied segment denies.
@@ -62,12 +116,19 @@ export function decide(
 	const allowGlobs = globsFor(allow, label);
 	const denyGlobs = globsFor(deny, label);
 
-	const segments = toolName === "bash" ? splitCommand(subject) : [subject];
+	// For bash, strip redirections before matching so `>`/`<` targets don't
+	// pollute the command segments (and get re-checked separately below).
+	const segments = toolName === "bash" ? splitCommand(stripRedirections(subject)) : [subject];
 	if (segments.length === 0) return "prompt";
 
 	// Deny wins: if any segment is explicitly denied, block.
 	if (segments.some((seg) => denyGlobs.some((g) => globMatches(g, seg)))) {
 		return "deny";
+	}
+
+	// A write to a real file is never covered by a command's allow glob.
+	if (toolName === "bash" && hasRiskyRedirect(subject)) {
+		return "prompt";
 	}
 
 	// Allow only if every segment is covered by an allow glob.

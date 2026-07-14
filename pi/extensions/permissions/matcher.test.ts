@@ -2,7 +2,13 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { globMatches, globToRegExp } from "./glob.ts";
 import { normalizeEntry } from "./index.ts";
-import { decide, splitCommand, suggestPattern } from "./matcher.ts";
+import {
+	decide,
+	hasRiskyRedirect,
+	redirectWriteTargets,
+	splitCommand,
+	suggestPattern,
+} from "./matcher.ts";
 
 describe("globToRegExp / globMatches", () => {
 	it("matches * as any run of characters", () => {
@@ -81,6 +87,18 @@ describe("decide", () => {
 		assert.equal(decide("write", "/etc/passwd", wallow, wdeny), "deny");
 	});
 
+	it("prompts when an allowed command redirects to a real file", () => {
+		assert.equal(decide("bash", "echo hi > out.txt", allow, deny), "prompt");
+		assert.equal(decide("bash", "cat a.txt >> log", allow, deny), "prompt");
+		assert.equal(decide("bash", "ls -la | grep x > files.txt", allow, deny), "prompt");
+	});
+
+	it("still allows safe redirections (/dev/null and fd dups)", () => {
+		assert.equal(decide("bash", "git status > /dev/null 2>&1", allow, deny), "allow");
+		assert.equal(decide("bash", "ls -la 2>/dev/null", allow, deny), "allow");
+		assert.equal(decide("bash", "git log < input.txt", allow, deny), "allow");
+	});
+
 	it("passes through ungated tools", () => {
 		assert.equal(decide("some_custom_tool", "anything", allow, deny), "allow");
 	});
@@ -99,6 +117,26 @@ describe("suggestPattern", () => {
 	it("suggests the exact path for file tools", () => {
 		assert.equal(suggestPattern("write", "/tmp/x"), "Write(/tmp/x)");
 		assert.equal(suggestPattern("read", "/etc/hosts"), "Read(/etc/hosts)");
+	});
+});
+
+describe("redirect detection", () => {
+	it("finds real write targets", () => {
+		assert.deepEqual(redirectWriteTargets("echo x > out.txt"), ["out.txt"]);
+		assert.deepEqual(redirectWriteTargets('cat a >> "my log.txt"'), ["my log.txt"]);
+		assert.deepEqual(redirectWriteTargets("cmd 2> errs.log"), ["errs.log"]);
+	});
+
+	it("ignores fd duplications and /dev targets", () => {
+		assert.equal(hasRiskyRedirect("cmd 2>&1"), false);
+		assert.equal(hasRiskyRedirect("cmd > /dev/null"), false);
+		assert.equal(hasRiskyRedirect("cmd > /dev/null 2>&1"), false);
+		assert.equal(hasRiskyRedirect("cmd < input.txt"), false);
+	});
+
+	it("flags writes to real files", () => {
+		assert.equal(hasRiskyRedirect("echo x > file"), true);
+		assert.equal(hasRiskyRedirect("echo x >> ~/.bashrc"), true);
 	});
 });
 
