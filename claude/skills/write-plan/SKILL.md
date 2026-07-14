@@ -58,6 +58,10 @@ fresh reviewer's gate.
 
 **Tech Stack:** [Key technologies and libraries]
 
+## Adversarial Audit & Security
+
+[List key edge cases, security hazards, sanitization needs, or potential race conditions identified, and how they are handled in this plan.]
+
 ## Global Constraints
 
 [Project-wide requirements — version floors, dependency limits, naming rules,
