@@ -3,5 +3,8 @@
   "theme": "light",
   "defaultProvider": "anthropic",
   "defaultModel": "claude-opus-4-8",
-  "skills": ["~/.claude/skills"]
+  "skills": [
+    "~/.claude/skills"
+  ],
+  "hideThinkingBlock": false
 }
