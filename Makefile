@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux git bin claude claude-mcp kitty amp hunk
+.PHONY: all neovim fish tmux git bin claude claude-mcp pi kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
@@ -57,6 +57,10 @@ claude:
 
 claude-mcp:
 	@node $(DIR)/scripts/sync-mcp.mjs
+
+pi:
+	@mkdir -p ~/.pi/agent
+	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
