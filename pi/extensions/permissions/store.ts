@@ -11,7 +11,15 @@
  * Each entry is `Tool(glob)` where Tool is one of Bash | Read | Write | Edit
  * and glob uses `*` / `?` wildcards (see glob.ts).
  */
-import { existsSync, mkdirSync, readFileSync, renameSync, statSync, writeFileSync } from "node:fs";
+import {
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	realpathSync,
+	renameSync,
+	statSync,
+	writeFileSync,
+} from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
@@ -87,12 +95,18 @@ export class PermissionStore {
 		this.save();
 	}
 
-	/** Atomic write (temp file + rename) so a crash can't corrupt the file. */
+	/**
+	 * Atomic write (temp file + rename) so a crash can't corrupt the file.
+	 * Resolves symlinks first so renaming targets the real file rather than
+	 * replacing the symlink itself (the store may be symlinked into a dotfiles
+	 * repo).
+	 */
 	private save(): void {
-		mkdirSync(dirname(this.path), { recursive: true });
-		const tmp = `${this.path}.tmp-${process.pid}`;
+		const target = existsSync(this.path) ? realpathSync(this.path) : this.path;
+		mkdirSync(dirname(target), { recursive: true });
+		const tmp = `${target}.tmp-${process.pid}`;
 		writeFileSync(tmp, `${JSON.stringify(this.data, null, 2)}\n`, "utf8");
-		renameSync(tmp, this.path);
+		renameSync(tmp, target);
 		const stat = statSync(this.path);
 		this.mtimeMs = stat.mtimeMs;
 		this.size = stat.size;

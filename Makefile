@@ -62,6 +62,7 @@ pi:
 	@mkdir -p ~/.pi/agent
 	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
 	@ln -nsf $(DIR)/pi/extensions ~/.pi/agent/extensions
+	@ln -sf $(DIR)/pi/permissions.json ~/.pi/agent/permissions.json
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua

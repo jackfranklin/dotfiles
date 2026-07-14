@@ -1,0 +1,9 @@
+{
+  "allow": [
+    "Read(*)",
+    "Write(*)",
+    "Edit(*)",
+    "Bash(ls *)"
+  ],
+  "deny": []
+}

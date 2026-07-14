@@ -1,5 +1,14 @@
 import assert from "node:assert/strict";
-import { existsSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+	existsSync,
+	lstatSync,
+	mkdtempSync,
+	readFileSync,
+	readlinkSync,
+	rmSync,
+	symlinkSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, it } from "node:test";
@@ -57,6 +66,22 @@ describe("PermissionStore", () => {
 		writeFileSync(path, JSON.stringify({ allow: ["Bash(ls*)"], deny: [] }));
 
 		assert.deepEqual(store.allow, ["Bash(ls*)"]);
+	});
+
+	it("preserves a symlink when saving (writes through to the real file)", () => {
+		const real = join(dir, "real-permissions.json");
+		writeFileSync(real, JSON.stringify({ allow: [], deny: [] }));
+		symlinkSync(real, path); // path is now a symlink -> real
+
+		const store = new PermissionStore(path);
+		store.addAllow("Bash(git *)");
+
+		// The symlink must still be a symlink pointing at the same real file...
+		assert.ok(lstatSync(path).isSymbolicLink(), "path should remain a symlink");
+		assert.equal(readlinkSync(path), real);
+		// ...and the write must have landed in the real file.
+		const onDisk = JSON.parse(readFileSync(real, "utf8"));
+		assert.ok(onDisk.allow.includes("Bash(git *)"));
 	});
 
 	it("tolerates malformed JSON without throwing", () => {
