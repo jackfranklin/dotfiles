@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux git bin claude claude-mcp pi kitty amp hunk
+.PHONY: all neovim fish tmux git bin claude claude-mcp pi pi_specs kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
@@ -61,6 +61,7 @@ claude-mcp:
 pi:
 	@mkdir -p ~/.pi/agent
 	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
+	@ln -nsf $(DIR)/pi/extensions ~/.pi/agent/extensions
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua
@@ -72,6 +73,9 @@ symlink_windows_linux:
 
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
+
+pi_specs:
+	cd pi/extensions/permissions && node --test
 
 npm_globals:
 	./scripts/install-npm-globals.sh
