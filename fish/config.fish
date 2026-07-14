@@ -32,7 +32,7 @@ set -x FZF_DEFAULT_COMMAND 'ag -g "" --hidden --ignore .git'
 set -x FZF_DEFAULT_OPTS "--color=bg+:#ccd0da,bg:#eff1f5,spinner:#dc8a78,hl:#d20f39 --color=fg:#4c4f69,header:#d20f39,info:#8839ef,pointer:#dc8a78 --color=marker:#dc8a78,fg+:#4c4f69,prompt:#8839ef,hl+:#d20f39"
 
 set -gx CLAUDE_CODE_DISABLE_FEEDBACK_SURVEY 1
-set -gx CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC 1
+# set -gx CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC 1
 
 # Because of
 # https://chromium.googlesource.com/chromium/src/+/main/docs/security/apparmor-userns-restrictions.md
@@ -89,5 +89,3 @@ fish_add_path $HOME/squashfs-root/usr/bin
 fish_add_path $HOME/cargo/bin
 # Lua language server from release tar
 fish_add_path $HOME/lua-language-server/bin
-# has to be after the asdf setup
-fish_add_path (npm get prefix)/bin
