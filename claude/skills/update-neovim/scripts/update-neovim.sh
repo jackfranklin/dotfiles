@@ -1,8 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
-TARGET_DIR="${HOME}/nvim-github-releases"
+# Argument check
+CHECK_ONLY=false
+if [ "${1:-}" = "--check" ]; then
+  CHECK_ONLY=true
+fi
 
+# OS detection
 OS="$(uname -s | tr '[:upper:]' '[:lower:]')"
 case "${OS}" in
   darwin)
@@ -17,6 +22,7 @@ case "${OS}" in
     ;;
 esac
 
+# Architecture detection
 ARCH="$(uname -m)"
 case "${ARCH}" in
   x86_64)
@@ -31,20 +37,50 @@ case "${ARCH}" in
     ;;
 esac
 
-ARCHIVE_NAME="nvim-${OS}-${ARCH}.tar.gz"
-EXTRACTED_DIR_NAME="nvim-${OS}-${ARCH}"
-INSTALL_PATH="${TARGET_DIR}/${EXTRACTED_DIR_NAME}"
-TEMP_DIR=$(mktemp -d)
-
-# Cleanup on exit
-cleanup() {
-  rm -rf "${TEMP_DIR}"
+# Setup check helper
+resolve_symlink() {
+  local target="$1"
+  while [ -L "${target}" ]; do
+    local link
+    link=$(readlink "${target}")
+    if [[ "${link}" == /* ]]; then
+      target="${link}"
+    else
+      target="$(dirname "${target}")/${link}"
+    fi
+  done
+  echo "${target}"
 }
-trap cleanup EXIT
+
+CURRENT_NVIM=$(command -v nvim || true)
+INSTALL_TYPE="none"
+RESOLVED_PATH=""
+INSTALL_PATH="${HOME}/nvim-github-releases/nvim-${OS}-${ARCH}"
+
+if [ -n "${CURRENT_NVIM}" ]; then
+  RESOLVED_PATH=$(resolve_symlink "${CURRENT_NVIM}")
+  echo "Found existing Neovim binary in PATH at: ${RESOLVED_PATH}"
+
+  if [[ "${RESOLVED_PATH}" == *"/nvim-github-releases/nvim-"* ]]; then
+    INSTALL_TYPE="standalone"
+    INSTALL_PATH=$(dirname "$(dirname "${RESOLVED_PATH}")")
+  elif [[ "${RESOLVED_PATH}" == *"/squashfs-root/usr/bin/nvim" ]]; then
+    INSTALL_TYPE="appimage_extract"
+    INSTALL_PATH=$(dirname "$(dirname "$(dirname "${RESOLVED_PATH}")")")
+  else
+    INSTALL_TYPE="external"
+  fi
+fi
+
+if [ "${INSTALL_TYPE}" = "external" ]; then
+  echo "Neovim is installed at ${RESOLVED_PATH}, which appears to be managed by a package manager or custom installation."
+  echo "Skipping automated GitHub release update to avoid conflicts."
+  exit 0
+fi
 
 echo "Checking current Neovim version..."
-if [ -f "${INSTALL_PATH}/bin/nvim" ]; then
-  CURRENT_VERSION=$("${INSTALL_PATH}/bin/nvim" --version | head -n 1 | awk '{print $2}')
+if [ -n "${RESOLVED_PATH}" ] && [ -f "${RESOLVED_PATH}" ]; then
+  CURRENT_VERSION=$("${RESOLVED_PATH}" --version | head -n 1 | awk '{print $2}')
 else
   CURRENT_VERSION="none"
 fi
@@ -60,23 +96,67 @@ if [ "${CURRENT_VERSION}" = "${LATEST_VERSION}" ]; then
   exit 0
 fi
 
-# Find download URL
-DOWNLOAD_URL=$(echo "${LATEST_RELEASE_JSON}" | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep "${ARCHIVE_NAME}" | head -n 1)
-
-if [ -z "${DOWNLOAD_URL}" ]; then
-  echo "Error: Could not find download URL for ${ARCHIVE_NAME}."
-  exit 1
+if [ "${CHECK_ONLY}" = true ]; then
+  echo "PLAN:"
+  if [ "${INSTALL_TYPE}" = "none" ]; then
+    echo "- Action: Fresh install of standalone Neovim version ${LATEST_VERSION}"
+    echo "- Method: Download and extract tarball"
+    echo "- Destination: ${INSTALL_PATH}"
+  elif [ "${INSTALL_TYPE}" = "standalone" ]; then
+    echo "- Action: Update standalone Neovim from ${CURRENT_VERSION} to ${LATEST_VERSION}"
+    echo "- Method: Download and extract tarball"
+    echo "- Destination: ${INSTALL_PATH}"
+  elif [ "${INSTALL_TYPE}" = "appimage_extract" ]; then
+    echo "- Action: Update extracted AppImage Neovim from ${CURRENT_VERSION} to ${LATEST_VERSION}"
+    echo "- Method: Download and extract AppImage (--appimage-extract)"
+    echo "- Destination: ${INSTALL_PATH}"
+  fi
+  exit 0
 fi
 
-echo "Downloading ${LATEST_VERSION} from ${DOWNLOAD_URL}..."
-curl -sL "${DOWNLOAD_URL}" -o "${TEMP_DIR}/${ARCHIVE_NAME}"
+TEMP_DIR=$(mktemp -d)
+# Cleanup on exit
+cleanup() {
+  rm -rf "${TEMP_DIR}"
+}
+trap cleanup EXIT
 
-echo "Extracting..."
-tar -C "${TEMP_DIR}" -xzf "${TEMP_DIR}/${ARCHIVE_NAME}"
+if [ "${INSTALL_TYPE}" = "appimage_extract" ]; then
+  DOWNLOAD_FILE="nvim-linux-${ARCH}.appimage"
+  DOWNLOAD_URL=$(echo "${LATEST_RELEASE_JSON}" | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep "${DOWNLOAD_FILE}" | head -n 1)
 
-NEW_NVIM_BIN="${TEMP_DIR}/${EXTRACTED_DIR_NAME}/bin/nvim"
+  if [ -z "${DOWNLOAD_URL}" ]; then
+    echo "Error: Could not find download URL for ${DOWNLOAD_FILE}."
+    exit 1
+  fi
+
+  echo "Downloading ${LATEST_VERSION} AppImage from ${DOWNLOAD_URL}..."
+  curl -sL "${DOWNLOAD_URL}" -o "${TEMP_DIR}/${DOWNLOAD_FILE}"
+  chmod +x "${TEMP_DIR}/${DOWNLOAD_FILE}"
+
+  echo "Extracting AppImage..."
+  (cd "${TEMP_DIR}" && "./${DOWNLOAD_FILE}" --appimage-extract)
+  NEW_NVIM_BIN="${TEMP_DIR}/squashfs-root/usr/bin/nvim"
+else
+  # Default to standalone tarball
+  DOWNLOAD_FILE="nvim-${OS}-${ARCH}.tar.gz"
+  DOWNLOAD_URL=$(echo "${LATEST_RELEASE_JSON}" | grep -o '"browser_download_url": "[^"]*' | grep -o '[^"]*$' | grep "${DOWNLOAD_FILE}" | head -n 1)
+
+  if [ -z "${DOWNLOAD_URL}" ]; then
+    echo "Error: Could not find download URL for ${DOWNLOAD_FILE}."
+    exit 1
+  fi
+
+  echo "Downloading ${LATEST_VERSION} tarball from ${DOWNLOAD_URL}..."
+  curl -sL "${DOWNLOAD_URL}" -o "${TEMP_DIR}/${DOWNLOAD_FILE}"
+
+  echo "Extracting tarball..."
+  tar -C "${TEMP_DIR}" -xzf "${TEMP_DIR}/${DOWNLOAD_FILE}"
+  NEW_NVIM_BIN="${TEMP_DIR}/nvim-${OS}-${ARCH}/bin/nvim"
+fi
+
 if [ ! -f "${NEW_NVIM_BIN}" ]; then
-  echo "Error: Extracted archive did not contain ${EXTRACTED_DIR_NAME}/bin/nvim"
+  echo "Error: Extracted binary was not found at ${NEW_NVIM_BIN}"
   exit 1
 fi
 
@@ -87,17 +167,21 @@ echo "Verified version: ${NEW_VERSION}"
 
 # Swap directories
 echo "Installing new version..."
-mkdir -p "${TARGET_DIR}"
-BACKUP_DIR="${TARGET_DIR}/${EXTRACTED_DIR_NAME}-backup"
+PARENT_DIR=$(dirname "${INSTALL_PATH}")
+mkdir -p "${PARENT_DIR}"
+BACKUP_DIR="${INSTALL_PATH}-backup"
 
 if [ -d "${INSTALL_PATH}" ]; then
   rm -rf "${BACKUP_DIR}"
   mv "${INSTALL_PATH}" "${BACKUP_DIR}"
 fi
 
-mv "${TEMP_DIR}/${EXTRACTED_DIR_NAME}" "${INSTALL_PATH}"
+if [ "${INSTALL_TYPE}" = "appimage_extract" ]; then
+  mv "${TEMP_DIR}/squashfs-root" "${INSTALL_PATH}"
+else
+  mv "${TEMP_DIR}/nvim-${OS}-${ARCH}" "${INSTALL_PATH}"
+fi
 
-# Remove backup if all good
 rm -rf "${BACKUP_DIR}"
 
 echo "Successfully updated Neovim from ${CURRENT_VERSION} to ${NEW_VERSION}!"

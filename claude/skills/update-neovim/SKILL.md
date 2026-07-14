@@ -14,9 +14,19 @@ This skill allows the agent to update Neovim to the latest GitHub release.
 
 ## Core Pattern
 
-1. **Verify environment**: Neovim on this system is installed under `${HOME}/nvim-github-releases/nvim-<os>-<arch>/bin/nvim`.
-2. **Execute update script**: Run the update script located in the skill's directory:
+1. **Analyze and Check Installation**: Run the update script with the `--check` flag to investigate the environment:
    ```bash
-   bash ~/dotfiles/nvim/lua/upstream-dotfiles/claude/skills/update-neovim/scripts/update-neovim.sh
+   bash ~/dotfiles/nvim/lua/upstream-dotfiles/claude/skills/update-neovim/scripts/update-neovim.sh --check
    ```
-3. **Verify success**: Output the result of the update script and confirm with `nvim --version`.
+2. **Review and Confirm**:
+   - Inspect the output of the check.
+   - Formulate a clear plan explaining what type of installation was detected, where it resides, and what action the script will perform.
+   - Present this plan to the user in the chat and ask for confirmation:
+     *"I detected a [standalone/AppImage extract] installation at [path]. I plan to [update/fresh install] it from version [current] to [latest] by [method]. Do you want to proceed?"*
+   - Stop and wait for their explicit approval.
+3. **Execute Update**:
+   - Once approved, run the update script without flags:
+     ```bash
+     bash ~/dotfiles/nvim/lua/upstream-dotfiles/claude/skills/update-neovim/scripts/update-neovim.sh
+     ```
+4. **Verify Success**: Output the results and confirm with `nvim --version`.
