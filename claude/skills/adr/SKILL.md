@@ -1,6 +1,6 @@
 ---
 name: adr
-description: Capture an Architecture Decision Record (ADR) for a significant decision made in the current project. Store in the project's adrs/ folder. Use when the user asks to record a decision, log an ADR, or capture why something was built a certain way. PROACTIVELY suggest capturing an ADR whenever a non-obvious architectural choice is made — technology selection, structural trade-offs, rejected alternatives — especially after a discussion where context and reasoning were developed. A good prompt: "Want me to capture this as an ADR?"
+description: Capture an Architecture Decision Record (ADR) for a significant decision made in the current project. Store in the project's adrs/ folder. Use when the user asks to record a decision, log an ADR, or capture why something was built a certain way. PROACTIVELY suggest capturing an ADR whenever a non-obvious architectural choice is made — technology selection, structural trade-offs, rejected alternatives — especially after a discussion where context and reasoning were developed. A good prompt — "Want me to capture this as an ADR?"
 ---
 
 # ADR Skill
