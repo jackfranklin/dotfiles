@@ -26,6 +26,7 @@
     "Bash(fd *)",
     "Bash(diff *)",
     "Bash(cmp *)",
+    "Bash(sort)",
     "Bash(sort *)",
     "Bash(uniq *)",
     "Bash(cut *)",
@@ -71,7 +72,8 @@
     "Bash(git config --list)",
     "Bash(find *)",
     "Bash(node --test *)",
-    "Bash(git add *)"
+    "Bash(git add *)",
+    "Bash(git *)"
   ],
   "deny": []
 }

@@ -9,7 +9,7 @@
  * See store.ts / matcher.ts / glob.ts for the pieces.
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
-import { decide, suggestPattern, TOOL_LABELS } from "./matcher.ts";
+import { analyzeDecision, suggestPattern, TOOL_LABELS } from "./matcher.ts";
 import { PermissionStore } from "./store.ts";
 
 /** Extract the subject we match against for a given tool. */
@@ -29,25 +29,42 @@ export default function (pi: ExtensionAPI) {
 		const subject = subjectFor(event.toolName, event.input as Record<string, unknown>);
 		if (subject === undefined) return undefined;
 
-		const verdict = decide(event.toolName, subject, store.allow, store.deny);
+		const analysis = analyzeDecision(event.toolName, subject, store.allow, store.deny);
 
-		if (verdict === "allow") return undefined;
-		if (verdict === "deny") {
-			return { block: true, reason: `Blocked by permissions denylist: ${label}(${subject})` };
+		if (analysis.decision === "allow") return undefined;
+		if (analysis.decision === "deny") {
+			const denied = formatList(analysis.deniedSegments);
+			return {
+				block: true,
+				reason: `Blocked by permissions denylist: ${label}(${subject})${denied ? `\n\nDenied segment(s):\n${denied}` : ""}`,
+			};
 		}
 
-		// verdict === "prompt"
+		// analysis.decision === "prompt"
 		if (!ctx.hasUI) {
 			return { block: true, reason: "Not in allowlist and no UI available to confirm" };
 		}
 
-		const header = `Permission needed:\n\n  ${label}: ${subject}\n\nWhat would you like to do?`;
-		const choice = await ctx.ui.select(header, [
+		const missingBareEntries = suggestMissingBareCommandEntries(
+			event.toolName,
+			analysis.unmatchedSegments,
+			store.allow,
+		);
+		const addMissingBareChoice = formatAddMissingBareChoice(missingBareEntries);
+		const header = `Permission needed:\n\n  ${label}: ${subject}${formatPromptDetails(analysis, missingBareEntries)}\n\nWhat would you like to do?`;
+		const choices = [
+			...(addMissingBareChoice ? [addMissingBareChoice] : []),
 			"Allow once",
 			"Allow always",
 			"Ban once",
 			"Ban always",
-		]);
+		];
+		const choice = await ctx.ui.select(header, choices);
+
+		if (addMissingBareChoice && choice === addMissingBareChoice) {
+			for (const entry of missingBareEntries) store.addAllow(entry);
+			return undefined;
+		}
 
 		switch (choice) {
 			case "Allow once":
@@ -74,6 +91,66 @@ export default function (pi: ExtensionAPI) {
 
 interface EditorUI {
 	editor: (title: string, prefill?: string) => Promise<string | undefined>;
+}
+
+interface PromptAnalysis {
+	unmatchedSegments: string[];
+	riskyRedirectTargets: string[];
+}
+
+function formatPromptDetails(analysis: PromptAnalysis, missingBareEntries: string[] = []): string {
+	const parts: string[] = [];
+	const unmatched = formatList(analysis.unmatchedSegments);
+	if (unmatched) parts.push(`Not allowlisted segment(s):\n${unmatched}`);
+	const missingBare = formatList(missingBareEntries);
+	if (missingBare) {
+		parts.push(
+			`Possible fix: you already allow the same command with arguments; add bare-command entr${missingBareEntries.length === 1 ? "y" : "ies"}:\n${missingBare}`,
+		);
+	}
+	const redirects = formatList(analysis.riskyRedirectTargets);
+	if (redirects) parts.push(`Write redirect target(s) requiring approval:\n${redirects}`);
+	return parts.length ? `\n\n${parts.join("\n\n")}` : "";
+}
+
+function formatAddMissingBareChoice(entries: string[]): string | undefined {
+	if (entries.length === 0) return undefined;
+	if (entries.length === 1) return `Add ${entries[0]} and allow once`;
+	return `Add ${entries.length} bare-command entries and allow once`;
+}
+
+/**
+ * If a bare command like `sort` is blocked but `Bash(sort *)` is allowlisted,
+ * suggest adding the explicit no-arg form `Bash(sort)`. We keep this as a
+ * prompt-time suggestion rather than making `x *` imply `x`, because no-arg
+ * forms can have different behaviour for commands like `make` or `just`.
+ */
+export function suggestMissingBareCommandEntries(
+	toolName: string,
+	unmatchedSegments: string[],
+	allow: string[],
+): string[] {
+	const label = TOOL_LABELS[toolName];
+	if (toolName !== "bash" || !label) return [];
+
+	const suggestions: string[] = [];
+	for (const segment of unmatchedSegments) {
+		if (!isBareCommandSegment(segment)) continue;
+		const bareEntry = `${label}(${segment})`;
+		const argsEntry = `${label}(${segment} *)`;
+		if (allow.includes(argsEntry) && !allow.includes(bareEntry) && !suggestions.includes(bareEntry)) {
+			suggestions.push(bareEntry);
+		}
+	}
+	return suggestions;
+}
+
+function isBareCommandSegment(segment: string): boolean {
+	return /^[^\s;&|()<>]+$/.test(segment);
+}
+
+function formatList(items: string[]): string {
+	return items.map((item) => `  - ${item}`).join("\n");
 }
 
 /**

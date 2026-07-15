@@ -1,8 +1,9 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { globMatches, globToRegExp } from "./glob.ts";
-import { normalizeEntry } from "./index.ts";
+import { normalizeEntry, suggestMissingBareCommandEntries } from "./index.ts";
 import {
+	analyzeDecision,
 	decide,
 	hasRiskyRedirect,
 	redirectWriteTargets,
@@ -95,6 +96,17 @@ describe("decide", () => {
 		assert.equal(decide("bash", "npm install", allow, deny), "prompt");
 	});
 
+	it("reports the specific unallowlisted pipeline segments", () => {
+		const analysis = analyzeDecision(
+			"bash",
+			"find pi -maxdepth 3 -type f -print | sort | head -100",
+			["Bash(find *)", "Bash(head *)"],
+			[],
+		);
+		assert.equal(analysis.decision, "prompt");
+		assert.deepEqual(analysis.unmatchedSegments, ["sort"]);
+	});
+
 	it("matches file tools against the path subject", () => {
 		assert.equal(decide("read", "/etc/hosts", allow, deny), "allow");
 		assert.equal(decide("write", "/tmp/x", allow, deny), "allow");
@@ -158,6 +170,26 @@ describe("redirect detection", () => {
 	it("flags writes to real files", () => {
 		assert.equal(hasRiskyRedirect("echo x > file"), true);
 		assert.equal(hasRiskyRedirect("echo x >> ~/.bashrc"), true);
+	});
+});
+
+describe("suggestMissingBareCommandEntries", () => {
+	it("suggests adding a bare command when the args form is already allowlisted", () => {
+		assert.deepEqual(
+			suggestMissingBareCommandEntries("bash", ["sort"], ["Bash(sort *)"]),
+			["Bash(sort)"],
+		);
+	});
+
+	it("does not suggest for commands that are already allowed or not bare", () => {
+		assert.deepEqual(
+			suggestMissingBareCommandEntries("bash", ["sort", "xargs rg"], [
+				"Bash(sort)",
+				"Bash(sort *)",
+				"Bash(xargs *)",
+			]),
+			[],
+		);
 	});
 });
 

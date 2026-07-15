@@ -14,6 +14,14 @@ export const TOOL_LABELS: Record<string, string> = {
 
 export type Decision = "allow" | "deny" | "prompt";
 
+export interface DecisionDetails {
+	decision: Decision;
+	segments: string[];
+	deniedSegments: string[];
+	unmatchedSegments: string[];
+	riskyRedirectTargets: string[];
+}
+
 /** Parse `Bash(git *)` -> { label: "Bash", glob: "git *" }. */
 function parseEntry(entry: string): { label: string; glob: string } | undefined {
 	const m = /^(\w+)\((.*)\)$/s.exec(entry.trim());
@@ -177,14 +185,22 @@ export function hasRiskyRedirect(command: string): boolean {
  *   - other tools: the single subject (a path) is matched directly.
  * Deny always wins over allow.
  */
-export function decide(
+export function analyzeDecision(
 	toolName: string,
 	subject: string,
 	allow: string[],
 	deny: string[],
-): Decision {
+): DecisionDetails {
 	const label = TOOL_LABELS[toolName];
-	if (!label) return "allow"; // ungated tool
+	if (!label) {
+		return {
+			decision: "allow",
+			segments: [subject],
+			deniedSegments: [],
+			unmatchedSegments: [],
+			riskyRedirectTargets: [],
+		};
+	}
 
 	const allowGlobs = globsFor(allow, label);
 	const denyGlobs = globsFor(deny, label);
@@ -192,24 +208,28 @@ export function decide(
 	// For bash, strip redirections before matching so `>`/`<` targets don't
 	// pollute the command segments (and get re-checked separately below).
 	const segments = toolName === "bash" ? splitCommand(stripRedirections(subject)) : [subject];
-	if (segments.length === 0) return "prompt";
+	const deniedSegments = segments.filter((seg) => denyGlobs.some((g) => globMatches(g, seg)));
+	const unmatchedSegments = segments.filter((seg) => !allowGlobs.some((g) => globMatches(g, seg)));
+	const riskyRedirectTargets =
+		toolName === "bash" ? redirectWriteTargets(subject).filter((t) => !isBenignTarget(t)) : [];
 
-	// Deny wins: if any segment is explicitly denied, block.
-	if (segments.some((seg) => denyGlobs.some((g) => globMatches(g, seg)))) {
-		return "deny";
+	let decision: Decision = "prompt";
+	if (deniedSegments.length > 0) {
+		decision = "deny";
+	} else if (segments.length > 0 && unmatchedSegments.length === 0 && riskyRedirectTargets.length === 0) {
+		decision = "allow";
 	}
 
-	// A write to a real file is never covered by a command's allow glob.
-	if (toolName === "bash" && hasRiskyRedirect(subject)) {
-		return "prompt";
-	}
+	return { decision, segments, deniedSegments, unmatchedSegments, riskyRedirectTargets };
+}
 
-	// Allow only if every segment is covered by an allow glob.
-	if (segments.every((seg) => allowGlobs.some((g) => globMatches(g, seg)))) {
-		return "allow";
-	}
-
-	return "prompt";
+export function decide(
+	toolName: string,
+	subject: string,
+	allow: string[],
+	deny: string[],
+): Decision {
+	return analyzeDecision(toolName, subject, allow, deny).decision;
 }
 
 /** Suggest a starting pattern for "save always" prompts. */
