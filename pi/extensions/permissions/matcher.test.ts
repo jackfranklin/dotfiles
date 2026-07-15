@@ -49,6 +49,27 @@ describe("splitCommand", () => {
 		assert.deepEqual(splitCommand("git status &&"), ["git status"]);
 		assert.deepEqual(splitCommand(""), []);
 	});
+
+	it("does not split on separators inside quotes", () => {
+		assert.deepEqual(splitCommand('echo "a || b; c" && grep "x|y" file'), [
+			'echo "a || b; c"',
+			'grep "x|y" file',
+		]);
+	});
+
+	it("extracts commands from simple for loops", () => {
+		assert.deepEqual(
+			splitCommand('for f in */SKILL.md; do grep -q x "$f" || echo "$f"; done'),
+			['grep -q x "$f"', 'echo "$f"'],
+		);
+	});
+
+	it("keeps for headers with command substitution so they prompt", () => {
+		assert.deepEqual(splitCommand('for f in $(find .); do echo "$f"; done'), [
+			"for f in $(find .)",
+			'echo "$f"',
+		]);
+	});
 });
 
 describe("decide", () => {

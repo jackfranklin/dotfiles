@@ -31,17 +31,90 @@ function globsFor(entries: string[], label: string): string[] {
 	return out;
 }
 
+/** True when a shell fragment may execute another command while being parsed. */
+function hasCommandSubstitution(command: string): boolean {
+	return command.includes("$(`") || command.includes("$(") || command.includes("`");
+}
+
+/**
+ * Normalise shell syntax down to the simple command that actually runs.
+ *
+ * This intentionally understands only common compound-command scaffolding. For
+ * example, `for f in *; do grep x "$f" || echo "$f"; done` becomes the two
+ * command segments `grep x "$f"` and `echo "$f"`; the loop keywords are not
+ * useful permission subjects. If a skipped header contains command
+ * substitution, keep it so the command prompts rather than hiding work.
+ */
+function normalizeShellSegment(segment: string): string | undefined {
+	let s = segment.trim();
+	if (!s) return undefined;
+
+	// Pure shell-control words are not commands by themselves.
+	if (/^(?:do|done|then|fi|esac|\{|\})$/.test(s)) return undefined;
+
+	// `else echo x` / `then echo x` / `do echo x` all run the trailing command.
+	s = s.replace(/^(?:do|then|else)\s+/, "").trim();
+	if (!s) return undefined;
+
+	// `if grep ...; then` and `while grep ...; do` run their condition command.
+	s = s.replace(/^(?:if|while|until)\s+/, "").trim();
+	if (!s) return undefined;
+
+	// A `for name in words` header expands words but does not execute a command,
+	// unless those words contain command substitution. Prompt in that case.
+	if (/^(?:for|select)\s+\w+\s+in\b/.test(s) && !hasCommandSubstitution(s)) return undefined;
+
+	return s;
+}
+
 /**
  * Split a bash command into independently-executed segments on shell control
- * operators: && || ; | & and newlines. Quoting is NOT parsed, so an operator
- * inside a quoted string will over-split — that only ever causes an extra
- * prompt, never a bypass.
+ * operators: && || ; | & and newlines. Single and double quotes are respected
+ * so separators inside strings do not over-split.
  */
 export function splitCommand(command: string): string[] {
-	return command
-		.split(/(?:&&|\|\||;|\||&|\n)/)
-		.map((s) => s.trim())
-		.filter((s) => s.length > 0);
+	const raw: string[] = [];
+	let current = "";
+	let quote: "'" | '"' | undefined;
+	let escaped = false;
+
+	for (let i = 0; i < command.length; i++) {
+		const ch = command[i];
+		const next = command[i + 1];
+
+		if (escaped) {
+			current += ch;
+			escaped = false;
+			continue;
+		}
+		if (ch === "\\") {
+			current += ch;
+			escaped = true;
+			continue;
+		}
+		if (quote) {
+			current += ch;
+			if (ch === quote) quote = undefined;
+			continue;
+		}
+		if (ch === "'" || ch === '"') {
+			current += ch;
+			quote = ch;
+			continue;
+		}
+
+		if (ch === "\n" || ch === ";" || ch === "|" || ch === "&") {
+			raw.push(current);
+			current = "";
+			if ((ch === "|" && next === "|") || (ch === "&" && next === "&")) i++;
+			continue;
+		}
+
+		current += ch;
+	}
+	raw.push(current);
+
+	return raw.map(normalizeShellSegment).filter((s): s is string => s !== undefined);
 }
 
 /** Redirection targets that are never a real filesystem write we care about. */
