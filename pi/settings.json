@@ -1,10 +1,16 @@
 {
   "lastChangelogVersion": "0.80.6",
   "theme": "light",
-  "defaultProvider": "anthropic",
-  "defaultModel": "claude-opus-4-8",
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-5.5",
   "skills": [
     "~/.claude/skills"
   ],
-  "hideThinkingBlock": false
+  "hideThinkingBlock": false,
+  "enabledModels": [
+    "anthropic/claude-opus-4-8",
+    "anthropic/claude-sonnet-4-6",
+    "anthropic/claude-sonnet-5",
+    "openai-codex/gpt-5.5"
+  ]
 }

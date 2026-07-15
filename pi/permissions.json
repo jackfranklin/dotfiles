@@ -3,7 +3,6 @@
     "Read(*)",
     "Write(*)",
     "Edit(*)",
-
     "Bash(pwd)",
     "Bash(ls)",
     "Bash(ls *)",
@@ -17,7 +16,6 @@
     "Bash(readlink *)",
     "Bash(dirname *)",
     "Bash(basename *)",
-
     "Bash(cat *)",
     "Bash(head *)",
     "Bash(tail *)",
@@ -33,7 +31,6 @@
     "Bash(cut *)",
     "Bash(column *)",
     "Bash(jq *)",
-
     "Bash(echo)",
     "Bash(echo *)",
     "Bash(env)",
@@ -52,7 +49,6 @@
     "Bash(du *)",
     "Bash(ps)",
     "Bash(ps *)",
-
     "Bash(git status)",
     "Bash(git status *)",
     "Bash(git log)",
@@ -72,7 +68,10 @@
     "Bash(git describe *)",
     "Bash(git tag)",
     "Bash(git config --get *)",
-    "Bash(git config --list)"
+    "Bash(git config --list)",
+    "Bash(find *)",
+    "Bash(node --test *)",
+    "Bash(git add *)"
   ],
   "deny": []
 }
