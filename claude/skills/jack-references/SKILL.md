@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: jack-references
 description: Manage Jack's personal technical reference library at ~/git/references. Use for searching/reading existing references, or adding new ones. Invoke with /jack-references and optional keywords to search, or when the user wants to save a new reference guide. PROACTIVELY suggest saving a new reference whenever the conversation involves figuring out how a library, API, or tool works — especially after debugging, reading docs, or solving a non-obvious integration problem. A good prompt — "Want me to save this as a reference for next time?"
 ---

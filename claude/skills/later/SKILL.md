@@ -1,7 +1,7 @@
 ---
+disable-model-invocation: true
 name: later
 description: Log items to come back to later — bugs found mid-task, feature ideas, project feedback — as GitHub Issues. Use when the user asks to log, list, view, or work through items saved for later.
-user-invocable: true
 ---
 
 Use `gh` to manage backlog items as GitHub Issues in the current repo.

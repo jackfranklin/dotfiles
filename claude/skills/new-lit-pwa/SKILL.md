@@ -2,7 +2,6 @@
 name: new-lit-pwa
 description: Scaffold a new Vite + LitElement + IDB PWA app hosted on Netlify with a private GitHub repo. Use when the user wants to create a new personal web app following this stack.
 disable-model-invocation: true
-user-invocable: true
 ---
 
 You are scaffolding a new personal PWA app. These apps follow a strict set of conventions:

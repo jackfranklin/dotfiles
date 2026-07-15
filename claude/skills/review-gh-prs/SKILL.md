@@ -1,4 +1,5 @@
 ---
+disable-model-invocation: true
 name: review-gh-prs
 description: >
   Review open GitHub pull requests for mergeability. Use when you want a

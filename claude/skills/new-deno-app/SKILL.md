@@ -2,7 +2,6 @@
 name: new-deno-app
 description: Scaffold a new Deno 2 + Hono + Deno KV + Eta + HTMX app with password auth and PWA support. Use when the user wants to create a new personal web app following this stack.
 disable-model-invocation: true
-user-invocable: true
 ---
 
 You are scaffolding a new personal web app. These apps follow a strict set of conventions:
