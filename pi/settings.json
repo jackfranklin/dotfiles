@@ -1,6 +1,7 @@
 {
   "lastChangelogVersion": "0.80.6",
   "theme": "light",
+  "quietStartup": true,
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.5",
   "skills": [
