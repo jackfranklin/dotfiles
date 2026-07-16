@@ -1,8 +1,8 @@
 # Pi permissions extension
 
-Custom permission gate for Pi tool calls.
+Risk-based safety gate for Pi tool calls.
 
-The extension gates `bash`, `read`, `write`, and `edit` calls using allow/deny patterns in:
+The extension gates `bash`, `read`, `write`, and `edit` calls using rules in:
 
 ```txt
 ~/.pi/agent/permissions.json
@@ -14,14 +14,33 @@ In this dotfiles repo that file is symlinked from:
 pi/permissions.json
 ```
 
-## Pattern format
+## Policy model
+
+This is a guardrail, not a sandbox. It is designed to avoid obvious stupid / bad /
+dangerous commands while keeping normal coding-agent commands low-friction.
+
+Tool calls are classified in this order:
+
+1. hardcoded dangerous bash patterns => block
+2. configured `block` globs => block
+3. configured `safe` globs => allow
+4. configured `prompt` globs => prompt in the main UI, block in headless/subagent contexts
+5. write redirections to real files => prompt/block
+6. `write` / `edit` outside the current working directory or into sensitive system paths => prompt/block
+7. everything else => allow
+
+So the config mainly lists risky and blocked cases; it does **not** need a huge list
+of allowed commands like `ls`, `rg`, `git status`, etc.
+
+## Config format
 
 Entries use a tool wrapper plus a simple glob:
 
 ```json
 {
-  "allow": ["Read(*)", "Bash(git status *)"],
-  "deny": ["Bash(rm -rf *)"]
+  "safe": ["Bash(npm install --package-lock-only)"],
+  "prompt": ["Bash(rm *)", "Bash(git reset --hard*)"],
+  "block": ["Bash(sudo*)", "Bash(mkfs*)"]
 }
 ```
 
@@ -40,7 +59,8 @@ Glob support is intentionally small:
 
 ## Bash matching
 
-Bash commands are split into independently executed segments on shell control operators such as:
+Bash commands are split into independently executed segments on shell control
+operators such as:
 
 - `&&`
 - `||`
@@ -49,47 +69,48 @@ Bash commands are split into independently executed segments on shell control op
 - `&`
 - newlines
 
-Every segment must be allowlisted for the command to run without prompting. Deny rules win over allow rules.
-
 For example:
 
 ```bash
-find pi -maxdepth 3 -type f -print | sort
+git status && npm install && rg foo
 ```
 
-requires both:
+Only the `npm install` segment needs approval if `Bash(npm install*)` is in
+`prompt`.
 
-```json
-"Bash(find *)",
-"Bash(sort)"
-```
+## Hardcoded blocks
 
-If a segment is not allowlisted, the prompt shows the exact unmatched segment.
+Some commands are blocked even if they are not listed in `block`, including:
 
-## Redirections
+- privilege escalation: `sudo`, `doas`, `pkexec`, `su`
+- disk/device mutation: `mkfs`, `fdisk`, `parted`, `wipefs`, `dd of=/dev/...`
+- destructive root/home/current-dir removal such as `rm -rf /`, `rm -rf ~`, `rm -rf .`
+- device redirections like `> /dev/sda`
+- remote shell piping such as `curl ... | bash` / `wget ... | sh`
+- shutdown/reboot/poweroff/halt/init 0
+- fork bombs and `kill -9 1`
 
-Read redirections and benign write redirections to `/dev/null`, `/dev/stdout`, `/dev/stderr`, and `/dev/fd/*` are allowed to be covered by the command pattern.
+## Redirections and file tools
 
-Write redirections to real files always prompt, even when the command itself is allowlisted.
+Read redirections and benign write redirections to `/dev/null`, `/dev/stdout`,
+`/dev/stderr`, and `/dev/fd/*` are allowed.
+
+Write redirections to real files prompt in the main UI and block without UI.
+
+`write` and `edit` calls prompt when the path is outside the current working
+directory or targets sensitive system locations such as `/etc`, `/usr`, `/var`,
+`/dev`, `/proc`, or `/sys`.
 
 ## Prompt actions
 
-When a call is not covered, the UI offers:
+When a call needs approval, the UI offers:
 
 - `Allow once`
-- `Allow always`
+- `Allow always` — saves a `safe` override
 - `Ban once`
-- `Ban always`
+- `Ban always` — saves a `block` rule
 
-The `always` choices open an editor with a suggested pattern that can be adjusted before saving.
-
-If the only issue is a missing bare command and the args form already exists, the prompt offers a targeted fix. For example, if `Bash(sort *)` exists but bare `sort` is blocked, the prompt can add:
-
-```json
-"Bash(sort)"
-```
-
-without changing the meaning of `Bash(sort *)` globally.
+In headless/subagent contexts, anything that would prompt is blocked instead.
 
 ## Tests
 

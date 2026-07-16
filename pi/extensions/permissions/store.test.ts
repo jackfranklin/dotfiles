@@ -30,67 +30,67 @@ describe("PermissionStore", () => {
 	it("seeds defaults when the file does not exist", () => {
 		const store = new PermissionStore(path);
 		assert.ok(existsSync(path), "file should be created");
-		assert.deepEqual(store.allow, ["Read(*)", "Write(*)", "Edit(*)"]);
-		assert.deepEqual(store.deny, []);
+		assert.deepEqual(store.safe, []);
+		assert.ok(store.prompt.includes("Bash(rm *)"));
+		assert.ok(store.block.includes("Bash(sudo*)"));
 	});
 
 	it("reads existing data", () => {
-		writeFileSync(path, JSON.stringify({ allow: ["Bash(git *)"], deny: ["Bash(sudo *)"] }));
+		writeFileSync(path, JSON.stringify({ safe: ["Bash(git *)"], prompt: ["Bash(rm *)"], block: ["Bash(sudo*)"] }));
 		const store = new PermissionStore(path);
-		assert.deepEqual(store.allow, ["Bash(git *)"]);
-		assert.deepEqual(store.deny, ["Bash(sudo *)"]);
+		assert.deepEqual(store.safe, ["Bash(git *)"]);
+		assert.deepEqual(store.prompt, ["Bash(rm *)"]);
+		assert.deepEqual(store.block, ["Bash(sudo*)"]);
 	});
 
-	it("persists allow/deny additions to disk", () => {
+	it("persists safe/prompt/block additions to disk", () => {
 		const store = new PermissionStore(path);
-		store.addAllow("Bash(git *)");
-		store.addDeny("Bash(rm -rf *)");
+		store.addSafe("Bash(git *)");
+		store.addPrompt("Bash(rm *)");
+		store.addBlock("Bash(sudo*)");
 
 		const onDisk = JSON.parse(readFileSync(path, "utf8"));
-		assert.ok(onDisk.allow.includes("Bash(git *)"));
-		assert.ok(onDisk.deny.includes("Bash(rm -rf *)"));
+		assert.ok(onDisk.safe.includes("Bash(git *)"));
+		assert.ok(onDisk.prompt.includes("Bash(rm *)"));
+		assert.ok(onDisk.block.includes("Bash(sudo*)"));
 	});
 
 	it("does not duplicate entries", () => {
 		const store = new PermissionStore(path);
-		store.addAllow("Bash(git *)");
-		store.addAllow("Bash(git *)");
-		assert.equal(store.allow.filter((e) => e === "Bash(git *)").length, 1);
+		store.addSafe("Bash(git *)");
+		store.addSafe("Bash(git *)");
+		assert.equal(store.safe.filter((e) => e === "Bash(git *)").length, 1);
 	});
 
 	it("hot-reloads external edits to the file", () => {
 		const store = new PermissionStore(path);
-		assert.ok(!store.allow.includes("Bash(ls*)"));
+		assert.ok(!store.safe.includes("Bash(ls*)"));
 
-		// Simulate a manual edit of the file after the store loaded it.
-		writeFileSync(path, JSON.stringify({ allow: ["Bash(ls*)"], deny: [] }));
+		writeFileSync(path, JSON.stringify({ safe: ["Bash(ls*)"], prompt: [], block: [] }));
 
-		assert.deepEqual(store.allow, ["Bash(ls*)"]);
+		assert.deepEqual(store.safe, ["Bash(ls*)"]);
 	});
 
 	it("preserves a symlink when saving (writes through to the real file)", () => {
 		const real = join(dir, "real-permissions.json");
-		writeFileSync(real, JSON.stringify({ allow: [], deny: [] }));
-		symlinkSync(real, path); // path is now a symlink -> real
+		writeFileSync(real, JSON.stringify({ safe: [], prompt: [], block: [] }));
+		symlinkSync(real, path);
 
 		const store = new PermissionStore(path);
-		store.addAllow("Bash(git *)");
+		store.addSafe("Bash(git *)");
 
-		// The symlink must still be a symlink pointing at the same real file...
 		assert.ok(lstatSync(path).isSymbolicLink(), "path should remain a symlink");
 		assert.equal(readlinkSync(path), real);
-		// ...and the write must have landed in the real file.
 		const onDisk = JSON.parse(readFileSync(real, "utf8"));
-		assert.ok(onDisk.allow.includes("Bash(git *)"));
+		assert.ok(onDisk.safe.includes("Bash(git *)"));
 	});
 
 	it("tolerates malformed JSON without throwing", () => {
-		writeFileSync(path, JSON.stringify({ allow: ["Bash(git *)"], deny: [] }));
+		writeFileSync(path, JSON.stringify({ safe: ["Bash(git *)"], prompt: [], block: [] }));
 		const store = new PermissionStore(path);
-		assert.deepEqual(store.allow, ["Bash(git *)"]);
+		assert.deepEqual(store.safe, ["Bash(git *)"]);
 
 		writeFileSync(path, "{ not valid json");
-		// Keeps the last good data rather than crashing.
-		assert.deepEqual(store.allow, ["Bash(git *)"]);
+		assert.deepEqual(store.safe, ["Bash(git *)"]);
 	});
 });

@@ -4,11 +4,12 @@
  *
  * File shape:
  *   {
- *     "allow": ["Read(*)", "Write(*)", "Edit(*)", "Bash(git *)"],
- *     "deny":  ["Bash(rm -rf *)"]
+ *     "safe": ["Bash(project-local command *)"],
+ *     "prompt": ["Bash(rm *)", "Write(/outside/repo/*)"],
+ *     "block": ["Bash(sudo*)", "Bash(mkfs *)"]
  *   }
  *
- * Each entry is `Tool(glob)` where Tool is one of Bash | Read | Write | Edit
+ * Entries are `Tool(glob)` where Tool is one of Bash | Read | Write | Edit
  * and glob uses `*` / `?` wildcards (see glob.ts).
  */
 import {
@@ -24,21 +25,69 @@ import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 
 export interface PermissionData {
-	allow: string[];
-	deny: string[];
+	/** Legacy allowlist for compatibility with already-running old extension code. */
+	allow?: string[];
+	/** Legacy denylist for compatibility with already-running old extension code. */
+	deny?: string[];
+	/** Explicit safe overrides for commands that would otherwise prompt. */
+	safe: string[];
+	/** Prompt in interactive sessions; block in headless/subagent sessions. */
+	prompt: string[];
+	/** Local always-block list. Hardcoded blocks in matcher.ts also apply. */
+	block: string[];
 }
 
 const DEFAULT_DATA: PermissionData = {
-	// Allow all file operations by default; bash is gated.
-	allow: ["Read(*)", "Write(*)", "Edit(*)"],
+	allow: ["Read(*)", "Write(*)", "Edit(*)", "Bash(node --test *)"],
 	deny: [],
+	safe: [],
+	prompt: [
+		"Bash(rm *)",
+		"Bash(rmdir *)",
+		"Bash(mv *)",
+		"Bash(cp *)",
+		"Bash(chmod *)",
+		"Bash(chown *)",
+		"Bash(ln -sf *)",
+		"Bash(git clean *)",
+		"Bash(git reset --hard*)",
+		"Bash(git checkout -- *)",
+		"Bash(git restore *)",
+		"Bash(git push --force*)",
+		"Bash(git push --delete*)",
+		"Bash(git branch -D *)",
+		"Bash(npm install*)",
+		"Bash(pnpm install*)",
+		"Bash(yarn install*)",
+		"Bash(bun install*)",
+		"Bash(pip install*)",
+		"Bash(cargo install*)",
+		"Bash(brew install*)",
+		"Bash(apt install*)",
+		"Bash(apt remove*)",
+		"Bash(make install*)",
+	],
+	block: [
+		"Bash(sudo*)",
+		"Bash(su *)",
+		"Bash(doas*)",
+		"Bash(pkexec*)",
+		"Bash(mkfs*)",
+		"Bash(fdisk*)",
+		"Bash(parted*)",
+		"Bash(wipefs*)",
+		"Bash(shutdown*)",
+		"Bash(reboot*)",
+		"Bash(poweroff*)",
+		"Bash(halt*)",
+	],
 };
 
 export const PERMISSIONS_PATH = join(homedir(), ".pi", "agent", "permissions.json");
 
 export class PermissionStore {
 	private readonly path: string;
-	private data: PermissionData = { allow: [], deny: [] };
+	private data: PermissionData = { safe: [], prompt: [], block: [] };
 	private mtimeMs = -1;
 	private size = -1;
 
@@ -58,8 +107,11 @@ export class PermissionStore {
 		try {
 			const parsed = JSON.parse(readFileSync(this.path, "utf8")) as Partial<PermissionData>;
 			this.data = {
-				allow: Array.isArray(parsed.allow) ? parsed.allow : [],
-				deny: Array.isArray(parsed.deny) ? parsed.deny : [],
+				allow: Array.isArray(parsed.allow) ? parsed.allow : undefined,
+				deny: Array.isArray(parsed.deny) ? parsed.deny : undefined,
+				safe: Array.isArray(parsed.safe) ? parsed.safe : [],
+				prompt: Array.isArray(parsed.prompt) ? parsed.prompt : [],
+				block: Array.isArray(parsed.block) ? parsed.block : [],
 			};
 			this.mtimeMs = stat.mtimeMs;
 			this.size = stat.size;
@@ -69,29 +121,46 @@ export class PermissionStore {
 	}
 
 	private seedDefaults(): void {
-		this.data = { allow: [...DEFAULT_DATA.allow], deny: [...DEFAULT_DATA.deny] };
+		this.data = {
+			allow: [...(DEFAULT_DATA.allow ?? [])],
+			deny: [...(DEFAULT_DATA.deny ?? [])],
+			safe: [...DEFAULT_DATA.safe],
+			prompt: [...DEFAULT_DATA.prompt],
+			block: [...DEFAULT_DATA.block],
+		};
 		this.save();
 	}
 
-	get allow(): string[] {
+	get safe(): string[] {
 		this.reloadIfChanged();
-		return this.data.allow;
+		return this.data.safe;
 	}
 
-	get deny(): string[] {
+	get prompt(): string[] {
 		this.reloadIfChanged();
-		return this.data.deny;
+		return this.data.prompt;
 	}
 
-	addAllow(entry: string): void {
+	get block(): string[] {
 		this.reloadIfChanged();
-		if (!this.data.allow.includes(entry)) this.data.allow.push(entry);
+		return this.data.block;
+	}
+
+	addSafe(entry: string): void {
+		this.reloadIfChanged();
+		if (!this.data.safe.includes(entry)) this.data.safe.push(entry);
 		this.save();
 	}
 
-	addDeny(entry: string): void {
+	addPrompt(entry: string): void {
 		this.reloadIfChanged();
-		if (!this.data.deny.includes(entry)) this.data.deny.push(entry);
+		if (!this.data.prompt.includes(entry)) this.data.prompt.push(entry);
+		this.save();
+	}
+
+	addBlock(entry: string): void {
+		this.reloadIfChanged();
+		if (!this.data.block.includes(entry)) this.data.block.push(entry);
 		this.save();
 	}
 

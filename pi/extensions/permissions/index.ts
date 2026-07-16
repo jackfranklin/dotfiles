@@ -1,10 +1,10 @@
 /**
  * Custom permission gate for pi.
  *
- * Allowlists/denylists tool calls (bash, read, write, edit) using glob-style
- * entries stored in ~/.pi/agent/permissions.json. Anything not matched prompts
- * the user with: Allow once / Allow always / Ban once / Ban always. The
- * "always" options persist a (editable) pattern to the store.
+ * Risk-gates tool calls (bash, read, write, edit) using glob-style entries
+ * stored in ~/.pi/agent/permissions.json. Definitely dangerous calls are
+ * blocked; risky middle-ground calls prompt in interactive sessions and block
+ * in headless/subagent sessions; everything else is allowed.
  *
  * See store.ts / matcher.ts / glob.ts for the pieces.
  */
@@ -29,29 +29,30 @@ export default function (pi: ExtensionAPI) {
 		const subject = subjectFor(event.toolName, event.input as Record<string, unknown>);
 		if (subject === undefined) return undefined;
 
-		const analysis = analyzeDecision(event.toolName, subject, store.allow, store.deny);
+		const analysis = analyzeDecision(event.toolName, subject, store.safe, store.prompt, store.block);
 
 		if (analysis.decision === "allow") return undefined;
 		if (analysis.decision === "deny") {
 			const denied = formatList(analysis.deniedSegments);
+			const reasons = formatList(analysis.reasons);
 			return {
 				block: true,
-				reason: `Blocked by permissions denylist: ${label}(${subject})${denied ? `\n\nDenied segment(s):\n${denied}` : ""}`,
+				reason: `Blocked by permissions safety policy: ${label}(${subject})${denied ? `\n\nBlocked segment(s):\n${denied}` : ""}${reasons ? `\n\nReason(s):\n${reasons}` : ""}`,
 			};
 		}
 
 		// analysis.decision === "prompt"
 		if (!ctx.hasUI) {
-			return { block: true, reason: "Not in allowlist and no UI available to confirm" };
+			return { block: true, reason: "Command requires approval and no UI is available to confirm" };
 		}
 
 		const missingBareEntries = suggestMissingBareCommandEntries(
 			event.toolName,
 			analysis.unmatchedSegments,
-			store.allow,
+			store.safe,
 		);
 		const addMissingBareChoice = formatAddMissingBareChoice(missingBareEntries);
-		const header = `Permission needed:\n\n  ${label}: ${subject}${formatPromptDetails(analysis, missingBareEntries)}\n\nWhat would you like to do?`;
+		const header = `Approval needed:\n\n  ${label}: ${subject}${formatPromptDetails(analysis, missingBareEntries)}\n\nWhat would you like to do?`;
 		const choices = [
 			...(addMissingBareChoice ? [addMissingBareChoice] : []),
 			"Allow once",
@@ -62,7 +63,7 @@ export default function (pi: ExtensionAPI) {
 		const choice = await ctx.ui.select(header, choices);
 
 		if (addMissingBareChoice && choice === addMissingBareChoice) {
-			for (const entry of missingBareEntries) store.addAllow(entry);
+			for (const entry of missingBareEntries) store.addSafe(entry);
 			return undefined;
 		}
 
@@ -72,13 +73,13 @@ export default function (pi: ExtensionAPI) {
 
 			case "Allow always": {
 				const pattern = await promptPattern(ctx.ui, event.toolName, subject);
-				if (pattern) store.addAllow(pattern);
+				if (pattern) store.addSafe(pattern);
 				return undefined;
 			}
 
 			case "Ban always": {
 				const pattern = await promptPattern(ctx.ui, event.toolName, subject);
-				if (pattern) store.addDeny(pattern);
+				if (pattern) store.addBlock(pattern);
 				return { block: true, reason: `Banned by user: ${pattern ?? subject}` };
 			}
 
@@ -96,12 +97,13 @@ interface EditorUI {
 interface PromptAnalysis {
 	unmatchedSegments: string[];
 	riskyRedirectTargets: string[];
+	reasons: string[];
 }
 
 function formatPromptDetails(analysis: PromptAnalysis, missingBareEntries: string[] = []): string {
 	const parts: string[] = [];
 	const unmatched = formatList(analysis.unmatchedSegments);
-	if (unmatched) parts.push(`Not allowlisted segment(s):\n${unmatched}`);
+	if (unmatched) parts.push(`Risky segment(s) requiring approval:\n${unmatched}`);
 	const missingBare = formatList(missingBareEntries);
 	if (missingBare) {
 		parts.push(
@@ -110,6 +112,8 @@ function formatPromptDetails(analysis: PromptAnalysis, missingBareEntries: strin
 	}
 	const redirects = formatList(analysis.riskyRedirectTargets);
 	if (redirects) parts.push(`Write redirect target(s) requiring approval:\n${redirects}`);
+	const reasons = formatList(analysis.reasons);
+	if (reasons) parts.push(`Reason(s):\n${reasons}`);
 	return parts.length ? `\n\n${parts.join("\n\n")}` : "";
 }
 
@@ -120,7 +124,7 @@ function formatAddMissingBareChoice(entries: string[]): string | undefined {
 }
 
 /**
- * If a bare command like `sort` is blocked but `Bash(sort *)` is allowlisted,
+ * If a bare command like `sort` prompts but `Bash(sort *)` is marked safe,
  * suggest adding the explicit no-arg form `Bash(sort)`. We keep this as a
  * prompt-time suggestion rather than making `x *` imply `x`, because no-arg
  * forms can have different behaviour for commands like `make` or `just`.
@@ -177,7 +181,19 @@ async function promptPattern(
 export function normalizeEntry(answer: string | undefined, toolName: string): string | undefined {
 	const trimmed = answer?.trim();
 	if (!trimmed) return undefined;
-	if (/^\w+\(.*\)$/s.test(trimmed)) return trimmed;
-	const label = TOOL_LABELS[toolName] ?? "Bash";
+
+	const wrapped = /^(\w+)\((.*)\)$/s.exec(trimmed);
+	if (wrapped) {
+		const label = canonicalToolLabel(wrapped[1]);
+		return label ? `${label}(${wrapped[2]})` : trimmed;
+	}
+
+	const label = canonicalToolLabel(toolName) ?? "Bash";
 	return `${label}(${trimmed})`;
+}
+
+function canonicalToolLabel(toolNameOrLabel: string): string | undefined {
+	const normalized = toolNameOrLabel.toLowerCase();
+	const label = TOOL_LABELS[normalized] ?? toolNameOrLabel;
+	return Object.values(TOOL_LABELS).find((knownLabel) => knownLabel.toLowerCase() === label.toLowerCase());
 }

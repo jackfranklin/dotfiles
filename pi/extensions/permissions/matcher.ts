@@ -1,7 +1,8 @@
 /**
- * Matching logic: given the gated tool and its subject (bash command or file
- * path), decide whether it is allowed, denied, or needs to be prompted.
+ * Risk-based matching logic: given the gated tool and its subject (bash command
+ * or file path), decide whether it is safe, should prompt, or must be blocked.
  */
+import { isAbsolute, resolve } from "node:path";
 import { globMatches } from "./glob.ts";
 
 /** pi tool name -> label used in permission entries. */
@@ -20,6 +21,8 @@ export interface DecisionDetails {
 	deniedSegments: string[];
 	unmatchedSegments: string[];
 	riskyRedirectTargets: string[];
+	promptSegments: string[];
+	reasons: string[];
 }
 
 /** Parse `Bash(git *)` -> { label: "Bash", glob: "git *" }. */
@@ -44,32 +47,19 @@ function hasCommandSubstitution(command: string): boolean {
 	return command.includes("$(`") || command.includes("$(") || command.includes("`");
 }
 
-/**
- * Normalise shell syntax down to the simple command that actually runs.
- *
- * This intentionally understands only common compound-command scaffolding. For
- * example, `for f in *; do grep x "$f" || echo "$f"; done` becomes the two
- * command segments `grep x "$f"` and `echo "$f"`; the loop keywords are not
- * useful permission subjects. If a skipped header contains command
- * substitution, keep it so the command prompts rather than hiding work.
- */
+/** Normalise shell syntax down to commands that actually run. */
 function normalizeShellSegment(segment: string): string | undefined {
 	let s = segment.trim();
 	if (!s) return undefined;
 
-	// Pure shell-control words are not commands by themselves.
 	if (/^(?:do|done|then|fi|esac|\{|\})$/.test(s)) return undefined;
 
-	// `else echo x` / `then echo x` / `do echo x` all run the trailing command.
 	s = s.replace(/^(?:do|then|else)\s+/, "").trim();
 	if (!s) return undefined;
 
-	// `if grep ...; then` and `while grep ...; do` run their condition command.
 	s = s.replace(/^(?:if|while|until)\s+/, "").trim();
 	if (!s) return undefined;
 
-	// A `for name in words` header expands words but does not execute a command,
-	// unless those words contain command substitution. Prompt in that case.
 	if (/^(?:for|select)\s+\w+\s+in\b/.test(s) && !hasCommandSubstitution(s)) return undefined;
 
 	return s;
@@ -125,26 +115,18 @@ export function splitCommand(command: string): string[] {
 	return raw.map(normalizeShellSegment).filter((s): s is string => s !== undefined);
 }
 
-/** Redirection targets that are never a real filesystem write we care about. */
 const BENIGN_REDIRECT_TARGETS = new Set(["/dev/null", "/dev/stdout", "/dev/stderr"]);
 
 function isBenignTarget(target: string): boolean {
 	return BENIGN_REDIRECT_TARGETS.has(target) || target.startsWith("/dev/fd/");
 }
 
-/**
- * Remove all shell redirections (read and write) from a command so the
- * remaining text is just the commands + args to match against globs. Handles
- * forms like `> f`, `>> f`, `2> f`, `&> f`, `2>&1`, `< f`, `<<< s`. Quoting is
- * not fully parsed; worst case this over-strips and causes an extra prompt.
- */
 function stripRedirections(command: string): string {
 	const redir =
 		/(?:[0-9]+|&)?(?:>>?|<<?<?)\s*(?:&[0-9-]+|"[^"]*"|'[^']*'|[^\s|;&<>()]+)?/g;
 	return command.replace(redir, " ");
 }
 
-/** Unquote a captured redirection target. */
 function unquote(token: string): string {
 	if (
 		(token.startsWith('"') && token.endsWith('"')) ||
@@ -155,11 +137,6 @@ function unquote(token: string): string {
 	return token;
 }
 
-/**
- * Collect the targets of write redirections (`>`, `>>`, `2>`, `&>`) in a
- * command. File-descriptor duplications like `2>&1` and `>&2` are not writes to
- * a file, so they are excluded.
- */
 export function redirectWriteTargets(command: string): string[] {
 	const re = /(?:^|[^<>&\d])(?:[0-9]+|&)?>>?\s*("[^"]*"|'[^']*'|[^\s|;&<>()]+)/g;
 	const targets: string[] = [];
@@ -170,26 +147,61 @@ export function redirectWriteTargets(command: string): string[] {
 	return targets;
 }
 
-/**
- * True if the command writes (via `>`/`>>`) to a real file, as opposed to
- * `/dev/null` and friends or a bare fd duplication. Such writes should always
- * prompt, since the target file is not covered by the command's allow glob.
- */
 export function hasRiskyRedirect(command: string): boolean {
 	return redirectWriteTargets(command).some((t) => !isBenignTarget(t));
 }
 
-/**
- * Decide for a tool call.
- *   - bash: every segment must be allowed to allow; any denied segment denies.
- *   - other tools: the single subject (a path) is matched directly.
- * Deny always wins over allow.
- */
+const HARD_BLOCK_PATTERNS: RegExp[] = [
+	/\b(?:sudo|doas|pkexec)\b/,
+	/^\s*su(?:\s|$)/,
+	/\b(?:mkfs|fdisk|parted|wipefs)\b/,
+	/\bdd\b[\s\S]*\bof=\/dev\/(?:sd|hd|vd|xvd|nvme)[\w-]*/,
+	/>\s*\/dev\/(?:sd|hd|vd|xvd|nvme)[\w-]*/,
+	/:\(\)\s*\{\s*:\|:&\s*\}\s*;:/,
+	/\b(?:shutdown|reboot|halt|poweroff)\b/,
+	/\binit\s+0\b/,
+	/\bkill\s+-9\s+1\b/,
+	/\b(?:curl|wget)\b[\s\S]*\|\s*(?:env\s+)?(?:ba)?sh\b/,
+	/\b(?:ba)?sh\s*<\s*\(\s*(?:curl|wget)\b/,
+	/\b(?:\/bin\/)?rm\b(?=[\s\S]*-[A-Za-z]*r)(?=[\s\S]*-[A-Za-z]*f)[\s\S]*(?:^|\s|=)(?:--\s*)?(?:\/|\/\*|~|~\/|\$HOME|"\$HOME"|'\$HOME'|\.|\.\/\*)\s*$/,
+	/\bchmod\b[\s\S]*(?:^|\s)(?:-R\s+)?777\s+\//,
+	/\bchown\b[\s\S]*(?:^|\s)(?:-R\s+)?root(?::|\s)/,
+];
+
+function hardBlockReason(segment: string): string | undefined {
+	const normalized = segment.replace(/\\\n/g, " ");
+	const pattern = HARD_BLOCK_PATTERNS.find((p) => p.test(normalized));
+	return pattern ? `matches hard block pattern ${pattern}` : undefined;
+}
+
+const SENSITIVE_PATH_PREFIXES = [
+	"/etc/",
+	"/usr/",
+	"/bin/",
+	"/sbin/",
+	"/var/",
+	"/dev/",
+	"/proc/",
+	"/sys/",
+];
+
+function pathPromptReason(path: string, cwd: string): string | undefined {
+	const absolute = isAbsolute(path) ? path : resolve(cwd, path);
+	if (SENSITIVE_PATH_PREFIXES.some((prefix) => absolute === prefix.slice(0, -1) || absolute.startsWith(prefix))) {
+		return `targets sensitive path ${absolute}`;
+	}
+	const root = resolve(cwd);
+	if (absolute !== root && !absolute.startsWith(`${root}/`)) return `targets path outside cwd: ${absolute}`;
+	return undefined;
+}
+
 export function analyzeDecision(
 	toolName: string,
 	subject: string,
-	allow: string[],
-	deny: string[],
+	safe: string[],
+	prompt: string[],
+	block: string[] = [],
+	cwd: string = process.cwd(),
 ): DecisionDetails {
 	const label = TOOL_LABELS[toolName];
 	if (!label) {
@@ -199,40 +211,94 @@ export function analyzeDecision(
 			deniedSegments: [],
 			unmatchedSegments: [],
 			riskyRedirectTargets: [],
+			promptSegments: [],
+			reasons: [],
 		};
 	}
 
-	const allowGlobs = globsFor(allow, label);
-	const denyGlobs = globsFor(deny, label);
-
-	// For bash, strip redirections before matching so `>`/`<` targets don't
-	// pollute the command segments (and get re-checked separately below).
+	const safeGlobs = globsFor(safe, label);
+	const promptGlobs = globsFor(prompt, label);
+	const blockGlobs = globsFor(block, label);
 	const segments = toolName === "bash" ? splitCommand(stripRedirections(subject)) : [subject];
-	const deniedSegments = segments.filter((seg) => denyGlobs.some((g) => globMatches(g, seg)));
-	const unmatchedSegments = segments.filter((seg) => !allowGlobs.some((g) => globMatches(g, seg)));
 	const riskyRedirectTargets =
 		toolName === "bash" ? redirectWriteTargets(subject).filter((t) => !isBenignTarget(t)) : [];
+	const reasons: string[] = [];
 
-	let decision: Decision = "prompt";
-	if (deniedSegments.length > 0) {
-		decision = "deny";
-	} else if (segments.length > 0 && unmatchedSegments.length === 0 && riskyRedirectTargets.length === 0) {
-		decision = "allow";
+	const wholeCommandBlockReason = toolName === "bash" ? hardBlockReason(subject) : undefined;
+	if (wholeCommandBlockReason) {
+		reasons.push(`${subject}: ${wholeCommandBlockReason}`);
+		return {
+			decision: "deny",
+			segments,
+			deniedSegments: [subject],
+			unmatchedSegments: [],
+			riskyRedirectTargets,
+			promptSegments: [],
+			reasons,
+		};
 	}
 
-	return { decision, segments, deniedSegments, unmatchedSegments, riskyRedirectTargets };
+	const deniedSegments = segments.filter((seg) => {
+		const reason = toolName === "bash" ? hardBlockReason(seg) : undefined;
+		if (reason) {
+			reasons.push(`${seg}: ${reason}`);
+			return true;
+		}
+		return blockGlobs.some((g) => globMatches(g, seg));
+	});
+
+	if (deniedSegments.length > 0) {
+		return {
+			decision: "deny",
+			segments,
+			deniedSegments,
+			unmatchedSegments: [],
+			riskyRedirectTargets,
+			promptSegments: [],
+			reasons,
+		};
+	}
+
+	const promptSegments = segments.filter((seg) => {
+		if (safeGlobs.some((g) => globMatches(g, seg))) return false;
+		return promptGlobs.some((g) => globMatches(g, seg));
+	});
+
+	if ((toolName === "write" || toolName === "edit") && segments[0]) {
+		const reason = pathPromptReason(segments[0], cwd);
+		if (reason) {
+			promptSegments.push(segments[0]);
+			reasons.push(reason);
+		}
+	}
+
+	if (segments.length === 0) reasons.push("empty command");
+	for (const target of riskyRedirectTargets) reasons.push(`write redirect to ${target}`);
+
+	const shouldPrompt = segments.length === 0 || promptSegments.length > 0 || riskyRedirectTargets.length > 0;
+	return {
+		decision: shouldPrompt ? "prompt" : "allow",
+		segments,
+		deniedSegments: [],
+		unmatchedSegments: promptSegments,
+		riskyRedirectTargets,
+		promptSegments,
+		reasons,
+	};
 }
 
 export function decide(
 	toolName: string,
 	subject: string,
-	allow: string[],
-	deny: string[],
+	safe: string[],
+	prompt: string[],
+	block: string[] = [],
+	cwd?: string,
 ): Decision {
-	return analyzeDecision(toolName, subject, allow, deny).decision;
+	return analyzeDecision(toolName, subject, safe, prompt, block, cwd).decision;
 }
 
-/** Suggest a starting pattern for "save always" prompts. */
+/** Suggest a starting pattern for prompt/block override saves. */
 export function suggestPattern(toolName: string, subject: string): string {
 	const label = TOOL_LABELS[toolName] ?? "Bash";
 	if (toolName === "bash") {
