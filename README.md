@@ -14,6 +14,18 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 ...and so on
 ```
 
+## Pi
+
+Pi config is installed via `make pi` (symlinks `settings.json`, `extensions/`, and `permissions.json`).
+
+Some extensions need npm dependencies; install them with:
+
+```
+make pi_deps
+```
+
+The `web_search` extension uses Exa. Configure credentials with `EXA_API_KEY`, or copy `pi/extensions/web-search/auth.example.json` to `auth.json` and fill it in.
+
 ## Claude / MCP servers
 
 Claude config is installed via `make claude` (symlinks `settings.json`, `CLAUDE.md`, and `skills/`).

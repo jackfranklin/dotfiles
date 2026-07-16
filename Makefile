@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux git bin claude claude-mcp pi pi_specs kitty amp hunk
+.PHONY: all neovim fish tmux git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
@@ -63,6 +63,9 @@ pi:
 	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
 	@ln -nsf $(DIR)/pi/extensions ~/.pi/agent/extensions
 	@ln -sf $(DIR)/pi/permissions.json ~/.pi/agent/permissions.json
+
+pi_deps:
+	cd $(DIR)/pi/extensions/web-fetch && npm install --omit=dev
 
 sync_wezterm_windows:
 	cp wezterm/wezterm.lua /mnt/c/Users/jack/.wezterm.lua

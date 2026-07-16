@@ -43,6 +43,7 @@ package-lock.json
 scripts/what_alias_cache*
 
 claude/skills/later/feedback.db
+pi/extensions/web-search/auth.json
 
 .claude/
 jackclaude/
