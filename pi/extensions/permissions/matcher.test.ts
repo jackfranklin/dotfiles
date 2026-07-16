@@ -111,20 +111,22 @@ describe("risk-based decide", () => {
 		assert.deepEqual(analysis.unmatchedSegments, ["npm install"]);
 	});
 
-	it("allows file reads and prompts for writes outside cwd", () => {
+	it("allows file reads and prompts for writes outside cwd except /tmp", () => {
 		assert.equal(decide("read", "/etc/hosts", [], [], [], "/home/jack/project"), "allow");
 		assert.equal(decide("write", "inside.txt", [], [], [], "/home/jack/project"), "allow");
-		assert.equal(decide("edit", "/tmp/x", [], [], [], "/home/jack/project"), "prompt");
+		assert.equal(decide("edit", "/tmp/x", [], [], [], "/home/jack/project"), "allow");
+		assert.equal(decide("write", "/home/jack/elsewhere/x", [], [], [], "/home/jack/project"), "prompt");
 	});
 
 	it("respects tool-scoped block globs", () => {
 		assert.equal(decide("write", "inside.txt", [], [], ["Write(inside.txt)"]), "deny");
 	});
 
-	it("prompts when a command redirects to a real file", () => {
+	it("prompts when a command redirects to a real file outside /tmp", () => {
 		assert.equal(decide("bash", "echo hi > out.txt", safe, prompt, block), "prompt");
 		assert.equal(decide("bash", "cat a.txt >> log", safe, prompt, block), "prompt");
 		assert.equal(decide("bash", "ls -la | grep x > files.txt", safe, prompt, block), "prompt");
+		assert.equal(decide("bash", "echo hi > /tmp/out.txt", safe, prompt, block), "allow");
 	});
 
 	it("still allows safe redirections (/dev/null and fd dups)", () => {
@@ -135,6 +137,13 @@ describe("risk-based decide", () => {
 
 	it("passes through ungated tools", () => {
 		assert.equal(decide("some_custom_tool", "anything", safe, prompt, block), "allow");
+	});
+
+	it("allows file operations that only target /tmp", () => {
+		assert.equal(decide("bash", "rm -rf /tmp*", safe, prompt, block), "allow");
+		assert.equal(decide("bash", "rmdir /tmp/foo", safe, prompt, block), "allow");
+		assert.equal(decide("bash", "mv /tmp/foo /tmp/bar", safe, ["Bash(mv *)"], block), "allow");
+		assert.equal(decide("bash", "mv /tmp/foo ./bar", safe, ["Bash(mv *)"], block), "prompt");
 	});
 
 	it("prompts on an empty command", () => {
@@ -171,6 +180,15 @@ describe("redirect detection", () => {
 	it("flags writes to real files", () => {
 		assert.equal(hasRiskyRedirect("echo x > file"), true);
 		assert.equal(hasRiskyRedirect("echo x >> ~/.bashrc"), true);
+	});
+
+	it("ignores redirect-looking tokens inside quoted heredoc bodies", () => {
+		const command = `python3 - <<'PY'
+import re
+re.sub('<[^>]+>',' ',data)
+PY`;
+		assert.deepEqual(redirectWriteTargets(command), []);
+		assert.equal(hasRiskyRedirect(command), false);
 	});
 });
 

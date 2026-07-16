@@ -117,8 +117,12 @@ export function splitCommand(command: string): string[] {
 
 const BENIGN_REDIRECT_TARGETS = new Set(["/dev/null", "/dev/stdout", "/dev/stderr"]);
 
+function isTmpPath(target: string): boolean {
+	return target === "/tmp" || target.startsWith("/tmp/") || target.startsWith("/tmp");
+}
+
 function isBenignTarget(target: string): boolean {
-	return BENIGN_REDIRECT_TARGETS.has(target) || target.startsWith("/dev/fd/");
+	return BENIGN_REDIRECT_TARGETS.has(target) || target.startsWith("/dev/fd/") || isTmpPath(target);
 }
 
 function stripRedirections(command: string): string {
@@ -137,14 +141,127 @@ function unquote(token: string): string {
 	return token;
 }
 
+function shellTokens(command: string): string[] {
+	const tokens: string[] = [];
+	let current = "";
+	let quote: "'" | '"' | undefined;
+	let escaped = false;
+
+	for (let i = 0; i < command.length; i++) {
+		const ch = command[i];
+		if (escaped) {
+			current += ch;
+			escaped = false;
+			continue;
+		}
+		if (ch === "\\") {
+			escaped = true;
+			continue;
+		}
+		if (quote) {
+			current += ch;
+			if (ch === quote) quote = undefined;
+			continue;
+		}
+		if (ch === "'" || ch === '"') {
+			current += ch;
+			quote = ch;
+			continue;
+		}
+		if (/\s/.test(ch)) {
+			if (current) tokens.push(unquote(current));
+			current = "";
+			continue;
+		}
+		current += ch;
+	}
+	if (current) tokens.push(unquote(current));
+	return tokens;
+}
+
+function isTmpOnlyFileOperation(segment: string): boolean {
+	const [command, ...args] = shellTokens(segment);
+	if (!command) return false;
+	const name = command.split("/").pop();
+	if (!name) return false;
+
+	const nonOptions = args.filter((arg) => arg !== "--" && !arg.startsWith("-"));
+	if (nonOptions.length === 0) return false;
+
+	if (name === "rm" || name === "rmdir") return nonOptions.every(isTmpPath);
+	if (name === "cp" || name === "mv" || name === "ln") return nonOptions.every(isTmpPath);
+	if (name === "chmod" || name === "chown") {
+		const pathArgs = nonOptions.slice(1);
+		return pathArgs.length > 0 && pathArgs.every(isTmpPath);
+	}
+	return false;
+}
+
 export function redirectWriteTargets(command: string): string[] {
-	const re = /(?:^|[^<>&\d])(?:[0-9]+|&)?>>?\s*("[^"]*"|'[^']*'|[^\s|;&<>()]+)/g;
 	const targets: string[] = [];
-	let m: RegExpExecArray | null;
-	while ((m = re.exec(command)) !== null) {
-		targets.push(unquote(m[1]));
+	let quote: "'" | '"' | undefined;
+	let escaped = false;
+
+	for (let i = 0; i < command.length; i++) {
+		const ch = command[i];
+
+		if (escaped) {
+			escaped = false;
+			continue;
+		}
+		if (ch === "\\") {
+			escaped = true;
+			continue;
+		}
+		if (quote) {
+			if (ch === quote) quote = undefined;
+			continue;
+		}
+		if (ch === "'" || ch === '"') {
+			quote = ch;
+			continue;
+		}
+		if (ch !== ">") continue;
+
+		const prev = command[i - 1];
+		if (prev === "<" || prev === ">" || prev === "&") continue;
+
+		let opStart = i;
+		while (opStart > 0 && /[0-9]/.test(command[opStart - 1])) opStart--;
+		if (opStart > 0 && /[^\s|;&(]/.test(command[opStart - 1])) continue;
+
+		let j = command[i + 1] === ">" ? i + 2 : i + 1;
+		while (/\s/.test(command[j] ?? "")) j++;
+		if (command[j] === "&") continue;
+
+		const target = readShellToken(command, j);
+		if (target) targets.push(unquote(target));
 	}
 	return targets;
+}
+
+function readShellToken(command: string, start: number): string | undefined {
+	const quote = command[start];
+	if (quote === "'" || quote === '"') {
+		let escaped = false;
+		for (let i = start + 1; i < command.length; i++) {
+			const ch = command[i];
+			if (escaped) {
+				escaped = false;
+				continue;
+			}
+			if (quote === '"' && ch === "\\") {
+				escaped = true;
+				continue;
+			}
+			if (ch === quote) return command.slice(start, i + 1);
+		}
+		return command.slice(start);
+	}
+
+	let end = start;
+	while (end < command.length && !/[\s|;&<>()]/.test(command[end])) end++;
+	return end > start ? command.slice(start, end) : undefined;
 }
 
 export function hasRiskyRedirect(command: string): boolean {
@@ -187,6 +304,7 @@ const SENSITIVE_PATH_PREFIXES = [
 
 function pathPromptReason(path: string, cwd: string): string | undefined {
 	const absolute = isAbsolute(path) ? path : resolve(cwd, path);
+	if (isTmpPath(absolute)) return undefined;
 	if (SENSITIVE_PATH_PREFIXES.some((prefix) => absolute === prefix.slice(0, -1) || absolute.startsWith(prefix))) {
 		return `targets sensitive path ${absolute}`;
 	}
@@ -261,6 +379,7 @@ export function analyzeDecision(
 
 	const promptSegments = segments.filter((seg) => {
 		if (safeGlobs.some((g) => globMatches(g, seg))) return false;
+		if (toolName === "bash" && isTmpOnlyFileOperation(seg)) return false;
 		return promptGlobs.some((g) => globMatches(g, seg));
 	});
 
