@@ -72,25 +72,30 @@ Then run `make claude-mcp`.
 1. `make install`
 
 
-## Building tmux from source
+## Updating tmux
 
-Ubuntu's apt repos lag well behind upstream tmux releases (e.g. 22.04 "jammy" ships 3.2a, which is missing options like `allow-passthrough` needed by Claude Code). There's no trustworthy/maintained PPA for newer tmux, so build from the official release tarball instead:
+Ubuntu's apt repos lag behind upstream tmux releases. Install the current tmux release locally with:
 
 ```bash
-sudo apt-get install -y libevent-dev ncurses-dev build-essential bison pkg-config autoconf automake
-
-cd /tmp
-curl -fsSL -o tmux.tar.gz https://github.com/tmux/tmux/releases/download/<VERSION>/tmux-<VERSION>.tar.gz
-tar xzf tmux.tar.gz
-cd tmux-<VERSION>
-./configure --prefix="$HOME/.local"
-make -j"$(nproc)"
-make install
+make tmux_latest
 ```
 
-`~/.local/bin` is already on the fish `$PATH` ahead of `/usr/bin`, so the new binary takes over automatically — check with `which tmux` / `tmux -V`.
+This installs the required build dependencies, downloads tmux `3.7b` from its official GitHub release, and installs it under `~/.local`. To install a different release, pass its version explicitly:
 
-Note: an already-running tmux server keeps using the old binary/config until you `tmux kill-server` (this ends all panes) and start a fresh session.
+```bash
+make tmux_latest TMUX_VERSION=3.7a
+```
+
+`~/.local/bin` is ahead of `/usr/bin` on the Fish `$PATH`, so the new binary takes over automatically. Verify it with `which tmux` and `tmux -V`.
+
+An already-running tmux server keeps using the old binary and configuration. After the install, end all tmux panes and start a new server:
+
+```bash
+tmux kill-server
+tmux
+```
+
+The tmux configuration enables CSI-u extended keys automatically on tmux 3.5 and newer, so Pi can distinguish `Shift+Enter` from `Enter`.
 
 ## Fonts and Kitty terminal
 

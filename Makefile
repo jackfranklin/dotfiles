@@ -1,8 +1,9 @@
-.PHONY: all neovim fish tmux git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk
 
 DIR="${HOME}/dotfiles"
 
 NEOVIM_GIT_DIR="${HOME}/git/neovim"
+TMUX_VERSION ?= 3.7b
 
 all:
 	@echo "Run things individually!"
@@ -15,6 +16,23 @@ fish:
 
 tmux:
 	@ln -sf $(DIR)/tmux/tmux.conf ~/.tmux.conf
+	@ln -sf $(DIR)/tmux/tmux.base.conf ~/.tmux.base.conf
+
+tmux_deps:
+	sudo apt-get install -y build-essential pkg-config libevent-dev ncurses-dev bison
+
+tmux_latest: tmux_deps
+	@set -eu; \
+	build_dir="$$(mktemp -d)"; \
+	trap 'rm -rf "$$build_dir"' EXIT; \
+	curl -fsSL -o "$$build_dir/tmux.tar.gz" "https://github.com/tmux/tmux/releases/download/$(TMUX_VERSION)/tmux-$(TMUX_VERSION).tar.gz"; \
+	tar -xzf "$$build_dir/tmux.tar.gz" -C "$$build_dir"; \
+	cd "$$build_dir/tmux-$(TMUX_VERSION)"; \
+	./configure --prefix="$$HOME/.local"; \
+	make -j"$$(nproc)"; \
+	make install; \
+	"$$HOME/.local/bin/tmux" -V; \
+	echo 'Installed tmux. Restart the server with: tmux kill-server && tmux'
 
 
 git:
