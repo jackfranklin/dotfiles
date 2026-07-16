@@ -6,8 +6,8 @@ Dotfiles-local version of <https://github.com/amosblomqvist/pi-subagents>.
 
 | Agent | Tools | Model | Purpose |
 | --- | --- | --- | --- |
-| `scout` | `read`, `grep`, `find`, `ls` | `openai-codex/gpt-5.5`, low thinking | Fast codebase recon |
-| `researcher` | `web_search`, `web_fetch` | `openai-codex/gpt-5.5`, medium thinking | Web research |
+| `scout` | `read`, `grep`, `find`, `ls` | `google/gemini-3.1-flash-lite`, low thinking | Fast codebase recon |
+| `researcher` | `web_search`, `web_fetch` | `google/gemini-3.1-flash-lite`, medium thinking | Web research |
 | `worker` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.5`, medium thinking | Isolated implementation work |
 
 `worker` can only spawn `scout` and `researcher`, so nested delegation stops at depth 2.
