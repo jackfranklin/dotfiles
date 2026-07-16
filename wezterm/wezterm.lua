@@ -70,8 +70,6 @@ local function make_new_tab_on_right_action(opts)
 end
 
 config.keys = {
-  -- Shift + Enter to send a literal newline
-  { mods = "SHIFT", key = "Enter", action = act.SendString("\\\n") },
   -- Shift + Control + R to rename tab
   {
     key = "R",
