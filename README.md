@@ -24,7 +24,7 @@ Some extensions need npm dependencies; install them with:
 make pi_deps
 ```
 
-The `web_search` extension uses Exa. Configure credentials with `EXA_API_KEY`, or copy `pi/extensions/web-search/auth.example.json` to `auth.json` and fill it in.
+The `web_search` extension requires an Exa API key. Create one at <https://dashboard.exa.ai/api-keys>, then configure it with `EXA_API_KEY`, or copy `pi/extensions/web-search/auth.example.json` to `auth.json` and fill it in.
 
 ## Claude / MCP servers
 
