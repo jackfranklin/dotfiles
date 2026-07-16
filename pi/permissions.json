@@ -1,5 +1,6 @@
 {
   "safe": [
+    "Bash(mv *)",
     "Write(/tmp/*)",
     "Bash(cp /tmp*)"
   ],
