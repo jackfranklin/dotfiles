@@ -26,6 +26,12 @@ make pi_deps
 
 The `web_search` extension requires an Exa API key. Create one at <https://dashboard.exa.ai/api-keys>, then configure it with `EXA_API_KEY`, or copy `pi/extensions/web-search/auth.example.json` to `auth.json` and fill it in.
 
+### Skill metrics
+
+The `skill-metrics` extension records explicit `/skill:<name>` invocations. Metrics are stored outside this repository in `~/.pi/agent/skill-metrics.sqlite`, keyed by the absolute working directory and skill name. The database and its table are created automatically when Pi loads the extension.
+
+Use `/skill-metrics` to see counts for the current project, or `/skill-metrics all` to see every project.
+
 ## Claude / MCP servers
 
 Claude config is installed via `make claude` (symlinks `settings.json`, `CLAUDE.md`, and `skills/`).
