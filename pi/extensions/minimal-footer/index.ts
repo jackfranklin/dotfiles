@@ -11,12 +11,12 @@ function formatTokens(count: number): string {
 
 export default function (pi: ExtensionAPI) {
 	let thinkingLevel = "off";
-	let provider = "no-provider";
+	let model = "no-model";
 	let contextWindow = 0;
 	let usingSubscription = false;
 
 	pi.on("session_start", (_event, ctx) => {
-		provider = ctx.model?.provider ?? "no-provider";
+		model = ctx.model?.id ?? "no-model";
 		contextWindow = ctx.model?.contextWindow ?? 0;
 		usingSubscription = ctx.model ? ctx.modelRegistry.isUsingOAuth(ctx.model) : false;
 
@@ -45,7 +45,7 @@ export default function (pi: ExtensionAPI) {
 				const cost = `$${totalCost.toFixed(3)}${usingSubscription ? " (sub)" : ""}`;
 				const left = theme.fg("dim", `${context}  ${cost}`);
 
-				const right = theme.fg("dim", `${provider}  ${thinkingLevel}`);
+				const right = theme.fg("dim", `${model}  ${thinkingLevel}`);
 
 				const padding = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)));
 				return [truncateToWidth(left + padding + right, width)];
@@ -54,7 +54,7 @@ export default function (pi: ExtensionAPI) {
 	});
 
 	pi.on("model_select", (event, ctx) => {
-		provider = event.model.provider;
+		model = event.model.id;
 		contextWindow = event.model.contextWindow;
 		usingSubscription = ctx.modelRegistry.isUsingOAuth(event.model);
 	});
