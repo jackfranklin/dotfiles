@@ -839,10 +839,13 @@ export default function (pi: ExtensionAPI) {
 			"Run a subagent to complete a task. Subagents have NO context from the current conversation — include all necessary context in the task description.",
 		promptSnippet: "Run subagents for delegated tasks",
 		promptGuidelines: [
-			"Parallel tool calls are your primary parallelism mechanism — put multiple independent read/fetch/search calls in one function_calls block. Don't use subagents to parallelize simple I/O.",
-			"Use subagent to delegate *reasoning and decisions*: codebase exploration (scout), web research (researcher), or isolated code changes (worker)",
-			"For multiple independent subagent tasks, emit multiple `subagent` tool calls in the same turn — they run in parallel automatically.",
-			"Subagents have NO context from the current conversation — include ALL necessary context in the task description",
+			"Use subagent to delegate *reasoning and decisions*: codebase exploration (scout), web research (researcher), or isolated code changes (worker).",
+			"When the user explicitly asks to use subagents, prefer using the subagent tool rather than doing the work yourself.",
+			"When the user lists multiple independent subagent tasks, launch ALL of them immediately by emitting multiple `subagent` tool calls in the same assistant turn. Do not wait for one subagent to finish before starting another independent one.",
+			"Map requested task types to agents directly: repo/codebase search or architecture mapping → scout; online/web/news/docs/release research → researcher; isolated code edits or implementation → worker.",
+			"Parallel tool calls are your primary parallelism mechanism — put multiple independent `subagent` calls in one function_calls block, and also batch independent read/fetch/search calls where appropriate.",
+			"Don't use subagents merely to parallelize trivial I/O; use them when their separate context, synthesis, or isolation is valuable.",
+			"Subagents have NO context from the current conversation — include ALL necessary context in the task description.",
 		],
 		parameters: Type.Object({
 			agent: Type.String({ description: "Name of the agent to invoke" }),
