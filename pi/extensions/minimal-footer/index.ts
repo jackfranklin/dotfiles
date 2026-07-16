@@ -26,7 +26,8 @@ export default function (pi: ExtensionAPI) {
 			}
 		}
 
-		ctx.ui.setFooter((_tui, theme) => ({
+		ctx.ui.setFooter((tui, theme, footerData) => ({
+			dispose: footerData.onBranchChange(() => tui.requestRender()),
 			invalidate() {},
 
 			render(width: number): string[] {
@@ -45,7 +46,9 @@ export default function (pi: ExtensionAPI) {
 				const cost = `$${totalCost.toFixed(3)}${usingSubscription ? " (sub)" : ""}`;
 				const left = theme.fg("dim", `${context}  ${cost}`);
 
-				const right = theme.fg("dim", `${model}  ${thinkingLevel}`);
+				const branch = footerData.getGitBranch();
+				const branchText = branch === null ? theme.fg("error", "[no git]") : theme.fg("accent", branch);
+				const right = theme.fg("dim", `${model}  ${thinkingLevel}  `) + branchText;
 
 				const padding = " ".repeat(Math.max(1, width - visibleWidth(left) - visibleWidth(right)));
 				return [truncateToWidth(left + padding + right, width)];
