@@ -2,7 +2,7 @@
 name: scout
 description: Fast codebase recon — explores files, finds patterns, maps architecture
 tools: read, grep, find, ls
-model: google/gemini-3.1-flash-lite
+model: openai-codex/gpt-5.4-mini
 thinking: low
 ---
 
