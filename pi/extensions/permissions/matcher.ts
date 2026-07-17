@@ -179,7 +179,12 @@ function shellTokens(command: string): string[] {
 	return tokens;
 }
 
-function isTmpOnlyFileOperation(segment: string): boolean {
+function isTrustedTempVariableReference(token: string, temporaryVariables: ReadonlySet<string>): boolean {
+	const match = /^\$(?:\{([A-Za-z_][A-Za-z0-9_]*)\}|([A-Za-z_][A-Za-z0-9_]*))$/.exec(token);
+	return match !== null && temporaryVariables.has(match[1] ?? match[2]);
+}
+
+function isTmpOnlyFileOperation(segment: string, temporaryVariables: ReadonlySet<string>): boolean {
 	const [command, ...args] = shellTokens(segment);
 	if (!command) return false;
 	const name = command.split("/").pop();
@@ -187,14 +192,46 @@ function isTmpOnlyFileOperation(segment: string): boolean {
 
 	const nonOptions = args.filter((arg) => arg !== "--" && !arg.startsWith("-"));
 	if (nonOptions.length === 0) return false;
+	const isTemporaryTarget = (target: string) =>
+		isTmpPath(target) || isTrustedTempVariableReference(target, temporaryVariables);
 
-	if (name === "rm" || name === "rmdir") return nonOptions.every(isTmpPath);
-	if (name === "cp" || name === "mv" || name === "ln") return nonOptions.every(isTmpPath);
+	if (name === "rm" || name === "rmdir") return nonOptions.every(isTemporaryTarget);
+	if (name === "cp" || name === "mv" || name === "ln") return nonOptions.every(isTemporaryTarget);
 	if (name === "chmod" || name === "chown") {
 		const pathArgs = nonOptions.slice(1);
-		return pathArgs.length > 0 && pathArgs.every(isTmpPath);
+		return pathArgs.length > 0 && pathArgs.every(isTemporaryTarget);
 	}
 	return false;
+}
+
+/**
+ * Tracks variables assigned directly from `mktemp` within one bash tool call.
+ * They may be used as temporary-file targets by later segments only; any later
+ * assignment or `unset` revokes that trust. Deliberately recognise only the
+ * no-argument form, whose output is a file under the system temporary dir.
+ */
+function temporaryVariablesBeforeSegments(segments: string[]): ReadonlySet<string>[] {
+	const temporaryVariables = new Set<string>();
+	const states: ReadonlySet<string>[] = [];
+
+	for (const segment of segments) {
+		states.push(new Set(temporaryVariables));
+		const assignment = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(?:"\$\(mktemp\)"|\$\(mktemp\))\s*$/.exec(
+			segment.trim(),
+		);
+		if (assignment) {
+			temporaryVariables.add(assignment[1]);
+			continue;
+		}
+
+		const reassignment = /^([A-Za-z_][A-Za-z0-9_]*)=/.exec(segment.trim());
+		if (reassignment) temporaryVariables.delete(reassignment[1]);
+
+		const unset = /^unset\s+([A-Za-z_][A-Za-z0-9_]*)\s*$/.exec(segment.trim());
+		if (unset) temporaryVariables.delete(unset[1]);
+	}
+
+	return states;
 }
 
 export function redirectWriteTargets(command: string): string[] {
@@ -337,9 +374,19 @@ export function analyzeDecision(
 	const safeGlobs = globsFor(safe, label);
 	const promptGlobs = globsFor(prompt, label);
 	const blockGlobs = globsFor(block, label);
-	const segments = toolName === "bash" ? splitCommand(stripRedirections(subject)) : [subject];
+	const rawSegments = toolName === "bash" ? splitCommand(subject) : [subject];
+	const segments = toolName === "bash" ? rawSegments.map(stripRedirections) : rawSegments;
+	const temporaryVariables = temporaryVariablesBeforeSegments(rawSegments);
 	const riskyRedirectTargets =
-		toolName === "bash" ? redirectWriteTargets(subject).filter((t) => !isBenignTarget(t)) : [];
+		toolName === "bash"
+			? rawSegments.flatMap((segment, index) =>
+					redirectWriteTargets(segment).filter(
+						(target) =>
+							!isBenignTarget(target) &&
+							!isTrustedTempVariableReference(target, temporaryVariables[index]),
+					),
+				)
+			: [];
 	const reasons: string[] = [];
 
 	const wholeCommandBlockReason = toolName === "bash" ? hardBlockReason(subject) : undefined;
@@ -377,9 +424,9 @@ export function analyzeDecision(
 		};
 	}
 
-	const promptSegments = segments.filter((seg) => {
+	const promptSegments = segments.filter((seg, index) => {
 		if (safeGlobs.some((g) => globMatches(g, seg))) return false;
-		if (toolName === "bash" && isTmpOnlyFileOperation(seg)) return false;
+		if (toolName === "bash" && isTmpOnlyFileOperation(seg, temporaryVariables[index])) return false;
 		return promptGlobs.some((g) => globMatches(g, seg));
 	});
 

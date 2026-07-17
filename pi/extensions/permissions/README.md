@@ -96,6 +96,10 @@ Read redirections and benign write redirections to `/dev/null`, `/dev/stdout`,
 `/dev/stderr`, and `/dev/fd/*` are allowed.
 
 Write redirections to real files prompt in the main UI and block without UI.
+A variable assigned directly from the no-argument form of `mktemp` is treated
+as a temporary-file target for later segments in that same bash call, so a
+standard create/use/cleanup sequence does not prompt. Reassigning or unsetting
+that variable revokes the exception.
 
 `write` and `edit` calls prompt when the path is outside the current working
 directory or targets sensitive system locations such as `/etc`, `/usr`, `/var`,
@@ -111,6 +115,26 @@ When a call needs approval, the UI offers:
 - `Ban always` — saves a `block` rule
 
 In headless/subagent contexts, anything that would prompt is blocked instead.
+
+## Approval audit log
+
+Every interactive approval dialog is recorded locally in:
+
+```txt
+~/.pi/agent/permission-approvals.jsonl
+```
+
+The append-only JSONL log records an `approval-request` and its corresponding
+`approval-decision` with a shared id, including the working directory,
+command/path, risk details, and selected action. A dialog interrupted before a selection still has its
+request entry. The file is created with mode `0600`; it is local history and is
+not part of the dotfiles symlink.
+
+For example, inspect it with:
+
+```bash
+jq -s . ~/.pi/agent/permission-approvals.jsonl
+```
 
 ## Tests
 

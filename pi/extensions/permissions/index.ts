@@ -9,6 +9,7 @@
  * See store.ts / matcher.ts / glob.ts for the pieces.
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
+import { PermissionApprovalLog } from "./approval-log.ts";
 import { analyzeDecision, suggestPattern, TOOL_LABELS } from "./matcher.ts";
 import { PermissionStore } from "./store.ts";
 
@@ -21,6 +22,7 @@ function subjectFor(toolName: string, input: Record<string, unknown>): string | 
 
 export default function (pi: ExtensionAPI) {
 	const store = new PermissionStore();
+	const approvalLog = new PermissionApprovalLog();
 
 	pi.on("tool_call", async (event, ctx) => {
 		const label = TOOL_LABELS[event.toolName];
@@ -46,6 +48,14 @@ export default function (pi: ExtensionAPI) {
 			return { block: true, reason: "Command requires approval and no UI is available to confirm" };
 		}
 
+		const approvalId = approvalLog.request({
+			tool: event.toolName,
+			cwd: ctx.cwd,
+			subject,
+			unmatchedSegments: analysis.unmatchedSegments,
+			riskyRedirectTargets: analysis.riskyRedirectTargets,
+			reasons: analysis.reasons,
+		});
 		const missingBareEntries = suggestMissingBareCommandEntries(
 			event.toolName,
 			analysis.unmatchedSegments,
@@ -61,6 +71,7 @@ export default function (pi: ExtensionAPI) {
 			"Ban always",
 		];
 		const choice = await ctx.ui.select(header, choices);
+		approvalLog.decision(approvalId, choice);
 
 		if (addMissingBareChoice && choice === addMissingBareChoice) {
 			for (const entry of missingBareEntries) store.addSafe(entry);

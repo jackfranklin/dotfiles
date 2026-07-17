@@ -146,6 +146,28 @@ describe("risk-based decide", () => {
 		assert.equal(decide("bash", "mv /tmp/foo ./bar", safe, ["Bash(mv *)"], block), "prompt");
 	});
 
+	it("allows cleanup and redirection through a variable created by mktemp", () => {
+		const command = [
+			"plan_file=$(mktemp)",
+			'gh issue view 84 --json body --jq .body > "$plan_file"',
+			'gh issue comment 72 --body-file "$plan_file"',
+			'rm "$plan_file"',
+			"gh issue delete 84 --yes",
+		].join("\n");
+
+		assert.equal(decide("bash", command, safe, prompt, block), "allow");
+	});
+
+	it("does not trust a mktemp variable after it is reassigned", () => {
+		const command = ["plan_file=$(mktemp)", "plan_file=/etc/passwd", 'rm "$plan_file"'].join("\n");
+		assert.equal(decide("bash", command, safe, prompt, block), "prompt");
+
+		const redirect = ["plan_file=$(mktemp)", "plan_file=out.txt", 'echo hi > "$plan_file"'].join("\n");
+		const analysis = analyzeDecision("bash", redirect, safe, prompt, block);
+		assert.equal(analysis.decision, "prompt");
+		assert.deepEqual(analysis.riskyRedirectTargets, ["$plan_file"]);
+	});
+
 	it("prompts on an empty command", () => {
 		assert.equal(decide("bash", "   ", safe, prompt, block), "prompt");
 	});
