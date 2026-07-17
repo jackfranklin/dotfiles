@@ -62,7 +62,7 @@ interface ToolEvent {
 
 interface AgentProgress {
 	agent: string;
-	status: "pending" | "running" | "completed" | "failed";
+	status: "pending" | "running" | "completed" | "failed" | "cancelled";
 	task: string;
 	/**
 	 * Chronological log of tool calls — running and done interleaved. The
@@ -390,6 +390,26 @@ function flatten(s: string): string {
 // doesn't need to read inline anyway.
 const MAX_ARG_PREVIEW = 4000;
 
+function buildCancellationOutput(progress: AgentProgress): string {
+	const lines = [`Subagent was cancelled after ${formatDuration(progress.durationMs)}.`];
+	const recent = progress.recentTools.slice(-5);
+	if (recent.length > 0) {
+		lines.push("", "Recent tool activity:");
+		for (const t of recent) {
+			const status = t.status === "running" ? "running" : "done";
+			const argPreview = t.args.length > 120 ? `${t.args.slice(0, 120)}…` : t.args;
+			const args = argPreview ? `: ${argPreview}` : "";
+			lines.push(`- ${t.tool}${args} (${status})`);
+		}
+	}
+	if (progress.lastMessage) {
+		lines.push("", `Last completed assistant text: ${progress.lastMessage}`);
+	} else {
+		lines.push("", "No assistant message completed before cancellation.");
+	}
+	return lines.join("\n");
+}
+
 function extractToolArgsPreview(args: Record<string, unknown>): string {
 	const cap = (s: string) => (s.length > MAX_ARG_PREVIEW ? s.slice(0, MAX_ARG_PREVIEW) + "…" : s);
 	if (args.command) return cap(flatten(String(args.command)));
@@ -440,6 +460,12 @@ async function runSubagent(
 
 	const startTime = Date.now();
 	const progress = result.progress;
+	let cancellationRequested = signal?.aborted ?? false;
+
+	const markCancelled = () => {
+		cancellationRequested = true;
+		progress.durationMs = Date.now() - startTime;
+	};
 
 	const fireUpdate = throttle(() => {
 		progress.durationMs = Date.now() - startTime;
@@ -573,21 +599,30 @@ async function runSubagent(
 			stderrBuf += d.toString();
 		});
 
+		let abortKillTimer: ReturnType<typeof setTimeout> | undefined;
+		let abortHandler: (() => void) | undefined;
+
 		proc.on("close", (code) => {
 			if (buf.trim()) processLine(buf);
-			if (code !== 0 && stderrBuf.trim() && !progress.error) {
+			if (!cancellationRequested && code !== 0 && stderrBuf.trim() && !progress.error) {
 				progress.error = stderrBuf.trim();
 			}
-			resolve(code ?? 1);
+			if (abortKillTimer) clearTimeout(abortKillTimer);
+			if (signal && abortHandler) signal.removeEventListener("abort", abortHandler);
+			resolve(code ?? (cancellationRequested ? 130 : 1));
 		});
 
-		proc.on("error", () => resolve(1));
+		proc.on("error", () => resolve(cancellationRequested ? 130 : 1));
 
 		if (signal) {
 			const kill = () => {
+				markCancelled();
 				proc.kill("SIGTERM");
-				setTimeout(() => !proc.killed && proc.kill("SIGKILL"), 3000);
+				abortKillTimer = setTimeout(() => {
+					if (proc.exitCode === null && proc.signalCode === null) proc.kill("SIGKILL");
+				}, 3000);
 			};
+			abortHandler = kill;
 			if (signal.aborted) kill();
 			else signal.addEventListener("abort", kill, { once: true });
 		}
@@ -598,10 +633,16 @@ async function runSubagent(
 		fs.rmSync(tempDir, { recursive: true, force: true });
 	} catch {}
 
-	result.exitCode = exitCode;
-	progress.status = exitCode === 0 && !progress.error ? "completed" : "failed";
+	result.exitCode = cancellationRequested ? 130 : exitCode;
 	progress.durationMs = Date.now() - startTime;
-	if (progress.error) result.output = result.output || `Error: ${progress.error}`;
+	if (cancellationRequested) {
+		progress.status = "cancelled";
+		progress.error = "Subagent was cancelled.";
+		result.output = result.output || buildCancellationOutput(progress);
+	} else {
+		progress.status = exitCode === 0 && !progress.error ? "completed" : "failed";
+		if (progress.error) result.output = result.output || `Error: ${progress.error}`;
+	}
 
 	// Truncate output if very large
 	if (result.output.length > DEFAULT_MAX_BYTES) {
@@ -685,6 +726,7 @@ function renderAgentProgress(
 	const prog = r.progress;
 	const isRunning = prog.status === "running";
 	const isPending = prog.status === "pending";
+	const isCancelled = prog.status === "cancelled";
 	const nested = depth > 0;
 
 	// Indent prefix for nested levels. ANSI escapes are zero-width so this works
@@ -712,9 +754,11 @@ function renderAgentProgress(
 		? theme.fg("warning", "⟳")
 		: isPending
 			? theme.fg("dim", "○")
-			: r.exitCode === 0
-				? theme.fg("success", "✓")
-				: theme.fg("error", "✗");
+			: isCancelled
+				? theme.fg("warning", "⊘")
+				: r.exitCode === 0
+					? theme.fg("success", "✓")
+					: theme.fg("error", "✗");
 	const stats = `${prog.toolCount} tools · ${formatDuration(prog.durationMs)}`;
 	const modelStr = r.model ? theme.fg("dim", ` (${r.model})`) : "";
 	addLine(`${icon} ${theme.fg("toolTitle", theme.bold(r.agent))}${modelStr} — ${theme.fg("dim", stats)}`);
