@@ -1,6 +1,6 @@
 ---
 name: glossary
-description: Glossary: capture stable, repository-wide terms and concepts in `.jai/glossary.md` when they emerge. Use when a term or concept should become canonical repository context.
+description: 'Glossary: capture stable, repository-wide terms and concepts in `.jai/glossary.md` when they emerge. Use when a term or concept should become canonical repository context.'
 ---
 
 Maintain the repository glossary at `.jai/glossary.md`. When invoked without a named term, review the current conversation and relevant repository context for glossary candidates.
