@@ -4,8 +4,9 @@ name: write-plan
 description: >
   Write a comprehensive, no-placeholder implementation plan as a series of
   bite-sized tasks, each with exact file paths, real code, TDD steps, and
-  commit instructions. Saves as a GitHub Issue with a [PLAN] prefix.
-  Use after preflight has established what to build.
+  commit instructions. Stores plans on the relevant GitHub issue when one
+  exists, otherwise creates a standalone [PLAN] issue. Use after preflight
+  has established what to build.
 ---
 
 # Write Plan
@@ -147,11 +148,22 @@ fresh eyes.
 
 Fix issues inline. If a spec requirement has no task, add the task.
 
-## Step 5: Save as GitHub Issue
+## Step 5: Persist the Plan on GitHub
 
 1. Verify there is a GitHub remote: `gh repo view --json nameWithOwner` — if it fails, stop and tell the user.
-2. Create the issue:
+2. Determine the destination:
+   - **Existing implementation/feature/bug issue:** when the user supplied an issue number, or the plan is clearly for an existing issue, that issue is the canonical destination. Do **not** create a separate `[PLAN]` issue. Post the full final plan as a new comment on that issue:
+     ```
+     gh issue comment <issue-number> --body "<full plan content>"
+     ```
+     Keep the issue body as a concise problem/scope summary with a link to the canonical plan comment; do not leave a second, less precise plan in the body.
+   - **No existing issue:** create one standalone plan issue:
+     ```
+     gh issue create --title "[PLAN] <feature-name>" --body "<full plan content>"
+     ```
+3. Before posting to an existing issue, inspect its comments for earlier implementation plans:
    ```
-   gh issue create --title "[PLAN] <feature-name>" --body "<full plan content>"
+   gh api repos/<owner>/<repo>/issues/<issue-number>/comments --paginate
    ```
-3. Tell the user the issue URL and ask how they want to proceed: inline execution in this session, or they'll drive it themselves.
+   Remove superseded plan comments so there is exactly one canonical implementation plan. Delete only comments authored by the current user/agent; if an obsolete plan comment belongs to someone else, ask the user before deleting it.
+4. After posting, verify the issue has one canonical plan and no obsolete plan comments. Tell the user the issue URL and ask how they want to proceed: inline execution in this session, or they'll drive it themselves.
