@@ -10,7 +10,4 @@ Ask the questions one at a time.
 
 If a question can be answered by exploring the codebase, explore the codebase instead.
 
-**Knowledge Persistence (.jai/grill-docs.md):**
-1.  **Read Context:** At the start of the session, check if `.jai/grill-docs.md` exists in the current repository. If it does, read it and use it as context for the discussion.
-2.  **Extract Knowledge:** As we talk, identify information that is useful broadly across the repository (e.g., terminology, definitions of entities, architecture concepts) rather than specific to the current task.
-3.  **Persist Knowledge:** Save this extracted knowledge into `.jai/grill-docs.md`. If the file does not exist, create it. Maintain a clean, structured format (e.g., glossary, concepts).
+**Repository glossary:** At the start of the session, check whether `.jai/glossary.md` exists in the current repository. If it does, read it and use it as context. It is a stable glossary of canonical repository terminology and concepts, not a record of plan decisions, open questions, or this session's outcomes. Do not modify it during a grilling session.
