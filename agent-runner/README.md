@@ -12,7 +12,10 @@ Each run:
    finishing — there's no separate hardcoded lint/build/test step in the entrypoint. Output is streamed as
    `stream-json` and piped through [`format-claude-stream`](https://github.com/Khan/format-claude-stream) for
    readable live progress instead of just the final response.
-5. Commits, pushes the branch, and opens a PR via `gh pr create`.
+5. Claude is told to commit, push, and open the PR itself (`gh pr create` with a descriptive title/body it
+   writes, referencing `Closes #N`) rather than the entrypoint generating a generic "Fix #N" PR. The entrypoint
+   checks afterward whether a PR now exists for the branch; if Claude made changes but didn't finish the git
+   workflow, the entrypoint commits/pushes/opens a generic fallback PR so the work is never silently lost.
 
 ## Installing Docker
 
@@ -75,6 +78,19 @@ agent-run 55 develop   # optional base branch, defaults to main
 Run multiple in parallel by invoking `agent-run` multiple times concurrently from different repo
 directories (separate terminals, or `(cd repo-a && agent-run 55) & (cd repo-b && agent-run 12) &`);
 each run builds/uses its own container instance.
+
+## Duplicate-run protection
+
+Before building/running anything, `agent-run` checks two things and refuses to start if either is true:
+
+1. **An open PR already exists** for `agent/issue-<N>` (`gh pr list --head`) — avoids re-running an issue
+   that's already been implemented and is just waiting on review/merge.
+2. **A container is already running** for this exact repo+issue (`docker ps --filter name=...`) — avoids
+   two containers racing to implement the same issue concurrently.
+
+Both checks are best-effort (there's a small window between the check and the container actually starting),
+but they catch the common case: running `agent-run 55` twice by mistake, or re-running an issue you forgot
+already got a PR.
 
 ## Inspecting and cleaning up containers
 

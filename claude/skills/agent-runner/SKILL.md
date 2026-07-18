@@ -17,6 +17,8 @@ The GitHub owner is hardcoded to `jackfranklin`; the repo name comes from the cu
 
 Required env vars (fish): `AGENT_RUNNER_GH_TOKEN`, `AGENT_RUNNER_CLAUDE_OAUTH_TOKEN`. If either is unset the script fails fast with a clear message — don't troubleshoot further than checking they're exported.
 
+Before doing anything else, the script refuses to start if either an open PR already exists for `agent/issue-<N>`, or a container is already running for that exact repo+issue — this guards against duplicate runs. If you hit one of these refusals, don't work around it by bypassing the check; investigate the existing PR/container instead (see below).
+
 ## Containers are never auto-removed
 
 `docker run` is invoked **without** `--rm` deliberately: if a run bug (like a wrong "no changes made" check) causes the script to skip the commit/push/PR step, the container's filesystem is the only remaining copy of whatever Claude built. Auto-removal would silently destroy that work. This means containers accumulate and must be cleaned up manually — see below.
