@@ -2,6 +2,31 @@
 
 Runs a Claude Code agent in an isolated Docker container to implement a GitHub issue and open a PR.
 
+**Assumes a Node/npm repo.** The entrypoint only knows how to `npm install` and defers to Claude to run
+whatever `package.json` scripts are relevant. A non-Node repo isn't actively unsupported, but nothing in
+the entrypoint helps it — Claude would have to figure out its own build/test setup from scratch.
+
+**Network access is not restricted.** The container has full outbound network access — there's no
+allowlisting to GitHub/npm/Anthropic only. Container filesystem isolation and non-root execution are the
+actual boundaries here, not network sandboxing. Worth revisiting if this ever runs against untrusted issue
+content (e.g. a public repo where issue text is attacker-controlled).
+
+## Why `--dangerously-skip-permissions` is acceptable here
+
+Claude runs with all permission checks disabled, which is normally risky. It's acceptable in this setup
+specifically because of layered mitigations, not because the flag itself is safe:
+
+- **Container isolation** — Claude only has access to the container's filesystem, not the host.
+- **Branch protection on GitHub** (see Setup below) — even a compromised/confused agent can't land changes
+  directly on the base branch; everything goes through a PR that a human reviews and merges.
+- **Non-root container user** — Claude Code itself refuses to run with skip-permissions as root, so the
+  image runs as the built-in `node` user, limiting what a container-level exploit could do even within
+  the container.
+- **Fine-grained, repo-scoped PAT** — the token can't touch other repos or account-wide settings.
+
+None of these alone would be sufficient; together they're why this is a reasonable tradeoff for a private
+repo with a trusted issue author (you).
+
 Each run:
 1. Clones the target repo fresh into the container.
 2. Immediately checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary).
@@ -41,6 +66,9 @@ it's effectively equivalent to passwordless root on the machine (a container can
 and chroot into it). Fine for a personal single-user dev box; just don't treat it as a sandboxed permission.
 
 ## Setup
+
+Requires the `gh` CLI installed on the **host**, not just inside the container — `agent-run`'s duplicate-run
+check (see below) shells out to it before ever touching Docker.
 
 On GitHub, protect the base branch (e.g. `main`) with a ruleset requiring PRs and blocking force-pushes/deletions,
 with a bypass list for yourself/admins. This is what actually stops the agent (or a bug in this script) from
