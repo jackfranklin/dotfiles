@@ -11,6 +11,7 @@ set -euo pipefail
 #
 # Optional:
 #   BASE_BRANCH    - branch to branch from / PR against (default: main)
+#   TEST_ONLY       - if set, clone + npm install + npm test only; skip Claude/PR entirely
 
 : "${REPO:?REPO env var required, e.g. owner/repo}"
 : "${ISSUE_NUMBER:?ISSUE_NUMBER env var required}"
@@ -30,6 +31,69 @@ echo "==> Cloning ${REPO}"
 gh repo clone "${REPO}" "${WORKDIR}" -- --branch "${BASE_BRANCH}"
 cd "${WORKDIR}"
 
+if [ -f package.json ]; then
+  echo "==> Installing dependencies"
+  # Scoped to just this install step (not a Dockerfile-wide ENV) so postinstall scripts can
+  # run, without silently allowing them for every future npm invocation in every repo this
+  # tool ever runs. PUPPETEER_SKIP_DOWNLOAD stops Puppeteer's own postinstall from also
+  # attempting a Chrome download here — without it, both this install and the explicit
+  # `puppeteer browsers install` step below can race on the same cache folder and leave a
+  # partially-downloaded, corrupted install ("folder exists but executable is missing").
+  PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts
+
+  if [ -d node_modules/puppeteer ] || [ -d node_modules/puppeteer-core ]; then
+    # The single, reliable place Chrome actually gets installed (see PUPPETEER_SKIP_DOWNLOAD
+    # above) — needed whether Puppeteer is a direct or transitive dependency. Invoke the local
+    # ./node_modules/.bin binary directly rather than `npx puppeteer`: since puppeteer is often
+    # only a transitive dependency (not in package.json directly), npx's local-bin resolution
+    # isn't guaranteed to find it and can silently fall back to fetching an arbitrary, possibly
+    # newer, puppeteer from the registry — which would target a different Chrome build than the
+    # pinned version in package-lock.json actually expects at test time.
+    echo "==> Installing Puppeteer's Chrome"
+    if [ -x ./node_modules/.bin/puppeteer ]; then
+      ./node_modules/.bin/puppeteer browsers install chrome
+    else
+      echo "==> No local puppeteer CLI binary found (puppeteer-core only?) — falling back to npx"
+      npx puppeteer browsers install chrome
+    fi
+
+    CHROME_BUILD_DIR="$(find "${HOME}/.cache/puppeteer/chrome" -maxdepth 1 -type d -name 'linux-*' 2>/dev/null | head -n1)"
+    CHROME_BIN="${CHROME_BUILD_DIR}/chrome-linux64/chrome"
+
+    if [ ! -x "${CHROME_BIN}" ]; then
+      # Puppeteer's own bundled zip extraction has been observed leaving an incomplete
+      # install here (small files present, large ones like the `chrome` binary itself
+      # missing) even though the downloaded zip is complete and valid — confirmed by
+      # manually re-extracting the same zip with the system `unzip` binary, which produces
+      # a full, correct install. Repair by re-extracting with `unzip` instead of re-downloading.
+      CHROME_ZIP="$(find "${HOME}/.cache/puppeteer/chrome" -maxdepth 1 -name '*-chrome-linux64.zip' 2>/dev/null | head -n1)"
+      if [ -n "${CHROME_ZIP}" ] && [ -n "${CHROME_BUILD_DIR}" ]; then
+        echo "==> Chrome binary missing after puppeteer's own extraction — repairing with unzip"
+        # The zip's internal paths already start with chrome-linux64/, so extract into
+        # CHROME_BUILD_DIR itself, not CHROME_BUILD_DIR/chrome-linux64 (which would double-nest it).
+        unzip -o "${CHROME_ZIP}" -d "${CHROME_BUILD_DIR}"
+      fi
+    fi
+
+    if [ ! -x "${CHROME_BIN}" ]; then
+      echo "==> ERROR: Chrome binary still not found at ${CHROME_BIN} after install and unzip repair." >&2
+      exit 1
+    fi
+    echo "==> Confirmed Chrome binary present: ${CHROME_BIN}"
+  fi
+fi
+
+if [ -n "${TEST_ONLY:-}" ]; then
+  echo "==> TEST_ONLY set — skipping Claude/PR, running npm test only"
+  if npm run | grep -qE '^\s*test$'; then
+    npm test
+  else
+    echo "==> No 'test' script defined in package.json, nothing to run"
+  fi
+  echo "==> Done (test-only)"
+  exit 0
+fi
+
 echo "==> Configuring git identity and credentials"
 git config user.name "${GIT_AUTHOR_NAME}"
 git config user.email "${GIT_AUTHOR_EMAIL}"
@@ -48,14 +112,6 @@ CLAUDE_CONFIG="${HOME}/.claude.json"
 [ -f "${CLAUDE_CONFIG}" ] || echo '{}' > "${CLAUDE_CONFIG}"
 jq --arg path "${WORKDIR}" '.projects[$path].hasTrustDialogAccepted = true' "${CLAUDE_CONFIG}" > "${CLAUDE_CONFIG}.tmp"
 mv "${CLAUDE_CONFIG}.tmp" "${CLAUDE_CONFIG}"
-
-if [ -f package.json ]; then
-  echo "==> Installing dependencies"
-  # Scoped to just this install step (not a Dockerfile-wide ENV) so postinstall scripts
-  # (e.g. Puppeteer downloading Chrome) can run, without silently allowing them for every
-  # future npm invocation in every repo this tool ever runs.
-  npm install --dangerously-allow-all-scripts
-fi
 
 PROMPT="You are working in a clone of ${REPO} on branch ${BRANCH}. Implement the following GitHub issue. Make focused changes, follow existing code conventions, and check package.json for lint/build/test scripts — run whichever are relevant and make sure they pass before finishing. Do not push to ${BASE_BRANCH} directly.
 

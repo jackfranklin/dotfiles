@@ -11,9 +11,12 @@ From inside the target repo's working directory on the host (not inside a contai
 
 ```
 agent-run <issue-number> [base-branch]
+agent-run --test-only [base-branch]
 ```
 
 The GitHub owner is hardcoded to `jackfranklin`; the repo name comes from the current directory's basename. `base-branch` defaults to `main`.
+
+`--test-only` clones, `npm install`s, and runs `npm test` — no Claude, no PR, no duplicate-run checks. Use it to debug the container/install environment itself (e.g. a Puppeteer/Chrome problem) without paying for a full Claude run each time.
 
 Required env vars (fish): `AGENT_RUNNER_GH_TOKEN`, `AGENT_RUNNER_CLAUDE_OAUTH_TOKEN`. If either is unset the script fails fast with a clear message — don't troubleshoot further than checking they're exported.
 

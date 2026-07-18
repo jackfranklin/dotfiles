@@ -11,6 +11,25 @@ allowlisting to GitHub/npm/Anthropic only. Container filesystem isolation and no
 actual boundaries here, not network sandboxing. Worth revisiting if this ever runs against untrusted issue
 content (e.g. a public repo where issue text is attacker-controlled).
 
+**Chrome/Puppeteer OS dependencies are installed at image-build time.** Headless Chrome needs a pile of OS
+shared libraries to actually launch (separate from whether it downloads/extracts correctly). The Dockerfile
+runs `npx @puppeteer/browsers install chrome --install-deps` as root during build (a throwaway install purely
+to trigger `apt` installing the right libraries — Puppeteer's own tooling knows the OS-specific list, so we
+don't hand-maintain one) since `--install-deps` requires root and the container runs as non-root `node` at
+runtime. This can't be done per-repo at runtime since the actual pinned Chrome version isn't known until
+`agent-run` clones a specific repo — but the OS-level libraries a given Chrome major version needs have been
+stable enough in practice that installing them generically at build time works for whatever gets pinned later.
+
+**Containers run with `--cap-add=SYS_ADMIN`.** Chrome's sandbox needs either a SUID-root sandbox binary
+(can't set that up — the container runs as non-root `node` throughout, deliberately, so Claude Code's own
+root-guard doesn't block `--dangerously-skip-permissions`) or the `SYS_ADMIN` capability so its own
+unprivileged-namespace sandbox can work. This is Puppeteer's own documented recommendation for Docker rather
+than the more common workaround of passing `--no-sandbox` to Chrome — `--no-sandbox` isn't something
+`agent-runner` can inject generically anyway, since browser launch args live inside each repo's own test
+config, not in this tool. `SYS_ADMIN` is a meaningfully broad capability (grants things like mount/umount,
+beyond just sandboxing); acceptable here because it's scoped to an already-isolated, ephemeral, per-run
+container, not the host.
+
 ## Why `--dangerously-skip-permissions` is acceptable here
 
 Claude runs with all permission checks disabled, which is normally risky. It's acceptable in this setup
@@ -30,8 +49,23 @@ repo with a trusted issue author (you).
 Each run:
 1. Clones the target repo fresh into the container.
 2. Immediately checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary).
-3. Runs `npm install --dangerously-allow-all-scripts` if `package.json` exists, so dependencies (including
-   things like Puppeteer's Chrome download via postinstall) are ready before Claude starts.
+3. Runs `PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts` if `package.json` exists, so
+   dependencies are ready before Claude starts. `PUPPETEER_SKIP_DOWNLOAD` stops Puppeteer's own postinstall from
+   attempting a Chrome download during this step — if `puppeteer` or `puppeteer-core` ends up in `node_modules`
+   (directly or transitively — e.g. via `@web/test-runner-puppeteer`), Chrome is installed explicitly afterward
+   with `./node_modules/.bin/puppeteer browsers install chrome` (falling back to `npx puppeteer` only if no local
+   binary exists, e.g. `puppeteer-core`-only setups). Letting both the postinstall *and* the explicit step try to
+   download into the same cache folder caused a race that left a corrupted, partially-extracted install ("folder
+   exists but executable is missing") — skipping the postinstall's attempt makes the explicit step the single,
+   reliable place Chrome actually gets installed. Using the local binary rather than bare `npx puppeteer` also
+   avoids a version mismatch: since Puppeteer is often only a transitive dependency, npx's local-bin resolution
+   isn't guaranteed to find it and can silently fetch a different, unpinned puppeteer version from the registry,
+   targeting a Chrome build the pinned version in `package-lock.json` doesn't actually expect at test time.
+   Separately, Puppeteer's own bundled zip extraction has been observed leaving an incomplete install (small
+   files present, large ones like the `chrome` binary itself missing) even when the downloaded zip is complete
+   and valid — confirmed by manually re-extracting the same zip with system `unzip`, which produced a full,
+   correct install. If the `chrome` binary is missing after Puppeteer's own install step, the entrypoint
+   re-extracts the already-downloaded zip with `unzip` as a repair step rather than re-downloading.
 4. Runs `claude -p "..." --dangerously-skip-permissions` with a prompt built from the issue title/body. Claude
    is told to check `package.json` itself for lint/build/test scripts and run whichever are relevant before
    finishing — there's no separate hardcoded lint/build/test step in the entrypoint. Output is streamed as
@@ -101,7 +135,14 @@ set -x AGENT_RUNNER_CLAUDE_OAUTH_TOKEN <token from `claude setup-token`>
 cd ~/code/routemaster   # repo owner defaults to jackfranklin, repo name comes from cwd
 agent-run 55
 agent-run 55 develop   # optional base branch, defaults to main
+
+agent-run --test-only        # clone + npm install + npm test only — no Claude, no PR, no duplicate-run checks
+agent-run --test-only develop   # optional base branch, defaults to main
 ```
+
+`--test-only` is for debugging the container/install environment itself (e.g. whether Puppeteer's Chrome
+download works) without paying for a full Claude run each time. No issue number needed, and it doesn't
+fetch an issue or touch GitHub beyond cloning.
 
 Run multiple in parallel by invoking `agent-run` multiple times concurrently from different repo
 directories (separate terminals, or `(cd repo-a && agent-run 55) & (cd repo-b && agent-run 12) &`);
