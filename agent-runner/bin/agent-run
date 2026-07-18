@@ -23,6 +23,11 @@ BASE_BRANCH="${2:-main}"
 : "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
 : "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
 
+GIT_AUTHOR_NAME="$(git config --global user.name)"
+GIT_AUTHOR_EMAIL="$(git config --global user.email)"
+: "${GIT_AUTHOR_NAME:?git config --global user.name is not set}"
+: "${GIT_AUTHOR_EMAIL:?git config --global user.email is not set}"
+
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
 IMAGE="agent-runner:latest"
@@ -38,5 +43,7 @@ docker run \
   -e BASE_BRANCH="${BASE_BRANCH}" \
   -e GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" \
   -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN}" \
+  -e GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME}" \
+  -e GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL}" \
   --name "${CONTAINER_NAME}" \
   "${IMAGE}"

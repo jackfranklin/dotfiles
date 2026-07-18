@@ -6,6 +6,8 @@ set -euo pipefail
 #   ISSUE_NUMBER          - GitHub issue number to implement
 #   GH_TOKEN              - fine-grained GitHub PAT scoped to REPO (contents, PRs, issues: read/write)
 #   CLAUDE_CODE_OAUTH_TOKEN - long-lived token from `claude setup-token`, tied to your Claude subscription
+#   GIT_AUTHOR_NAME        - git user.name to commit as (passed through from the host's git config)
+#   GIT_AUTHOR_EMAIL       - git user.email to commit as (passed through from the host's git config)
 #
 # Optional:
 #   BASE_BRANCH    - branch to branch from / PR against (default: main)
@@ -14,6 +16,8 @@ set -euo pipefail
 : "${ISSUE_NUMBER:?ISSUE_NUMBER env var required}"
 : "${GH_TOKEN:?GH_TOKEN env var required}"
 : "${CLAUDE_CODE_OAUTH_TOKEN:?CLAUDE_CODE_OAUTH_TOKEN env var required (generate with: claude setup-token)}"
+: "${GIT_AUTHOR_NAME:?GIT_AUTHOR_NAME env var required}"
+: "${GIT_AUTHOR_EMAIL:?GIT_AUTHOR_EMAIL env var required}"
 BASE_BRANCH="${BASE_BRANCH:-main}"
 
 BRANCH="agent/issue-${ISSUE_NUMBER}"
@@ -25,6 +29,13 @@ echo "==> CLAUDE_CODE_OAUTH_TOKEN: ${CLAUDE_CODE_OAUTH_TOKEN:0:13}...${CLAUDE_CO
 echo "==> Cloning ${REPO}"
 gh repo clone "${REPO}" "${WORKDIR}" -- --branch "${BASE_BRANCH}"
 cd "${WORKDIR}"
+
+echo "==> Configuring git identity and credentials"
+git config user.name "${GIT_AUTHOR_NAME}"
+git config user.email "${GIT_AUTHOR_EMAIL}"
+# gh CLI subcommands pick up GH_TOKEN automatically, but plain `git push` doesn't —
+# this wires git's credential helper to shell out to `gh`, which does.
+gh auth setup-git
 
 echo "==> Checking out ${BRANCH}"
 git checkout -b "${BRANCH}"

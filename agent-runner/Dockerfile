@@ -19,6 +19,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 RUN npm install -g @anthropic-ai/claude-code @khanacademy/format-claude-stream
 
+# format-claude-stream (via chalk) disables color when stdout isn't a TTY, which it
+# never is when piped through Docker — force it on regardless.
+ENV FORCE_COLOR=1
+
 WORKDIR /work
 RUN chown node:node /work
 
