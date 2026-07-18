@@ -35,9 +35,9 @@ Because subagents have no conversation context, the main agent must include all 
 | ------------ | ---------------------------------------------------------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `scout`      | `read`, `grep`, `find`, `ls`                                           | `openai-codex/gpt-5.4-mini`, low    | Read-only codebase recon and architecture mapping. Cannot run shell commands such as `git`/`gh`, cannot edit files, cannot use the web. |
 | `researcher` | `web_search`, `web_fetch`                                              | `openai-codex/gpt-5.6-luna`, medium | Public-web research with sourced synthesis. Cannot inspect local files or run commands.                                                 |
-| `worker`     | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.5`, medium      | Isolated implementation or verification work. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
+| `implementer` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.5`, medium      | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
 
-Nested delegation stops at depth 2 in practice: the main agent can spawn `worker`; `worker` can spawn `scout`/`researcher`; those agents do not have the `subagent` tool.
+Nested delegation stops at depth 2 in practice: the main agent can spawn `implementer`; `implementer` can spawn `scout`/`researcher`; those agents do not have the `subagent` tool.
 
 ## Delegation policy
 
@@ -47,9 +47,9 @@ Use subagents when their separate context or isolation is valuable:
 
 - `scout`: unfamiliar code areas where a compact map is better than loading many files into the main context.
 - `researcher`: open-ended external research that would require multiple searches/fetches.
-- `worker`: after the main agent has a clear plan and needs focused implementation or verification, or when the user explicitly asks for a worker.
+- `implementer`: only after the main agent has a clear plan and needs a discrete, isolated implementation task completed. Its task must include the relevant scope, constraints, and acceptance criteria.
 
-Do not delegate just because a task uses tools. The main agent can read, edit, run tests, use `git`/`gh`, and make decisions itself. In particular, do not ask a `worker` to perform the initial investigation or write the plan before the main agent has established one.
+Do not delegate just because a task uses tools. The main agent can read, edit, run tests, use `git`/`gh`, and make decisions itself. Never use `implementer` for general queries, initial investigation, architectural decisions, or writing the plan.
 
 ## Parallelism and concurrency
 
@@ -63,7 +63,7 @@ To fan out work, emit multiple independent `subagent` tool calls in the same ass
 }
 ```
 
-The semaphore is process-local. A nested worker process has its own cap, so `maxConcurrency` limits direct children of that process, not the whole tree.
+The semaphore is process-local. A nested implementer process has its own cap, so `maxConcurrency` limits direct children of that process, not the whole tree.
 
 ## Live UI progress
 
@@ -112,7 +112,7 @@ This keeps the interactive main session able to prompt normally while preventing
 - `pi/extensions/subagents/config.json` — `maxConcurrency` for direct child processes.
 - `pi/extensions/subagents/agents/scout.md` — scout frontmatter and system prompt.
 - `pi/extensions/subagents/agents/researcher.md` — researcher frontmatter and system prompt.
-- `pi/extensions/subagents/agents/worker.md` — worker frontmatter/system prompt plus nested delegation guidance.
+- `pi/extensions/subagents/agents/implementer.md` — implementer frontmatter/system prompt plus nested delegation guidance.
 
 Agent frontmatter fields used by `index.ts`:
 

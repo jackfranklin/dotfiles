@@ -1,7 +1,7 @@
 /**
  * Minimal subagents extension.
  *
- * Registers a single `subagent` tool with three agents: scout, researcher, worker.
+ * Registers a single `subagent` tool with three agents: scout, researcher, implementer.
  * Supports single and parallel execution. Output is verbal only (no file handoff).
  *
  * Dotfiles adaptation:
@@ -883,11 +883,11 @@ export default function (pi: ExtensionAPI) {
 			"Run a subagent to complete a task. Subagents have NO context from the current conversation — include all necessary context in the task description.",
 		promptSnippet: "Run subagents for delegated tasks",
 		promptGuidelines: [
-			"The main agent owns planning, design decisions, and the user-facing answer. Do not delegate an initial investigation or the writing of a plan to worker.",
-			"Use a worker only after the main agent has established a clear plan and needs isolated implementation or verification work, when the user explicitly asks for a worker, or for genuinely independent self-contained tasks that benefit from parallel execution. The main agent can use its own tools; needing bash, git, gh, tests, or edits alone is not a reason to delegate.",
+			"The main agent owns planning, design decisions, and the user-facing answer. Do not delegate initial investigation, general queries, or writing a plan to implementer.",
+			"Use implementer only after the main agent has established a clear plan and needs a discrete, isolated implementation task completed. Give it the relevant plan, scope, constraints, and acceptance criteria. The main agent can use its own tools; needing bash, git, gh, tests, or edits alone is not a reason to delegate.",
 			"scout has only read, grep, find, and ls. Use scout only for read-only local codebase exploration or architecture mapping; it cannot run CLI commands such as git or gh.",
 			"researcher has only web_search and web_fetch. Use researcher only for public-web research; it cannot inspect the local repo or run CLI commands.",
-			"worker has bash plus file and web tools. Use it for focused implementation or verification that meets the delegation criteria above. For example, after a plan is agreed, use one worker per independent GitHub PR review when gh pr view or gh pr diff is required.",
+			"implementer has bash plus file and web tools. Use it only for the bounded implementation work described above, not as a general-purpose agent.",
 			"When the user explicitly asks to use subagents, prefer using the subagent tool rather than doing the work yourself.",
 			"When the user lists multiple independent subagent tasks, launch ALL of them immediately by emitting multiple subagent tool calls in the same assistant turn. Do not wait for one subagent to finish before starting another independent one.",
 			"Parallel tool calls are your primary parallelism mechanism—put multiple independent subagent calls in one function_calls block, and also batch independent read/fetch/search calls where appropriate.",

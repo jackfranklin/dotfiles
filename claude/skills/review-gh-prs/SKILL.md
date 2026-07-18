@@ -91,14 +91,11 @@ When no PR number is provided:
 
 2. If there are no open PRs, say so and stop.
 
-3. If there are open PRs, spawn one **`worker`** subagent per PR in parallel.
-   Do **not** use `scout` or `researcher`: this review requires the `gh` CLI,
-   which only `worker` can run. Each worker receives:
-   - The PR number
-   - The instruction to run `gh pr view` and `gh pr diff`, follow the Single
-     PR Review steps above, and return the formatted verdict block
+3. Review each PR yourself using the Single PR Review steps above. Do not use
+   `implementer`: PR triage is not implementation work from an established
+   plan.
 
-4. Collect all verdicts and present them as a single summary:
+4. Present all verdicts as a single summary:
 
 ```
 # PR Review Summary
