@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Usage: agent-run <issue-number> [base-branch]
+#
+# Run from inside the target repo's directory on your host — the GitHub owner defaults to
+# jackfranklin and the repo name is taken from the current directory's name.
+#
+# Requires env vars:
+#   AGENT_RUNNER_GH_TOKEN            - fine-grained GitHub PAT scoped to the target repo
+#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  - long-lived token from `claude setup-token` (needs Pro/Max/Team/Enterprise)
+
+if [ "$#" -lt 1 ]; then
+  echo "Usage: agent-run <issue-number> [base-branch]" >&2
+  exit 1
+fi
+
+GH_OWNER="jackfranklin"
+REPO="${GH_OWNER}/$(basename "${PWD}")"
+ISSUE_NUMBER="$1"
+BASE_BRANCH="${2:-main}"
+
+: "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
+: "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
+IMAGE="agent-runner:latest"
+
+docker build -t "${IMAGE}" "${SCRIPT_DIR}/.."
+
+CONTAINER_NAME="agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-$(date +%Y%m%d-%H%M%S)"
+echo "==> Container name: ${CONTAINER_NAME} (kept after exit — inspect with 'docker cp' or 'docker start -ai', remove with 'docker rm')"
+
+docker run \
+  -e REPO="${REPO}" \
+  -e ISSUE_NUMBER="${ISSUE_NUMBER}" \
+  -e BASE_BRANCH="${BASE_BRANCH}" \
+  -e GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" \
+  -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN}" \
+  --name "${CONTAINER_NAME}" \
+  "${IMAGE}"
