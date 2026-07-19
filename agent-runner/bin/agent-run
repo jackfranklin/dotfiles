@@ -1,0 +1,89 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Usage: agent-run <issue-number> [base-branch]
+#        agent-run --test-only [base-branch]
+#
+# Run from inside the target repo's directory on your host — the GitHub owner defaults to
+# jackfranklin and the repo name is taken from the current directory's name.
+#
+# --test-only: skip Claude/PR entirely — just clone, npm install, and `npm test` (if defined).
+# Useful for debugging environment issues (e.g. Puppeteer's Chrome download) without paying
+# for a full Claude run each time. No issue number needed — no GitHub issue is fetched and no
+# duplicate-run checks apply in this mode.
+#
+# Requires env vars:
+#   AGENT_RUNNER_GH_TOKEN            - fine-grained GitHub PAT scoped to the target repo
+#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  - long-lived token from `claude setup-token` (needs Pro/Max/Team/Enterprise)
+
+TEST_ONLY=""
+if [ "${1:-}" = "--test-only" ]; then
+  TEST_ONLY="1"
+  shift
+fi
+
+GH_OWNER="jackfranklin"
+REPO="${GH_OWNER}/$(basename "${PWD}")"
+
+if [ -n "${TEST_ONLY}" ]; then
+  ISSUE_NUMBER="test-only-$(date +%s)"
+  BASE_BRANCH="${1:-main}"
+else
+  if [ "$#" -lt 1 ]; then
+    echo "Usage: agent-run <issue-number> [base-branch]" >&2
+    echo "       agent-run --test-only [base-branch]" >&2
+    exit 1
+  fi
+  ISSUE_NUMBER="$1"
+  BASE_BRANCH="${2:-main}"
+fi
+
+: "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
+: "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
+
+GIT_AUTHOR_NAME="$(git config --global user.name)"
+GIT_AUTHOR_EMAIL="$(git config --global user.email)"
+: "${GIT_AUTHOR_NAME:?git config --global user.name is not set}"
+: "${GIT_AUTHOR_EMAIL:?git config --global user.email is not set}"
+
+BRANCH="agent/issue-${ISSUE_NUMBER}"
+
+if [ -z "${TEST_ONLY}" ]; then
+  echo "==> Checking for an existing PR on ${BRANCH}"
+  EXISTING_PR_URL="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr list --repo "${REPO}" --head "${BRANCH}" --state open --json url --jq '.[0].url // empty')"
+  if [ -n "${EXISTING_PR_URL}" ]; then
+    echo "An open PR already exists for issue #${ISSUE_NUMBER}: ${EXISTING_PR_URL}" >&2
+    echo "Refusing to start a duplicate run. Close/merge it first, or delete the ${BRANCH} branch if you want to redo it." >&2
+    exit 1
+  fi
+
+  echo "==> Checking for an already-running container on this issue"
+  RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-[0-9]" --format '{{.Names}}' | head -n1)"
+  if [ -n "${RUNNING_CONTAINER}" ]; then
+    echo "A container is already running for issue #${ISSUE_NUMBER}: ${RUNNING_CONTAINER}" >&2
+    echo "Refusing to start a duplicate run. Wait for it to finish, or 'docker rm -f ${RUNNING_CONTAINER}' to stop it." >&2
+    exit 1
+  fi
+fi
+
+SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
+SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
+IMAGE="agent-runner:latest"
+
+docker build -t "${IMAGE}" "${SCRIPT_DIR}/.."
+
+CONTAINER_NAME="agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-$(date +%Y%m%d-%H%M%S)"
+echo "==> Container name: ${CONTAINER_NAME} (kept after exit — inspect with 'docker cp' or 'docker start -ai', remove with 'docker rm')"
+
+docker run \
+  --cap-add=SYS_ADMIN \
+  -e REPO="${REPO}" \
+  -e ISSUE_NUMBER="${ISSUE_NUMBER}" \
+  -e BASE_BRANCH="${BASE_BRANCH}" \
+  -e GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" \
+  -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN}" \
+  -e GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME}" \
+  -e GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL}" \
+  -e TEST_ONLY="${TEST_ONLY}" \
+  --name "${CONTAINER_NAME}" \
+  "${IMAGE}"

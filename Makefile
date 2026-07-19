@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk agent-runner
 
 DIR="${HOME}/dotfiles"
 
@@ -42,9 +42,25 @@ git:
 bin:
 	@ln -sf $(DIR)/bin ~/.bin
 
+agent-runner:
+	@ln -nsf $(DIR)/agent-runner/bin/agent-run ~/.local/bin/agent-run
+
 ubuntu-deps:
 	sudo apt-get install silversearcher-ag fish build-essential tmux ripgrep zip
 	sudo apt install clang libclang-dev
+
+ubuntu-docker-deps:
+	sudo apt-get remove -y docker docker-engine docker.io containerd runc || true
+	sudo apt-get update
+	sudo apt-get install -y ca-certificates curl
+	sudo install -m 0755 -d /etc/apt/keyrings
+	sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+	sudo chmod a+r /etc/apt/keyrings/docker.asc
+	echo "deb [arch=$$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu $$(. /etc/os-release && echo "$$VERSION_CODENAME") stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+	sudo apt-get update
+	sudo apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+	sudo usermod -aG docker $$USER
+	@echo "Docker installed. Log out/in (or run 'newgrp docker') for group membership to take effect, then verify with: docker run hello-world"
 
 fisher:
 	curl -sL https://git.io/fisher | source && fisher install jorgebucaran/fisher
