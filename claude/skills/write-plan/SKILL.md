@@ -4,8 +4,9 @@ name: write-plan
 description: >
   Write a comprehensive, no-placeholder implementation plan as a series of
   bite-sized tasks, each with exact file paths, real code, TDD steps, and
-  commit instructions. Stores plans on the relevant GitHub issue when one
-  exists, otherwise creates a standalone [PLAN] issue. Use after preflight
+  commit instructions. Reviews the plan with the user task by task before
+  storing an explicitly approved plan on the relevant GitHub issue when one
+  exists, otherwise creating a standalone [PLAN] issue. Use after preflight
   has established what to build.
 ---
 
@@ -148,7 +149,29 @@ fresh eyes.
 
 Fix issues inline. If a spec requirement has no task, add the task.
 
-## Step 5: Persist the Plan on GitHub
+## Step 5: Review the Plan with the User
+
+Do **not** write the plan to GitHub yet. After self-review, walk the user
+through the plan slowly, one task at a time, so they can validate the approach,
+ask questions, and request changes before it becomes canonical.
+
+1. Briefly present the document header, file map, and task list.
+2. Present Task 1 in full, explain its deliverable and dependencies, then stop
+   and ask for feedback. Do not continue to the next task until the user has
+   had an opportunity to respond.
+3. Repeat for every remaining task. Incorporate agreed changes into the plan
+   before moving on; keep interfaces, tests, and task boundaries consistent
+   when a change affects multiple tasks.
+4. After the final task, show or summarize the revised complete plan and ask
+   for explicit approval to persist it. Approval must be unambiguous (for
+   example, "approve the plan" or "post it to GitHub"). Questions, silence,
+   or approval of an individual task are not approval to publish the plan.
+5. If the user requests changes, revise the plan and repeat the affected parts
+   of the walkthrough and final approval request.
+
+## Step 6: Persist the Approved Plan on GitHub
+
+Only after the user explicitly approves the complete plan:
 
 1. Verify there is a GitHub remote: `gh repo view --json nameWithOwner` — if it fails, stop and tell the user.
 2. Determine the destination:
