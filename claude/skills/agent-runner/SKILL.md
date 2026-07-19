@@ -7,6 +7,14 @@ description: Run, inspect, or clean up agent-runner Docker containers — the to
 
 ## Running it
 
+Before starting a real run (not needed for `--test-only`), check the issue has a fully formed implementation plan by confirming it carries the `ready-for-impl` label (added by the `write-plan` skill once it posts a complete plan):
+
+```
+gh issue view <issue-number> --json labels --jq '.labels[].name'
+```
+
+If `ready-for-impl` is missing, don't proceed silently — tell the user the issue doesn't appear to have a finished plan yet and confirm they still want to run it (e.g. the plan may exist but the label wasn't applied, or the issue may genuinely need more investigation first via `write-plan`).
+
 From inside the target repo's working directory on the host (not inside a container):
 
 ```

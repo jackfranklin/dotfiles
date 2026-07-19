@@ -166,4 +166,13 @@ Fix issues inline. If a spec requirement has no task, add the task.
    gh api repos/<owner>/<repo>/issues/<issue-number>/comments --paginate
    ```
    Remove superseded plan comments so there is exactly one canonical implementation plan. Delete only comments authored by the current user/agent; if an obsolete plan comment belongs to someone else, ask the user before deleting it.
-4. After posting, verify the issue has one canonical plan and no obsolete plan comments. Tell the user the issue URL and ask how they want to proceed: inline execution in this session, or they'll drive it themselves.
+4. After posting, verify the issue has one canonical plan and no obsolete plan comments.
+5. Label the issue `ready-for-impl` so it's easy to find issues with a fully formed plan (e.g. for `agent-runner`) versus ones still needing investigation:
+   ```
+   gh issue edit <issue-number> --add-label ready-for-impl
+   ```
+   If the label doesn't exist yet in the repo, create it first:
+   ```
+   gh label create ready-for-impl --description "Has a fully formed implementation plan, ready for automated/manual implementation" --color 0E8A16
+   ```
+6. Tell the user the issue URL and ask how they want to proceed: inline execution in this session, or they'll drive it themselves.
