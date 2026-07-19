@@ -112,7 +112,7 @@ container has full shell access and could work around local-only guardrails.
 Create a fine-grained GitHub PAT scoped to just the repo(s) you'll run this against, with:
 - Contents: read/write
 - Pull requests: read/write
-- Issues: read
+- Issues: read/write
 
 Generate a Claude Code OAuth token (requires a Pro/Max/Team/Enterprise subscription) by running
 `claude setup-token` on your host machine. It walks you through browser OAuth and prints a token
@@ -127,6 +127,14 @@ make agent-runner
 Symlinks `agent-runner/bin/agent-run` to `~/.local/bin/agent-run`.
 
 ## Usage
+
+Before running against an issue, check it's labeled `ready-for-impl` (the `write-plan` skill applies this
+label once it posts a complete implementation plan to the issue). If it's missing, the plan may not be
+finished yet — confirm with whoever's running it before proceeding rather than assuming it's ready:
+
+```
+gh issue view <issue-number> --json labels --jq '.labels[].name'
+```
 
 ```fish
 set -x AGENT_RUNNER_GH_TOKEN <fine-grained PAT scoped to the repo>
