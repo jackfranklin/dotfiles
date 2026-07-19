@@ -158,7 +158,24 @@ describe("risk-based decide", () => {
 		assert.equal(decide("bash", command, safe, prompt, block), "allow");
 	});
 
-	it("does not trust a mktemp variable after it is reassigned", () => {
+	it("allows redirects through variables directly assigned a temporary path", () => {
+		const plan = [
+			"timestamp=$(date +%Y%m%d-%H%M%S)",
+			'plan="/tmp/plan-${timestamp}.md"',
+			'gh issue view 84 --json body --jq .body > "$plan"',
+		].join("\n");
+		assert.equal(decide("bash", plan, safe, prompt, block), "allow");
+
+		const review = [
+			"log=/tmp/ai-review.log",
+			"pidfile=/tmp/ai-review.pid",
+			'node review.js > "$log" 2>&1 &',
+			'echo $! > "$pidfile"',
+		].join("\n");
+		assert.equal(decide("bash", review, safe, prompt, block), "allow");
+	});
+
+	it("does not trust a temporary variable after reassignment or an indirect path assignment", () => {
 		const command = ["plan_file=$(mktemp)", "plan_file=/etc/passwd", 'rm "$plan_file"'].join("\n");
 		assert.equal(decide("bash", command, safe, prompt, block), "prompt");
 
@@ -166,6 +183,9 @@ describe("risk-based decide", () => {
 		const analysis = analyzeDecision("bash", redirect, safe, prompt, block);
 		assert.equal(analysis.decision, "prompt");
 		assert.deepEqual(analysis.riskyRedirectTargets, ["$plan_file"]);
+
+		const indirect = ['plan="/tmp/$untrusted_path"', 'echo hi > "$plan"'].join("\n");
+		assert.equal(decide("bash", indirect, safe, prompt, block), "prompt");
 	});
 
 	it("prompts on an empty command", () => {

@@ -96,10 +96,12 @@ Read redirections and benign write redirections to `/dev/null`, `/dev/stdout`,
 `/dev/stderr`, and `/dev/fd/*` are allowed.
 
 Write redirections to real files prompt in the main UI and block without UI.
-A variable assigned directly from the no-argument form of `mktemp` is treated
-as a temporary-file target for later segments in that same bash call, so a
-standard create/use/cleanup sequence does not prompt. Reassigning or unsetting
-that variable revokes the exception.
+A variable assigned directly from the no-argument form of `mktemp`, or directly
+to a `/tmp/...` path with a fixed first path component (for example,
+`plan="/tmp/plan-${timestamp}.md"`), is treated as a temporary-file target for
+later segments in that same bash call. This permits standard
+create/use/cleanup sequences without a prompt. Reassigning or unsetting that
+variable revokes the exception.
 
 `write` and `edit` calls prompt when the path is outside the current working
 directory or targets sensitive system locations such as `/etc`, `/usr`, `/var`,

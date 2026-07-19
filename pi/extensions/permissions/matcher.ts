@@ -204,11 +204,21 @@ function isTmpOnlyFileOperation(segment: string, temporaryVariables: ReadonlySet
 	return false;
 }
 
+/** True for a direct `/tmp/...` assignment with a stable path prefix. */
+function isTrustedTemporaryPathAssignment(value: string): boolean {
+	const unquoted = unquote(value.trim());
+	if (unquoted.includes("$(") || unquoted.includes("`")) return false;
+	if (!unquoted.startsWith("/tmp/")) return false;
+
+	// Require a fixed first path component. This permits names such as
+	// /tmp/plan-${timestamp}.md, but not /tmp/$untrusted/path.
+	return /^[A-Za-z0-9_-]+/.test(unquoted.slice("/tmp/".length));
+}
+
 /**
- * Tracks variables assigned directly from `mktemp` within one bash tool call.
- * They may be used as temporary-file targets by later segments only; any later
- * assignment or `unset` revokes that trust. Deliberately recognise only the
- * no-argument form, whose output is a file under the system temporary dir.
+ * Tracks variables that are known to contain temporary paths within one bash
+ * tool call. Trust only `$(mktemp)` or direct `/tmp/...` assignments; any later
+ * assignment or `unset` revokes that trust.
  */
 function temporaryVariablesBeforeSegments(segments: string[]): ReadonlySet<string>[] {
 	const temporaryVariables = new Set<string>();
@@ -216,18 +226,23 @@ function temporaryVariablesBeforeSegments(segments: string[]): ReadonlySet<strin
 
 	for (const segment of segments) {
 		states.push(new Set(temporaryVariables));
-		const assignment = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(?:"\$\(mktemp\)"|\$\(mktemp\))\s*$/.exec(
-			segment.trim(),
-		);
+		const trimmed = segment.trim();
+		const assignment = /^(?:export\s+)?([A-Za-z_][A-Za-z0-9_]*)=(.*)$/.exec(trimmed);
 		if (assignment) {
-			temporaryVariables.add(assignment[1]);
+			const [, name, value] = assignment;
+			if (
+				value === "$(mktemp)" ||
+				value === '"$(mktemp)"' ||
+				isTrustedTemporaryPathAssignment(value)
+			) {
+				temporaryVariables.add(name);
+			} else {
+				temporaryVariables.delete(name);
+			}
 			continue;
 		}
 
-		const reassignment = /^([A-Za-z_][A-Za-z0-9_]*)=/.exec(segment.trim());
-		if (reassignment) temporaryVariables.delete(reassignment[1]);
-
-		const unset = /^unset\s+([A-Za-z_][A-Za-z0-9_]*)\s*$/.exec(segment.trim());
+		const unset = /^unset\s+([A-Za-z_][A-Za-z0-9_]*)\s*$/.exec(trimmed);
 		if (unset) temporaryVariables.delete(unset[1]);
 	}
 
