@@ -14,6 +14,7 @@ export interface ApprovalRequest {
 	tool: string;
 	cwd: string;
 	subject: string;
+	rationale: string;
 	unmatchedSegments: string[];
 	riskyRedirectTargets: string[];
 	reasons: string[];

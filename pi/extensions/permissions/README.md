@@ -130,6 +130,15 @@ variable revokes the exception.
 directory or targets sensitive system locations such as `/etc`, `/usr`, `/var`,
 `/dev`, `/proc`, or `/sys`.
 
+## Approval rationale
+
+Before a tool call likely to need approval, the extension instructs the agent to
+write an `Approval rationale:` paragraph in the same assistant message. It must
+say what the operation does, why it is needed for the user's goal, and why its
+risky effect is necessary. The approval dialog displays that explanation above
+its risk details. If the agent omits it, the call is blocked with instructions
+to explain and retry; the user is never asked to approve an unexplained call.
+
 ## Prompt actions
 
 When a call needs approval, the UI offers:
@@ -151,9 +160,9 @@ Every interactive approval dialog is recorded locally in:
 
 The append-only JSONL log records an `approval-request` and its corresponding
 `approval-decision` with a shared id, including the working directory,
-command/path, risk details, and selected action. A dialog interrupted before a selection still has its
-request entry. The file is created with mode `0600`; it is local history and is
-not part of the dotfiles symlink.
+command/path, the agent's rationale, risk details, and selected action. A dialog
+interrupted before a selection still has its request entry. The file is created
+with mode `0600`; it is local history and is not part of the dotfiles symlink.
 
 For example, inspect it with:
 

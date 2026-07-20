@@ -8,6 +8,8 @@
  *
  * See store.ts / matcher.ts / glob.ts for the pieces.
  */
+import type { AgentMessage } from '@earendil-works/pi-agent-core';
+import type { AssistantMessage } from '@earendil-works/pi-ai';
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { PermissionApprovalLog } from "./approval-log.ts";
 import { createGitProbe, planGitTrackedRm } from "./git-rm.ts";
@@ -21,9 +23,19 @@ function subjectFor(toolName: string, input: Record<string, unknown>): string | 
 	return typeof input.path === "string" ? input.path : undefined;
 }
 
+const APPROVAL_RATIONALE_INSTRUCTIONS = `
+
+## Permission approval rationale
+
+Some tool calls require the user to approve potentially risky changes. Before any tool call that is likely to need approval (for example deleting, moving, copying, installing, changing permissions, resetting Git state, writing through a shell redirect, or writing outside the project), include a concise user-facing paragraph in the same assistant message immediately before the tool calls. Start it exactly with \`Approval rationale:\`. Explain what the command will do, why it is necessary for the user's goal, and why its potentially risky effect is needed rather than a safer alternative. State the affected scope when useful. Do not provide private chain-of-thought; give a factual 2–4 sentence justification. If unsure whether approval is needed, include the rationale.`;
+
 export default function (pi: ExtensionAPI) {
 	const store = new PermissionStore();
 	const approvalLog = new PermissionApprovalLog();
+
+	pi.on('before_agent_start', (event) => ({
+		systemPrompt: `${event.systemPrompt}${APPROVAL_RATIONALE_INSTRUCTIONS}`,
+	}));
 
 	pi.on("tool_call", async (event, ctx) => {
 		const label = TOOL_LABELS[event.toolName];
@@ -58,10 +70,25 @@ export default function (pi: ExtensionAPI) {
 			return { block: true, reason: "Command requires approval and no UI is available to confirm" };
 		}
 
+		const rationale = approvalRationaleForToolCall(
+			ctx.sessionManager
+				.getEntries()
+				.flatMap((entry) => (entry.type === 'message' ? [entry.message] : [])),
+			event.toolCallId,
+		);
+		if (!rationale) {
+			return {
+				block: true,
+				reason:
+					'Approval explanation required. Before retrying this tool call, write an `Approval rationale:` paragraph that says what it will do, why it is needed for the user\'s goal, and why its risky effect is necessary.',
+			};
+		}
+
 		const approvalId = approvalLog.request({
 			tool: event.toolName,
 			cwd: ctx.cwd,
 			subject,
+			rationale,
 			unmatchedSegments: analysis.unmatchedSegments,
 			riskyRedirectTargets: analysis.riskyRedirectTargets,
 			reasons: analysis.reasons,
@@ -72,7 +99,7 @@ export default function (pi: ExtensionAPI) {
 			store.safe,
 		);
 		const addMissingBareChoice = formatAddMissingBareChoice(missingBareEntries);
-		const header = `Approval needed:\n\n  ${label}: ${subject}${formatPromptDetails(analysis, missingBareEntries)}\n\nWhat would you like to do?`;
+		const header = `Approval needed:\n\n  ${label}: ${subject}\n\nAgent's rationale:\n  ${rationale}${formatPromptDetails(analysis, missingBareEntries)}\n\nWhat would you like to do?`;
 		const choices = [
 			...(addMissingBareChoice ? [addMissingBareChoice] : []),
 			"Allow once",
@@ -113,6 +140,43 @@ export default function (pi: ExtensionAPI) {
 
 interface EditorUI {
 	editor: (title: string, prefill?: string) => Promise<string | undefined>;
+}
+
+/**
+ * Return the agent's explicit, user-facing explanation for a tool call. The
+ * rationale must be text preceding that call in the same assistant message, so
+ * an explanation from an earlier step cannot accidentally justify a later one.
+ */
+export function approvalRationaleForToolCall(
+	messages: readonly AgentMessage[],
+	toolCallId: string,
+): string | undefined {
+	for (let messageIndex = messages.length - 1; messageIndex >= 0; messageIndex -= 1) {
+		const message = messages[messageIndex];
+		if (message.role !== 'assistant') continue;
+
+		const toolCallIndex = message.content.findIndex(
+			(block) => block.type === 'toolCall' && block.id === toolCallId,
+		);
+		if (toolCallIndex === -1) continue;
+
+		return extractApprovalRationale(message, toolCallIndex);
+	}
+	return undefined;
+}
+
+function extractApprovalRationale(message: AssistantMessage, toolCallIndex: number): string | undefined {
+	const text = message.content
+		.slice(0, toolCallIndex)
+		.filter((block) => block.type === 'text')
+		.map((block) => block.text)
+		.join('\n')
+		.trim();
+	const match = /(?:^|\n)\s*Approval rationale:\s*([\s\S]+)$/i.exec(text);
+	if (!match) return undefined;
+
+	const rationale = match[1].replace(/\s+/g, ' ').trim();
+	return rationale || undefined;
 }
 
 interface PromptAnalysis {
