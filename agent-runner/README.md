@@ -66,8 +66,9 @@ Each run:
    and valid — confirmed by manually re-extracting the same zip with system `unzip`, which produced a full,
    correct install. If the `chrome` binary is missing after Puppeteer's own install step, the entrypoint
    re-extracts the already-downloaded zip with `unzip` as a repair step rather than re-downloading.
-4. Runs `claude -p "..." --dangerously-skip-permissions` with a prompt built from the issue title/body. Claude
-   is told to check `package.json` itself for lint/build/test scripts and run whichever are relevant before
+4. Runs `claude -p "..." --dangerously-skip-permissions` with a prompt built from the issue title/body and,
+   when supplied, a caller-provided additional instruction. Claude is told to check `package.json` itself for
+   lint/build/test scripts and run whichever are relevant before
    finishing — there's no separate hardcoded lint/build/test step in the entrypoint. Output is streamed as
    `stream-json` and piped through [`format-claude-stream`](https://github.com/Khan/format-claude-stream) for
    readable live progress instead of just the final response.
@@ -143,10 +144,16 @@ set -x AGENT_RUNNER_CLAUDE_OAUTH_TOKEN <token from `claude setup-token`>
 cd ~/code/routemaster   # repo owner defaults to jackfranklin, repo name comes from cwd
 agent-run 55
 agent-run 55 develop   # optional base branch, defaults to main
+agent-run 55 --instruction 'Prefer a small, backward-compatible change.'
+agent-run 55 -i 'Update the documentation too.' -i 'Keep the public API unchanged.'
 
 agent-run --test-only        # clone + npm install + npm test only — no Claude, no PR, no duplicate-run checks
 agent-run --test-only develop   # optional base branch, defaults to main
 ```
+
+`--instruction` (or `-i`) appends text to Claude's normal issue prompt; repeat it to add multiple
+instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`,
+which does not run Claude.
 
 `--test-only` is for debugging the container/install environment itself (e.g. whether Puppeteer's Chrome
 download works) without paying for a full Claude run each time. No issue number needed, and it doesn't

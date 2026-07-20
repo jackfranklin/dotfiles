@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage: agent-run <issue-number> [base-branch]
+# Usage: agent-run <issue-number> [base-branch] [--instruction <text>]
 #        agent-run --test-only [base-branch]
 #
 # Run from inside the target repo's directory on your host — the GitHub owner defaults to
@@ -16,27 +16,70 @@ set -euo pipefail
 #   AGENT_RUNNER_GH_TOKEN            - fine-grained GitHub PAT scoped to the target repo
 #   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  - long-lived token from `claude setup-token` (needs Pro/Max/Team/Enterprise)
 
+usage() {
+  echo "Usage: agent-run <issue-number> [base-branch] [--instruction <text>]" >&2
+  echo "       agent-run --test-only [base-branch]" >&2
+}
+
 TEST_ONLY=""
-if [ "${1:-}" = "--test-only" ]; then
-  TEST_ONLY="1"
+ADDITIONAL_INSTRUCTIONS=""
+POSITIONAL=()
+
+while [ "$#" -gt 0 ]; do
+  case "$1" in
+    --test-only)
+      TEST_ONLY="1"
+      ;;
+    --instruction|-i)
+      if [ "$#" -lt 2 ]; then
+        echo "--instruction requires text" >&2
+        usage
+        exit 1
+      fi
+      if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
+        ADDITIONAL_INSTRUCTIONS+=$'\n\n'
+      fi
+      ADDITIONAL_INSTRUCTIONS+="$2"
+      shift
+      ;;
+    --help|-h)
+      usage
+      exit 0
+      ;;
+    --*)
+      echo "Unknown option: $1" >&2
+      usage
+      exit 1
+      ;;
+    *)
+      POSITIONAL+=("$1")
+      ;;
+  esac
   shift
+done
+
+if [ -n "${TEST_ONLY}" ]; then
+  if [ "${#POSITIONAL[@]}" -gt 1 ]; then
+    usage
+    exit 1
+  fi
+  if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
+    echo "--instruction cannot be used with --test-only" >&2
+    exit 1
+  fi
+  ISSUE_NUMBER="test-only-$(date +%s)"
+  BASE_BRANCH="${POSITIONAL[0]:-main}"
+else
+  if [ "${#POSITIONAL[@]}" -lt 1 ] || [ "${#POSITIONAL[@]}" -gt 2 ]; then
+    usage
+    exit 1
+  fi
+  ISSUE_NUMBER="${POSITIONAL[0]}"
+  BASE_BRANCH="${POSITIONAL[1]:-main}"
 fi
 
 GH_OWNER="jackfranklin"
 REPO="${GH_OWNER}/$(basename "${PWD}")"
-
-if [ -n "${TEST_ONLY}" ]; then
-  ISSUE_NUMBER="test-only-$(date +%s)"
-  BASE_BRANCH="${1:-main}"
-else
-  if [ "$#" -lt 1 ]; then
-    echo "Usage: agent-run <issue-number> [base-branch]" >&2
-    echo "       agent-run --test-only [base-branch]" >&2
-    exit 1
-  fi
-  ISSUE_NUMBER="$1"
-  BASE_BRANCH="${2:-main}"
-fi
 
 : "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
 : "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
@@ -85,5 +128,6 @@ docker run \
   -e GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME}" \
   -e GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL}" \
   -e TEST_ONLY="${TEST_ONLY}" \
+  -e ADDITIONAL_INSTRUCTIONS="${ADDITIONAL_INSTRUCTIONS}" \
   --name "${CONTAINER_NAME}" \
   "${IMAGE}"

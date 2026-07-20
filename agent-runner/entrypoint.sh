@@ -10,8 +10,9 @@ set -euo pipefail
 #   GIT_AUTHOR_EMAIL       - git user.email to commit as (passed through from the host's git config)
 #
 # Optional:
-#   BASE_BRANCH    - branch to branch from / PR against (default: main)
-#   TEST_ONLY       - if set, clone + npm install + npm test only; skip Claude/PR entirely
+#   BASE_BRANCH               - branch to branch from / PR against (default: main)
+#   TEST_ONLY                 - if set, clone + npm install + npm test only; skip Claude/PR entirely
+#   ADDITIONAL_INSTRUCTIONS   - text to append to Claude's default issue prompt
 
 : "${REPO:?REPO env var required, e.g. owner/repo}"
 : "${ISSUE_NUMBER:?ISSUE_NUMBER env var required}"
@@ -118,6 +119,11 @@ PROMPT="You are working in a clone of ${REPO} on branch ${BRANCH}. Implement the
 Once you're finished and everything passes, commit your changes with a clear message, run 'git push -u origin ${BRANCH}', and open a pull request against ${BASE_BRANCH} yourself using 'gh pr create'. Write a specific, descriptive title (not just the issue title verbatim), and a body that a reviewer with no other context could use to understand the change: summarize what you changed and why, call out any notable implementation decisions or tradeoffs, and note anything you deliberately left out of scope. Include 'Closes #${ISSUE_NUMBER}' in the body.
 
 ${ISSUE_BODY}"
+
+if [ -n "${ADDITIONAL_INSTRUCTIONS:-}" ]; then
+  PROMPT+=$'\n\nAdditional instructions from the person starting this run:\n\n'
+  PROMPT+="${ADDITIONAL_INSTRUCTIONS}"
+fi
 
 echo "==> Running claude"
 stdbuf -oL claude -p "${PROMPT}" --dangerously-skip-permissions --output-format stream-json --verbose --include-partial-messages \

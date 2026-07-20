@@ -208,7 +208,7 @@ Only after the user explicitly approves the complete plan:
    ```
    Remove superseded plan comments so there is exactly one canonical implementation plan. Delete only comments authored by the current user/agent; if an obsolete plan comment belongs to someone else, ask the user before deleting it.
 4. After posting, verify the issue has one canonical plan and no obsolete plan comments.
-5. Label the issue `ready-for-impl` so it's easy to find issues with a fully formed plan (e.g. for `agent-runner`) versus ones still needing investigation:
+5. Label the issue `ready-for-impl` so it's easy to find issues with a fully formed plan versus ones still needing investigation:
    ```
    gh issue edit <issue-number> --add-label ready-for-impl
    ```
