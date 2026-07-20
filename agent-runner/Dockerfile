@@ -2,6 +2,7 @@ FROM node:26-bookworm-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
+    make \
     curl \
     ca-certificates \
     gnupg \
