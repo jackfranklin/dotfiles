@@ -10,6 +10,7 @@
  */
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { PermissionApprovalLog } from "./approval-log.ts";
+import { createGitProbe, planGitTrackedRm } from "./git-rm.ts";
 import { analyzeDecision, suggestPattern, TOOL_LABELS } from "./matcher.ts";
 import { PermissionStore } from "./store.ts";
 
@@ -27,6 +28,15 @@ export default function (pi: ExtensionAPI) {
 	pi.on("tool_call", async (event, ctx) => {
 		const label = TOOL_LABELS[event.toolName];
 		if (!label) return undefined; // ungated tool
+
+		if (event.toolName === "bash") {
+			const input = event.input as Record<string, unknown>;
+			if (typeof input.command === "string") {
+				const gitRm = await planGitTrackedRm(input.command, ctx.cwd, createGitProbe(pi));
+				if (gitRm.action === "rewrite") input.command = gitRm.command;
+				if (gitRm.action === "block") return { block: true, reason: gitRm.reason };
+			}
+		}
 
 		const subject = subjectFor(event.toolName, event.input as Record<string, unknown>);
 		if (subject === undefined) return undefined;

@@ -19,7 +19,11 @@ pi/permissions.json
 This is a guardrail, not a sandbox. It is designed to avoid obvious stupid / bad /
 dangerous commands while keeping normal coding-agent commands low-friction.
 
-Tool calls are classified in this order:
+Before classification, direct `rm` of Git-tracked files is rewritten to `git rm`
+when safe, or blocked with a `git rm` instruction when tracked targets are
+detected but rewriting is unsafe.
+
+Tool calls are otherwise classified in this order:
 
 1. hardcoded dangerous bash patterns => block
 2. configured `block` globs => block
@@ -77,6 +81,25 @@ git status && npm install && rg foo
 
 Only the `npm install` segment needs approval if `Bash(npm install*)` is in
 `prompt`.
+
+## Git-tracked removal
+
+When a `bash` call runs inside a Git working tree, the extension checks direct
+`rm`/`/bin/rm` commands before applying the normal prompt policy. If the command
+is a simple literal path removal and every target is tracked in the Git index, it
+is rewritten in place to:
+
+```bash
+git rm -- <path>...
+```
+
+This avoids the usual `Bash(rm *)` approval prompt while preserving the removal
+in Git. If a tracked target is found but the command cannot be safely rewritten
+(for example mixed tracked/untracked targets, options such as `-f`, shell
+operators, redirects, globs, variable expansion, or command substitution), the
+call is blocked and the agent is told to use `git rm` explicitly. Non-Git
+directories, untracked-only removals, and `git rm` itself keep their normal
+permission behavior.
 
 ## Hardcoded blocks
 
