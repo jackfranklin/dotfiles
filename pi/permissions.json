@@ -2,7 +2,7 @@
   "safe": [
     "Bash(mv *)",
     "Write(/tmp/*)",
-    "Bash(cp /tmp*)",
+    "Bash(cp * /tmp*)",
     "Edit(/home/jack/.claude/skills/*)"
   ],
   "prompt": [

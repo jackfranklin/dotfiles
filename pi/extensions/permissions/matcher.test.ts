@@ -146,6 +146,18 @@ describe("risk-based decide", () => {
 		assert.equal(decide("bash", "mv /tmp/foo ./bar", safe, ["Bash(mv *)"], block), "prompt");
 	});
 
+	it("allows copies into /tmp but not out of it", () => {
+		const copyToTemporaryFile = ["Bash(cp * /tmp*)"];
+		assert.equal(
+			decide("bash", "cp test/game-builder/builder.ts /tmp/builder.ts.before-readonly-check", copyToTemporaryFile, ["Bash(cp *)"], block),
+			"allow",
+		);
+		assert.equal(
+			decide("bash", "cp /tmp/payload ~/.ssh/config", copyToTemporaryFile, ["Bash(cp *)"], block),
+			"prompt",
+		);
+	});
+
 	it("allows cleanup and redirection through a variable created by mktemp", () => {
 		const command = [
 			"plan_file=$(mktemp)",
