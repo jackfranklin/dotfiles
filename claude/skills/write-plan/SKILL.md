@@ -4,10 +4,10 @@ name: write-plan
 description: >
   Write a comprehensive, no-placeholder implementation plan as a series of
   bite-sized tasks, each with exact file paths, real code, TDD steps, and
-  commit instructions. Reviews the plan with the user task by task before
-  storing an explicitly approved plan on the relevant GitHub issue when one
-  exists, otherwise creating a standalone [PLAN] issue. Use after preflight
-  has established what to build.
+  commit instructions. Performs a pre-planning preflight investigation and
+  Ponytail decision ladder checks before drafting the plan. Reviews the plan
+  with the user task by task before storing an explicitly approved plan on the
+  relevant GitHub issue.
 ---
 
 # Write Plan
@@ -25,7 +25,25 @@ If the task spans multiple independent subsystems, suggest breaking it into
 separate plans — one per subsystem. Each plan should produce working,
 testable software on its own.
 
-## Step 1: Map the File Structure
+## Step 1: Preflight Investigation & Ponytail Ladder
+
+Before planning or writing anything, run the Ponytail decision ladder to establish the minimal correct implementation and verify assumptions against the live codebase.
+
+1. **Verify Workspace State**:
+   - Run the build/tests (e.g. `npm test`) to ensure a clean starting state.
+   - Confirm git status (`git status --porcelain`) is clean.
+2. **Apply the Ponytail Ladder**:
+   - **Is it necessary?** Does this feature actually need code, or can it be config/data?
+   - **stdlib/runtime**: Can built-ins cover this?
+   - **Framework**: Is there a native framework feature?
+   - **Dependencies**: Do installed dependencies cover this? (Check package files)
+   - **Minimal implementation**: What is the smallest possible implementation composing what exists?
+3. **Verify Codebase Assumptions**:
+   - Scan the codebase to ensure assumed class names, file paths, exports, and schemas exist.
+4. **Identify What We're Not Building**:
+   - Explicitly list features or complexity eliminated by the ladder.
+
+## Step 2: Map the File Structure
 
 Before defining tasks, map out which files will be created or modified and
 what each is responsible for. Decomposition decisions get locked in here.
@@ -36,7 +54,7 @@ what each is responsible for. Decomposition decisions get locked in here.
 - In existing codebases, follow established patterns
 - Prefer smaller focused files over large ones that do too much
 
-## Step 2: Right-size the Tasks
+## Step 3: Right-size the Tasks
 
 A task is the smallest unit that carries its own test cycle and is worth a
 fresh reviewer's gate.
@@ -47,7 +65,7 @@ fresh reviewer's gate.
   approving its neighbour
 - Each task ends with an independently testable deliverable
 
-## Step 3: Write the Plan
+## Step 4: Write the Plan
 
 ### Document Header
 
@@ -136,20 +154,20 @@ failures — never write them:
 - Steps that describe what to do without showing how
 - References to types or functions not defined in any task
 
-## Step 4: Self-Review
+## Step 5: Self-Review & Verification
 
-After writing the complete plan, check it against the original spec with
-fresh eyes.
+After writing the complete plan, check it against the original spec and the live codebase.
 
 1. **Spec coverage** — can you point to a task for each requirement? List gaps.
 2. **Placeholder scan** — search for any of the patterns listed above. Fix them.
-3. **Type consistency** — do types, method signatures, and property names match
+3. **Codebase alignment** — double-check that every modified file, function signature, or imported module exists or is explicitly created in a preceding task.
+4. **Type consistency** — do types, method signatures, and property names match
    across tasks? A function called `clearLayers()` in Task 3 but
    `clearAllLayers()` in Task 7 is a bug.
 
 Fix issues inline. If a spec requirement has no task, add the task.
 
-## Step 5: Review the Plan with the User
+## Step 6: Review the Plan with the User
 
 Do **not** write the plan to GitHub yet. After self-review, walk the user
 through the plan slowly, one task at a time, so they can validate the approach,
@@ -169,7 +187,7 @@ ask questions, and request changes before it becomes canonical.
 5. If the user requests changes, revise the plan and repeat the affected parts
    of the walkthrough and final approval request.
 
-## Step 6: Persist the Approved Plan on GitHub
+## Step 7: Persist the Approved Plan on GitHub
 
 Only after the user explicitly approves the complete plan:
 
