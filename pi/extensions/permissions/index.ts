@@ -23,19 +23,9 @@ function subjectFor(toolName: string, input: Record<string, unknown>): string | 
 	return typeof input.path === "string" ? input.path : undefined;
 }
 
-const APPROVAL_RATIONALE_INSTRUCTIONS = `
-
-## Permission approval rationale
-
-Some tool calls require the user to approve potentially risky changes. Before any tool call that is likely to need approval (for example deleting, moving, copying, installing, changing permissions, resetting Git state, writing through a shell redirect, or writing outside the project), include a concise user-facing paragraph in the same assistant message immediately before the tool calls. Start it exactly with \`Approval rationale:\`. Explain what the command will do, why it is necessary for the user's goal, and why its potentially risky effect is needed rather than a safer alternative. State the affected scope when useful. Do not provide private chain-of-thought; give a factual 2–4 sentence justification. If unsure whether approval is needed, include the rationale.`;
-
 export default function (pi: ExtensionAPI) {
 	const store = new PermissionStore();
 	const approvalLog = new PermissionApprovalLog();
-
-	pi.on('before_agent_start', (event) => ({
-		systemPrompt: `${event.systemPrompt}${APPROVAL_RATIONALE_INSTRUCTIONS}`,
-	}));
 
 	pi.on("tool_call", async (event, ctx) => {
 		const label = TOOL_LABELS[event.toolName];
