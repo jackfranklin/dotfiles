@@ -1,6 +1,6 @@
 # agent-runner
 
-Runs a Claude Code agent in an isolated Docker container to implement a GitHub issue and open a PR.
+Runs a Claude Code agent in an isolated Docker container to either explore a GitHub issue and post a scope report, or implement an approved issue and open a PR.
 
 **Assumes a Node/npm repo.** The entrypoint only knows how to `npm install` and defers to Claude to run
 whatever `package.json` scripts are relevant. A non-Node repo isn't actively unsupported, but nothing in
@@ -30,9 +30,9 @@ config, not in this tool. `SYS_ADMIN` is a meaningfully broad capability (grants
 beyond just sandboxing); acceptable here because it's scoped to an already-isolated, ephemeral, per-run
 container, not the host.
 
-## Why `--dangerously-skip-permissions` is acceptable here
+## Why `--dangerously-skip-permissions` is acceptable for fix mode
 
-Claude runs with all permission checks disabled, which is normally risky. It's acceptable in this setup
+Fix-mode Claude runs with all permission checks disabled, which is normally risky. It's acceptable in this setup
 specifically because of layered mitigations, not because the flag itself is safe:
 
 - **Container isolation** — Claude only has access to the container's filesystem, not the host.
@@ -46,36 +46,16 @@ specifically because of layered mitigations, not because the flag itself is safe
 None of these alone would be sufficient; together they're why this is a reasonable tradeoff for a private
 repo with a trusted issue author (you).
 
-Each run:
-1. Clones the target repo fresh into the container.
-2. Immediately checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary).
-3. Runs `PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts` if `package.json` exists, so
-   dependencies are ready before Claude starts. `PUPPETEER_SKIP_DOWNLOAD` stops Puppeteer's own postinstall from
-   attempting a Chrome download during this step — if `puppeteer` or `puppeteer-core` ends up in `node_modules`
-   (directly or transitively — e.g. via `@web/test-runner-puppeteer`), Chrome is installed explicitly afterward
-   with `./node_modules/.bin/puppeteer browsers install chrome` (falling back to `npx puppeteer` only if no local
-   binary exists, e.g. `puppeteer-core`-only setups). Letting both the postinstall *and* the explicit step try to
-   download into the same cache folder caused a race that left a corrupted, partially-extracted install ("folder
-   exists but executable is missing") — skipping the postinstall's attempt makes the explicit step the single,
-   reliable place Chrome actually gets installed. Using the local binary rather than bare `npx puppeteer` also
-   avoids a version mismatch: since Puppeteer is often only a transitive dependency, npx's local-bin resolution
-   isn't guaranteed to find it and can silently fetch a different, unpinned puppeteer version from the registry,
-   targeting a Chrome build the pinned version in `package-lock.json` doesn't actually expect at test time.
-   Separately, Puppeteer's own bundled zip extraction has been observed leaving an incomplete install (small
-   files present, large ones like the `chrome` binary itself missing) even when the downloaded zip is complete
-   and valid — confirmed by manually re-extracting the same zip with system `unzip`, which produced a full,
-   correct install. If the `chrome` binary is missing after Puppeteer's own install step, the entrypoint
-   re-extracts the already-downloaded zip with `unzip` as a repair step rather than re-downloading.
-4. Runs `claude -p "..." --dangerously-skip-permissions` with a prompt built from the issue title/body and,
-   when supplied, a caller-provided additional instruction. Claude is told to check `package.json` itself for
-   lint/build/test scripts and run whichever are relevant before
-   finishing — there's no separate hardcoded lint/build/test step in the entrypoint. Output is streamed as
-   `stream-json` and piped through [`format-claude-stream`](https://github.com/Khan/format-claude-stream) for
-   readable live progress instead of just the final response.
-5. Claude is told to commit, push, and open the PR itself (`gh pr create` with a descriptive title/body it
-   writes, referencing `Closes #N`) rather than the entrypoint generating a generic "Fix #N" PR. The entrypoint
-   checks afterward whether a PR now exists for the branch; if Claude made changes but didn't finish the git
-   workflow, the entrypoint commits/pushes/opens a generic fallback PR so the work is never silently lost.
+Each run clones the target repo fresh into the container at the selected base branch. The mode then determines the workflow:
+
+- `--explore-plan` runs Claude with its read-only `--permission-mode plan`: it does not create a branch, install dependencies, run builds/tests, edit code, commit, push, or open a PR. Its 800–1,200-word report is a concise decision memo, not an implementation plan or exhaustive code map. The entrypoint captures the final report, posts it as an issue comment, verifies it, then adds the `exploration-added` label.
+- `--fix` checks that the issue has `ready-for-impl`, checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary), prepares dependencies, and asks Claude to implement the approved plan and open a PR.
+- `--test-only` installs dependencies and runs the repository's `npm test` script when present, without Claude or issue access.
+
+For runs that install dependencies, `PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts` runs if `package.json` exists. `PUPPETEER_SKIP_DOWNLOAD` stops Puppeteer's own postinstall from attempting a Chrome download during this step — if `puppeteer` or `puppeteer-core` ends up in `node_modules` (directly or transitively — e.g. via `@web/test-runner-puppeteer`), Chrome is installed explicitly afterward with `./node_modules/.bin/puppeteer browsers install chrome` (falling back to `npx puppeteer` only if no local binary exists, e.g. `puppeteer-core`-only setups). Letting both the postinstall *and* the explicit step try to download into the same cache folder caused a race that left a corrupted, partially-extracted install ("folder exists but executable is missing") — skipping the postinstall's attempt makes the explicit step the single, reliable place Chrome actually gets installed. Using the local binary rather than bare `npx puppeteer` also avoids a version mismatch: since Puppeteer is often only a transitive dependency, npx's local-bin resolution isn't guaranteed to find it and can silently fetch a different, unpinned puppeteer version from the registry, targeting a Chrome build the pinned version in `package-lock.json` doesn't actually expect at test time. Separately, Puppeteer's own bundled zip extraction has been observed leaving an incomplete install (small files present, large ones like the `chrome` binary itself missing) even when the downloaded zip is complete and valid — confirmed by manually re-extracting the same zip with system `unzip`, which produced a full, correct install. If the `chrome` binary is missing after Puppeteer's own install step, the entrypoint re-extracts the already-downloaded zip with `unzip` as a repair step rather than re-downloading.
+Claude receives a mode-specific prompt built from the issue title, body, comments, and caller-provided additional instructions. Fix mode uses `--dangerously-skip-permissions` and is told to check `package.json` for lint/build/test scripts. Exploration uses Claude Code's read-only `--permission-mode plan`; it cannot write the report file or post the issue comment itself. Both modes use a compact, colour-coded stream formatter. Fix mode shows readable assistant text and high-level activity; exploration shows high-level activity plus an unconditional 10-second ticker with elapsed time and the age of Claude's last event, then prints the complete final report only after exploration has finished. Tool calls, command text, and command output are hidden.
+
+In fix mode, Claude is told to commit, push, and open the PR itself (`gh pr create` with a descriptive title/body it writes, referencing `Closes #N`) rather than the entrypoint generating a generic "Fix #N" PR. The entrypoint checks afterward whether a PR now exists for the branch; if Claude made changes but didn't finish the git workflow, the entrypoint commits/pushes/opens a generic fallback PR so the work is never silently lost.
 
 ## Installing Docker
 
@@ -129,52 +109,44 @@ Symlinks `agent-runner/bin/agent-run` to `~/.local/bin/agent-run`.
 
 ## Usage
 
-Before running against an issue, check it's labeled `ready-for-impl` (the `write-plan` skill applies this
-label once it posts a complete implementation plan to the issue). If it's missing, the plan may not be
-finished yet — confirm with whoever's running it before proceeding rather than assuming it's ready:
-
-```
-gh issue view <issue-number> --json labels --jq '.labels[].name'
-```
-
 ```fish
 set -x AGENT_RUNNER_GH_TOKEN <fine-grained PAT scoped to the repo>
 set -x AGENT_RUNNER_CLAUDE_OAUTH_TOKEN <token from `claude setup-token`>
 
 cd ~/code/routemaster   # repo owner defaults to jackfranklin, repo name comes from cwd
-agent-run 55
-agent-run 55 develop   # optional base branch, defaults to main
-agent-run 55 --instruction 'Prefer a small, backward-compatible change.'
-agent-run 55 -i 'Update the documentation too.' -i 'Keep the public API unchanged.'
 
-agent-run --test-only        # clone + npm install + npm test only — no Claude, no PR, no duplicate-run checks
-agent-run --test-only develop   # optional base branch, defaults to main
+# Initial static investigation of a rough issue. Posts a report comment and adds exploration-added.
+agent-run --explore-plan 55
+agent-run --explore-plan 55 --base develop -i 'Investigate compatibility with v2.'
+
+# Replace prior marked exploration reports only after a new report is posted and verified.
+agent-run --explore-plan 55 --replace
+
+# Only for an issue whose formal human-approved plan has ready-for-impl.
+agent-run --fix 55
+agent-run --fix 55 --instruction 'Prefer a small, backward-compatible change.'
+agent-run --fix 55 -i 'Update the documentation too.' -i 'Keep the public API unchanged.'
+
+# Clone + npm install + npm test only — no Claude, issue, or PR.
+agent-run --test-only
+agent-run --test-only --base develop
 ```
 
-`--instruction` (or `-i`) appends text to Claude's normal issue prompt; repeat it to add multiple
-instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`,
-which does not run Claude.
+`--fix`, `--explore-plan`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`. Before a fix or exploration run starts Docker, the CLI fetches and displays the selected issue's title and requires a `y`/`yes` confirmation. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
 
-`--test-only` is for debugging the container/install environment itself (e.g. whether Puppeteer's Chrome
-download works) without paying for a full Claude run each time. No issue number needed, and it doesn't
-fetch an issue or touch GitHub beyond cloning.
+Exploration is deliberately not implementation-ready planning. Its report is a snapshot for a human to discuss and turn into a formal, approved plan with `/write-plan`; that skill applies `ready-for-impl`. The runner refuses `--fix` unless this label is present. It creates `exploration-added` on demand, after it has captured, posted, and verified the report comment.
 
-Run multiple in parallel by invoking `agent-run` multiple times concurrently from different repo
-directories (separate terminals, or `(cd repo-a && agent-run 55) & (cd repo-b && agent-run 12) &`);
-each run builds/uses its own container instance.
+`--replace` is available only with `--explore-plan`. It treats prior marked reports by the authenticated GitHub user as raw research context, posts and verifies the replacement first, then deletes those prior marked comments. A failed or unverified replacement leaves prior comments untouched.
+
+`--test-only` is for debugging the container/install environment itself (e.g. whether Puppeteer's Chrome download works) without paying for a full Claude run each time. No issue number needed, and it doesn't fetch an issue or touch GitHub beyond cloning.
+
+Run multiple in parallel by invoking `agent-run` multiple times concurrently from different repo directories (separate terminals, or `(cd repo-a && agent-run --explore-plan 55) & (cd repo-b && agent-run --fix 12) &`); each run builds/uses its own container instance.
 
 ## Duplicate-run protection
 
-Before building/running anything, `agent-run` checks two things and refuses to start if either is true:
+Before building/running anything, `agent-run` refuses a new exploration or fix run when a container is already running for the same repo and issue (`docker ps --filter name=...`). This prevents exploration and implementation from racing each other.
 
-1. **An open PR already exists** for `agent/issue-<N>` (`gh pr list --head`) — avoids re-running an issue
-   that's already been implemented and is just waiting on review/merge.
-2. **A container is already running** for this exact repo+issue (`docker ps --filter name=...`) — avoids
-   two containers racing to implement the same issue concurrently.
-
-Both checks are best-effort (there's a small window between the check and the container actually starting),
-but they catch the common case: running `agent-run 55` twice by mistake, or re-running an issue you forgot
-already got a PR.
+In addition, `--fix` refuses to start when an open PR already exists for `agent/issue-<N>` (`gh pr list --head`), avoiding a second implementation for work that is awaiting review or merge. These checks are best-effort (there is a small window before the container starts), but catch the common cases.
 
 ## Inspecting and cleaning up containers
 
@@ -193,6 +165,12 @@ Pull a file out of a specific container (useful if a run finished but the PR ste
 
 ```
 docker cp agent-runner-jackfranklin-routemaster-55-20260718-221533:/work/repo/docs/terrain-types.md .
+```
+
+If an exploration run exits without its report comment, it prints an exact recovery command. The report is normally saved at `/work/exploration-report.md`, for example:
+
+```
+docker cp agent-runner-jackfranklin-routemaster-55-20260718-221533:/work/exploration-report.md ./exploration-report-55.md
 ```
 
 Once you've confirmed a run's PR looks right (or salvaged what you needed), remove it:

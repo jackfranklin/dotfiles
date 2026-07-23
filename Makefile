@@ -95,6 +95,7 @@ claude-mcp:
 pi:
 	@mkdir -p ~/.pi/agent
 	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
+	@ln -sf $(DIR)/pi/keybindings.json ~/.pi/agent/keybindings.json
 	@ln -nsf $(DIR)/pi/extensions ~/.pi/agent/extensions
 	@ln -sf $(DIR)/pi/permissions.json ~/.pi/agent/permissions.json
 
