@@ -18,11 +18,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     && echo "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
     && apt-get update && apt-get install -y --no-install-recommends gh
 
-RUN npm install -g @anthropic-ai/claude-code @khanacademy/format-claude-stream
-
-# format-claude-stream (via chalk) disables color when stdout isn't a TTY, which it
-# never is when piped through Docker — force it on regardless.
-ENV FORCE_COLOR=1
+RUN npm install -g @anthropic-ai/claude-code
 
 # Chrome needs a pile of OS-level shared libraries to actually launch (this is separate from
 # whether the zip extracts correctly) — `--install-deps` installs exactly what's needed via

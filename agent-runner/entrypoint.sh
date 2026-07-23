@@ -45,6 +45,7 @@ BASE_BRANCH="${BASE_BRANCH:-main}"
 BRANCH="agent/issue-${ISSUE_NUMBER}"
 WORKDIR="/work/repo"
 REPORT_PATH="/work/exploration-report.md"
+EXPLORATION_STREAM_PATH="/work/exploration-stream.jsonl"
 CONTAINER_NAME="${CONTAINER_NAME:-<container-name>}"
 
 if [ "${MODE}" != "test-only" ]; then
@@ -150,7 +151,8 @@ trust_workdir() {
 run_claude() {
   local prompt="$1"
   stdbuf -oL claude -p "${prompt}" --dangerously-skip-permissions --output-format stream-json --verbose --include-partial-messages \
-    | format-claude-stream
+    | jq -rj 'select(.type == "stream_event" and .event.delta.type? == "text_delta") | .event.delta.text'
+  printf '\n'
 }
 
 ISSUE_CONTEXT="$(fetch_issue_context)"
@@ -161,14 +163,9 @@ if [ "${MODE}" = "explore-plan" ]; then
 
 This is not implementation and not a formal approved plan. Do not edit tracked files, create a branch, commit, push, open a pull request, install dependencies, run builds, or run tests. Use static reconnaissance only: read source and tests as text, inspect manifests and configuration, use Git history where useful, and examine the issue discussion.
 
-Produce a Markdown exploration report with this exact opening:
+Return only the Markdown body of an exploration report. Include: investigation summary; relevant code with exact paths and line numbers where practical; constraints and risks; a recommended high-level direction; a high-level implementation outline; validation ideas; explicit decisions/questions for a human (with options and a recommendation where useful); and scope deliberately excluded. Do not describe unresolved choices as settled. This report is input for a human to turn into a formal plan with /write-plan, not a ready-for-implementation plan.
 
-## Exploration report — agent-runner
-<!-- agent-runner:explore-plan -->
-
-Include: investigation summary; relevant code with exact paths and line numbers where practical; constraints and risks; a recommended high-level direction; a high-level implementation outline; validation ideas; explicit decisions/questions for a human (with options and a recommendation where useful); and scope deliberately excluded. Do not describe unresolved choices as settled. This report is input for a human to turn into a formal plan with /write-plan, not a ready-for-implementation plan.
-
-Before finishing, save the complete report to ${REPORT_PATH}, then post that same report as a new comment on issue #${ISSUE_NUMBER} with 'gh issue comment ${ISSUE_NUMBER} --repo ${REPO} --body-file ${REPORT_PATH}'. Do not add, remove, or change labels. The runner will verify the comment and add the exploration-added label itself.
+You are running in read-only plan mode. Do not attempt to write a file, post a GitHub comment, add or remove labels, or use any other command with side effects. The runner will save and publish your final response after this session exits.
 
 ${ISSUE_CONTEXT}"
 
@@ -177,28 +174,31 @@ ${ISSUE_CONTEXT}"
     PROMPT+="${ADDITIONAL_INSTRUCTIONS}"
   fi
 
-  echo "==> Running Claude in exploration mode"
-  REPORT_RUN_STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  echo "==> Running Claude in read-only exploration mode"
   set +e
-  stdbuf -oL claude -p "${PROMPT}" --dangerously-skip-permissions --output-format stream-json --verbose --include-partial-messages \
-    | format-claude-stream
+  stdbuf -oL claude -p "${PROMPT}" --permission-mode plan --output-format stream-json --verbose --include-partial-messages \
+    | tee "${EXPLORATION_STREAM_PATH}" \
+    | jq -rj 'select(.type == "stream_event" and .event.delta.type? == "text_delta") | .event.delta.text'
   PIPE_STATUSES=("${PIPESTATUS[@]}")
   set -e
+  printf '\n'
   CLAUDE_EXIT="${PIPE_STATUSES[0]}"
-  FORMATTER_EXIT="${PIPE_STATUSES[1]}"
+  TEE_EXIT="${PIPE_STATUSES[1]}"
+  OUTPUT_FILTER_EXIT="${PIPE_STATUSES[2]}"
 
-  echo "==> Verifying exploration report was posted to issue #${ISSUE_NUMBER}"
-  REPORT_COMMENT_ID="$(gh api --paginate "repos/${REPO}/issues/${ISSUE_NUMBER}/comments" \
-    | jq -rs --arg started "${REPORT_RUN_STARTED_AT}" '
-        [ .[] | .[]
-          | select(.created_at >= $started)
-          | select((.body // "") | contains("<!-- agent-runner:explore-plan -->"))
-          | .id
-        ] | last // empty
-      ')"
+  set +e
+  REPORT_BODY="$(jq -r 'select(.type == "result") | .result' "${EXPLORATION_STREAM_PATH}")"
+  REPORT_EXTRACTION_EXIT=$?
+  set -e
+  if [ "${REPORT_EXTRACTION_EXIT}" -eq 0 ] && [ -n "${REPORT_BODY}" ]; then
+    {
+      printf '%s\n\n' '## Exploration report — agent-runner'
+      printf '%s\n\n' '<!-- agent-runner:explore-plan -->'
+      printf '%s\n' "${REPORT_BODY}"
+    } > "${REPORT_PATH}"
+  fi
 
-  if [ -z "${REPORT_COMMENT_ID}" ]; then
-    echo "==> ERROR: Claude exited but no new exploration report comment was found on issue #${ISSUE_NUMBER}." >&2
+  print_report_recovery() {
     echo "==> The issue was not labeled exploration-added." >&2
     echo "==> Recover the saved report from the retained container:" >&2
     echo "    docker cp ${CONTAINER_NAME}:${REPORT_PATH} ./exploration-report-${ISSUE_NUMBER}.md" >&2
@@ -207,6 +207,38 @@ ${ISSUE_CONTEXT}"
     if [ ! -f "${REPORT_PATH}" ]; then
       echo "==> Note: ${REPORT_PATH} was not found in the container at verification time." >&2
     fi
+  }
+
+  if [ "${REPORT_EXTRACTION_EXIT}" -ne 0 ] || [ -z "${REPORT_BODY}" ]; then
+    echo "==> ERROR: Claude exited without a readable final exploration report." >&2
+    print_report_recovery
+    exit 1
+  fi
+
+  echo "==> Posting exploration report to issue #${ISSUE_NUMBER}"
+  REPORT_POST_STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"
+  if ! gh issue comment "${ISSUE_NUMBER}" --repo "${REPO}" --body-file "${REPORT_PATH}"; then
+    echo "==> ERROR: Unable to post the exploration report to issue #${ISSUE_NUMBER}." >&2
+    print_report_recovery
+    exit 1
+  fi
+
+  echo "==> Verifying exploration report was posted to issue #${ISSUE_NUMBER}"
+  set +e
+  REPORT_COMMENT_ID="$(gh api --paginate "repos/${REPO}/issues/${ISSUE_NUMBER}/comments" \
+    | jq -rs --arg started "${REPORT_POST_STARTED_AT}" '
+        [ .[] | .[]
+          | select(.created_at >= $started)
+          | select((.body // "") | contains("<!-- agent-runner:explore-plan -->"))
+          | .id
+        ] | last // empty
+      ')"
+  REPORT_LOOKUP_EXIT=$?
+  set -e
+
+  if [ "${REPORT_LOOKUP_EXIT}" -ne 0 ] || [ -z "${REPORT_COMMENT_ID}" ]; then
+    echo "==> ERROR: The exploration report was posted, but no new marked comment could be verified on issue #${ISSUE_NUMBER}." >&2
+    print_report_recovery
     exit 1
   fi
 
@@ -220,8 +252,8 @@ ${ISSUE_CONTEXT}"
   REPORT_COMMENT_URL="$(gh api "repos/${REPO}/issues/comments/${REPORT_COMMENT_ID}" --jq '.html_url')"
   echo "==> Exploration report posted: ${REPORT_COMMENT_URL}"
 
-  if [ "${CLAUDE_EXIT}" -ne 0 ] || [ "${FORMATTER_EXIT}" -ne 0 ]; then
-    echo "==> WARNING: the report was published, but Claude or its output formatter exited non-zero (Claude: ${CLAUDE_EXIT}, formatter: ${FORMATTER_EXIT})." >&2
+  if [ "${CLAUDE_EXIT}" -ne 0 ] || [ "${TEE_EXIT}" -ne 0 ] || [ "${OUTPUT_FILTER_EXIT}" -ne 0 ]; then
+    echo "==> WARNING: the report was published, but Claude or its output pipeline exited non-zero (Claude: ${CLAUDE_EXIT}, tee: ${TEE_EXIT}, filter: ${OUTPUT_FILTER_EXIT})." >&2
   fi
   echo "==> Done (explore-plan)"
   exit 0

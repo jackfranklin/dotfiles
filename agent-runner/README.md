@@ -30,9 +30,9 @@ config, not in this tool. `SYS_ADMIN` is a meaningfully broad capability (grants
 beyond just sandboxing); acceptable here because it's scoped to an already-isolated, ephemeral, per-run
 container, not the host.
 
-## Why `--dangerously-skip-permissions` is acceptable here
+## Why `--dangerously-skip-permissions` is acceptable for fix mode
 
-Claude runs with all permission checks disabled, which is normally risky. It's acceptable in this setup
+Fix-mode Claude runs with all permission checks disabled, which is normally risky. It's acceptable in this setup
 specifically because of layered mitigations, not because the flag itself is safe:
 
 - **Container isolation** — Claude only has access to the container's filesystem, not the host.
@@ -48,12 +48,12 @@ repo with a trusted issue author (you).
 
 Each run clones the target repo fresh into the container at the selected base branch. The mode then determines the workflow:
 
-- `--explore-plan` performs static reconnaissance only: it does not create a branch, install dependencies, run builds/tests, edit code, commit, push, or open a PR. Claude saves and posts an exploration report as an issue comment; after the runner verifies that comment, it adds the `exploration-added` label.
+- `--explore-plan` runs Claude with its read-only `--permission-mode plan`: it does not create a branch, install dependencies, run builds/tests, edit code, commit, push, or open a PR. The entrypoint captures Claude's final report, posts it as an issue comment, verifies it, then adds the `exploration-added` label.
 - `--fix` checks that the issue has `ready-for-impl`, checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary), prepares dependencies, and asks Claude to implement the approved plan and open a PR.
 - `--test-only` installs dependencies and runs the repository's `npm test` script when present, without Claude or issue access.
 
 For runs that install dependencies, `PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts` runs if `package.json` exists. `PUPPETEER_SKIP_DOWNLOAD` stops Puppeteer's own postinstall from attempting a Chrome download during this step — if `puppeteer` or `puppeteer-core` ends up in `node_modules` (directly or transitively — e.g. via `@web/test-runner-puppeteer`), Chrome is installed explicitly afterward with `./node_modules/.bin/puppeteer browsers install chrome` (falling back to `npx puppeteer` only if no local binary exists, e.g. `puppeteer-core`-only setups). Letting both the postinstall *and* the explicit step try to download into the same cache folder caused a race that left a corrupted, partially-extracted install ("folder exists but executable is missing") — skipping the postinstall's attempt makes the explicit step the single, reliable place Chrome actually gets installed. Using the local binary rather than bare `npx puppeteer` also avoids a version mismatch: since Puppeteer is often only a transitive dependency, npx's local-bin resolution isn't guaranteed to find it and can silently fetch a different, unpinned puppeteer version from the registry, targeting a Chrome build the pinned version in `package-lock.json` doesn't actually expect at test time. Separately, Puppeteer's own bundled zip extraction has been observed leaving an incomplete install (small files present, large ones like the `chrome` binary itself missing) even when the downloaded zip is complete and valid — confirmed by manually re-extracting the same zip with system `unzip`, which produced a full, correct install. If the `chrome` binary is missing after Puppeteer's own install step, the entrypoint re-extracts the already-downloaded zip with `unzip` as a repair step rather than re-downloading.
-Claude runs as `claude -p "..." --dangerously-skip-permissions` with a mode-specific prompt built from the issue title, body, comments, and caller-provided additional instructions. In fix mode, it is told to check `package.json` for lint/build/test scripts and run whichever are relevant. Output is streamed as `stream-json` and piped through [`format-claude-stream`](https://github.com/Khan/format-claude-stream) for readable live progress instead of just the final response.
+Claude receives a mode-specific prompt built from the issue title, body, comments, and caller-provided additional instructions. Fix mode uses `--dangerously-skip-permissions` and is told to check `package.json` for lint/build/test scripts. Exploration uses Claude Code's read-only `--permission-mode plan`; it cannot write the report file or post the issue comment itself. Both modes filter Claude's stream to readable assistant text only, hiding tool calls and command output.
 
 In fix mode, Claude is told to commit, push, and open the PR itself (`gh pr create` with a descriptive title/body it writes, referencing `Closes #N`) rather than the entrypoint generating a generic "Fix #N" PR. The entrypoint checks afterward whether a PR now exists for the branch; if Claude made changes but didn't finish the git workflow, the entrypoint commits/pushes/opens a generic fallback PR so the work is never silently lost.
 
@@ -131,7 +131,7 @@ agent-run --test-only --base develop
 
 `--fix`, `--explore-plan`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
 
-Exploration is deliberately not implementation-ready planning. Its report is a snapshot for a human to discuss and turn into a formal, approved plan with `/write-plan`; that skill applies `ready-for-impl`. The runner refuses `--fix` unless this label is present. It creates `exploration-added` on demand, after it has verified Claude posted the report comment.
+Exploration is deliberately not implementation-ready planning. Its report is a snapshot for a human to discuss and turn into a formal, approved plan with `/write-plan`; that skill applies `ready-for-impl`. The runner refuses `--fix` unless this label is present. It creates `exploration-added` on demand, after it has captured, posted, and verified the report comment.
 
 `--test-only` is for debugging the container/install environment itself (e.g. whether Puppeteer's Chrome download works) without paying for a full Claude run each time. No issue number needed, and it doesn't fetch an issue or touch GitHub beyond cloning.
 
