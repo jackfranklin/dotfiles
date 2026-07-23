@@ -1,34 +1,80 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Usage: agent-run <issue-number> [base-branch] [--instruction <text>]
-#        agent-run --test-only [base-branch]
-#
 # Run from inside the target repo's directory on your host — the GitHub owner defaults to
 # jackfranklin and the repo name is taken from the current directory's name.
 #
-# --test-only: skip Claude/PR entirely — just clone, npm install, and `npm test` (if defined).
-# Useful for debugging environment issues (e.g. Puppeteer's Chrome download) without paying
-# for a full Claude run each time. No issue number needed — no GitHub issue is fetched and no
-# duplicate-run checks apply in this mode.
-#
 # Requires env vars:
-#   AGENT_RUNNER_GH_TOKEN            - fine-grained GitHub PAT scoped to the target repo
-#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  - long-lived token from `claude setup-token` (needs Pro/Max/Team/Enterprise)
+#   AGENT_RUNNER_GH_TOKEN            - fine-grained PAT scoped to the target repo
+#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  - long-lived token from `claude setup-token` (not needed for --test-only)
 
 usage() {
-  echo "Usage: agent-run <issue-number> [base-branch] [--instruction <text>]" >&2
-  echo "       agent-run --test-only [base-branch]" >&2
+  cat >&2 <<'EOF'
+Usage:
+  agent-run --fix <issue-number> [--base <branch>] [--instruction <text> ...]
+  agent-run --explore-plan <issue-number> [--base <branch>] [--instruction <text> ...]
+  agent-run --test-only [--base <branch>]
+
+Modes:
+  --fix           Implement an issue with an approved plan, then open a pull request.
+  --explore-plan  Investigate a rough issue and post an exploration report; makes no code changes or PR.
+  --test-only     Clone, install dependencies, and run npm test (if defined); does not run Claude.
+
+Options:
+  --base <branch>        Base branch to clone and, for --fix, open the PR against (default: main).
+  --instruction, -i <text>
+                         Additional instruction for Claude. May be repeated; unavailable with --test-only.
+  --help, -h             Show this help text.
+
+Examples:
+  agent-run --explore-plan 55
+  agent-run --explore-plan 55 --base develop -i 'Investigate compatibility with v2.'
+  agent-run --fix 55
+  agent-run --fix 55 --instruction 'Prefer a small, backward-compatible change.'
+  agent-run --test-only
+EOF
 }
 
-TEST_ONLY=""
+MODE=""
+BASE_BRANCH="main"
+BASE_BRANCH_SET=""
 ADDITIONAL_INSTRUCTIONS=""
 POSITIONAL=()
 
+set_mode() {
+  if [ -n "${MODE}" ]; then
+    echo "Choose exactly one mode; received both --${MODE} and --$1" >&2
+    usage
+    exit 1
+  fi
+  MODE="$1"
+}
+
 while [ "$#" -gt 0 ]; do
   case "$1" in
+    --fix)
+      set_mode "fix"
+      ;;
+    --explore-plan)
+      set_mode "explore-plan"
+      ;;
     --test-only)
-      TEST_ONLY="1"
+      set_mode "test-only"
+      ;;
+    --base)
+      if [ "$#" -lt 2 ] || [[ "$2" == --* ]]; then
+        echo "--base requires a branch name" >&2
+        usage
+        exit 1
+      fi
+      if [ -n "${BASE_BRANCH_SET}" ]; then
+        echo "--base may only be supplied once" >&2
+        usage
+        exit 1
+      fi
+      BASE_BRANCH="$2"
+      BASE_BRANCH_SET="1"
+      shift
       ;;
     --instruction|-i)
       if [ "$#" -lt 2 ]; then
@@ -58,53 +104,80 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-if [ -n "${TEST_ONLY}" ]; then
-  if [ "${#POSITIONAL[@]}" -gt 1 ]; then
+if [ -z "${MODE}" ]; then
+  echo "A mode is required: --fix, --explore-plan, or --test-only" >&2
+  usage
+  exit 1
+fi
+
+if [ "${MODE}" = "test-only" ]; then
+  if [ "${#POSITIONAL[@]}" -ne 0 ]; then
+    echo "--test-only does not take an issue number" >&2
     usage
     exit 1
   fi
   if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
     echo "--instruction cannot be used with --test-only" >&2
+    usage
     exit 1
   fi
   ISSUE_NUMBER="test-only-$(date +%s)"
-  BASE_BRANCH="${POSITIONAL[0]:-main}"
 else
-  if [ "${#POSITIONAL[@]}" -lt 1 ] || [ "${#POSITIONAL[@]}" -gt 2 ]; then
+  if [ "${#POSITIONAL[@]}" -ne 1 ]; then
+    echo "--${MODE} requires exactly one issue number" >&2
     usage
     exit 1
   fi
   ISSUE_NUMBER="${POSITIONAL[0]}"
-  BASE_BRANCH="${POSITIONAL[1]:-main}"
+  if ! [[ "${ISSUE_NUMBER}" =~ ^[0-9]+$ ]]; then
+    echo "Issue number must be a positive integer: ${ISSUE_NUMBER}" >&2
+    usage
+    exit 1
+  fi
 fi
 
 GH_OWNER="jackfranklin"
 REPO="${GH_OWNER}/$(basename "${PWD}")"
 
 : "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
-: "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
 
-GIT_AUTHOR_NAME="$(git config --global user.name)"
-GIT_AUTHOR_EMAIL="$(git config --global user.email)"
-: "${GIT_AUTHOR_NAME:?git config --global user.name is not set}"
-: "${GIT_AUTHOR_EMAIL:?git config --global user.email is not set}"
+GIT_AUTHOR_NAME=""
+GIT_AUTHOR_EMAIL=""
+if [ "${MODE}" != "test-only" ]; then
+  : "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
+fi
+if [ "${MODE}" = "fix" ]; then
+  GIT_AUTHOR_NAME="$(git config --global user.name)"
+  GIT_AUTHOR_EMAIL="$(git config --global user.email)"
+  : "${GIT_AUTHOR_NAME:?git config --global user.name is not set}"
+  : "${GIT_AUTHOR_EMAIL:?git config --global user.email is not set}"
+fi
 
 BRANCH="agent/issue-${ISSUE_NUMBER}"
 
-if [ -z "${TEST_ONLY}" ]; then
-  echo "==> Checking for an existing PR on ${BRANCH}"
-  EXISTING_PR_URL="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr list --repo "${REPO}" --head "${BRANCH}" --state open --json url --jq '.[0].url // empty')"
-  if [ -n "${EXISTING_PR_URL}" ]; then
-    echo "An open PR already exists for issue #${ISSUE_NUMBER}: ${EXISTING_PR_URL}" >&2
-    echo "Refusing to start a duplicate run. Close/merge it first, or delete the ${BRANCH} branch if you want to redo it." >&2
-    exit 1
-  fi
-
+if [ "${MODE}" != "test-only" ]; then
   echo "==> Checking for an already-running container on this issue"
   RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-[0-9]" --format '{{.Names}}' | head -n1)"
   if [ -n "${RUNNING_CONTAINER}" ]; then
     echo "A container is already running for issue #${ISSUE_NUMBER}: ${RUNNING_CONTAINER}" >&2
     echo "Refusing to start a duplicate run. Wait for it to finish, or 'docker rm -f ${RUNNING_CONTAINER}' to stop it." >&2
+    exit 1
+  fi
+fi
+
+if [ "${MODE}" = "fix" ]; then
+  echo "==> Checking issue #${ISSUE_NUMBER} is ready for implementation"
+  if ! GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json labels --jq '.labels[].name' | grep -qx 'ready-for-impl'; then
+    echo "Issue #${ISSUE_NUMBER} does not have the ready-for-impl label." >&2
+    echo "Run --explore-plan and then use /write-plan with a human to create and approve the formal plan first." >&2
+    exit 1
+  fi
+
+  echo "==> Checking for an existing PR on ${BRANCH}"
+  EXISTING_PR_URL="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr list --repo "${REPO}" --head "${BRANCH}" --state open --json url --jq '.[0].url // empty')"
+  if [ -n "${EXISTING_PR_URL}" ]; then
+    echo "An open PR already exists for issue #${ISSUE_NUMBER}: ${EXISTING_PR_URL}" >&2
+    echo "Refusing to start a duplicate run. Close/merge it first, or delete the ${BRANCH} branch if you want to redo it." >&2
     exit 1
   fi
 fi
@@ -123,11 +196,12 @@ docker run \
   -e REPO="${REPO}" \
   -e ISSUE_NUMBER="${ISSUE_NUMBER}" \
   -e BASE_BRANCH="${BASE_BRANCH}" \
+  -e MODE="${MODE}" \
+  -e CONTAINER_NAME="${CONTAINER_NAME}" \
   -e GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" \
-  -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN}" \
+  -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:-}" \
   -e GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME}" \
   -e GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL}" \
-  -e TEST_ONLY="${TEST_ONLY}" \
   -e ADDITIONAL_INSTRUCTIONS="${ADDITIONAL_INSTRUCTIONS}" \
   --name "${CONTAINER_NAME}" \
   "${IMAGE}"
