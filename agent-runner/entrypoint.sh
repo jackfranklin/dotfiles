@@ -162,7 +162,26 @@ if [ "${MODE}" = "explore-plan" ]; then
 
 This is not implementation and not a formal approved plan. Do not edit tracked files, create a branch, commit, push, open a pull request, install dependencies, run builds, or run tests. Use static reconnaissance only: read source and tests as text, inspect manifests and configuration, use Git history where useful, and examine the issue discussion.
 
-Return only the Markdown body of an exploration report. Include: investigation summary; relevant code with exact paths and line numbers where practical; constraints and risks; a recommended high-level direction; a high-level implementation outline; validation ideas; explicit decisions/questions for a human (with options and a recommendation where useful); and scope deliberately excluded. Do not describe unresolved choices as settled. This report is input for a human to turn into a formal plan with /write-plan, not a ready-for-implementation plan.
+Return only the Markdown body of a concise exploration report. This is a decision memo for a human, not a preliminary implementation plan or an exhaustive code map. Target 800–1,200 words and do not exceed 1,500 words.
+
+Use exactly these sections:
+
+## Summary
+Three to five decision-relevant bullets.
+
+## Key findings
+At most five findings. Cite only the essential file paths (and line numbers only when they materially help a decision); do not enumerate call sites, internal mechanics, or test cases.
+
+## Recommended direction
+One concise recommendation, explicitly marked as a hypothesis rather than an approved decision.
+
+## Decisions needed
+At most three genuine human design decisions. Give compact options and a recommendation only where it helps. Move non-blocking observations into Key findings or Deferred work.
+
+## Deferred work
+Briefly name work intentionally left for /write-plan or follow-on issues.
+
+Do not include a detailed implementation outline, validation/test plan, exhaustive code inventory, or restatement of issue requirements. Do not describe unresolved choices as settled. This report is input for a human to turn into a formal plan with /write-plan, not a ready-for-implementation plan.
 
 You are running in read-only plan mode. Do not attempt to write a file, post a GitHub comment, add or remove labels, or use any other command with side effects. The runner will save and publish your final response after this session exits.
 
