@@ -119,6 +119,9 @@ cd ~/code/routemaster   # repo owner defaults to jackfranklin, repo name comes f
 agent-run --explore-plan 55
 agent-run --explore-plan 55 --base develop -i 'Investigate compatibility with v2.'
 
+# Replace prior marked exploration reports only after a new report is posted and verified.
+agent-run --explore-plan 55 --replace
+
 # Only for an issue whose formal human-approved plan has ready-for-impl.
 agent-run --fix 55
 agent-run --fix 55 --instruction 'Prefer a small, backward-compatible change.'
@@ -132,6 +135,8 @@ agent-run --test-only --base develop
 `--fix`, `--explore-plan`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`. Before a fix or exploration run starts Docker, the CLI fetches and displays the selected issue's title and requires a `y`/`yes` confirmation. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
 
 Exploration is deliberately not implementation-ready planning. Its report is a snapshot for a human to discuss and turn into a formal, approved plan with `/write-plan`; that skill applies `ready-for-impl`. The runner refuses `--fix` unless this label is present. It creates `exploration-added` on demand, after it has captured, posted, and verified the report comment.
+
+`--replace` is available only with `--explore-plan`. It treats prior marked reports by the authenticated GitHub user as raw research context, posts and verifies the replacement first, then deletes those prior marked comments. A failed or unverified replacement leaves prior comments untouched.
 
 `--test-only` is for debugging the container/install environment itself (e.g. whether Puppeteer's Chrome download works) without paying for a full Claude run each time. No issue number needed, and it doesn't fetch an issue or touch GitHub beyond cloning.
 
