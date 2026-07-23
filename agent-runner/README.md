@@ -129,7 +129,7 @@ agent-run --test-only
 agent-run --test-only --base develop
 ```
 
-`--fix`, `--explore-plan`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
+`--fix`, `--explore-plan`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`. Before a fix or exploration run starts Docker, the CLI fetches and displays the selected issue's title and requires a `y`/`yes` confirmation. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
 
 Exploration is deliberately not implementation-ready planning. Its report is a snapshot for a human to discuss and turn into a formal, approved plan with `/write-plan`; that skill applies `ready-for-impl`. The runner refuses `--fix` unless this label is present. It creates `exploration-added` on demand, after it has captured, posted, and verified the report comment.
 

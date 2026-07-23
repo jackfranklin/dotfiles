@@ -156,6 +156,23 @@ fi
 BRANCH="agent/issue-${ISSUE_NUMBER}"
 
 if [ "${MODE}" != "test-only" ]; then
+  echo "==> Fetching issue #${ISSUE_NUMBER}"
+  ISSUE_TITLE="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json title --jq '.title')"
+  echo "==> Issue #${ISSUE_NUMBER}: ${ISSUE_TITLE}"
+  printf '==> Continue? [y/N] ' >&2
+  if ! read -r ISSUE_CONFIRMATION; then
+    echo "Cancelled; no confirmation was received and no container was started." >&2
+    exit 1
+  fi
+  case "${ISSUE_CONFIRMATION}" in
+    y|Y|yes|YES|Yes)
+      ;;
+    *)
+      echo "Cancelled; no container was started." >&2
+      exit 1
+      ;;
+  esac
+
   echo "==> Checking for an already-running container on this issue"
   RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-[0-9]" --format '{{.Names}}' | head -n1)"
   if [ -n "${RUNNING_CONTAINER}" ]; then
