@@ -151,8 +151,7 @@ trust_workdir() {
 run_claude() {
   local prompt="$1"
   stdbuf -oL claude -p "${prompt}" --dangerously-skip-permissions --output-format stream-json --verbose --include-partial-messages \
-    | jq -rj 'select(.type == "stream_event" and .event.delta.type? == "text_delta") | .event.delta.text'
-  printf '\n'
+    | format-claude-progress.mjs
 }
 
 ISSUE_CONTEXT="$(fetch_issue_context)"
@@ -178,10 +177,9 @@ ${ISSUE_CONTEXT}"
   set +e
   stdbuf -oL claude -p "${PROMPT}" --permission-mode plan --output-format stream-json --verbose --include-partial-messages \
     | tee "${EXPLORATION_STREAM_PATH}" \
-    | jq -rj 'select(.type == "stream_event" and .event.delta.type? == "text_delta") | .event.delta.text'
+    | format-claude-progress.mjs
   PIPE_STATUSES=("${PIPESTATUS[@]}")
   set -e
-  printf '\n'
   CLAUDE_EXIT="${PIPE_STATUSES[0]}"
   TEE_EXIT="${PIPE_STATUSES[1]}"
   OUTPUT_FILTER_EXIT="${PIPE_STATUSES[2]}"

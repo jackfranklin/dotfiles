@@ -36,8 +36,8 @@ RUN npm install -g @puppeteer/browsers \
 WORKDIR /work
 RUN chown node:node /work
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh format-claude-progress.mjs /usr/local/bin/
+RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/format-claude-progress.mjs
 
 USER node
 
