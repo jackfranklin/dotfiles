@@ -7,7 +7,7 @@
   "skills": [
     "~/.claude/skills"
   ],
-  "hideThinkingBlock": false,
+  "hideThinkingBlock": true,
   "enabledModels": [
     "anthropic/claude-opus-4-8",
     "anthropic/claude-sonnet-4-6",
