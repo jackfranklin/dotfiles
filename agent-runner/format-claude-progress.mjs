@@ -2,31 +2,40 @@
 
 import readline from 'node:readline';
 
+const color = {
+  reset: '\u001B[0m',
+  blue: '\u001B[1;34m',
+  cyan: '\u001B[1;36m',
+  magenta: '\u001B[1;35m',
+  yellow: '\u001B[1;33m',
+  dimYellow: '\u001B[2;33m',
+};
+
 const progressByTask = new Map();
 const announcedTools = new Set();
 let announcedThinking = false;
 let lastOutputWasText = false;
 
-function status(message) {
+function status(message, statusColor) {
   if (lastOutputWasText) {
     process.stdout.write('\n');
   }
-  process.stdout.write(`==> ${message}\n`);
+  process.stdout.write(`${statusColor}==> ${message}${color.reset}\n`);
   lastOutputWasText = false;
 }
 
 function announceTool(name) {
   const messages = {
-    Agent: 'Claude is delegating codebase research…',
-    Bash: 'Claude is searching the repository…',
-    Read: 'Claude is reading relevant files…',
-    Task: 'Claude is delegating codebase research…',
+    Agent: ['Claude is delegating codebase research…', color.magenta],
+    Bash: ['Claude is searching the repository…', color.cyan],
+    Read: ['Claude is reading relevant files…', color.blue],
+    Task: ['Claude is delegating codebase research…', color.magenta],
   };
-  const message = messages[name];
+  const [message, statusColor] = messages[name] ?? [];
 
   if (message && !announcedTools.has(name)) {
     announcedTools.add(name);
-    status(message);
+    status(message, statusColor);
   }
 }
 
@@ -41,7 +50,7 @@ for await (const line of input) {
   }
 
   if (event.type === 'system' && event.subtype === 'task_started') {
-    status(`Researching: ${event.description}`);
+    status(`Researching: ${event.description}`, color.magenta);
     continue;
   }
 
@@ -50,7 +59,7 @@ for await (const line of input) {
     const previous = progressByTask.get(event.task_id) ?? 0;
     if (toolUses >= previous + 5) {
       progressByTask.set(event.task_id, toolUses);
-      status('Research subagent is still exploring…');
+      status('Research subagent is still exploring…', color.dimYellow);
     }
     continue;
   }
@@ -65,7 +74,7 @@ for await (const line of input) {
     !announcedThinking
   ) {
     announcedThinking = true;
-    status('Claude is assessing the issue…');
+    status('Claude is assessing the issue…', color.yellow);
     continue;
   }
 
