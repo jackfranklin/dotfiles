@@ -251,7 +251,7 @@ ${ISSUE_CONTEXT}"
   fi
   gh issue edit "${ISSUE_NUMBER}" --repo "${REPO}" --add-label 'exploration-added'
   REPORT_COMMENT_URL="$(gh api "repos/${REPO}/issues/comments/${REPORT_COMMENT_ID}" --jq '.html_url')"
-  echo "==> Exploration report posted: ${REPORT_COMMENT_URL}"
+  printf '\033[1;32m==> Exploration report posted: %s\033[0m\n' "${REPORT_COMMENT_URL}"
 
   if [ "${CLAUDE_EXIT}" -ne 0 ] || [ "${TEE_EXIT}" -ne 0 ] || [ "${OUTPUT_FILTER_EXIT}" -ne 0 ]; then
     echo "==> WARNING: the report was published, but Claude or its output pipeline exited non-zero (Claude: ${CLAUDE_EXIT}, tee: ${TEE_EXIT}, filter: ${OUTPUT_FILTER_EXIT})." >&2
