@@ -177,7 +177,7 @@ ${ISSUE_CONTEXT}"
   set +e
   stdbuf -oL claude -p "${PROMPT}" --permission-mode plan --output-format stream-json --verbose --include-partial-messages \
     | tee "${EXPLORATION_STREAM_PATH}" \
-    | format-claude-progress.mjs
+    | format-claude-progress.mjs --status-only
   PIPE_STATUSES=("${PIPESTATUS[@]}")
   set -e
   CLAUDE_EXIT="${PIPE_STATUSES[0]}"
@@ -212,6 +212,9 @@ ${ISSUE_CONTEXT}"
     print_report_recovery
     exit 1
   fi
+
+  echo "==> Exploration complete. Final report:"
+  cat "${REPORT_PATH}"
 
   echo "==> Posting exploration report to issue #${ISSUE_NUMBER}"
   REPORT_POST_STARTED_AT="$(date -u +%Y-%m-%dT%H:%M:%SZ)"

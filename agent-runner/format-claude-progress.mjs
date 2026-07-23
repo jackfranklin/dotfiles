@@ -11,10 +11,12 @@ const color = {
   dimYellow: '\u001B[2;33m',
 };
 
+const statusOnly = process.argv.includes('--status-only');
 const progressByTask = new Map();
 const announcedTools = new Set();
 let announcedThinking = false;
 let lastOutputWasText = false;
+let lastActivityAt = Date.now();
 
 function status(message, statusColor) {
   if (lastOutputWasText) {
@@ -39,9 +41,17 @@ function announceTool(name) {
   }
 }
 
+const heartbeat = setInterval(() => {
+  if (Date.now() - lastActivityAt >= 15_000) {
+    status('Claude is still working…', color.dimYellow);
+    lastActivityAt = Date.now();
+  }
+}, 1_000);
+
 const input = readline.createInterface({ input: process.stdin });
 
 for await (const line of input) {
+  lastActivityAt = Date.now();
   let event;
   try {
     event = JSON.parse(line);
@@ -87,6 +97,7 @@ for await (const line of input) {
   }
 
   if (
+    !statusOnly &&
     event.event.type === 'content_block_delta' &&
     event.event.delta.type === 'text_delta'
   ) {
@@ -94,6 +105,8 @@ for await (const line of input) {
     lastOutputWasText = true;
   }
 }
+
+clearInterval(heartbeat);
 
 if (lastOutputWasText) {
   process.stdout.write('\n');
