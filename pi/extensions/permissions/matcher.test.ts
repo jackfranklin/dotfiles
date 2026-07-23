@@ -71,6 +71,16 @@ describe("splitCommand", () => {
 			'echo "$f"',
 		]);
 	});
+
+	it("does not split executable-looking heredoc bodies into segments", () => {
+		const command = `python3 - <<'PY'
+sudo reboot
+rm -rf /
+print('a; b | c && d')
+PY
+npm test`;
+		assert.deepEqual(splitCommand(command), ["python3 - <<'PY'", "npm test"]);
+	});
 });
 
 describe("risk-based decide", () => {
@@ -200,6 +210,60 @@ describe("risk-based decide", () => {
 		assert.equal(decide("bash", indirect, safe, prompt, block), "prompt");
 	});
 
+	it("allows the logged Python heredoc with comparison operators", () => {
+		const command = `python3 - <<'PY'
+score = 72
+if score >= 70:
+    print('pass')
+elif score >= 40:
+    print('retry')
+PY`;
+		const analysis = analyzeDecision("bash", command, safe, prompt, block);
+		assert.equal(analysis.decision, "allow");
+		assert.deepEqual(analysis.riskyRedirectTargets, []);
+		assert.deepEqual(analysis.segments, ["python3 -  "]);
+	});
+
+	it("ignores dangerous-looking commands inside heredoc bodies", () => {
+		const command = `python3 - <<PY
+sudo reboot
+rm -rf /
+echo text > out.txt
+PY`;
+		const analysis = analyzeDecision("bash", command, safe, prompt, block);
+		assert.equal(analysis.decision, "allow");
+		assert.deepEqual(analysis.riskyRedirectTargets, []);
+	});
+
+	it("still prompts for write redirects outside heredocs", () => {
+		const command = `python3 - <<'PY' > out.txt
+print('safe body')
+PY`;
+		const analysis = analyzeDecision("bash", command, safe, prompt, block);
+		assert.equal(analysis.decision, "prompt");
+		assert.deepEqual(analysis.riskyRedirectTargets, ["out.txt"]);
+	});
+
+	it("still detects a later command after a heredoc", () => {
+		const command = `python3 - <<'PY'
+print('safe body')
+PY
+printf done > out.txt`;
+		const analysis = analyzeDecision("bash", command, safe, prompt, block);
+		assert.equal(analysis.decision, "prompt");
+		assert.deepEqual(analysis.riskyRedirectTargets, ["out.txt"]);
+	});
+
+	it("supports unquoted delimiters and tab-stripping heredocs", () => {
+		const unquoted = `python3 - <<PY
+sudo reboot
+PY`;
+		assert.equal(decide("bash", unquoted, safe, prompt, block), "allow");
+
+		const tabStripped = "python3 - <<-PY\n\trm -rf /\n\tPY";
+		assert.equal(decide("bash", tabStripped, safe, prompt, block), "allow");
+	});
+
 	it("prompts on an empty command", () => {
 		assert.equal(decide("bash", "   ", safe, prompt, block), "prompt");
 	});
@@ -243,6 +307,15 @@ re.sub('<[^>]+>',' ',data)
 PY`;
 		assert.deepEqual(redirectWriteTargets(command), []);
 		assert.equal(hasRiskyRedirect(command), false);
+	});
+
+	it("detects redirects outside heredoc bodies", () => {
+		const command = `python3 - <<'PY'
+print('> ignored')
+PY
+printf done > out.txt`;
+		assert.deepEqual(redirectWriteTargets(command), ["out.txt"]);
+		assert.equal(hasRiskyRedirect(command), true);
 	});
 });
 

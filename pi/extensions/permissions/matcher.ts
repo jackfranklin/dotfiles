@@ -71,6 +71,7 @@ function normalizeShellSegment(segment: string): string | undefined {
  * so separators inside strings do not over-split.
  */
 export function splitCommand(command: string): string[] {
+	command = stripHeredocBodies(command);
 	const raw: string[] = [];
 	let current = "";
 	let quote: "'" | '"' | undefined;
@@ -125,10 +126,119 @@ function isBenignTarget(target: string): boolean {
 	return BENIGN_REDIRECT_TARGETS.has(target) || target.startsWith("/dev/fd/") || isTmpPath(target);
 }
 
+function stripHeredocBodies(command: string): string {
+	const lines = command.split(/(\n)/);
+	const out: string[] = [];
+	let pending: HeredocDelimiter[] = [];
+	let atLineStart = true;
+
+	for (let i = 0; i < lines.length; i++) {
+		const part = lines[i];
+		if (part === "\n") {
+			if (pending.length === 0) out.push(part);
+			atLineStart = true;
+			continue;
+		}
+
+		if (pending.length > 0 && atLineStart) {
+			const nextPending = [...pending];
+			const line = part;
+			while (nextPending.length > 0) {
+				const delimiter = nextPending[0];
+				const comparable = delimiter.stripTabs ? line.replace(/^\t+/, "") : line;
+				if (comparable !== delimiter.word) break;
+				nextPending.shift();
+				break;
+			}
+			pending = nextPending;
+			continue;
+		}
+
+		out.push(part);
+		pending.push(...heredocDelimitersInLine(part));
+		atLineStart = false;
+	}
+
+	return out.join("");
+}
+
+interface HeredocDelimiter {
+	word: string;
+	stripTabs: boolean;
+}
+
+function heredocDelimitersInLine(line: string): HeredocDelimiter[] {
+	const delimiters: HeredocDelimiter[] = [];
+	let quote: "'" | '"' | undefined;
+	let escaped = false;
+
+	for (let i = 0; i < line.length; i++) {
+		const ch = line[i];
+		if (escaped) {
+			escaped = false;
+			continue;
+		}
+		if (ch === "\\") {
+			escaped = true;
+			continue;
+		}
+		if (quote) {
+			if (ch === quote) quote = undefined;
+			continue;
+		}
+		if (ch === "'" || ch === '"') {
+			quote = ch;
+			continue;
+		}
+		if (ch !== "<" || line[i - 1] === "<" || line[i + 1] !== "<" || line[i + 2] === "<") continue;
+
+		let j = i + 2;
+		const stripTabs = line[j] === "-";
+		if (stripTabs) j++;
+		while (/\s/.test(line[j] ?? "")) j++;
+
+		const token = readShellToken(line, j);
+		if (token) delimiters.push({ word: unquoteHeredocDelimiter(token), stripTabs });
+		i = j + (token?.length ?? 0) - 1;
+	}
+
+	return delimiters;
+}
+
+function unquoteHeredocDelimiter(token: string): string {
+	let out = "";
+	let quote: "'" | '"' | undefined;
+	let escaped = false;
+
+	for (const ch of token) {
+		if (escaped) {
+			out += ch;
+			escaped = false;
+			continue;
+		}
+		if (ch === "\\") {
+			escaped = true;
+			continue;
+		}
+		if (quote) {
+			if (ch === quote) quote = undefined;
+			else out += ch;
+			continue;
+		}
+		if (ch === "'" || ch === '"') {
+			quote = ch;
+			continue;
+		}
+		out += ch;
+	}
+	if (escaped) out += "\\";
+	return out;
+}
+
 function stripRedirections(command: string): string {
 	const redir =
 		/(?:[0-9]+|&)?(?:>>?|<<?<?)\s*(?:&[0-9-]+|"[^"]*"|'[^']*'|[^\s|;&<>()]+)?/g;
-	return command.replace(redir, " ");
+	return stripHeredocBodies(command).replace(redir, " ");
 }
 
 function unquote(token: string): string {
@@ -250,6 +360,7 @@ function temporaryVariablesBeforeSegments(segments: string[]): ReadonlySet<strin
 }
 
 export function redirectWriteTargets(command: string): string[] {
+	command = stripHeredocBodies(command);
 	const targets: string[] = [];
 	let quote: "'" | '"' | undefined;
 	let escaped = false;
@@ -389,6 +500,10 @@ export function analyzeDecision(
 	const safeGlobs = globsFor(safe, label);
 	const promptGlobs = globsFor(prompt, label);
 	const blockGlobs = globsFor(block, label);
+	const sanitizedSubject = toolName === "bash" ? stripHeredocBodies(subject) : subject;
+	// `splitCommand` sanitizes heredoc bodies itself. Pass the original source so
+	// it can still see each delimiter; sanitizing twice would make a later real
+	// command look like the body of an unterminated heredoc.
 	const rawSegments = toolName === "bash" ? splitCommand(subject) : [subject];
 	const segments = toolName === "bash" ? rawSegments.map(stripRedirections) : rawSegments;
 	const temporaryVariables = temporaryVariablesBeforeSegments(rawSegments);
@@ -404,9 +519,9 @@ export function analyzeDecision(
 			: [];
 	const reasons: string[] = [];
 
-	const wholeCommandBlockReason = toolName === "bash" ? hardBlockReason(subject) : undefined;
+	const wholeCommandBlockReason = toolName === "bash" ? hardBlockReason(sanitizedSubject) : undefined;
 	if (wholeCommandBlockReason) {
-		reasons.push(`${subject}: ${wholeCommandBlockReason}`);
+		reasons.push(`${sanitizedSubject}: ${wholeCommandBlockReason}`);
 		return {
 			decision: "deny",
 			segments,
