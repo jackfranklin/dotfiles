@@ -12,7 +12,7 @@ usage() {
   cat >&2 <<'EOF'
 Usage:
   agent-run --fix <issue-number> [--base <branch>] [--instruction <text> ...]
-  agent-run --explore-plan <issue-number> [--base <branch>] [--instruction <text> ...]
+  agent-run --explore-plan <issue-number> [--replace] [--base <branch>] [--instruction <text> ...]
   agent-run --test-only [--base <branch>]
 
 Modes:
@@ -22,12 +22,15 @@ Modes:
 
 Options:
   --base <branch>        Base branch to clone and, for --fix, open the PR against (default: main).
+  --replace              Replace prior agent-runner exploration comments after a new report is verified.
+                         Available only with --explore-plan.
   --instruction, -i <text>
                          Additional instruction for Claude. May be repeated; unavailable with --test-only.
   --help, -h             Show this help text.
 
 Examples:
   agent-run --explore-plan 55
+  agent-run --explore-plan 55 --replace
   agent-run --explore-plan 55 --base develop -i 'Investigate compatibility with v2.'
   agent-run --fix 55
   agent-run --fix 55 --instruction 'Prefer a small, backward-compatible change.'
@@ -38,6 +41,7 @@ EOF
 MODE=""
 BASE_BRANCH="main"
 BASE_BRANCH_SET=""
+REPLACE_EXPLORATION=""
 ADDITIONAL_INSTRUCTIONS=""
 POSITIONAL=()
 
@@ -60,6 +64,9 @@ while [ "$#" -gt 0 ]; do
       ;;
     --test-only)
       set_mode "test-only"
+      ;;
+    --replace)
+      REPLACE_EXPLORATION="1"
       ;;
     --base)
       if [ "$#" -lt 2 ] || [[ "$2" == --* ]]; then
@@ -106,6 +113,12 @@ done
 
 if [ -z "${MODE}" ]; then
   echo "A mode is required: --fix, --explore-plan, or --test-only" >&2
+  usage
+  exit 1
+fi
+
+if [ -n "${REPLACE_EXPLORATION}" ] && [ "${MODE}" != "explore-plan" ]; then
+  echo "--replace is only available with --explore-plan" >&2
   usage
   exit 1
 fi
@@ -214,6 +227,7 @@ docker run \
   -e ISSUE_NUMBER="${ISSUE_NUMBER}" \
   -e BASE_BRANCH="${BASE_BRANCH}" \
   -e MODE="${MODE}" \
+  -e REPLACE_EXPLORATION="${REPLACE_EXPLORATION}" \
   -e CONTAINER_NAME="${CONTAINER_NAME}" \
   -e GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" \
   -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:-}" \
