@@ -48,7 +48,7 @@ repo with a trusted issue author (you).
 
 Each run clones the target repo fresh into the container at the selected base branch. The mode then determines the workflow:
 
-- `--explore-plan` runs Claude with its read-only `--permission-mode plan`: it does not create a branch, install dependencies, run builds/tests, edit code, commit, push, or open a PR. The entrypoint captures Claude's final report, posts it as an issue comment, verifies it, then adds the `exploration-added` label.
+- `--explore-plan` runs Claude with its read-only `--permission-mode plan`: it does not create a branch, install dependencies, run builds/tests, edit code, commit, push, or open a PR. Its 800–1,200-word report is a concise decision memo, not an implementation plan or exhaustive code map. The entrypoint captures the final report, posts it as an issue comment, verifies it, then adds the `exploration-added` label.
 - `--fix` checks that the issue has `ready-for-impl`, checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary), prepares dependencies, and asks Claude to implement the approved plan and open a PR.
 - `--test-only` installs dependencies and runs the repository's `npm test` script when present, without Claude or issue access.
 
