@@ -16,7 +16,8 @@ const progressByTask = new Map();
 const announcedTools = new Set();
 let announcedThinking = false;
 let lastOutputWasText = false;
-let lastActivityAt = Date.now();
+const startedAt = Date.now();
+let lastActivityAt = startedAt;
 
 function status(message, statusColor) {
   if (lastOutputWasText) {
@@ -41,12 +42,19 @@ function announceTool(name) {
   }
 }
 
-const heartbeat = setInterval(() => {
-  if (Date.now() - lastActivityAt >= 15_000) {
-    status('Claude is still working…', color.dimYellow);
-    lastActivityAt = Date.now();
+const ticker = setInterval(() => {
+  if (!statusOnly) {
+    return;
   }
-}, 1_000);
+
+  const now = Date.now();
+  const elapsedSeconds = Math.floor((now - startedAt) / 1_000);
+  const inactiveSeconds = Math.floor((now - lastActivityAt) / 1_000);
+  status(
+    `Still exploring… ${elapsedSeconds}s elapsed · Claude activity ${inactiveSeconds}s ago`,
+    color.dimYellow,
+  );
+}, 10_000);
 
 const input = readline.createInterface({ input: process.stdin });
 
@@ -106,7 +114,7 @@ for await (const line of input) {
   }
 }
 
-clearInterval(heartbeat);
+clearInterval(ticker);
 
 if (lastOutputWasText) {
   process.stdout.write('\n');
