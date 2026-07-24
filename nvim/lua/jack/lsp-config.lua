@@ -44,8 +44,7 @@ M.typescript = function(config)
           local buf_name = vim.api.nvim_buf_get_name(bufnr)
           if buf_name ~= "" then
             local buf_dir = vim.fs.dirname(buf_name)
-            local ts_dir =
-              vim.fs.find("node_modules/typescript", { path = buf_dir, upward = true, type = "directory" })
+            local ts_dir = vim.fs.find("node_modules/typescript", { path = buf_dir, upward = true, type = "directory" })
             if #ts_dir > 0 then
               has_ts = true
             end
@@ -170,6 +169,94 @@ M.lua = function()
     },
   })
   vim.lsp.enable("lua_ls")
+end
+
+local function has_package_dep_or_config(root_dir, name)
+  local pkg_path = root_dir .. "/package.json"
+  local f = io.open(pkg_path, "r")
+  if not f then
+    return false
+  end
+  local content = f:read("*a")
+  f:close()
+  if not content then
+    return false
+  end
+  return string.find(content, '"' .. name .. '"', 1, true) ~= nil
+end
+
+local function get_oxlint_root(bufnr)
+  local root = vim.fs.root(bufnr, { "oxlint.json", ".oxlintrc.json", "oxlintrc.json", ".oxlintrc" })
+  if root then
+    return root
+  end
+  local pkg_root = vim.fs.root(bufnr, { "package.json" })
+  if pkg_root and has_package_dep_or_config(pkg_root, "oxlint") then
+    return pkg_root
+  end
+  return nil
+end
+
+local function get_oxfmt_root(bufnr)
+  local root = vim.fs.root(bufnr, { "oxfmt.json", ".oxfmtrc.json", "oxfmtrc.json", ".oxfmtrc", "oxc.json" })
+  if root then
+    return root
+  end
+  local pkg_root = vim.fs.root(bufnr, { "package.json" })
+  if pkg_root and has_package_dep_or_config(pkg_root, "oxfmt") then
+    return pkg_root
+  end
+  return nil
+end
+
+M.oxlint = function(config)
+  config = config or {}
+  local setup_opts = {
+    cmd = config.cmd or { "npx", "oxlint", "--lsp" },
+    filetypes = {
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "jsx",
+      "tsx",
+    },
+    root_dir = function(bufnr, on_dir)
+      local root = get_oxlint_root(bufnr)
+      if root then
+        on_dir(root)
+      end
+    end,
+  }
+  local final_setup = vim.tbl_deep_extend("force", setup_opts, config)
+  vim.lsp.config("oxlint", final_setup)
+  vim.lsp.enable("oxlint")
+end
+
+M.oxfmt = function(config)
+  config = config or {}
+  local setup_opts = {
+    cmd = config.cmd or { "npx", "oxfmt", "--lsp" },
+    filetypes = {
+      "javascript",
+      "javascriptreact",
+      "typescript",
+      "typescriptreact",
+      "jsx",
+      "tsx",
+      "json",
+      "jsonc",
+    },
+    root_dir = function(bufnr, on_dir)
+      local root = get_oxfmt_root(bufnr)
+      if root then
+        on_dir(root)
+      end
+    end,
+  }
+  local final_setup = vim.tbl_deep_extend("force", setup_opts, config)
+  vim.lsp.config("oxfmt", final_setup)
+  vim.lsp.enable("oxfmt")
 end
 
 return M

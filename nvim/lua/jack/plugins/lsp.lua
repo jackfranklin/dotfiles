@@ -9,6 +9,10 @@ lsp_config.eslint()
 -- Or do we need to use the special ESLintFixAll command?
 format_on_save.register_lsp_for_autoformat("eslint")
 
+lsp_config.oxlint()
+lsp_config.oxfmt()
+format_on_save.register_lsp_for_autoformat("oxfmt")
+
 lsp_config.lua()
 
 -- TODO: figure out if this is possible to have but not have completions appear
