@@ -8,6 +8,8 @@ PACKAGES=(
   "@fsouza/prettierd"
   "@t1ckbase/vscode-langservers-extracted"
   "git-recent"
+  "oxlint"
+  "oxfmt"
 )
 
 echo "Installing global npm packages..."
