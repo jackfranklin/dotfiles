@@ -1,0 +1,104 @@
+#!/usr/bin/env bash
+# Manage the temporary worktree used by the github-code-review skill.
+# This is intentionally a trusted, narrowly scoped helper: it only fetches a
+# GitHub PR ref and base ref into temporary local refs, then cleans both up.
+set -euo pipefail
+
+usage() {
+	printf 'Usage:\n  %s start <pr-number> <base-ref> [remote]\n  %s finish <state-file>\n' "$0" "$0" >&2
+	exit 2
+}
+
+start() {
+	[[ $# -ge 2 && $# -le 3 ]] || usage
+	local pr=$1
+	local base=$2
+	local remote=${3:-origin}
+
+	[[ $pr =~ ^[1-9][0-9]*$ ]] || { printf 'PR number must be a positive integer\n' >&2; exit 2; }
+	git check-ref-format --branch "$base" >/dev/null
+
+	local repo_root nonce tmp_root worktree head_ref base_ref state_file ready_file done_file log_file pid
+	repo_root=$(git rev-parse --show-toplevel)
+	git -C "$repo_root" remote get-url "$remote" >/dev/null
+	nonce="$(date +%s)-$$"
+	tmp_root=$(mktemp -d "/tmp/github-code-review-pr-${pr}-XXXXXX")
+	worktree="$tmp_root/repo"
+	head_ref="refs/github-code-review/pr-${pr}-${nonce}"
+	base_ref="refs/github-code-review/base-${pr}-${nonce}"
+	state_file="$tmp_root/state"
+	ready_file="$tmp_root/ready"
+	done_file="$tmp_root/done"
+	log_file="$tmp_root/setup.log"
+
+	(
+		cleanup() {
+			git -C "$repo_root" worktree remove --force "$worktree" 2>/dev/null || true
+			git -C "$repo_root" update-ref -d "$head_ref" 2>/dev/null || true
+			git -C "$repo_root" update-ref -d "$base_ref" 2>/dev/null || true
+			# Preserve the setup log until the parent has reported a failure.
+			test -e "$ready_file" && rm -rf "$tmp_root"
+		}
+		trap cleanup EXIT HUP INT TERM
+
+		git -C "$repo_root" fetch --no-tags "$remote" \
+			"+refs/pull/${pr}/head:${head_ref}" \
+			"+refs/heads/${base}:${base_ref}"
+		git -C "$repo_root" worktree add --detach "$worktree" "$head_ref"
+		printf '%s\n%s\n%s\n%s\n' "$worktree" "$base_ref" "$head_ref" "$done_file" >"$state_file"
+		: >"$ready_file"
+		until test -e "$done_file"; do sleep 1; done
+	) >"$log_file" 2>&1 &
+	pid=$!
+
+	for _ in $(seq 1 60); do
+		test -e "$ready_file" && break
+		sleep 1
+	done
+	if ! test -e "$ready_file"; then
+		wait "$pid" || true
+		cat "$log_file" >&2 || true
+		rm -rf "$tmp_root"
+		printf 'Temporary worktree setup failed\n' >&2
+		exit 1
+	fi
+
+	printf 'WORKTREE=%s\nBASE_REF=%s\nHEAD_REF=%s\nSTATE_FILE=%s\n' \
+		"$worktree" "$base_ref" "$head_ref" "$state_file"
+}
+
+finish() {
+	[[ $# -eq 1 ]] || usage
+	local state_file=$1
+	case "$state_file" in
+		/tmp/github-code-review-pr-*/state) ;;
+		*) printf 'Not a github-code-review state file: %s\n' "$state_file" >&2; exit 2 ;;
+	esac
+	[[ -f $state_file ]] || { printf 'State file does not exist: %s\n' "$state_file" >&2; exit 1; }
+
+	local worktree base_ref head_ref done_file state_dir
+	{
+		IFS= read -r worktree
+		IFS= read -r base_ref
+		IFS= read -r head_ref
+		IFS= read -r done_file
+	} <"$state_file"
+	state_dir=${state_file%/state}
+	case "$done_file" in
+		"$state_dir/done") ;;
+		*) printf 'Invalid cleanup path in state file\n' >&2; exit 1 ;;
+	esac
+
+	: >"$done_file"
+	for _ in $(seq 1 50); do
+		test ! -e "$state_file" && return
+		sleep 0.1
+	done
+	printf 'Cleanup was requested but is still running: %s\n' "$state_dir" >&2
+}
+
+case ${1:-} in
+	start) shift; start "$@" ;;
+	finish) shift; finish "$@" ;;
+	*) usage ;;
+esac

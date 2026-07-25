@@ -108,42 +108,34 @@ each substantive concern, classify it as one of:
 ### 4. Create an isolated PR worktree
 
 Review the actual PR head in a temporary detached Git worktree, never in the
-user's active checkout. First obtain the PR's `baseRefName` from step 1. Create
-unique temporary refs in the local repository, add the worktree, and register
-cleanup **before** fetching:
+user's active checkout. First obtain the PR's `baseRefName` from step 1, then
+invoke the skill's trusted helper. It owns the temporary refs, worktree, state,
+and cleanup lifecycle:
 
 ```bash
-repo_root="$(git rev-parse --show-toplevel)"
-pr=<number>
-base=<baseRefName-from-step-1>
-nonce="$(date +%s)-$$"
-tmp_root="$(mktemp -d "${TMPDIR:-/tmp}/github-code-review-pr-${pr}-XXXXXX")"
-worktree="$tmp_root/repo"
-head_ref="refs/github-code-review/pr-${pr}-${nonce}"
-base_ref="refs/github-code-review/base-${pr}-${nonce}"
-
-cleanup() {
-  git -C "$repo_root" worktree remove --force "$worktree" 2>/dev/null || true
-  git -C "$repo_root" update-ref -d "$head_ref" 2>/dev/null || true
-  git -C "$repo_root" update-ref -d "$base_ref" 2>/dev/null || true
-  rm -rf "$tmp_root"
-}
-trap cleanup EXIT HUP INT TERM
-
-git -C "$repo_root" fetch --no-tags origin \
-  "+refs/pull/${pr}/head:${head_ref}" \
-  "+refs/heads/${base}:${base_ref}"
-git -C "$repo_root" worktree add --detach "$worktree" "$head_ref"
-cd "$worktree"
+bash /home/jack/.claude/skills/github-code-review/scripts/github-code-review-worktree \
+  start <number> <baseRefName-from-step-1> origin
 ```
 
+It prints `WORKTREE`, `BASE_REF`, `HEAD_REF`, and `STATE_FILE`. Preserve all
+four values. Use `git -C "$WORKTREE" ...` for every worktree command: each Bash
+tool call starts from the active checkout, so `cd` in a previous call does not
+persist. Do not recreate this logic in an inline shell script.
+
 If `origin` is not the GitHub remote for the PR, identify the matching remote
-first. If the fetch or worktree setup fails, explain the failure and do not
-silently review the active checkout instead.
+first and pass its name as the optional final argument. If setup fails, explain
+the failure and do not silently review the active checkout instead. Always
+request cleanup when the review is finished or cannot continue:
+
+```bash
+bash /home/jack/.claude/skills/github-code-review/scripts/github-code-review-worktree \
+  finish "$STATE_FILE"
+```
 
 Never use `git checkout`, `git switch`, `git reset`, `git stash`, `git clean`,
 or `gh pr checkout` in the active checkout. The temporary refs and worktree
-must be removed through `cleanup` even if the review cannot finish.
+must be removed through the helper's `finish` command even if the review cannot
+finish.
 
 ### 5. Perform the implementation review
 
