@@ -117,6 +117,12 @@ config.keys = {
     mods = "SHIFT|CTRL",
     action = make_new_tab_on_right_action({}),
   },
+  -- Ctrl-Alt-1 through Ctrl-Alt-5 move the active tab to that (one-based) position.
+  { key = "1", mods = "CTRL|ALT", action = act.MoveTab(0) },
+  { key = "2", mods = "CTRL|ALT", action = act.MoveTab(1) },
+  { key = "3", mods = "CTRL|ALT", action = act.MoveTab(2) },
+  { key = "4", mods = "CTRL|ALT", action = act.MoveTab(3) },
+  { key = "5", mods = "CTRL|ALT", action = act.MoveTab(4) },
 }
 
 -- and finally, return the configuration to wezterm
