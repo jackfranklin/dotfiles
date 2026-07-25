@@ -1,3 +1,4 @@
 {
-  "maxConcurrency": 4
+  "maxConcurrency": 4,
+  "requireImplementerConfirmation": true
 }

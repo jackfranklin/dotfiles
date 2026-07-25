@@ -95,6 +95,8 @@ interface Details {
 
 interface ExtensionConfig {
 	maxConcurrency?: number;
+	/** Require an interactive confirmation before starting an implementer. */
+	requireImplementerConfirmation?: boolean;
 }
 
 const EXT_DIR = path.dirname(new URL(import.meta.url).pathname);
@@ -866,6 +868,7 @@ function renderAgentProgress(
 export default function (pi: ExtensionAPI) {
 	const config = loadConfig();
 	const semaphore = new Semaphore(config.maxConcurrency ?? DEFAULT_MAX_CONCURRENCY);
+	const requireImplementerConfirmation = config.requireImplementerConfirmation ?? true;
 	agents = loadAgents();
 
 	// If spawned as a child by a parent subagent process, PI_SUBAGENT_ALLOWED
@@ -876,6 +879,33 @@ export default function (pi: ExtensionAPI) {
 		agents = agents.filter((a) => SUBAGENT_ALLOWLIST.includes(a.name));
 	}
 
+	pi.on('tool_call', async (event, ctx) => {
+		if (
+			!requireImplementerConfirmation ||
+			event.toolName !== 'subagent' ||
+			(event.input as Record<string, unknown>).agent !== 'implementer'
+		) {
+			return undefined;
+		}
+
+		if (!ctx.hasUI) {
+			return {
+				block: true,
+				reason: 'Starting implementer requires interactive user confirmation, but no confirmation UI is available.',
+			};
+		}
+
+		const task = (event.input as Record<string, unknown>).task;
+		const summary = typeof task === 'string' ? task.slice(0, 500) : '(no task description)';
+		const approved = await ctx.ui.confirm(
+			'Start implementer subagent?',
+			`The implementer can edit files and run commands in an isolated process.\n\nProposed task:\n${summary}`,
+		);
+		if (!approved) {
+			return { block: true, reason: 'Implementer delegation was not approved by the user.' };
+		}
+	});
+
 	pi.registerTool({
 		name: "subagent",
 		label: "Subagent",
@@ -884,7 +914,8 @@ export default function (pi: ExtensionAPI) {
 		promptSnippet: "Run subagents for delegated tasks",
 		promptGuidelines: [
 			"The main agent owns planning, design decisions, and the user-facing answer. Do not delegate initial investigation, general queries, or writing a plan to implementer.",
-			"Use implementer only after the main agent has established a clear plan and needs a discrete, isolated implementation task completed. Give it the relevant plan, scope, constraints, and acceptance criteria. The main agent can use its own tools; needing bash, git, gh, tests, or edits alone is not a reason to delegate.",
+			'Before invoking implementer, explain the proposed delegation and ask the user for permission. Use implementer only after the user explicitly approves and the main agent has established a clear plan. The extension will also require an interactive confirmation before implementer starts.',
+			'Use implementer only when a discrete, isolated implementation task is needed. Give it the relevant plan, scope, constraints, and acceptance criteria. The main agent can use its own tools; needing bash, git, gh, tests, or edits alone is not a reason to delegate.',
 			"scout has only read, grep, find, and ls. Use scout only for read-only local codebase exploration or architecture mapping; it cannot run CLI commands such as git or gh.",
 			"researcher has only web_search and web_fetch. Use researcher only for public-web research; it cannot inspect the local repo or run CLI commands.",
 			"implementer has bash plus file and web tools. Use it only for the bounded implementation work described above, not as a general-purpose agent.",

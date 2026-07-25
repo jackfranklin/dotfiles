@@ -6,7 +6,7 @@ This extension registers one Pi tool, `subagent`, that lets the main agent spawn
 
 ## Architecture and control flow
 
-1. The extension loads agent definitions from `pi/extensions/subagents/agents/*.md` and `maxConcurrency` from `pi/extensions/subagents/config.json`.
+1. The extension loads agent definitions from `pi/extensions/subagents/agents/*.md` and runtime options from `pi/extensions/subagents/config.json`.
 2. Pi exposes a single `subagent` tool to the main agent. The tool schema is `{ agent, task, cwd? }`.
 3. When called, `index.ts` resolves the current `pi` binary and starts a child process in JSON print mode:
    - `--mode json -p --no-session --no-skills`
@@ -51,17 +51,22 @@ Use subagents when their separate context or isolation is valuable:
 
 Do not delegate just because a task uses tools. The main agent can read, edit, run tests, use `git`/`gh`, and make decisions itself. Never use `implementer` for general queries, initial investigation, architectural decisions, or writing the plan.
 
+Before delegating to `implementer`, the main agent must explain the proposed delegation and ask for the user's permission. By default, the extension independently presents an interactive confirmation immediately before the implementer starts. This is a runtime gate, so an implementer cannot start without the user's confirmation even if the model ignores the prompt instruction. In headless mode, the call is blocked because it cannot be confirmed.
+
 ## Parallelism and concurrency
 
 To fan out work, emit multiple independent `subagent` tool calls in the same assistant turn. Pi runs tool calls in parallel, and this extension also supports concurrent child processes.
 
-`config.json` controls the per-process cap:
+`config.json` controls extension behavior:
 
 ```json
 {
-  "maxConcurrency": 4
+  "maxConcurrency": 4,
+  "requireImplementerConfirmation": true
 }
 ```
+
+`requireImplementerConfirmation` defaults to `true`. When enabled, every `implementer` invocation requires an interactive confirmation dialog. Set it to `false` only when you intentionally want to allow automatic implementer delegation.
 
 The semaphore is process-local. A nested implementer process has its own cap, so `maxConcurrency` limits direct children of that process, not the whole tree.
 
@@ -109,7 +114,7 @@ This keeps the interactive main session able to prompt normally while preventing
 ## Configuration and source files
 
 - `pi/extensions/subagents/index.ts` — extension implementation, tool registration, prompt guidelines, process spawning, progress rendering, cancellation, concurrency, child allowlists.
-- `pi/extensions/subagents/config.json` — `maxConcurrency` for direct child processes.
+- `pi/extensions/subagents/config.json` — `maxConcurrency` for direct child processes and the implementer-confirmation setting.
 - `pi/extensions/subagents/agents/scout.md` — scout frontmatter and system prompt.
 - `pi/extensions/subagents/agents/researcher.md` — researcher frontmatter and system prompt.
 - `pi/extensions/subagents/agents/implementer.md` — implementer frontmatter/system prompt plus nested delegation guidance.
