@@ -97,6 +97,36 @@ tmux
 
 The tmux configuration enables CSI-u extended keys automatically on tmux 3.5 and newer, so Pi can distinguish `Shift+Enter` from `Enter`.
 
+## WezTerm on Ubuntu
+
+Use WezTerm's nightly APT package on Ubuntu. It includes Wayland fixes that are not present in Ubuntu's older stable package. Configure WezTerm's official APT repository and install the nightly package:
+
+```bash
+sudo install -d -m 0755 /etc/apt/keyrings
+curl -fsSL https://apt.fury.io/wez/gpg.key \
+  | sudo gpg --yes --dearmor -o /etc/apt/keyrings/wezterm-fury.gpg
+echo 'deb [signed-by=/etc/apt/keyrings/wezterm-fury.gpg] https://apt.fury.io/wez/ * *' \
+  | sudo tee /etc/apt/sources.list.d/wezterm.list
+sudo chmod 644 /etc/apt/keyrings/wezterm-fury.gpg
+sudo apt update
+sudo apt install wezterm-nightly
+```
+
+`wezterm-nightly` replaces the stable `wezterm` package; APT cannot install both. Verify the installed build with:
+
+```bash
+wezterm --version
+```
+
+If a distribution upgrade renamed the repository file to `wezterm.list.distUpgrade`, re-enable it before updating:
+
+```bash
+sudo mv /etc/apt/sources.list.d/wezterm.list.distUpgrade \
+  /etc/apt/sources.list.d/wezterm.list
+```
+
+A running WezTerm instance continues using its old executable. Quit every WezTerm window and start it again after the install. Future nightly updates arrive through normal `sudo apt upgrade`.
+
 ## Fonts and Kitty terminal
 
 To get the MonoLisa font (note: do not commit the font files to this repo, it's a purchased font!) working, we need to (for whatever reason) convince Kitty that all its variants (including italic/script) are monospace.
