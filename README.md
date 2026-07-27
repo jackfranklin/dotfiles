@@ -127,6 +127,30 @@ sudo mv /etc/apt/sources.list.d/wezterm.list.distUpgrade \
 
 A running WezTerm instance continues using its old executable. Quit every WezTerm window and start it again after the install. Future nightly updates arrive through normal `sudo apt upgrade`.
 
+### Ubuntu Wayland troubleshooting
+
+On the Framework's Ubuntu GNOME Wayland session, a 2026 nightly exhibited an oversized client-side decoration frame and a slightly fuzzy mouse pointer. Native Wayland still produced crisp terminal text, so the current machine-local preference is a borderless native-Wayland window:
+
+```lua
+-- wezterm/per_machine.lua (ignored by Git)
+M.use_xwayland = false
+M.window_decorations = "NONE"
+M.font_size = 12
+```
+
+`wezterm/wezterm.lua` reads these optional per-machine settings. `NONE` removes the titlebar, resize border, and window buttons. Move the borderless window with **Super + left-mouse drag** (or **Ctrl+Shift + left-mouse drag**); ordinary dragging selects terminal text.
+
+If a future nightly regresses native Wayland text, cursor, or window handling, first try the XWayland fallback in `wezterm/per_machine.lua`:
+
+```lua
+M.use_xwayland = true
+M.window_decorations = "NONE"
+```
+
+XWayland gave crisp terminal text and a correctly rendered system cursor, but GNOME may impose a large titlebar unless decorations are set to `NONE`. Do not add a `dpi` override merely for the mouse cursor: it only affects terminal text. This display uses GNOME's integer 2x scale, so native Wayland should already select HiDPI rendering. Explicit `xcursor_theme = "Yaru"` and cursor-size overrides of 24 and 48 were tested without improving the native Wayland cursor.
+
+Useful references: [WezTerm window decorations](https://wezterm.org/config/lua/config/window_decorations.html), [Wayland toggle](https://wezterm.org/config/lua/config/enable_wayland.html), [DPI](https://wezterm.org/config/lua/config/dpi.html), and [a related GNOME Wayland cursor issue](https://github.com/wez/wezterm/issues/3751).
+
 ## Fonts and Kitty terminal
 
 To get the MonoLisa font (note: do not commit the font files to this repo, it's a purchased font!) working, we need to (for whatever reason) convince Kitty that all its variants (including italic/script) are monospace.
