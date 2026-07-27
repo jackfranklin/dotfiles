@@ -42,7 +42,12 @@ config.window_padding = {
   top = 0,
 }
 
-config.window_decorations = "INTEGRATED_BUTTONS|RESIZE"
+local use_xwayland = has_custom_config and custom_config.use_xwayland == true
+if use_xwayland then
+  config.enable_wayland = false
+end
+config.window_decorations = has_custom_config and custom_config.window_decorations
+  or "INTEGRATED_BUTTONS|RESIZE"
 
 local function make_new_tab_on_right_action(opts)
   local command = opts.command
