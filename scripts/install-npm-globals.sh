@@ -10,6 +10,7 @@ PACKAGES=(
   "git-recent"
   "oxlint"
   "oxfmt"
+  "@ast-grep/cli"
 )
 
 echo "Installing global npm packages..."
