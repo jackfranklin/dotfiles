@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 
-const yargs = require('yargs/yargs');
+const yargs = require('yargs');
 const { hideBin } = require('yargs/helpers');
 const path = require('path');
 const fs = require('fs');
@@ -21,6 +21,8 @@ const FONTS_IN_ROTATION = [
   'Monaspace Argon',
   'Monaspace Neon',
   'Monaspace Xenon',
+  'Martian Mono',
+  'Chivo Mono',
   'Fantasque Sans Mono',
   'IntelOne Mono',
   'CommitMono',
