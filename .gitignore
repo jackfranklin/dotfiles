@@ -42,6 +42,9 @@ package-lock.json
 
 scripts/what_alias_cache*
 
+# Derived from keyboard-layout source backups by `make keyboard_layouts`
+keyboard-layouts/viewer/layout-data.js
+
 claude/skills/later/feedback.db
 pi/extensions/web-search/auth.json
 

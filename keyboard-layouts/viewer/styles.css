@@ -1,0 +1,291 @@
+:root {
+  color-scheme: light;
+  --background: #f8f7f4;
+  --surface: #ffffff;
+  --ink: #20242a;
+  --muted: #6e737c;
+  --line: #d9d8d2;
+  --key: #f2f2ed;
+  --key-stroke: #a9aaa3;
+  --accent: #226b67;
+  --accent-soft: #d9eeec;
+  --disabled: #e7e6e1;
+  font-family: Inter, ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--ink);
+  margin: 0;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 1440px;
+  padding: 2.5rem clamp(1rem, 4vw, 4rem) 4rem;
+}
+
+h1,
+h2,
+h3,
+p {
+  margin-top: 0;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  letter-spacing: -0.04em;
+  margin-bottom: 0.25rem;
+}
+
+h2 {
+  font-size: 1.4rem;
+  margin-bottom: 0;
+}
+
+h3 {
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+}
+
+.eyebrow {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.25rem;
+  text-transform: uppercase;
+}
+
+.intro {
+  color: var(--muted);
+  margin-bottom: 2rem;
+}
+
+.workspace {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: 190px minmax(0, 1fr);
+}
+
+nav {
+  border-right: 1px solid var(--line);
+  padding-right: 1.5rem;
+}
+
+nav h2 {
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  margin-bottom: 0.75rem;
+  text-transform: uppercase;
+}
+
+#keyboard-list,
+.layer-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.keyboard-button,
+.layer-button {
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: 0.45rem;
+  color: var(--ink);
+  cursor: pointer;
+  font: inherit;
+  padding: 0.55rem 0.65rem;
+  text-align: left;
+}
+
+.keyboard-button {
+  width: 100%;
+}
+
+.keyboard-button:hover,
+.layer-button:hover {
+  background: #edede7;
+}
+
+.keyboard-button[aria-current='true'],
+.layer-button[aria-pressed='true'] {
+  background: var(--accent-soft);
+  border-color: #9dc9c5;
+  color: #104b48;
+  font-weight: 650;
+}
+
+.layout {
+  min-width: 0;
+}
+
+.layout-heading {
+  align-items: end;
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  margin-bottom: 1.5rem;
+}
+
+.source-link {
+  color: var(--accent);
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.layer-tabs {
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+}
+
+.layer-button {
+  border-color: var(--line);
+  font-size: 0.85rem;
+}
+
+.keyboard-diagram {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  overflow: auto;
+  padding: 1rem;
+}
+
+.keyboard-diagram svg {
+  display: block;
+  min-width: 620px;
+  width: 100%;
+}
+
+.key rect {
+  fill: var(--key);
+  stroke: var(--key-stroke);
+  stroke-width: 1.5;
+}
+
+.key .tap {
+  fill: var(--ink);
+  font-size: 13px;
+  font-weight: 650;
+  text-anchor: middle;
+}
+
+.key .hold {
+  fill: var(--muted);
+  font-size: 9px;
+  font-weight: 600;
+  text-anchor: middle;
+}
+
+.key.transparent rect {
+  fill: #fafaf8;
+  stroke-dasharray: 4 3;
+}
+
+.key.transparent .tap {
+  fill: var(--muted);
+}
+
+.key.disabled rect {
+  fill: var(--disabled);
+  stroke: #cfcec8;
+}
+
+.key.disabled .tap {
+  fill: #979791;
+}
+
+.key.layer rect {
+  fill: var(--accent-soft);
+  stroke: #5eaaa5;
+}
+
+.key-behaviors {
+  border: 1px solid var(--line);
+  border-radius: 0.75rem;
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+#key-behavior-list {
+  display: grid;
+  gap: 0.75rem;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.behavior-explainer {
+  background: #f7f7f4;
+  border-radius: 0.4rem;
+  font-size: 0.84rem;
+  padding: 0.75rem;
+}
+
+.behavior-explainer p {
+  color: var(--muted);
+  line-height: 1.45;
+  margin: 0.35rem 0 0;
+}
+
+.legend {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  gap: 0.4rem 0.75rem;
+  margin: 1rem 0 0;
+}
+
+.legend-key {
+  align-items: center;
+  background: var(--key);
+  border: 1px solid var(--key-stroke);
+  border-radius: 0.2rem;
+  display: inline-flex;
+  height: 1.3rem;
+  justify-content: center;
+  width: 1.5rem;
+}
+
+.legend-key.transparent {
+  border-style: dashed;
+}
+
+.legend-key.disabled {
+  background: var(--disabled);
+}
+
+.legend-key.layer-key {
+  background: var(--accent-soft);
+  border-color: #5eaaa5;
+}
+
+@media (max-width: 720px) {
+  main {
+    padding-top: 1.5rem;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  nav {
+    border-bottom: 1px solid var(--line);
+    border-right: 0;
+    padding: 0 0 1rem;
+  }
+
+  nav h2 {
+    display: none;
+  }
+
+  .keyboard-button {
+    width: auto;
+  }
+}

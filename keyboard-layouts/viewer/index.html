@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Keyboard layouts</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="layout-data.js" defer></script>
+    <script src="app.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="eyebrow">Offline reference</p>
+        <h1>Keyboard layouts</h1>
+        <p class="intro">
+          A read-only visual guide to the layouts in this repository.
+        </p>
+      </header>
+
+      <div class="workspace">
+        <nav aria-label="Keyboard layouts">
+          <h2>Keyboards</h2>
+          <div id="keyboard-list"></div>
+        </nav>
+
+        <section class="layout" aria-live="polite">
+          <div class="layout-heading">
+            <div>
+              <p id="firmware" class="eyebrow"></p>
+              <h2 id="layout-name"></h2>
+            </div>
+            <a id="source-link" class="source-link" href="">View source</a>
+          </div>
+
+          <div id="layer-tabs" class="layer-tabs" aria-label="Layers"></div>
+          <div id="keyboard-diagram" class="keyboard-diagram"></div>
+          <section id="key-behaviors" class="key-behaviors" hidden>
+            <h3>How to read special keys</h3>
+            <div id="key-behavior-list"></div>
+          </section>
+
+          <p class="legend">
+            <span class="legend-key transparent">▽</span> Transparent
+            <span class="legend-key disabled"></span> No binding
+            <span class="legend-key layer-key"></span> Layer key
+          </p>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>

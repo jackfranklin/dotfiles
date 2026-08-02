@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk agent-runner
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk agent-runner keyboard_layouts
 
 DIR="${HOME}/dotfiles"
 
@@ -115,6 +115,9 @@ lua_specs:
 
 pi_specs:
 	cd pi/extensions/permissions && node --test
+
+keyboard_layouts:
+	node scripts/build-keyboard-layouts.mjs
 
 npm_globals:
 	./scripts/install-npm-globals.sh
