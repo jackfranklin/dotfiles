@@ -36,6 +36,7 @@ const aliases = {
   KC_RGUI: 'R Gui',
   KC_BSPC: 'Bksp',
   KC_BSPACE: 'Bksp',
+  KC_DEL: 'Del',
   KC_ENT: 'Enter',
   KC_ENTER: 'Enter',
   KC_SPC: 'Space',
@@ -139,6 +140,17 @@ function describeKey(value) {
       hold: `L${toggleLayer[1]}`,
       behavior: 'toggleLayer',
       explanation: `Pressing toggles Layer ${toggleLayer[1]} on or off.`,
+    };
+  }
+
+  const toLayer = value.match(/^TO\((\d+)\)$/);
+  if (toLayer) {
+    return {
+      kind: 'layer',
+      tap: 'Switch',
+      hold: `L${toLayer[1]}`,
+      behavior: 'toLayer',
+      explanation: `Pressing switches to Layer ${toLayer[1]}.`,
     };
   }
 
@@ -263,11 +275,57 @@ function irisPositions(layer) {
   return { width: 1000, height: 355, positions };
 }
 
+function go60Positions(layer) {
+  const positions = [];
+  const rowHeight = 58;
+  const leftColumns = [50, 108, 170, 228, 286, 344];
+  const rightColumns = [825, 883, 941, 999, 1061, 1119];
+
+  for (let row = 0; row < 4; row += 1) {
+    for (let column = 0; column < 12; column += 1) {
+      const outerPinkyColumn = column < 2 || column > 9;
+      positions.push({
+        value: layer[row * 12 + column],
+        x:
+          column < 6
+            ? leftColumns[column]
+            : rightColumns[column - leftColumns.length],
+        y: 45 + row * rowHeight + (outerPinkyColumn ? 28 : 0),
+      });
+    }
+  }
+
+  const fifthRow = [
+    [48, 170],
+    [49, 228],
+    [50, 286],
+    [51, 883],
+    [52, 941],
+    [53, 999],
+  ];
+  fifthRow.forEach(([index, x]) => {
+    positions.push({ value: layer[index], x, y: 45 + 4 * rowHeight });
+  });
+
+  [
+    [54, 350, 330, 22],
+    [55, 410, 358, 22],
+    [56, 470, 386, 22],
+    [57, 700, 386, -22],
+    [58, 760, 358, -22],
+    [59, 820, 330, -22],
+  ].forEach(([index, x, y, rotation]) => {
+    positions.push({ value: layer[index], x, y, rotation });
+  });
+
+  return { width: 1220, height: 475, positions };
+}
+
 function geometryFor(layout) {
   const layer = layout.layers[state.layerIndex];
-  return layout.geometry === 'corne'
-    ? cornePositions(layer)
-    : irisPositions(layer);
+  if (layout.geometry === 'corne') return cornePositions(layer);
+  if (layout.geometry === 'iris') return irisPositions(layer);
+  return go60Positions(layer);
 }
 
 function drawKey(svg, position) {
@@ -276,7 +334,7 @@ function drawKey(svg, position) {
 
   const key = makeSvgElement('g', {
     class: `key ${description.kind}`,
-    transform: `translate(${position.x} ${position.y})`,
+    transform: `translate(${position.x} ${position.y})${position.rotation ? ` rotate(${position.rotation} 26 26)` : ''}`,
   });
   const title = makeSvgElement('title');
   title.textContent = description.explanation
@@ -331,6 +389,10 @@ const behaviorGuides = {
   toggleLayer: {
     title: 'Toggle layer',
     text: '“Toggle L#” switches that layer on or off when pressed; it does not need to be held.',
+  },
+  toLayer: {
+    title: 'Switch layer',
+    text: '“Switch L#” makes that layer active until another layer-switching key is pressed.',
   },
   tapToggleLayer: {
     title: 'Tap-toggle layer',
@@ -406,7 +468,9 @@ function renderLayerTabs(layout) {
   layout.layers.forEach((_, index) => {
     const button = document.createElement('button');
     button.className = 'layer-button';
-    button.textContent = index === 0 ? 'Base' : `Layer ${index}`;
+    button.textContent =
+      layout.layerNames?.[index]?.replaceAll('_', ' ') ||
+      (index === 0 ? 'Base' : `Layer ${index}`);
     button.setAttribute('aria-pressed', String(index === state.layerIndex));
     button.addEventListener('click', () => {
       state.layerIndex = index;

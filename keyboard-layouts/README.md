@@ -12,5 +12,6 @@ make keyboard_layouts
 
 - `corne-v4.vil` — Vial backup. This is the canonical Corne source; `corne-v4.json` is an older export retained for history.
 - `iris_rev__7.layout.json` — VIA backup for the Iris Rev. 7.
+- `Jack's Go60 layout.json` — Go60 Layout Editor export used to generate the viewer data; its accompanying `.keymap` is the generated ZMK source linked from the viewer.
 
-Future keyboard profiles will add their source format and physical-layout mapping to `scripts/build-keyboard-layouts.mjs`. Go60 profiles will use exported ZMK `.keymap` files.
+Future keyboard profiles will add their source format and physical-layout mapping to `scripts/build-keyboard-layouts.mjs`.

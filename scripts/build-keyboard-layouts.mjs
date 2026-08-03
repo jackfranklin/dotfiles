@@ -7,9 +7,68 @@ async function readJson(path) {
   return JSON.parse(await readFile(resolve(root, path), 'utf8'));
 }
 
-const [corne, iris] = await Promise.all([
+const zmkKeycodes = {
+  BSLH: 'KC_BSLS',
+  BSPC: 'KC_BSPC',
+  C_MUTE: 'KC_MUTE',
+  C_PP: 'KC_MPLY',
+  C_VOL_DN: 'KC_VOLD',
+  C_VOL_UP: 'KC_VOLU',
+  COMMA: 'KC_COMM',
+  DOT: 'KC_DOT',
+  EQUAL: 'KC_EQL',
+  FSLH: 'KC_SLSH',
+  GRAVE: 'KC_GRV',
+  LALT: 'KC_LALT',
+  LBKT: 'KC_LBRC',
+  LCTRL: 'KC_LCTRL',
+  LGUI: 'KC_LGUI',
+  LSHFT: 'KC_LSFT',
+  MINUS: 'KC_MINS',
+  PG_DN: 'KC_PGDN',
+  PG_UP: 'KC_PGUP',
+  RBKT: 'KC_RBRC',
+  RET: 'KC_ENT',
+  SEMI: 'KC_SCLN',
+  SPACE: 'KC_SPC',
+  SQT: 'KC_QUOT',
+};
+
+const zmkModifiers = { LA: 'A', LC: 'C', LS: 'S' };
+
+function zmkKeycode(value) {
+  if (typeof value !== 'string') return String(value);
+  if (/^N\d$/.test(value)) return `KC_${value.slice(1)}`;
+  return zmkKeycodes[value] || value;
+}
+
+function zmkParameter(parameter) {
+  const { value, params = [] } = parameter;
+  const name = zmkModifiers[value] || value;
+  return params.length === 0
+    ? zmkKeycode(name)
+    : `${name}(${params.map(zmkParameter).join(',')})`;
+}
+
+function zmkBindingToKeycode(binding) {
+  const { value, params = [] } = binding;
+  if (value === '&trans') return 'KC_TRNS';
+  if (value === '&none') return 'KC_NO';
+  if (value === '&kp') return zmkParameter(params[0]);
+  if (value === '&lt') return `LT(${params.map(zmkParameter).join(',')})`;
+  if (value === '&mo') return `MO(${params[0].value})`;
+  if (value === '&to') return `TO(${params[0].value})`;
+
+  const behavior = value.slice(1).toUpperCase();
+  return params.length === 0
+    ? behavior
+    : `${behavior}(${params.map(zmkParameter).join(',')})`;
+}
+
+const [corne, iris, go60] = await Promise.all([
   readJson('keyboard-layouts/corne-v4.vil'),
   readJson('keyboard-layouts/iris_rev__7.layout.json'),
+  readJson("keyboard-layouts/Jack's Go60 layout.json"),
 ]);
 
 const layouts = [
@@ -30,6 +89,16 @@ const layouts = [
     sourceLabel: 'VIA backup',
     geometry: 'iris',
     layers: iris.layers,
+  },
+  {
+    id: 'go60',
+    name: go60.title,
+    firmware: 'ZMK',
+    source: "../Jack's Go60 layout.keymap",
+    sourceLabel: 'ZMK keymap',
+    geometry: 'go60',
+    layerNames: go60.layer_names,
+    layers: go60.layers.map((layer) => layer.map(zmkBindingToKeycode)),
   },
 ];
 
