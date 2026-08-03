@@ -128,6 +128,14 @@ describe("risk-based decide", () => {
 		assert.equal(decide("write", "/home/jack/elsewhere/x", [], [], [], "/home/jack/project"), "prompt");
 	});
 
+	it("allows safe file-tool globs outside the current working directory", () => {
+		const skills = ["Write(/home/jack/.pi/agent/skills/*)"];
+		assert.equal(
+			decide("write", "/home/jack/.pi/agent/skills/example/SKILL.md", skills, [], [], "/home/jack/project"),
+			"allow",
+		);
+	});
+
 	it("respects tool-scoped block globs", () => {
 		assert.equal(decide("write", "inside.txt", [], [], ["Write(inside.txt)"]), "deny");
 	});

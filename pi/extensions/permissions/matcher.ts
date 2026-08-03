@@ -554,13 +554,14 @@ export function analyzeDecision(
 		};
 	}
 
+	const safeSegments = segments.map((seg) => safeGlobs.some((g) => globMatches(g, seg)));
 	const promptSegments = segments.filter((seg, index) => {
-		if (safeGlobs.some((g) => globMatches(g, seg))) return false;
+		if (safeSegments[index]) return false;
 		if (toolName === "bash" && isTmpOnlyFileOperation(seg, temporaryVariables[index])) return false;
 		return promptGlobs.some((g) => globMatches(g, seg));
 	});
 
-	if ((toolName === "write" || toolName === "edit") && segments[0]) {
+	if ((toolName === "write" || toolName === "edit") && segments[0] && !safeSegments[0]) {
 		const reason = pathPromptReason(segments[0], cwd);
 		if (reason) {
 			promptSegments.push(segments[0]);
