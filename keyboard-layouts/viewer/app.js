@@ -219,8 +219,9 @@ function cornePositions(layer) {
   layer.forEach((row, rowIndex) => {
     const isRight = rowIndex >= 4;
     const visualRow = rowIndex % 4;
-    const halfStart = isRight ? 545 : 50;
-    const direction = isRight ? 1 : 1;
+    // Firmware layouts list both halves from their outer edge toward the split.
+    const halfStart = isRight ? 893 : 50;
+    const direction = isRight ? -1 : 1;
 
     row.forEach((value, column) => {
       if (value === -1) return;
@@ -248,11 +249,13 @@ function irisPositions(layer) {
     const localIndex = index % 30;
     const row = Math.floor(localIndex / 6);
     const column = localIndex % 6;
+    const renderedColumn = right ? 5 - column : column;
     const innerColumnDistance = Math.abs(column - 2.5);
 
     positions.push({
       value,
-      x: (right ? 545 : 55) + column * keyWidth,
+      // VIA orders the right-half keys from its outer edge toward the split.
+      x: (right ? 545 : 55) + renderedColumn * keyWidth,
       y: 36 + row * keyHeight + innerColumnDistance * 4,
     });
   });
