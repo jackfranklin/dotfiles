@@ -476,14 +476,21 @@ function pathPromptReason(path: string, cwd: string): string | undefined {
 	return undefined;
 }
 
-export function analyzeDecision(
-	toolName: string,
-	subject: string,
-	safe: string[],
-	prompt: string[],
-	block: string[] = [],
-	cwd: string = process.cwd(),
-): DecisionDetails {
+export interface PermissionRules {
+	safe: string[];
+	prompt: string[];
+	block?: string[];
+}
+
+export interface DecisionInput {
+	toolName: string;
+	subject: string;
+	rules: PermissionRules;
+	cwd?: string;
+}
+
+export function analyzeDecision({ toolName, subject, rules, cwd = process.cwd() }: DecisionInput): DecisionDetails {
+	const { safe, prompt, block = [] } = rules;
 	const label = TOOL_LABELS[toolName];
 	if (!label) {
 		return {
@@ -584,15 +591,8 @@ export function analyzeDecision(
 	};
 }
 
-export function decide(
-	toolName: string,
-	subject: string,
-	safe: string[],
-	prompt: string[],
-	block: string[] = [],
-	cwd?: string,
-): Decision {
-	return analyzeDecision(toolName, subject, safe, prompt, block, cwd).decision;
+export function decide(input: DecisionInput): Decision {
+	return analyzeDecision(input).decision;
 }
 
 /** Suggest a starting pattern for prompt/block override saves. */

@@ -43,7 +43,12 @@ export default function (pi: ExtensionAPI) {
 		const subject = subjectFor(event.toolName, event.input as Record<string, unknown>);
 		if (subject === undefined) return undefined;
 
-		const analysis = analyzeDecision(event.toolName, subject, store.safe, store.prompt, store.block);
+		const analysis = analyzeDecision({
+			toolName: event.toolName,
+			subject,
+			rules: store,
+			cwd: ctx.cwd,
+		});
 
 		if (analysis.decision === "allow") return undefined;
 		if (analysis.decision === "deny") {

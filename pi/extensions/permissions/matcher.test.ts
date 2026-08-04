@@ -3,13 +3,35 @@ import { describe, it } from "node:test";
 import { globMatches, globToRegExp } from "./glob.ts";
 import { normalizeEntry, suggestMissingBareCommandEntries } from "./index.ts";
 import {
-	analyzeDecision,
-	decide,
+	analyzeDecision as analyzeDecisionForInput,
+	decide as decideForInput,
 	hasRiskyRedirect,
 	redirectWriteTargets,
 	splitCommand,
 	suggestPattern,
 } from "./matcher.ts";
+
+function analyzeDecision(
+	toolName: string,
+	subject: string,
+	safe: string[],
+	prompt: string[],
+	block: string[] = [],
+	cwd?: string,
+) {
+	return analyzeDecisionForInput({ toolName, subject, rules: { safe, prompt, block }, cwd });
+}
+
+function decide(
+	toolName: string,
+	subject: string,
+	safe: string[],
+	prompt: string[],
+	block: string[] = [],
+	cwd?: string,
+) {
+	return decideForInput({ toolName, subject, rules: { safe, prompt, block }, cwd });
+}
 
 describe("globToRegExp / globMatches", () => {
 	it("matches * as any run of characters", () => {
@@ -131,7 +153,12 @@ describe("risk-based decide", () => {
 	it("allows safe file-tool globs outside the current working directory", () => {
 		const skills = ["Write(/home/jack/.pi/agent/skills/*)"];
 		assert.equal(
-			decide("write", "/home/jack/.pi/agent/skills/example/SKILL.md", skills, [], [], "/home/jack/project"),
+			decideForInput({
+				toolName: "write",
+				subject: "/home/jack/.pi/agent/skills/example/SKILL.md",
+				rules: { safe: skills, prompt: [], block: [] },
+				cwd: "/home/jack/project",
+			}),
 			"allow",
 		);
 	});

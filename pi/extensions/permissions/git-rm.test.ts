@@ -46,7 +46,11 @@ describe('planGitTrackedRm', () => {
 			{ action: 'unchanged' },
 		);
 		assert.equal(
-			decide('bash', 'rm scratch.txt', [], ['Bash(rm *)'], []),
+			decide({
+				toolName: 'bash',
+				subject: 'rm scratch.txt',
+				rules: { safe: [], prompt: ['Bash(rm *)'], block: [] },
+			}),
 			'prompt',
 		);
 	});
