@@ -16,6 +16,16 @@ import { createGitProbe, planGitTrackedRm } from "./git-rm.ts";
 import { analyzeDecision, suggestPattern, TOOL_LABELS } from "./matcher.ts";
 import { PermissionStore } from "./store.ts";
 
+const APPROVAL_RATIONALE_GUIDANCE = `
+
+Permission approval protocol:
+- Do not write an \`Approval rationale:\` paragraph speculatively or to narrate ordinary work.
+- Include one only when the permissions extension previously rejected this tool call with \`Approval explanation required\`, then retry that approval-required operation with the rationale immediately before its tool call.`;
+
+export function appendApprovalRationaleGuidance(systemPrompt: string): string {
+	return `${systemPrompt}${APPROVAL_RATIONALE_GUIDANCE}`;
+}
+
 /** Extract the subject we match against for a given tool. */
 function subjectFor(toolName: string, input: Record<string, unknown>): string | undefined {
 	if (toolName === "bash") return typeof input.command === "string" ? input.command : undefined;
@@ -26,6 +36,10 @@ function subjectFor(toolName: string, input: Record<string, unknown>): string | 
 export default function (pi: ExtensionAPI) {
 	const store = new PermissionStore();
 	const approvalLog = new PermissionApprovalLog();
+
+	pi.on('before_agent_start', (event) => ({
+		systemPrompt: appendApprovalRationaleGuidance(event.systemPrompt),
+	}));
 
 	pi.on("tool_call", async (event, ctx) => {
 		const label = TOOL_LABELS[event.toolName];

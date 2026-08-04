@@ -1,10 +1,26 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
-import { approvalRationaleForToolCall } from './index.ts';
+import {
+  appendApprovalRationaleGuidance,
+  approvalRationaleForToolCall,
+} from './index.ts';
 
 function assistant(content: unknown[]) {
   return { role: 'assistant', content } as never;
 }
+
+describe('appendApprovalRationaleGuidance', () => {
+  it('tells the model to reserve rationales for rejected approval-required calls', () => {
+    assert.equal(
+      appendApprovalRationaleGuidance('Base instructions.'),
+      `Base instructions.
+
+Permission approval protocol:
+- Do not write an \`Approval rationale:\` paragraph speculatively or to narrate ordinary work.
+- Include one only when the permissions extension previously rejected this tool call with \`Approval explanation required\`, then retry that approval-required operation with the rationale immediately before its tool call.`,
+    );
+  });
+});
 
 describe('approvalRationaleForToolCall', () => {
   it('uses the labelled text before the matching tool call', () => {

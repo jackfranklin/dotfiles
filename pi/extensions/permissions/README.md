@@ -132,12 +132,13 @@ directory or targets sensitive system locations such as `/etc`, `/usr`, `/var`,
 
 ## Approval rationale
 
-The extension does not proactively instruct the agent to write a rationale.
-Only when a tool call is classified as requiring approval does it require an
-`Approval rationale:` paragraph in that same assistant message. It must say what
-the operation does, why it is needed for the user's goal, and why its risky
-effect is necessary. If it is absent, the call is blocked with instructions to
-explain and retry; the user is never asked to approve an unexplained call.
+The extension tells the agent not to write a rationale speculatively or as
+ordinary-work narration. Only when a tool call is classified as requiring
+approval does it require an `Approval rationale:` paragraph in that same
+assistant message. It must say what the operation does, why it is needed for the
+user's goal, and why its risky effect is necessary. If it is absent, the call is
+blocked with instructions to explain and retry; the user is never asked to
+approve an unexplained call.
 
 ## Prompt actions
 
