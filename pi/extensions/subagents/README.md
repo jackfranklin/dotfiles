@@ -35,7 +35,7 @@ Because subagents have no conversation context, the main agent must include all 
 | ------------ | ---------------------------------------------------------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `scout`      | `read`, `grep`, `find`, `ls`                                           | `openai-codex/gpt-5.6-luna`, low    | Read-only codebase recon and architecture mapping. Cannot run shell commands such as `git`/`gh`, cannot edit files, cannot use the web. |
 | `researcher` | `web_search`, `web_fetch`                                              | `openai-codex/gpt-5.6-luna`, medium | Public-web research with sourced synthesis. Cannot inspect local files or run commands.                                                 |
-| `implementer` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.5`, medium      | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
+| `implementer` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.6-terra`, medium | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
 
 Nested delegation stops at depth 2 in practice: the main agent can spawn `implementer`; `implementer` can spawn `scout`/`researcher`; those agents do not have the `subagent` tool.
 

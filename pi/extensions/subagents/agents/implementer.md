@@ -3,7 +3,7 @@ name: implementer
 description: Implements a discrete, already-planned change
 tools: read, write, edit, bash, web_search, web_fetch, subagent
 subagent_agents: scout, researcher
-model: openai-codex/gpt-5.5
+model: openai-codex/gpt-5.6-terra
 thinking: medium
 ---
 
