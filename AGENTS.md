@@ -8,7 +8,7 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 
 - Neovim configuration is in `nvim/`; run `make lua_specs` for its Lua tests.
 - Fish functions are in `fish/functions/`.
-- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks.
+- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
 - Format JavaScript/TypeScript with the repository Prettier configuration: semicolons, trailing commas, and single quotes.
 
 ## Pi configuration
