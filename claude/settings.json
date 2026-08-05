@@ -2,12 +2,6 @@
   "env": {
     "EDITOR": "nvim"
   },
-  "statusLine": {
-    "type": "command",
-    "command": "~/.claude/statusline.sh"
-  },
-  "disableClaudeAiConnectors": true,
-  "disableBundledSkills": true,
   "permissions": {
     "allow": [
       "Bash(~/dotfiles/claude/skills/feedback/run *)",
@@ -26,8 +20,14 @@
       "Bash(git merge-base *)"
     ]
   },
+  "disableClaudeAiConnectors": true,
+  "disableBundledSkills": true,
+  "statusLine": {
+    "type": "command",
+    "command": "~/.claude/statusline.sh"
+  },
   "enabledPlugins": {},
   "effortLevel": "medium",
-  "theme": "light",
-  "tui": "fullscreen"
+  "tui": "fullscreen",
+  "theme": "light"
 }
