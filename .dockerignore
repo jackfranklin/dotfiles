@@ -1,0 +1,9 @@
+# The agent-runner image is built from the dotfiles root only so it can package
+# its canonical Claude review skills. Keep the build context intentionally small.
+*
+!agent-runner/
+!agent-runner/**
+!claude/
+!claude/skills/
+!claude/skills/code-review/
+!claude/skills/code-review/**

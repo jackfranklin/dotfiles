@@ -36,7 +36,9 @@ RUN npm install -g @puppeteer/browsers \
 WORKDIR /work
 RUN chown node:node /work
 
-COPY entrypoint.sh format-claude-progress.mjs /usr/local/bin/
+COPY --chown=node:node agent-runner/entrypoint.sh agent-runner/format-claude-progress.mjs /usr/local/bin/
+COPY --chown=node:node claude/skills/code-review/ /home/node/.claude/skills/code-review/
+COPY --chown=node:node agent-runner/skills/agent-runner-github-code-review/ /home/node/.claude/skills/agent-runner-github-code-review/
 RUN chmod +x /usr/local/bin/entrypoint.sh /usr/local/bin/format-claude-progress.mjs
 
 USER node

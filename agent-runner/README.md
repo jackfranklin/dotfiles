@@ -1,6 +1,6 @@
 # agent-runner
 
-Runs a Claude Code agent in an isolated Docker container to either explore a GitHub issue and post a scope report, or implement an approved issue and open a PR.
+Runs a Claude Code agent in an isolated Docker container to explore a GitHub issue, implement an approved issue, or validate and review a trusted GitHub pull request.
 
 **Assumes a Node/npm repo.** The entrypoint only knows how to `npm install` and defers to Claude to run
 whatever `package.json` scripts are relevant. A non-Node repo isn't actively unsupported, but nothing in
@@ -50,12 +50,16 @@ Each run clones the target repo fresh into the container at the selected base br
 
 - `--explore-plan` runs Claude with its read-only `--permission-mode plan`: it does not create a branch, install dependencies, run builds/tests, edit code, commit, push, or open a PR. Its 800–1,200-word report is a concise decision memo, not an implementation plan or exhaustive code map. The entrypoint captures the final report, posts it as an issue comment, verifies it, then adds the `exploration-added` label.
 - `--fix` checks that the issue has `ready-for-impl`, checks out `agent/issue-<N>` (never touches the base branch locally — a deterrent, not a security boundary), prepares dependencies, and asks Claude to implement the approved plan and open a PR.
+- `--review-pr` pins and checks out the current head of an open, trusted PR. It installs dependencies, runs every available `lint`, `typecheck`, `build`, and `test` npm script, then uses the Docker-only `agent-runner-github-code-review` skill and packaged canonical `code-review` skill to produce a static review. The runner posts that report as one GitHub **comment review**; it never approves or requests changes. It then asks whether to start a fresh fix phase.
+- `--fix-review` retrieves the latest marked agent-runner review by the authenticated user and refuses to proceed if the PR head changed since that review. It independently verifies and applies actionable findings, then pushes commits to the existing PR source branch. It never opens a second PR.
 - `--test-only` installs dependencies and runs the repository's `npm test` script when present, without Claude or issue access.
 
 For runs that install dependencies, `PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts` runs if `package.json` exists. `PUPPETEER_SKIP_DOWNLOAD` stops Puppeteer's own postinstall from attempting a Chrome download during this step — if `puppeteer` or `puppeteer-core` ends up in `node_modules` (directly or transitively — e.g. via `@web/test-runner-puppeteer`), Chrome is installed explicitly afterward with `./node_modules/.bin/puppeteer browsers install chrome` (falling back to `npx puppeteer` only if no local binary exists, e.g. `puppeteer-core`-only setups). Letting both the postinstall *and* the explicit step try to download into the same cache folder caused a race that left a corrupted, partially-extracted install ("folder exists but executable is missing") — skipping the postinstall's attempt makes the explicit step the single, reliable place Chrome actually gets installed. Using the local binary rather than bare `npx puppeteer` also avoids a version mismatch: since Puppeteer is often only a transitive dependency, npx's local-bin resolution isn't guaranteed to find it and can silently fetch a different, unpinned puppeteer version from the registry, targeting a Chrome build the pinned version in `package-lock.json` doesn't actually expect at test time. Separately, Puppeteer's own bundled zip extraction has been observed leaving an incomplete install (small files present, large ones like the `chrome` binary itself missing) even when the downloaded zip is complete and valid — confirmed by manually re-extracting the same zip with system `unzip`, which produced a full, correct install. If the `chrome` binary is missing after Puppeteer's own install step, the entrypoint re-extracts the already-downloaded zip with `unzip` as a repair step rather than re-downloading.
 Claude receives a mode-specific prompt built from the issue title, body, comments, and caller-provided additional instructions. Fix mode uses `--dangerously-skip-permissions` and is told to check `package.json` for lint/build/test scripts. Exploration uses Claude Code's read-only `--permission-mode plan`; it cannot write the report file or post the issue comment itself. Both modes use a compact, colour-coded stream formatter. Fix mode shows readable assistant text and high-level activity; exploration shows high-level activity plus an unconditional 10-second ticker with elapsed time and the age of Claude's last event, then prints the complete final report only after exploration has finished. Tool calls, command text, and command output are hidden.
 
 In fix mode, Claude is told to commit, push, and open the PR itself (`gh pr create` with a descriptive title/body it writes, referencing `Closes #N`) rather than the entrypoint generating a generic "Fix #N" PR. The entrypoint checks afterward whether a PR now exists for the branch; if Claude made changes but didn't finish the git workflow, the entrypoint commits/pushes/opens a generic fallback PR so the work is never silently lost.
+
+The image packages `claude/skills/code-review` as the shared review standard. Its PR-context skill lives at `agent-runner/skills/agent-runner-github-code-review/` and is copied only into the image, so the host `github-code-review` skill remains focused on safely reviewing from an active local checkout.
 
 ## Installing Docker
 
@@ -127,12 +131,20 @@ agent-run --fix 55
 agent-run --fix 55 --instruction 'Prefer a small, backward-compatible change.'
 agent-run --fix 55 -i 'Update the documentation too.' -i 'Keep the public API unchanged.'
 
+# Validate and thoroughly review a trusted PR. This posts a comment review, then
+# asks whether to start a fresh fix phase against the unchanged PR head.
+agent-run --review-pr 42
+
+# Start that fix phase later. It refuses stale reviews and pushes only to the
+# existing PR source branch; it does not open a follow-up PR.
+agent-run --fix-review 42
+
 # Clone + npm install + npm test only — no Claude, issue, or PR.
 agent-run --test-only
 agent-run --test-only --base develop
 ```
 
-`--fix`, `--explore-plan`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`. Before a fix or exploration run starts Docker, the CLI fetches and displays the selected issue's title and requires a `y`/`yes` confirmation. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
+`--fix`, `--explore-plan`, `--review-pr`, `--fix-review`, and `--test-only` are mutually exclusive; one is required. `--base <branch>` defaults to `main`; for PR modes it must match the PR's base branch. Before a Claude run starts Docker, the CLI fetches and displays the selected issue or PR title and requires a `y`/`yes` confirmation. `--instruction` (or `-i`) appends text to Claude's mode-specific prompt; repeat it to add multiple instructions. Quote each instruction so the shell passes it as one value. It is unavailable with `--test-only`, which does not run Claude.
 
 Exploration is deliberately not implementation-ready planning. Its report is a snapshot for a human to discuss and turn into a formal, approved plan with `/write-plan`; that skill applies `ready-for-impl`. The runner refuses `--fix` unless this label is present. It creates `exploration-added` on demand, after it has captured, posted, and verified the report comment.
 
@@ -144,9 +156,17 @@ Run multiple in parallel by invoking `agent-run` multiple times concurrently fro
 
 ## Duplicate-run protection
 
-Before building/running anything, `agent-run` refuses a new exploration or fix run when a container is already running for the same repo and issue (`docker ps --filter name=...`). This prevents exploration and implementation from racing each other.
+Before building/running anything, `agent-run` refuses a new exploration, fix, or PR-review run when a container is already running for the same repo and target (`docker ps --filter name=...`). This prevents related runs from racing each other.
 
-In addition, `--fix` refuses to start when an open PR already exists for `agent/issue-<N>` (`gh pr list --head`), avoiding a second implementation for work that is awaiting review or merge. These checks are best-effort (there is a small window before the container starts), but catch the common cases.
+In addition, `--fix` refuses to start when an open PR already exists for `agent/issue-<N>` (`gh pr list --head`), avoiding a second implementation for work that is awaiting review or merge. `--fix-review` requires a marked review of the exact current head SHA, so it cannot apply stale findings. These checks are best-effort (there is a small window before the container starts), but catch the common cases.
+
+## Testing
+
+```bash
+./agent-runner/test.sh
+```
+
+This runs the CLI argument-validation regression checks. A full Docker build also verifies that the canonical and Docker-only review skills are packaged into the image.
 
 ## Inspecting and cleaning up containers
 

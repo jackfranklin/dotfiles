@@ -1,27 +1,32 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-# Run from inside the target repo's directory on your host — the GitHub owner defaults to
-# jackfranklin and the repo name is taken from the current directory's name.
+# Run from inside the target repo's directory on the host. The GitHub owner defaults
+# to jackfranklin and the repository name comes from the current directory name.
 #
 # Requires env vars:
-#   AGENT_RUNNER_GH_TOKEN            - fine-grained PAT scoped to the target repo
-#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  - long-lived token from `claude setup-token` (not needed for --test-only)
+#   AGENT_RUNNER_GH_TOKEN            Fine-grained PAT scoped to the target repo.
+#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  Token from `claude setup-token` (except test-only).
 
 usage() {
   cat >&2 <<'EOF'
 Usage:
   agent-run --fix <issue-number> [--base <branch>] [--instruction <text> ...]
   agent-run --explore-plan <issue-number> [--replace] [--base <branch>] [--instruction <text> ...]
+  agent-run --review-pr <pr-number> [--instruction <text> ...]
+  agent-run --fix-review <pr-number> [--instruction <text> ...]
   agent-run --test-only [--base <branch>]
 
 Modes:
   --fix           Implement an issue with an approved plan, then open a pull request.
-  --explore-plan  Investigate a rough issue and post an exploration report; makes no code changes or PR.
+  --explore-plan  Investigate a rough issue and post an exploration report.
+  --review-pr     Validate and review a trusted pull request, then post a comment review.
+  --fix-review    Apply the latest posted agent-runner review to its unchanged pull request.
   --test-only     Clone, install dependencies, and run npm test (if defined); does not run Claude.
 
 Options:
   --base <branch>        Base branch to clone and, for --fix, open the PR against (default: main).
+                         For PR review modes, it must match the pull request's base branch.
   --replace              Replace prior agent-runner exploration comments after a new report is verified.
                          Available only with --explore-plan.
   --instruction, -i <text>
@@ -30,10 +35,9 @@ Options:
 
 Examples:
   agent-run --explore-plan 55
-  agent-run --explore-plan 55 --replace
-  agent-run --explore-plan 55 --base develop -i 'Investigate compatibility with v2.'
   agent-run --fix 55
-  agent-run --fix 55 --instruction 'Prefer a small, backward-compatible change.'
+  agent-run --review-pr 42
+  agent-run --fix-review 42
   agent-run --test-only
 EOF
 }
@@ -56,18 +60,12 @@ set_mode() {
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --fix)
-      set_mode "fix"
-      ;;
-    --explore-plan)
-      set_mode "explore-plan"
-      ;;
-    --test-only)
-      set_mode "test-only"
-      ;;
-    --replace)
-      REPLACE_EXPLORATION="1"
-      ;;
+    --fix) set_mode "fix" ;;
+    --explore-plan) set_mode "explore-plan" ;;
+    --review-pr) set_mode "review-pr" ;;
+    --fix-review) set_mode "fix-review" ;;
+    --test-only) set_mode "test-only" ;;
+    --replace) REPLACE_EXPLORATION="1" ;;
     --base)
       if [ "$#" -lt 2 ] || [[ "$2" == --* ]]; then
         echo "--base requires a branch name" >&2
@@ -95,24 +93,19 @@ while [ "$#" -gt 0 ]; do
       ADDITIONAL_INSTRUCTIONS+="$2"
       shift
       ;;
-    --help|-h)
-      usage
-      exit 0
-      ;;
+    --help|-h) usage; exit 0 ;;
     --*)
       echo "Unknown option: $1" >&2
       usage
       exit 1
       ;;
-    *)
-      POSITIONAL+=("$1")
-      ;;
+    *) POSITIONAL+=("$1") ;;
   esac
   shift
 done
 
 if [ -z "${MODE}" ]; then
-  echo "A mode is required: --fix, --explore-plan, or --test-only" >&2
+  echo "A mode is required: --fix, --explore-plan, --review-pr, --fix-review, or --test-only" >&2
   usage
   exit 1
 fi
@@ -123,35 +116,42 @@ if [ -n "${REPLACE_EXPLORATION}" ] && [ "${MODE}" != "explore-plan" ]; then
   exit 1
 fi
 
-if [ "${MODE}" = "test-only" ]; then
-  if [ "${#POSITIONAL[@]}" -ne 0 ]; then
-    echo "--test-only does not take an issue number" >&2
-    usage
-    exit 1
-  fi
-  if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
-    echo "--instruction cannot be used with --test-only" >&2
-    usage
-    exit 1
-  fi
-  ISSUE_NUMBER="test-only-$(date +%s)"
-else
-  if [ "${#POSITIONAL[@]}" -ne 1 ]; then
-    echo "--${MODE} requires exactly one issue number" >&2
-    usage
-    exit 1
-  fi
-  ISSUE_NUMBER="${POSITIONAL[0]}"
-  if ! [[ "${ISSUE_NUMBER}" =~ ^[0-9]+$ ]]; then
-    echo "Issue number must be a positive integer: ${ISSUE_NUMBER}" >&2
-    usage
-    exit 1
-  fi
-fi
+ISSUE_NUMBER=""
+PR_NUMBER=""
+case "${MODE}" in
+  test-only)
+    if [ "${#POSITIONAL[@]}" -ne 0 ]; then
+      echo "--test-only does not take an issue or pull request number" >&2
+      usage
+      exit 1
+    fi
+    if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
+      echo "--instruction cannot be used with --test-only" >&2
+      usage
+      exit 1
+    fi
+    ISSUE_NUMBER="test-only-$(date +%s)"
+    ;;
+  fix|explore-plan)
+    if [ "${#POSITIONAL[@]}" -ne 1 ] || ! [[ "${POSITIONAL[0]:-}" =~ ^[1-9][0-9]*$ ]]; then
+      echo "--${MODE} requires one positive issue number" >&2
+      usage
+      exit 1
+    fi
+    ISSUE_NUMBER="${POSITIONAL[0]}"
+    ;;
+  review-pr|fix-review)
+    if [ "${#POSITIONAL[@]}" -ne 1 ] || ! [[ "${POSITIONAL[0]:-}" =~ ^[1-9][0-9]*$ ]]; then
+      echo "--${MODE} requires one positive pull request number" >&2
+      usage
+      exit 1
+    fi
+    PR_NUMBER="${POSITIONAL[0]}"
+    ;;
+esac
 
 GH_OWNER="jackfranklin"
 REPO="${GH_OWNER}/$(basename "${PWD}")"
-
 : "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
 
 GIT_AUTHOR_NAME=""
@@ -159,37 +159,54 @@ GIT_AUTHOR_EMAIL=""
 if [ "${MODE}" != "test-only" ]; then
   : "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
 fi
-if [ "${MODE}" = "fix" ]; then
+if [ "${MODE}" = "fix" ] || [ "${MODE}" = "fix-review" ]; then
   GIT_AUTHOR_NAME="$(git config --global user.name)"
   GIT_AUTHOR_EMAIL="$(git config --global user.email)"
   : "${GIT_AUTHOR_NAME:?git config --global user.name is not set}"
   : "${GIT_AUTHOR_EMAIL:?git config --global user.email is not set}"
 fi
 
-BRANCH="agent/issue-${ISSUE_NUMBER}"
+if [ "${MODE}" = "review-pr" ] || [ "${MODE}" = "fix-review" ]; then
+  echo "==> Fetching pull request #${PR_NUMBER}"
+  PR_METADATA="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr view "${PR_NUMBER}" --repo "${REPO}" --json title,state,baseRefName --jq '.')"
+  PR_TITLE="$(jq -r '.title' <<<"${PR_METADATA}")"
+  PR_STATE="$(jq -r '.state' <<<"${PR_METADATA}")"
+  PR_BASE_BRANCH="$(jq -r '.baseRefName' <<<"${PR_METADATA}")"
+  if [ "${PR_STATE}" != "OPEN" ]; then
+    echo "Pull request #${PR_NUMBER} is ${PR_STATE}, not open." >&2
+    exit 1
+  fi
+  if [ -n "${BASE_BRANCH_SET}" ] && [ "${BASE_BRANCH}" != "${PR_BASE_BRANCH}" ]; then
+    echo "--base (${BASE_BRANCH}) does not match pull request #${PR_NUMBER}'s base branch (${PR_BASE_BRANCH})." >&2
+    exit 1
+  fi
+  BASE_BRANCH="${PR_BASE_BRANCH}"
+  TARGET_LABEL="pull request #${PR_NUMBER}"
+  CONTAINER_TARGET="pr-${PR_NUMBER}"
+  echo "==> Pull request #${PR_NUMBER}: ${PR_TITLE} (base: ${BASE_BRANCH})"
+else
+  TARGET_LABEL="issue #${ISSUE_NUMBER}"
+  CONTAINER_TARGET="${ISSUE_NUMBER}"
+fi
 
-if [ "${MODE}" != "test-only" ]; then
+if [ "${MODE}" = "fix" ] || [ "${MODE}" = "explore-plan" ]; then
   echo "==> Fetching issue #${ISSUE_NUMBER}"
   ISSUE_TITLE="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json title --jq '.title')"
   echo "==> Issue #${ISSUE_NUMBER}: ${ISSUE_TITLE}"
-  printf '==> Continue? [y/N] ' >&2
-  if ! read -r ISSUE_CONFIRMATION; then
+fi
+
+if [ "${MODE}" != "test-only" ]; then
+  printf '==> Continue with %s? [y/N] ' "${TARGET_LABEL}" >&2
+  if ! read -r CONFIRMATION; then
     echo "Cancelled; no confirmation was received and no container was started." >&2
     exit 1
   fi
-  case "${ISSUE_CONFIRMATION}" in
-    y|Y|yes|YES|Yes)
-      ;;
-    *)
-      echo "Cancelled; no container was started." >&2
-      exit 1
-      ;;
-  esac
+  case "${CONFIRMATION}" in y|Y|yes|YES|Yes) ;; *) echo "Cancelled; no container was started." >&2; exit 1 ;; esac
 
-  echo "==> Checking for an already-running container on this issue"
-  RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-[0-9]" --format '{{.Names}}' | head -n1)"
+  echo "==> Checking for an already-running container on this target"
+  RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${CONTAINER_TARGET}-[0-9]" --format '{{.Names}}' | head -n1)"
   if [ -n "${RUNNING_CONTAINER}" ]; then
-    echo "A container is already running for issue #${ISSUE_NUMBER}: ${RUNNING_CONTAINER}" >&2
+    echo "A container is already running for ${TARGET_LABEL}: ${RUNNING_CONTAINER}" >&2
     echo "Refusing to start a duplicate run. Wait for it to finish, or 'docker rm -f ${RUNNING_CONTAINER}' to stop it." >&2
     exit 1
   fi
@@ -203,6 +220,7 @@ if [ "${MODE}" = "fix" ]; then
     exit 1
   fi
 
+  BRANCH="agent/issue-${ISSUE_NUMBER}"
   echo "==> Checking for an existing PR on ${BRANCH}"
   EXISTING_PR_URL="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr list --repo "${REPO}" --head "${BRANCH}" --state open --json url --jq '.[0].url // empty')"
   if [ -n "${EXISTING_PR_URL}" ]; then
@@ -214,17 +232,19 @@ fi
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
 SCRIPT_DIR="$(cd "$(dirname "${SCRIPT_PATH}")" && pwd)"
+DOTFILES_DIR="$(cd "${SCRIPT_DIR}/../.." && pwd)"
 IMAGE="agent-runner:latest"
 
-docker build -t "${IMAGE}" "${SCRIPT_DIR}/.."
+docker build -f "${DOTFILES_DIR}/agent-runner/Dockerfile" -t "${IMAGE}" "${DOTFILES_DIR}"
 
-CONTAINER_NAME="agent-runner-${REPO//\//-}-${ISSUE_NUMBER}-$(date +%Y%m%d-%H%M%S)"
+CONTAINER_NAME="agent-runner-${REPO//\//-}-${CONTAINER_TARGET}-$(date +%Y%m%d-%H%M%S)"
 echo "==> Container name: ${CONTAINER_NAME} (kept after exit — inspect with 'docker cp' or 'docker start -ai', remove with 'docker rm')"
 
 docker run \
   --cap-add=SYS_ADMIN \
   -e REPO="${REPO}" \
   -e ISSUE_NUMBER="${ISSUE_NUMBER}" \
+  -e PR_NUMBER="${PR_NUMBER}" \
   -e BASE_BRANCH="${BASE_BRANCH}" \
   -e MODE="${MODE}" \
   -e REPLACE_EXPLORATION="${REPLACE_EXPLORATION}" \
@@ -236,3 +256,15 @@ docker run \
   -e ADDITIONAL_INSTRUCTIONS="${ADDITIONAL_INSTRUCTIONS}" \
   --name "${CONTAINER_NAME}" \
   "${IMAGE}"
+
+if [ "${MODE}" = "review-pr" ]; then
+  printf '==> Review posted. Start a fresh fix phase for pull request #%s now? [y/N] ' "${PR_NUMBER}" >&2
+  if read -r FIX_CONFIRMATION; then
+    case "${FIX_CONFIRMATION}" in
+      y|Y|yes|YES|Yes)
+        exec "$0" --fix-review "${PR_NUMBER}" --base "${BASE_BRANCH}"
+        ;;
+    esac
+  fi
+  echo "==> Done (review-pr; no fix phase started)"
+fi
