@@ -1,6 +1,6 @@
 ---
 disable-model-invocation: true
-name: bug-report
+name: summarize-for-bug-report
 description: Use when the user requests to turn the current conversation, exploration, or technical findings into a succinct bug report.
 ---
 
