@@ -60,6 +60,68 @@ Then run `make claude-mcp`.
 - Install Windows Terminal experimental (currently need the new text rendering engine with better cursor colour contrast)
 - Add Catpuccin theme for Win terminal + enable. Set Ubuntu as the default profile when opening the terminal / new tab.
 
+## Wi-Fi power saving
+
+On Ubuntu systems managed by NetworkManager, Wi-Fi power saving can reduce throughput or cause intermittent slow connections. `iw` controls it for the current session; NetworkManager can disable it persistently.
+
+### Find the Wi-Fi interface
+
+Install `iw` if it is not already present:
+
+```bash
+sudo apt update
+sudo apt install iw
+```
+
+List wireless interfaces:
+
+```bash
+iw dev
+```
+
+Use the value after `Interface` as the interface name below—for example, `wlp0s20f3`. To confirm it is the active Wi-Fi connection and see its NetworkManager profile:
+
+```bash
+WIFI_IFACE=wlp0s20f3 # replace with the Interface value from `iw dev`
+nmcli device status
+nmcli -g GENERAL.CONNECTION device show "$WIFI_IFACE"
+```
+
+### Check and temporarily disable power saving
+
+Check the current setting:
+
+```bash
+iw dev "$WIFI_IFACE" get power_save
+```
+
+If it reports `Power save: on`, disable it until the next reboot or NetworkManager reconnect:
+
+```bash
+sudo iw dev "$WIFI_IFACE" set power_save off
+```
+
+Run the `get power_save` command again to confirm it reports `Power save: off`.
+
+### Disable power saving permanently
+
+Set NetworkManager's global default to disable Wi-Fi power saving for all connections:
+
+```bash
+sudo install -d /etc/NetworkManager/conf.d
+printf '[connection]\nwifi.powersave = 2\n' \
+  | sudo tee /etc/NetworkManager/conf.d/wifi-powersave.conf >/dev/null
+```
+
+Here, `2` means disabled. Restart NetworkManager to test the setting immediately; this briefly disconnects Wi-Fi:
+
+```bash
+sudo systemctl restart NetworkManager
+iw dev "$WIFI_IFACE" get power_save
+```
+
+The final command should report `Power save: off`. The setting survives reboots and future NetworkManager reconnects.
+
 ## Building nvim
 
 1. Clone nvim to `~/git/neovim`.
