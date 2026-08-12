@@ -21,6 +21,16 @@ DRY. YAGNI. TDD. Frequent commits.
 
 ## Scope Check
 
+Before investigation, state the proposed scope in three short bullets:
+
+- **Required outcome:** the behavior explicitly requested by the issue or spec.
+- **Non-goals:** adjacent features, refactors, generalization, cleanup, and future-proofing that are not required for that outcome.
+- **Simplest likely approach:** the smallest change expected to deliver the required outcome, using existing patterns where possible.
+
+Treat the issue or spec as a strict boundary. Every task, changed file, dependency, test, and design decision must map to an explicit requirement or a demonstrated correctness need. Do not infer new product requirements or add infrastructure, abstractions, migrations, or extra capabilities merely because they may be useful later. Record relevant ideas that are not necessary under **Out of scope** rather than adding them to the plan.
+
+If the scope is ambiguous, or investigation shows the simplest approach would materially exceed it, stop and ask the user to clarify or approve the expansion before planning it.
+
 If the task spans multiple independent subsystems, suggest breaking it into
 separate plans — one per subsystem. Each plan should produce working,
 testable software on its own.
