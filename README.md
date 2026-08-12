@@ -159,6 +159,24 @@ tmux
 
 The tmux configuration enables CSI-u extended keys automatically on tmux 3.5 and newer, so Pi can distinguish `Shift+Enter` from `Enter`.
 
+## WezTerm on Windows
+
+The Windows WezTerm → WSL setup needs a machine-local `Shift+Enter` mapping for Pi. In `wezterm/per_machine.lua` (which is ignored by Git), add:
+
+```lua
+M.keys = {
+  {
+    key = "Enter",
+    mods = "SHIFT",
+    action = require("wezterm").action.SendString("\n"),
+  },
+}
+```
+
+Then run `make sync_wezterm_windows` and fully restart Windows WezTerm. The shared config appends `M.keys` to its standard keybindings.
+
+This is deliberately Windows-only. On the Linux machines, WezTerm's normal extended-key reporting distinguishes `Shift+Enter`; this Windows-to-WSL path instead delivers it as an ordinary Enter. The mapping sends line feed—the same input as Pi's default `Ctrl+J` newline binding—rather than a literal backslash or a normal carriage-return Enter. The underlying reason is not yet established, but is likely specific to keyboard-protocol negotiation through the Windows/WSL terminal path.
+
 ## WezTerm on Ubuntu
 
 Use WezTerm's nightly APT package on Ubuntu. It includes Wayland fixes that are not present in Ubuntu's older stable package. Configure WezTerm's official APT repository and install the nightly package:

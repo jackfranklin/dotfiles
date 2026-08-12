@@ -130,5 +130,9 @@ config.keys = {
   { key = "5", mods = "CTRL|ALT", action = act.MoveTab(4) },
 }
 
+for _, key in ipairs(has_custom_config and custom_config.keys or {}) do
+  table.insert(config.keys, key)
+end
+
 -- and finally, return the configuration to wezterm
 return config
