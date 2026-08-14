@@ -29,7 +29,11 @@ end
 -- config.font = wezterm.font("Hack")
 -- config.font = wezterm.font("Victor Mono")
 -- config.font = wezterm.font("DM Mono")
-config.font = wezterm.font("Berkeley Mono")
+if has_custom_config and custom_config.font_family then
+  config.font = wezterm.font(custom_config.font_family)
+else
+  config.font = wezterm.font("Berkeley Mono")
+end
 -- config.font = wezterm.font("Geist Mono")
 -- Disable ligatures.
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
