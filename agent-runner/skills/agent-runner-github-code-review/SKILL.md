@@ -114,6 +114,18 @@ to report accurately, not automatically as a code-review finding.
 
 ### 5. Report
 
+Write for a busy PR author. Use short, common words, active voice, and one idea
+per sentence. Keep the report as short as clarity permits, but report every
+independent actionable finding. Do not repeat the diff, PR text, or prior
+comments. Group related existing-feedback threads into one concise entry. Omit
+empty sections and boilerplate.
+
+Make each finding easy to scan: state the problem, its real effect, and the
+smallest useful correction. Include only the detail needed to understand and
+act on it. Use precise code names and `path:line` references instead of
+background explanations. Explain an unfamiliar technical term before using it.
+Do not soften actionable findings with vague language such as "might be worth".
+
 Return only this Markdown report. Findings must identify a current location when
 possible, explain the concrete consequence, and recommend a correction. Do not
 duplicate existing feedback as a new finding.
