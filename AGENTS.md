@@ -37,6 +37,10 @@ In an interactive Pi session, approval can allow or ban an operation once or per
 
 Records explicit `/skill:<name>` invocations by absolute project path in `~/.pi/agent/skill-metrics.sqlite` (SQLite WAL mode). Use `/skill-metrics` for the current project or `/skill-metrics all` for every project. Extension-injected messages and unknown skill names are not recorded.
 
+### `watch`
+
+Runs confirmed, session-scoped recurring shell checks. It reports only changed output by injecting an update that Pi can explain, skips polls while Pi is busy, and stops all timers on session shutdown. Use `/watches` to list active checks and `/watch-stop <id|all>` to stop them. Watches are not restored after a restart, and their commands run through `pi.exec` rather than the permissions extension's `bash` gate; confirmation of the exact command is therefore required.
+
 ### `subagents`
 
 Registers the `subagent` tool, which starts isolated, headless child Pi processes. Children receive only the supplied task and working directory; they do not inherit the parent conversation or skills. The parent shows live progress and receives the child's final text as the result.
