@@ -5,43 +5,49 @@ set -euo pipefail
 # to jackfranklin and the repository name comes from the current directory name.
 #
 # Requires env vars:
-#   AGENT_RUNNER_GH_TOKEN            Fine-grained PAT scoped to the target repo.
-#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  Token from `claude setup-token` (except test-only).
+#   AGENT_RUNNER_GH_TOKEN            Fine-grained PAT scoped to the repo.
+#   AGENT_RUNNER_CLAUDE_OAUTH_TOKEN  Token from `claude setup-token` (except test).
 
 usage() {
   cat >&2 <<'EOF'
 Usage:
-  agent-run --fix <issue-number> [--base <branch>] [--instruction <text> ...]
-  agent-run --explore-plan <issue-number> [--replace] [--base <branch>] [--instruction <text> ...]
-  agent-run --review-pr <pr-number> [--instruction <text> ...]
-  agent-run --fix-review <pr-number> [--instruction <text> ...]
-  agent-run --test-only [--base <branch>]
+  agent-run --implement <issue-number> [--base <branch>] [--instruction <text> ...]
+  agent-run --investigate <issue-number> [--replace] [--base <branch>] [--instruction <text> ...]
+  agent-run --review <pr-number> [--instruction <text> ...]
+  agent-run --apply-review <pr-number> [--instruction <text> ...]
+  agent-run --test [--base <branch>]
+  agent-run status <run-id>
+  agent-run resume <run-id>
 
 Modes:
-  --fix           Implement an issue with an approved plan, then open a pull request.
-  --explore-plan  Investigate a rough issue and post an exploration report.
-  --review-pr     Validate and review a trusted pull request, then post a comment review.
-  --fix-review    Apply the latest posted agent-runner review to its unchanged pull request.
-  --test-only     Clone, install dependencies, and run npm test (if defined); does not run Claude.
+  --implement      Implement an approved issue and open a pull request.
+  --investigate    Investigate a rough issue and post an exploration report.
+  --review         Validate and review a trusted pull request, then post a comment review.
+  --apply-review   Apply the latest agent-runner review to its unchanged pull request.
+  --test           Verify the runner's dependency and test environment without Claude:
+                   clone, install dependencies, and run npm test (if defined).
+
+Recovery commands:
+  status           Show a persisted run's container, output, branch, and Git status.
+  resume           Start a new container and continue an interrupted Claude session.
+
+Normal runs still stream Claude output live. Each run also prints a run ID and saves
+its state under ~/.local/state/agent-runner/<run-id> (or $XDG_STATE_HOME). Use status
+or resume only after a run has stopped or been interrupted; completed runs cannot resume.
 
 Options:
-  --base <branch>        Base branch to clone and, for --fix, open the PR against (default: main).
+  --base <branch>        Base branch to clone and, for --implement, open the PR against (default: main).
                          For PR review modes, it must match the pull request's base branch.
   --replace              Replace prior agent-runner exploration comments after a new report is verified.
-                         Available only with --explore-plan.
+                         Available only with --investigate.
   --instruction, -i <text>
-                         Additional instruction for Claude. May be repeated; unavailable with --test-only.
+                         Additional instruction for Claude. May be repeated; unavailable with --test.
   --help, -h             Show this help text.
-
-Examples:
-  agent-run --explore-plan 55
-  agent-run --fix 55
-  agent-run --review-pr 42
-  agent-run --fix-review 42
-  agent-run --test-only
 EOF
 }
 
+STATE_ROOT="${XDG_STATE_HOME:-${HOME}/.local/state}/agent-runner"
+COMMAND="run"
 MODE=""
 BASE_BRANCH="main"
 BASE_BRANCH_SET=""
@@ -49,7 +55,21 @@ REPLACE_EXPLORATION=""
 ADDITIONAL_INSTRUCTIONS=""
 POSITIONAL=()
 
+set_command() {
+  if [ "${COMMAND}" != "run" ]; then
+    echo "Choose exactly one command; received both ${COMMAND} and $1" >&2
+    usage
+    exit 1
+  fi
+  COMMAND="$1"
+}
+
 set_mode() {
+  if [ "${COMMAND}" != "run" ]; then
+    echo "${COMMAND} cannot be combined with --$1" >&2
+    usage
+    exit 1
+  fi
   if [ -n "${MODE}" ]; then
     echo "Choose exactly one mode; received both --${MODE} and --$1" >&2
     usage
@@ -60,11 +80,12 @@ set_mode() {
 
 while [ "$#" -gt 0 ]; do
   case "$1" in
-    --fix) set_mode "fix" ;;
-    --explore-plan) set_mode "explore-plan" ;;
-    --review-pr) set_mode "review-pr" ;;
-    --fix-review) set_mode "fix-review" ;;
-    --test-only) set_mode "test-only" ;;
+    status|resume) set_command "$1" ;;
+    --implement) set_mode "implement" ;;
+    --investigate) set_mode "investigate" ;;
+    --review) set_mode "review" ;;
+    --apply-review) set_mode "apply-review" ;;
+    --test) set_mode "test" ;;
     --replace) REPLACE_EXPLORATION="1" ;;
     --base)
       if [ "$#" -lt 2 ] || [[ "$2" == --* ]]; then
@@ -104,130 +125,269 @@ while [ "$#" -gt 0 ]; do
   shift
 done
 
-if [ -z "${MODE}" ]; then
-  echo "A mode is required: --fix, --explore-plan, --review-pr, --fix-review, or --test-only" >&2
+validate_run_id() {
+  if [ "$#" -ne 1 ] || ! [[ "$1" =~ ^[A-Za-z0-9][A-Za-z0-9._-]*$ ]]; then
+    echo "A run ID containing only letters, numbers, dots, underscores, and hyphens is required." >&2
+    exit 1
+  fi
+}
+
+metadata_path_for() {
+  printf '%s/%s/metadata.json' "${STATE_ROOT}" "$1"
+}
+
+show_status() {
+  local run_id="$1"
+  local metadata
+  metadata="$(metadata_path_for "${run_id}")"
+  if [ ! -f "${metadata}" ]; then
+    echo "No persisted agent-run run found for ${run_id}." >&2
+    exit 1
+  fi
+
+  local container_name container_status workdir branch dirty recent_output revision
+  container_name="$(jq -er '.container_name' "${metadata}")"
+  container_status="$(docker inspect --format '{{.State.Status}}' "${container_name}" 2>/dev/null || printf 'missing')"
+  workdir="$(dirname "${metadata}")/work/repo"
+  if [ -d "${workdir}/.git" ] && git -C "${workdir}" rev-parse --is-inside-work-tree >/dev/null 2>&1; then
+    branch="$(git -C "${workdir}" branch --show-current || true)"
+    if [ -z "${branch}" ]; then
+      revision="$(git -C "${workdir}" rev-parse --short HEAD 2>/dev/null || true)"
+      branch="${revision:+detached at ${revision}}"
+      branch="${branch:-unknown}"
+    fi
+    if [ -n "$(git -C "${workdir}" status --porcelain 2>/dev/null || true)" ]; then
+      dirty="dirty"
+    else
+      dirty="clean"
+    fi
+  else
+    branch="no usable checkout"
+    dirty="unknown"
+  fi
+  recent_output="$(tail -n 10 "$(dirname "${metadata}")/work/claude-stream.jsonl" 2>/dev/null || true)"
+
+  jq -r '"Run ID: " + .run_id + "\nStatus: " + .status + "\nMode: " + .mode + "\nRepository: " + .repo + "\nTarget: " + .target + "\nSession ID: " + .session_id + "\nContainer: " + .container_name + "\nStarted: " + .started_at' "${metadata}"
+  printf 'Container state: %s\nBranch: %s\nWorking tree: %s\n' "${container_status}" "${branch}" "${dirty}"
+  if [ -n "${recent_output}" ]; then
+    printf '\nRecent Claude output:\n%s\n' "${recent_output}"
+  fi
+}
+
+if [ "${COMMAND}" = "status" ]; then
+  validate_run_id "${POSITIONAL[@]}"
+  show_status "${POSITIONAL[0]}"
+  exit 0
+fi
+
+if [ -n "${REPLACE_EXPLORATION}" ] && [ "${MODE}" != "investigate" ]; then
+  echo "--replace is only available with --investigate" >&2
   usage
   exit 1
 fi
 
-if [ -n "${REPLACE_EXPLORATION}" ] && [ "${MODE}" != "explore-plan" ]; then
-  echo "--replace is only available with --explore-plan" >&2
-  usage
-  exit 1
+RESUME=""
+RUN_ID=""
+STATE_DIR=""
+SESSION_ID=""
+CONTAINER_NAME=""
+if [ "${COMMAND}" = "resume" ]; then
+  validate_run_id "${POSITIONAL[@]}"
+  RUN_ID="${POSITIONAL[0]}"
+  STATE_DIR="${STATE_ROOT}/${RUN_ID}"
+  METADATA_PATH="${STATE_DIR}/metadata.json"
+  if [ ! -f "${METADATA_PATH}" ]; then
+    echo "No persisted agent-run run found for ${RUN_ID}." >&2
+    exit 1
+  fi
+
+  MODE="$(jq -er '.mode' "${METADATA_PATH}")"
+  REPO="$(jq -er '.repo' "${METADATA_PATH}")"
+  BASE_BRANCH="$(jq -er '.base_branch' "${METADATA_PATH}")"
+  ISSUE_NUMBER="$(jq -er '.issue_number // ""' "${METADATA_PATH}")"
+  PR_NUMBER="$(jq -er '.pr_number // ""' "${METADATA_PATH}")"
+  REPLACE_EXPLORATION="$(jq -er '.replace_exploration // ""' "${METADATA_PATH}")"
+  ADDITIONAL_INSTRUCTIONS="$(jq -er '.additional_instructions // ""' "${METADATA_PATH}")"
+  GIT_AUTHOR_NAME="$(jq -er '.git_author_name // ""' "${METADATA_PATH}")"
+  GIT_AUTHOR_EMAIL="$(jq -er '.git_author_email // ""' "${METADATA_PATH}")"
+  SESSION_ID="$(jq -er '.session_id' "${METADATA_PATH}")"
+  OLD_CONTAINER_NAME="$(jq -er '.container_name' "${METADATA_PATH}")"
+  RUN_STATUS="$(jq -er '.status' "${METADATA_PATH}")"
+  if [ "${MODE}" = "test" ]; then
+    echo "Run ${RUN_ID} has no Claude session and cannot be resumed." >&2
+    exit 1
+  fi
+  if [ "${RUN_STATUS}" = "completed" ]; then
+    echo "Run ${RUN_ID} completed successfully and cannot be resumed." >&2
+    exit 1
+  fi
+  if [ "$(docker inspect --format '{{.State.Running}}' "${OLD_CONTAINER_NAME}" 2>/dev/null || true)" = "true" ]; then
+    echo "Run ${RUN_ID} is still running in ${OLD_CONTAINER_NAME}; refusing to start a second container." >&2
+    exit 1
+  fi
+  if [ ! -d "${STATE_DIR}/work/repo/.git" ]; then
+    echo "Run ${RUN_ID} has no usable persisted checkout at ${STATE_DIR}/work/repo." >&2
+    exit 1
+  fi
+
+  RESUME="1"
+  CONTAINER_TARGET="$(jq -er '.container_target' "${METADATA_PATH}")"
+  TARGET_LABEL="$(jq -er '.target' "${METADATA_PATH}")"
+  CONTAINER_NAME="agent-runner-${RUN_ID}-resume-$(date +%Y%m%d-%H%M%S)"
+else
+  if [ -z "${MODE}" ]; then
+    echo "A mode is required: --implement, --investigate, --review, --apply-review, or --test" >&2
+    usage
+    exit 1
+  fi
+
+  ISSUE_NUMBER=""
+  PR_NUMBER=""
+  case "${MODE}" in
+    test)
+      if [ "${#POSITIONAL[@]}" -ne 0 ]; then
+        echo "--test does not take an issue or pull request number" >&2
+        usage
+        exit 1
+      fi
+      if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
+        echo "--instruction cannot be used with --test" >&2
+        usage
+        exit 1
+      fi
+      ISSUE_NUMBER="test-$(date +%s)"
+      ;;
+    implement|investigate)
+      if [ "${#POSITIONAL[@]}" -ne 1 ] || ! [[ "${POSITIONAL[0]:-}" =~ ^[1-9][0-9]*$ ]]; then
+        echo "--${MODE} requires one positive issue number" >&2
+        usage
+        exit 1
+      fi
+      ISSUE_NUMBER="${POSITIONAL[0]}"
+      ;;
+    review|apply-review)
+      if [ "${#POSITIONAL[@]}" -ne 1 ] || ! [[ "${POSITIONAL[0]:-}" =~ ^[1-9][0-9]*$ ]]; then
+        echo "--${MODE} requires one positive pull request number" >&2
+        usage
+        exit 1
+      fi
+      PR_NUMBER="${POSITIONAL[0]}"
+      ;;
+  esac
+
+  GH_OWNER="jackfranklin"
+  REPO="${GH_OWNER}/$(basename "${PWD}")"
 fi
 
-ISSUE_NUMBER=""
-PR_NUMBER=""
-case "${MODE}" in
-  test-only)
-    if [ "${#POSITIONAL[@]}" -ne 0 ]; then
-      echo "--test-only does not take an issue or pull request number" >&2
-      usage
-      exit 1
-    fi
-    if [ -n "${ADDITIONAL_INSTRUCTIONS}" ]; then
-      echo "--instruction cannot be used with --test-only" >&2
-      usage
-      exit 1
-    fi
-    ISSUE_NUMBER="test-only-$(date +%s)"
-    ;;
-  fix|explore-plan)
-    if [ "${#POSITIONAL[@]}" -ne 1 ] || ! [[ "${POSITIONAL[0]:-}" =~ ^[1-9][0-9]*$ ]]; then
-      echo "--${MODE} requires one positive issue number" >&2
-      usage
-      exit 1
-    fi
-    ISSUE_NUMBER="${POSITIONAL[0]}"
-    ;;
-  review-pr|fix-review)
-    if [ "${#POSITIONAL[@]}" -ne 1 ] || ! [[ "${POSITIONAL[0]:-}" =~ ^[1-9][0-9]*$ ]]; then
-      echo "--${MODE} requires one positive pull request number" >&2
-      usage
-      exit 1
-    fi
-    PR_NUMBER="${POSITIONAL[0]}"
-    ;;
-esac
-
-GH_OWNER="jackfranklin"
-REPO="${GH_OWNER}/$(basename "${PWD}")"
 : "${AGENT_RUNNER_GH_TOKEN:?Set AGENT_RUNNER_GH_TOKEN to a fine-grained PAT scoped to ${REPO}}"
 
-GIT_AUTHOR_NAME=""
-GIT_AUTHOR_EMAIL=""
-if [ "${MODE}" != "test-only" ]; then
+GIT_AUTHOR_NAME="${GIT_AUTHOR_NAME:-}"
+GIT_AUTHOR_EMAIL="${GIT_AUTHOR_EMAIL:-}"
+if [ "${MODE}" != "test" ]; then
   : "${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:?Set AGENT_RUNNER_CLAUDE_OAUTH_TOKEN (generate with: claude setup-token)}"
 fi
-if [ "${MODE}" = "fix" ] || [ "${MODE}" = "fix-review" ]; then
-  GIT_AUTHOR_NAME="$(git config --global user.name)"
-  GIT_AUTHOR_EMAIL="$(git config --global user.email)"
+if [ "${MODE}" = "implement" ] || [ "${MODE}" = "apply-review" ]; then
+  if [ -z "${GIT_AUTHOR_NAME}" ]; then
+    GIT_AUTHOR_NAME="$(git config --global user.name)"
+    GIT_AUTHOR_EMAIL="$(git config --global user.email)"
+  fi
   : "${GIT_AUTHOR_NAME:?git config --global user.name is not set}"
   : "${GIT_AUTHOR_EMAIL:?git config --global user.email is not set}"
 fi
 
-if [ "${MODE}" = "review-pr" ] || [ "${MODE}" = "fix-review" ]; then
-  echo "==> Fetching pull request #${PR_NUMBER}"
-  PR_METADATA="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr view "${PR_NUMBER}" --repo "${REPO}" --json title,state,baseRefName --jq '.')"
-  PR_TITLE="$(jq -r '.title' <<<"${PR_METADATA}")"
-  PR_STATE="$(jq -r '.state' <<<"${PR_METADATA}")"
-  PR_BASE_BRANCH="$(jq -r '.baseRefName' <<<"${PR_METADATA}")"
-  if [ "${PR_STATE}" != "OPEN" ]; then
-    echo "Pull request #${PR_NUMBER} is ${PR_STATE}, not open." >&2
-    exit 1
-  fi
-  if [ -n "${BASE_BRANCH_SET}" ] && [ "${BASE_BRANCH}" != "${PR_BASE_BRANCH}" ]; then
-    echo "--base (${BASE_BRANCH}) does not match pull request #${PR_NUMBER}'s base branch (${PR_BASE_BRANCH})." >&2
-    exit 1
-  fi
-  BASE_BRANCH="${PR_BASE_BRANCH}"
-  TARGET_LABEL="pull request #${PR_NUMBER}"
-  CONTAINER_TARGET="pr-${PR_NUMBER}"
-  echo "==> Pull request #${PR_NUMBER}: ${PR_TITLE} (base: ${BASE_BRANCH})"
-else
-  TARGET_LABEL="issue #${ISSUE_NUMBER}"
-  CONTAINER_TARGET="${ISSUE_NUMBER}"
-fi
-
-if [ "${MODE}" = "fix" ] || [ "${MODE}" = "explore-plan" ]; then
-  echo "==> Fetching issue #${ISSUE_NUMBER}"
-  ISSUE_TITLE="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json title --jq '.title')"
-  echo "==> Issue #${ISSUE_NUMBER}: ${ISSUE_TITLE}"
-fi
-
-if [ "${MODE}" != "test-only" ]; then
-  printf '==> Continue with %s? [y/N] ' "${TARGET_LABEL}" >&2
-  if ! read -r CONFIRMATION; then
-    echo "Cancelled; no confirmation was received and no container was started." >&2
-    exit 1
-  fi
-  case "${CONFIRMATION}" in y|Y|yes|YES|Yes) ;; *) echo "Cancelled; no container was started." >&2; exit 1 ;; esac
-
-  echo "==> Checking for an already-running container on this target"
-  RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${CONTAINER_TARGET}-[0-9]" --format '{{.Names}}' | head -n1)"
-  if [ -n "${RUNNING_CONTAINER}" ]; then
-    echo "A container is already running for ${TARGET_LABEL}: ${RUNNING_CONTAINER}" >&2
-    echo "Refusing to start a duplicate run. Wait for it to finish, or 'docker rm -f ${RUNNING_CONTAINER}' to stop it." >&2
-    exit 1
-  fi
-fi
-
-if [ "${MODE}" = "fix" ]; then
-  echo "==> Checking issue #${ISSUE_NUMBER} is ready for implementation"
-  if ! GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json labels --jq '.labels[].name' | grep -qx 'ready-for-impl'; then
-    echo "Issue #${ISSUE_NUMBER} does not have the ready-for-impl label." >&2
-    echo "Run --explore-plan and then use /write-plan with a human to create and approve the formal plan first." >&2
-    exit 1
+if [ -z "${RESUME}" ]; then
+  if [ "${MODE}" = "review" ] || [ "${MODE}" = "apply-review" ]; then
+    echo "==> Fetching pull request #${PR_NUMBER}"
+    PR_METADATA="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr view "${PR_NUMBER}" --repo "${REPO}" --json title,state,baseRefName --jq '.')"
+    PR_TITLE="$(jq -r '.title' <<<"${PR_METADATA}")"
+    PR_STATE="$(jq -r '.state' <<<"${PR_METADATA}")"
+    PR_BASE_BRANCH="$(jq -r '.baseRefName' <<<"${PR_METADATA}")"
+    if [ "${PR_STATE}" != "OPEN" ]; then
+      echo "Pull request #${PR_NUMBER} is ${PR_STATE}, not open." >&2
+      exit 1
+    fi
+    if [ -n "${BASE_BRANCH_SET}" ] && [ "${BASE_BRANCH}" != "${PR_BASE_BRANCH}" ]; then
+      echo "--base (${BASE_BRANCH}) does not match pull request #${PR_NUMBER}'s base branch (${PR_BASE_BRANCH})." >&2
+      exit 1
+    fi
+    BASE_BRANCH="${PR_BASE_BRANCH}"
+    TARGET_LABEL="pull request #${PR_NUMBER}"
+    CONTAINER_TARGET="pr-${PR_NUMBER}"
+    echo "==> Pull request #${PR_NUMBER}: ${PR_TITLE} (base: ${BASE_BRANCH})"
+  else
+    TARGET_LABEL="issue #${ISSUE_NUMBER}"
+    CONTAINER_TARGET="${ISSUE_NUMBER}"
   fi
 
-  BRANCH="agent/issue-${ISSUE_NUMBER}"
-  echo "==> Checking for an existing PR on ${BRANCH}"
-  EXISTING_PR_URL="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr list --repo "${REPO}" --head "${BRANCH}" --state open --json url --jq '.[0].url // empty')"
-  if [ -n "${EXISTING_PR_URL}" ]; then
-    echo "An open PR already exists for issue #${ISSUE_NUMBER}: ${EXISTING_PR_URL}" >&2
-    echo "Refusing to start a duplicate run. Close/merge it first, or delete the ${BRANCH} branch if you want to redo it." >&2
+  if [ "${MODE}" = "implement" ] || [ "${MODE}" = "investigate" ]; then
+    echo "==> Fetching issue #${ISSUE_NUMBER}"
+    ISSUE_TITLE="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json title --jq '.title')"
+    echo "==> Issue #${ISSUE_NUMBER}: ${ISSUE_TITLE}"
+  fi
+
+  if [ "${MODE}" != "test" ]; then
+    printf '==> Continue with %s? [Y/n] ' "${TARGET_LABEL}" >&2
+    if ! read -r CONFIRMATION; then
+      echo "Cancelled; no confirmation was received and no container was started." >&2
+      exit 1
+    fi
+    case "${CONFIRMATION}" in ''|y|Y|yes|YES|Yes) ;; *) echo "Cancelled; no container was started." >&2; exit 1 ;; esac
+
+    echo "==> Checking for an already-running container on this target"
+    RUNNING_CONTAINER="$(docker ps --filter "name=^agent-runner-${REPO//\//-}-${CONTAINER_TARGET}-[0-9]" --format '{{.Names}}' | head -n1)"
+    if [ -n "${RUNNING_CONTAINER}" ]; then
+      echo "A container is already running for ${TARGET_LABEL}: ${RUNNING_CONTAINER}" >&2
+      echo "Refusing to start a duplicate run. Wait for it to finish, or use agent-run resume after it stops." >&2
+      exit 1
+    fi
+  fi
+
+  if [ "${MODE}" = "implement" ]; then
+    echo "==> Checking issue #${ISSUE_NUMBER} is ready for implementation"
+    if ! GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh issue view "${ISSUE_NUMBER}" --repo "${REPO}" --json labels --jq '.labels[].name' | grep -qx 'ready-for-impl'; then
+      echo "Issue #${ISSUE_NUMBER} does not have the ready-for-impl label." >&2
+      echo "Run --investigate and then use /write-plan with a human to create and approve the formal plan first." >&2
+      exit 1
+    fi
+
+    BRANCH="agent/issue-${ISSUE_NUMBER}"
+    echo "==> Checking for an existing PR on ${BRANCH}"
+    EXISTING_PR_URL="$(GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" gh pr list --repo "${REPO}" --head "${BRANCH}" --state open --json url --jq '.[0].url // empty')"
+    if [ -n "${EXISTING_PR_URL}" ]; then
+      echo "An open PR already exists for issue #${ISSUE_NUMBER}: ${EXISTING_PR_URL}" >&2
+      echo "Refusing to start a duplicate run. Close/merge it first, or delete the ${BRANCH} branch if you want to redo it." >&2
+      exit 1
+    fi
+  fi
+
+  RUN_ID="${AGENT_RUNNER_RUN_ID:-${REPO//\//-}-${CONTAINER_TARGET}-$(date +%Y%m%d-%H%M%S)-$(uuidgen | cut -d- -f1)}"
+  STATE_DIR="${STATE_ROOT}/${RUN_ID}"
+  if [ -e "${STATE_DIR}" ]; then
+    echo "Run state already exists at ${STATE_DIR}; refusing to overwrite it." >&2
     exit 1
   fi
+  umask 077
+  install -d -m 700 "${STATE_DIR}/work" "${STATE_DIR}/claude"
+  : > "${STATE_DIR}/claude.json"
+  SESSION_ID="$(uuidgen)"
+  CONTAINER_NAME="agent-runner-${RUN_ID}"
+  jq -n \
+    --arg run_id "${RUN_ID}" \
+    --arg repo "${REPO}" \
+    --arg target "${TARGET_LABEL}" \
+    --arg container_target "${CONTAINER_TARGET}" \
+    --arg branch "${BASE_BRANCH}" \
+    --arg mode "${MODE}" \
+    --arg issue_number "${ISSUE_NUMBER}" \
+    --arg pr_number "${PR_NUMBER}" \
+    --arg container_name "${CONTAINER_NAME}" \
+    --arg session_id "${SESSION_ID}" \
+    --arg started_at "$(date --iso-8601=seconds)" \
+    --arg replace_exploration "${REPLACE_EXPLORATION}" \
+    --arg additional_instructions "${ADDITIONAL_INSTRUCTIONS}" \
+    --arg git_author_name "${GIT_AUTHOR_NAME}" \
+    --arg git_author_email "${GIT_AUTHOR_EMAIL}" \
+    '{run_id: $run_id, repo: $repo, target: $target, container_target: $container_target, base_branch: $branch, mode: $mode, issue_number: $issue_number, pr_number: $pr_number, container_name: $container_name, session_id: $session_id, started_at: $started_at, status: "starting", replace_exploration: $replace_exploration, additional_instructions: $additional_instructions, git_author_name: $git_author_name, git_author_email: $git_author_email}' > "${STATE_DIR}/metadata.json"
 fi
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -237,17 +397,31 @@ IMAGE="agent-runner:latest"
 
 docker build -f "${DOTFILES_DIR}/agent-runner/Dockerfile" -t "${IMAGE}" "${DOTFILES_DIR}"
 
-CONTAINER_NAME="agent-runner-${REPO//\//-}-${CONTAINER_TARGET}-$(date +%Y%m%d-%H%M%S)"
-echo "==> Container name: ${CONTAINER_NAME} (kept after exit — inspect with 'docker cp' or 'docker start -ai', remove with 'docker rm')"
+if [ -n "${RESUME}" ]; then
+  jq --arg container_name "${CONTAINER_NAME}" --arg resumed_at "$(date --iso-8601=seconds)" \
+    '.status = "running" | .container_name = $container_name | .resumed_at = $resumed_at' \
+    "${STATE_DIR}/metadata.json" > "${STATE_DIR}/metadata.json.tmp"
+  mv "${STATE_DIR}/metadata.json.tmp" "${STATE_DIR}/metadata.json"
+fi
+
+echo "==> Run ID: ${RUN_ID}"
+echo "==> Container name: ${CONTAINER_NAME}"
+echo "==> State directory: ${STATE_DIR}"
 
 docker run \
   --cap-add=SYS_ADMIN \
+  --mount "type=bind,source=${STATE_DIR}/work,target=/work" \
+  --mount "type=bind,source=${STATE_DIR}/claude,target=/home/node/.claude" \
+  --mount "type=bind,source=${STATE_DIR}/claude.json,target=/home/node/.claude.json" \
+  --mount "type=bind,source=${STATE_DIR},target=/runner-state" \
   -e REPO="${REPO}" \
   -e ISSUE_NUMBER="${ISSUE_NUMBER}" \
   -e PR_NUMBER="${PR_NUMBER}" \
   -e BASE_BRANCH="${BASE_BRANCH}" \
   -e MODE="${MODE}" \
   -e REPLACE_EXPLORATION="${REPLACE_EXPLORATION}" \
+  -e RUN_PHASE="$([ -n "${RESUME}" ] && printf resume || printf initial)" \
+  -e SESSION_ID="${SESSION_ID}" \
   -e CONTAINER_NAME="${CONTAINER_NAME}" \
   -e GH_TOKEN="${AGENT_RUNNER_GH_TOKEN}" \
   -e CLAUDE_CODE_OAUTH_TOKEN="${AGENT_RUNNER_CLAUDE_OAUTH_TOKEN:-}" \
@@ -257,14 +431,14 @@ docker run \
   --name "${CONTAINER_NAME}" \
   "${IMAGE}"
 
-if [ "${MODE}" = "review-pr" ]; then
-  printf '==> Review posted. Start a fresh fix phase for pull request #%s now? [y/N] ' "${PR_NUMBER}" >&2
+if [ "${MODE}" = "review" ] && [ -z "${RESUME}" ]; then
+  printf '==> Review posted. Start an apply-review run for pull request #%s now? [y/N] ' "${PR_NUMBER}" >&2
   if read -r FIX_CONFIRMATION; then
     case "${FIX_CONFIRMATION}" in
       y|Y|yes|YES|Yes)
-        exec "$0" --fix-review "${PR_NUMBER}" --base "${BASE_BRANCH}"
+        exec "$0" --apply-review "${PR_NUMBER}" --base "${BASE_BRANCH}"
         ;;
     esac
   fi
-  echo "==> Done (review-pr; no fix phase started)"
+  echo "==> Done (review; no apply-review run started)"
 fi
