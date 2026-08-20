@@ -367,8 +367,7 @@ if [ -z "${RESUME}" ]; then
     exit 1
   fi
   umask 077
-  install -d -m 700 "${STATE_DIR}/work" "${STATE_DIR}/claude"
-  : > "${STATE_DIR}/claude.json"
+  install -d -m 700 "${STATE_DIR}/work" "${STATE_DIR}/home"
   SESSION_ID="$(uuidgen)"
   CONTAINER_NAME="agent-runner-${RUN_ID}"
   jq -n \
@@ -388,6 +387,18 @@ if [ -z "${RESUME}" ]; then
     --arg git_author_name "${GIT_AUTHOR_NAME}" \
     --arg git_author_email "${GIT_AUTHOR_EMAIL}" \
     '{run_id: $run_id, repo: $repo, target: $target, container_target: $container_target, base_branch: $branch, mode: $mode, issue_number: $issue_number, pr_number: $pr_number, container_name: $container_name, session_id: $session_id, started_at: $started_at, status: "starting", replace_exploration: $replace_exploration, additional_instructions: $additional_instructions, git_author_name: $git_author_name, git_author_email: $git_author_email}' > "${STATE_DIR}/metadata.json"
+fi
+
+# Runs created before the home-directory mount used separate Claude state
+# mounts. Migrate stopped runs on resume so they remain recoverable.
+if [ -n "${RESUME}" ]; then
+  install -d -m 700 "${STATE_DIR}/home"
+  if [ -d "${STATE_DIR}/claude" ] && [ ! -e "${STATE_DIR}/home/.claude" ]; then
+    mv "${STATE_DIR}/claude" "${STATE_DIR}/home/.claude"
+  fi
+  if [ -f "${STATE_DIR}/claude.json" ] && [ ! -e "${STATE_DIR}/home/.claude.json" ]; then
+    mv "${STATE_DIR}/claude.json" "${STATE_DIR}/home/.claude.json"
+  fi
 fi
 
 SCRIPT_PATH="$(readlink -f "${BASH_SOURCE[0]}")"
@@ -411,8 +422,7 @@ echo "==> State directory: ${STATE_DIR}"
 docker run \
   --cap-add=SYS_ADMIN \
   --mount "type=bind,source=${STATE_DIR}/work,target=/work" \
-  --mount "type=bind,source=${STATE_DIR}/claude,target=/home/node/.claude" \
-  --mount "type=bind,source=${STATE_DIR}/claude.json,target=/home/node/.claude.json" \
+  --mount "type=bind,source=${STATE_DIR}/home,target=/home/node" \
   --mount "type=bind,source=${STATE_DIR},target=/runner-state" \
   -e REPO="${REPO}" \
   -e ISSUE_NUMBER="${ISSUE_NUMBER}" \

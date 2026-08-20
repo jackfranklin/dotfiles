@@ -178,7 +178,7 @@ Every run prints a run ID and state directory. Its state is stored under
 `~/.local/state/agent-runner/<run-id>/` (or `$XDG_STATE_HOME/agent-runner/<run-id>/`) with mode `0700`:
 
 - `work/` is mounted at `/work` and contains the clone, branch, and all Git changes;
-- `claude/` and `claude.json` preserve Claude Code's session/config state;
+- `home/` is mounted at `/home/node` and preserves Claude Code's session/config state. Mounting the directory, rather than `claude.json` as an individual file, lets Claude Code atomically replace its configuration file;
 - `metadata.json` records the target, current container, session ID, timestamps, and lifecycle status;
 - `work/claude-stream.jsonl` holds raw Claude stream output.
 

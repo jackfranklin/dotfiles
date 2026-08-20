@@ -61,7 +61,8 @@ if [ "${MODE}" != "test" ]; then
   : "${SESSION_ID:?SESSION_ID required for ${MODE}}"
 fi
 
-# The run mount intentionally replaces /home/node/.claude so sessions survive a
+# The run mount intentionally replaces /home/node so configuration writes that
+# use atomic rename (including ~/.claude.json) work and session state survives a
 # replacement container. Reinstall image-owned skills on every start rather than
 # persisting them with agent-controlled state.
 if [ -d /opt/agent-runner/skills ]; then

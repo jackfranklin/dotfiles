@@ -189,12 +189,16 @@ expect_output 'empty confirmation starts the run' 'Run ID: first-run' \
   env "${runner_env[@]}" bash -c "cd '${TMPDIR}/repo' && printf '\\n' | '${RUNNER}' --investigate 60"
 STATE_DIR="${TMPDIR}/state/agent-runner/first-run"
 test -d "${STATE_DIR}/work"
-test -d "${STATE_DIR}/claude"
-test -f "${STATE_DIR}/claude.json"
+test -d "${STATE_DIR}/home"
 test -f "${STATE_DIR}/metadata.json"
 jq -e '.status == "starting" and .session_id != ""' "${STATE_DIR}/metadata.json" >/dev/null
 grep -Fq "source=${STATE_DIR}/work" "${FAKE_DOCKER_LOG}"
-grep -Fq "source=${STATE_DIR}/claude" "${FAKE_DOCKER_LOG}"
+grep -Fq "source=${STATE_DIR}/home" "${FAKE_DOCKER_LOG}"
+grep -Fq 'target=/home/node ' "${FAKE_DOCKER_LOG}"
+if grep -Fq 'target=/home/node/.claude.json' "${FAKE_DOCKER_LOG}"; then
+  echo 'FAIL: Claude configuration must not be bind-mounted as an individual file' >&2
+  exit 1
+fi
 
 # Populate the checkout as a completed first container would have done, then
 # prove status reads the mounted Git state and persisted raw output.
@@ -214,12 +218,21 @@ expect_output 'status reports persisted Git state' 'Working tree: dirty' \
 # untracked files are replaced because Docker receives the existing work mount.
 jq '.status = "interrupted"' "${STATE_DIR}/metadata.json" > "${STATE_DIR}/metadata.json.tmp"
 mv "${STATE_DIR}/metadata.json.tmp" "${STATE_DIR}/metadata.json"
+# Match state from the pre-home-mount layout and verify resume migrates it.
+rmdir "${STATE_DIR}/home"
+mkdir "${STATE_DIR}/claude"
+printf 'saved session\n' > "${STATE_DIR}/claude/session"
+printf '{"projects":{}}\n' > "${STATE_DIR}/claude.json"
 expect_output 'resume starts a fresh container' 'Run ID: first-run' \
   env "${runner_env[@]}" bash -c "cd '${TMPDIR}/repo' && '${RUNNER}' resume first-run"
 grep -Fq 'RUN_PHASE=resume' "${FAKE_DOCKER_LOG}"
 test "$(jq -r '.status' "${STATE_DIR}/metadata.json")" = running
 test -f "${STATE_DIR}/work/repo/untracked.txt"
 test "$(git -C "${STATE_DIR}/work/repo" branch --show-current)" = agent/issue-60
+test "$(< "${STATE_DIR}/home/.claude/session")" = 'saved session'
+test -f "${STATE_DIR}/home/.claude.json"
+test ! -e "${STATE_DIR}/claude"
+test ! -e "${STATE_DIR}/claude.json"
 
 jq '.status = "completed"' "${STATE_DIR}/metadata.json" > "${STATE_DIR}/metadata.json.tmp"
 mv "${STATE_DIR}/metadata.json.tmp" "${STATE_DIR}/metadata.json"
