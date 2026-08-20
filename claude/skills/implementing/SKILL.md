@@ -1,6 +1,6 @@
 ---
 name: implementing
-description: Implements an approved code-change plan safely. Use when beginning a feature, bug fix, or refactor that requires source changes, tests, a dedicated branch, and explicit handling of ambiguity or unexpected blockers.
+description: Implements an approved code-change plan safely. Use when beginning a feature, bug fix, or refactor that requires source changes, tests, a dedicated branch, a final commit, and a GitHub pull request when applicable.
 disable-model-invocation: true
 ---
 
@@ -43,14 +43,21 @@ After approval, implement tests and the smallest clear production change that sa
 - Treat any unexplained failure as a roadblock: stop, report it, and ask for advice rather than masking it or weakening tests.
 - Check formatting and inspect the final diff for unintended changes, missing tests, debug code, and deviations from the approved scope.
 
-### 5. Report and hand off
+### 5. Commit, push, and open a pull request
+
+After all verification passes, inspect the final Git status and diff. Commit only the files belonging to the approved scope on the implementation branch, using a concise commit message that describes the completed change. Do not amend, force-push, or include unrelated user changes.
+
+Inspect the branch's configured remote URL. If it is hosted on GitHub, push the implementation branch and create a pull request against the repository's default branch with `gh`. Use the commit/branch changes to provide a clear PR title and description. If a pull request for that branch already exists, do not create a duplicate; report its URL instead. If the remote is not GitHub, do not push or create a pull request.
+
+Never merge the branch, modify issue state, or perform destructive remote operations.
+
+### 6. Report and hand off
 
 Report:
 
-- branch name;
+- branch name and commit SHA;
 - files changed and the behavior implemented;
 - tests and verification commands run, with results;
+- pull request URL when one was created or already existed, or that no GitHub remote was configured;
 - anything not run or any remaining manual checks;
 - any intentional deviations from the plan, which require prior user approval.
-
-Do not merge, push, open a pull request, modify issue state, or perform other remote side effects unless the user asks.
