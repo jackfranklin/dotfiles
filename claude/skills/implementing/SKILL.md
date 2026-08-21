@@ -1,6 +1,6 @@
 ---
 name: implementing
-description: Implements an approved code-change plan safely. Use when beginning a feature, bug fix, or refactor that requires source changes, tests, a dedicated branch, a final commit, and a GitHub pull request when applicable.
+description: Implements an approved code-change plan safely. Use when beginning a feature, bug fix, or refactor that requires source changes, tests, a dedicated branch, small logical commits, and a GitHub pull request when applicable.
 disable-model-invocation: true
 ---
 
@@ -43,19 +43,27 @@ After approval, implement tests and the smallest clear production change that sa
 - Treat any unexplained failure as a roadblock: stop, report it, and ask for advice rather than masking it or weakening tests.
 - Check formatting and inspect the final diff for unintended changes, missing tests, debug code, and deviations from the approved scope.
 
-### 5. Commit, push, and open a pull request
+### 5. Commit logical, verified increments
 
-After all verification passes, inspect the final Git status and diff. Commit only the files belonging to the approved scope on the implementation branch, using a concise commit message that describes the completed change. Do not amend, force-push, or include unrelated user changes.
+Commit each independently coherent, verified unit of work as soon as it is complete—for example, a focused behavior change with its tests, followed by a separate integration or documentation change. Before each commit, inspect the relevant status and diff, and commit only files within the approved scope with a concise message describing that unit.
 
-Inspect the branch's configured remote URL. If it is hosted on GitHub, push the implementation branch and create a pull request against the repository's default branch with `gh`. Use the commit/branch changes to provide a clear PR title and description. If a pull request for that branch already exists, do not create a duplicate; report its URL instead. If the remote is not GitHub, do not push or create a pull request.
+Do not create artificial, incomplete, or WIP commits. Keep production code and the tests that establish its behavior together when they form one logical unit. For small or indivisible work, one final commit is correct; use multiple commits only when the implementation naturally proceeds in separable, reviewable stages.
+
+Do not amend, force-push, or include unrelated user changes.
+
+### 6. Push and open a pull request
+
+After the full change passes its required verification, inspect the final Git status and diff. Commit any remaining complete logical unit; do not manufacture a final commit when none remains.
+
+Inspect the branch's configured remote URL. If it is hosted on GitHub, push the implementation branch and create a pull request against the repository's default branch with `gh`. Use the branch's commit series to provide a clear PR title and description. If a pull request for that branch already exists, do not create a duplicate; report its URL instead. If the remote is not GitHub, do not push or create a pull request.
 
 Never merge the branch, modify issue state, or perform destructive remote operations.
 
-### 6. Report and hand off
+### 7. Report and hand off
 
 Report:
 
-- branch name and commit SHA;
+- branch name and commit SHA(s), in commit order;
 - files changed and the behavior implemented;
 - tests and verification commands run, with results;
 - pull request URL when one was created or already existed, or that no GitHub remote was configured;
