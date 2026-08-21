@@ -11,10 +11,11 @@ This extension registers one Pi tool, `subagent`, that lets the main agent spawn
 3. When called, `index.ts` resolves the current `pi` binary and starts a child process in JSON print mode:
    - `--mode json -p --no-session --no-skills`
    - `--no-extensions`, then only the extensions required by the selected agent's tools
+   - any explicit `--skill <path>` entries declared by the selected agent (the sole exception to disabled skill discovery)
    - `--tools <allowlist>` for exactly the selected agent's declared tools
    - `--models <agent model>` and `--thinking <agent thinking>`
    - `--append-system-prompt <temp prompt file>` containing the agent markdown body
-4. The child receives only the supplied task text and working directory. It has no chat history, no main-agent context, and no skills.
+4. The child receives only the supplied task text and working directory. It has no chat history or main-agent context. Global and project skill discovery is disabled; an agent may explicitly allowlist canonical skill files.
 5. The parent reads the child's JSON event stream, tracks tool usage/messages/tokens, renders progress in the UI, and returns the child's final assistant text as the tool result.
 6. Temporary prompt/task files are created under `/tmp/pi-sub-*` and removed when the child exits.
 
@@ -36,8 +37,9 @@ Because subagents have no conversation context, the main agent must include all 
 | `scout`      | `read`, `grep`, `find`, `ls`                                           | `openai-codex/gpt-5.6-luna`, low    | Read-only codebase recon and architecture mapping. Cannot run shell commands such as `git`/`gh`, cannot edit files, cannot use the web. |
 | `researcher` | `web_search`, `web_fetch`                                              | `openai-codex/gpt-5.6-luna`, medium | Public-web research with sourced synthesis. Cannot inspect local files or run commands.                                                 |
 | `implementer` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.6-terra`, medium | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
+| `code-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Thorough static review of a defined diff or change scope. Explicitly loads the canonical `code-review` skill; read-only, with bash limited to static Git inspection. |
 
-Nested delegation stops at depth 2 in practice: the main agent can spawn `implementer`; `implementer` can spawn `scout`/`researcher`; those agents do not have the `subagent` tool.
+Nested delegation stops at depth 2 in practice: the main agent can spawn `implementer`; `implementer` can spawn `scout`/`researcher`; the other agents do not have the `subagent` tool.
 
 ## Delegation policy
 
@@ -48,6 +50,7 @@ Use subagents when their separate context or isolation is valuable:
 - `scout`: unfamiliar code areas where a compact map is better than loading many files into the main context.
 - `researcher`: open-ended external research that would require multiple searches/fetches.
 - `implementer`: only after the main agent has a clear plan and needs a discrete, isolated implementation task completed. Its task must include the relevant scope, constraints, and acceptance criteria.
+- `code-reviewer`: a thorough, isolated review is useful for a defined diff or change scope. Include the review range, intended behavior, relevant constraints, and the desired finding format. It is read-only and does static inspection only.
 
 Do not delegate just because a task uses tools. The main agent can read, edit, run tests, use `git`/`gh`, and make decisions itself. Never use `implementer` for general queries, initial investigation, architectural decisions, or writing the plan.
 
@@ -118,12 +121,14 @@ This keeps the interactive main session able to prompt normally while preventing
 - `pi/extensions/subagents/agents/scout.md` — scout frontmatter and system prompt.
 - `pi/extensions/subagents/agents/researcher.md` — researcher frontmatter and system prompt.
 - `pi/extensions/subagents/agents/implementer.md` — implementer frontmatter/system prompt plus nested delegation guidance.
+- `pi/extensions/subagents/agents/code-reviewer.md` — read-only code-reviewer frontmatter and system prompt, based on the `code-review` skill.
 
 Agent frontmatter fields used by `index.ts`:
 
 - `name` — tool argument name.
 - `description` — parsed agent metadata for maintainers/future UI; the current tool prompt uses the hard-coded `promptGuidelines` in `index.ts`.
 - `tools` — comma-separated allowlist. Built-ins are `read`, `write`, `edit`, `bash`, `grep`, `find`, `ls`; custom tools map to extensions in `CUSTOM_TOOL_EXTENSIONS`.
+- `skills` — optional comma-separated paths to canonical skill files. Each path is passed via Pi's explicit `--skill` flag despite `--no-skills`; `~/` resolves against the child process's home directory, and relative paths resolve from the agent definition.
 - `model` — passed to child `pi` via `--models`.
 - `thinking` — passed via `--thinking`.
 - `subagent_agents` — optional comma-separated allowlist exposed to that child when it has the `subagent` tool.

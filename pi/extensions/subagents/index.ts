@@ -1,7 +1,7 @@
 /**
  * Minimal subagents extension.
  *
- * Registers a single `subagent` tool with three agents: scout, researcher, implementer.
+ * Registers a single `subagent` tool with scout, researcher, implementer, and code-reviewer agents.
  * Supports single and parallel execution. Output is verbal only (no file handoff).
  *
  * Dotfiles adaptation:
@@ -28,6 +28,8 @@ export interface AgentConfig {
 	thinking: string;
 	systemPrompt: string;
 	filePath: string;
+	/** Explicit skill files to load even though child discovery is disabled. */
+	skillPaths?: string[];
 	/**
 	 * If this agent has the `subagent` tool, restrict which agents it may spawn.
 	 * Passed to the child pi process via `PI_SUBAGENT_ALLOWED` so the child's
@@ -163,6 +165,12 @@ export function unregisterAgent(name: string): void {
 // (which creates separate module instances) can access the shared agents array.
 (globalThis as any).__pi_subagents = { registerAgent, unregisterAgent };
 
+function resolveSkillPath(skillPath: string, agentPath: string): string {
+	if (skillPath === "~") return process.env.HOME || skillPath;
+	if (skillPath.startsWith("~/")) return path.join(process.env.HOME || "~", skillPath.slice(2));
+	return path.isAbsolute(skillPath) ? skillPath : path.resolve(path.dirname(agentPath), skillPath);
+}
+
 function loadAgents(): AgentConfig[] {
 	const agents: AgentConfig[] = [];
 	if (!fs.existsSync(AGENTS_DIR)) return agents;
@@ -180,6 +188,10 @@ function loadAgents(): AgentConfig[] {
 		const subagentAgents = rawSubagentAgents
 			? rawSubagentAgents.split(",").map((t) => t.trim()).filter(Boolean)
 			: undefined;
+		const rawSkills = (frontmatter as Record<string, string>).skills;
+		const skillPaths = rawSkills
+			? rawSkills.split(",").map((p) => p.trim()).filter(Boolean).map((p) => resolveSkillPath(p, filePath))
+			: undefined;
 		agents.push({
 			name: frontmatter.name,
 			description: frontmatter.description || "",
@@ -188,6 +200,7 @@ function loadAgents(): AgentConfig[] {
 			thinking: frontmatter.thinking || "medium",
 			systemPrompt: body,
 			filePath,
+			skillPaths,
 			subagentAgents,
 		});
 	}
@@ -298,10 +311,14 @@ async function buildPiArgs(
 	const piBin = resolvePiBinary();
 	const tempDir = await fs.promises.mkdtemp(path.join(os.tmpdir(), "pi-sub-"));
 
-	// Write system prompt to temp file
+	// Write system prompt to temp file. Skill bodies stay canonical on disk: the
+	// child receives only their paths and must read them before acting.
 	const promptPath = path.join(tempDir, `${agent.name}.md`);
+	const skillPrompt = agent.skillPaths?.length
+		? `\n\n## Canonical skill files\nBefore acting, use the read tool to load and follow:\n${agent.skillPaths.map((p) => `- ${p}`).join("\n")}`
+		: "";
 	await withFileMutationQueue(promptPath, async () => {
-		await fs.promises.writeFile(promptPath, agent.systemPrompt, { encoding: "utf-8", mode: 0o600 });
+		await fs.promises.writeFile(promptPath, agent.systemPrompt + skillPrompt, { encoding: "utf-8", mode: 0o600 });
 	});
 
 	const args = [...piBin.baseArgs, "--mode", "json", "-p", "--no-session", "--no-skills"];
@@ -336,6 +353,12 @@ async function buildPiArgs(
 
 	for (const extPath of extensionPaths) {
 		args.push("--extension", extPath);
+	}
+
+	// `--skill` is additive even with `--no-skills`, so children remain isolated
+	// from global/project discovery while each agent can opt into canonical skills.
+	for (const skillPath of agent.skillPaths ?? []) {
+		args.push("--skill", skillPath);
 	}
 
 	args.push("--models", agent.model);
@@ -919,6 +942,7 @@ export default function (pi: ExtensionAPI) {
 			"scout has only read, grep, find, and ls. Use scout only for read-only local codebase exploration or architecture mapping; it cannot run CLI commands such as git or gh.",
 			"researcher has only web_search and web_fetch. Use researcher only for public-web research; it cannot inspect the local repo or run CLI commands.",
 			"implementer has bash plus file and web tools. Use it only for the bounded implementation work described above, not as a general-purpose agent.",
+			"code-reviewer is a read-only, static-review agent with Git inspection tools. Use it for a thorough review of a defined diff or change scope; it must not edit files or run tests, builds, formatters, linters, or application code.",
 			"When the user explicitly asks to use subagents, prefer using the subagent tool rather than doing the work yourself.",
 			"When the user lists multiple independent subagent tasks, launch ALL of them immediately by emitting multiple subagent tool calls in the same assistant turn. Do not wait for one subagent to finish before starting another independent one.",
 			"Parallel tool calls are your primary parallelism mechanism—put multiple independent subagent calls in one function_calls block, and also batch independent read/fetch/search calls where appropriate.",
