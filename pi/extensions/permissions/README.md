@@ -30,7 +30,7 @@ Tool calls are otherwise classified in this order:
 3. configured `safe` globs => allow
 4. configured `prompt` globs => prompt in the main UI, block in headless/subagent contexts
 5. write redirections to real files => prompt/block
-6. `write` / `edit` outside the current working directory or into sensitive system paths => prompt/block
+6. `write` / `edit` outside the current working directory, its Git repository's registered worktrees, or into sensitive system paths => prompt/block
 7. everything else => allow
 
 So the config mainly lists risky and blocked cases; it does **not** need a huge list
@@ -127,8 +127,11 @@ create/use/cleanup sequences without a prompt. Reassigning or unsetting that
 variable revokes the exception.
 
 `write` and `edit` calls prompt when the path is outside the current working
-directory or targets sensitive system locations such as `/etc`, `/usr`, `/var`,
-`/dev`, `/proc`, or `/sys`.
+directory and outside every worktree registered to that same Git repository, or
+targets sensitive system locations such as `/etc`, `/usr`, `/var`, `/dev`,
+`/proc`, or `/sys`. The extension obtains those roots with
+`git worktree list --porcelain`; arbitrary sibling repositories and directories
+remain outside scope.
 
 ## Approval rationale
 

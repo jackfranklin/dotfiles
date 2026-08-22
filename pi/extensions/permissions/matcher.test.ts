@@ -150,6 +150,27 @@ describe("risk-based decide", () => {
 		assert.equal(decide("write", "/home/jack/elsewhere/x", [], [], [], "/home/jack/project"), "prompt");
 	});
 
+	it("allows writes within a registered sibling worktree but not an unrelated sibling", () => {
+		const input = {
+			toolName: "edit",
+			rules: { safe: [], prompt: [], block: [] },
+			cwd: "/home/jack/git/routemaster",
+			allowedPathRoots: ["/home/jack/git/routemaster-issue-234"],
+		};
+		assert.equal(
+			decideForInput({ ...input, subject: "/home/jack/git/routemaster-issue-234/rollup.config.mjs" }),
+			"allow",
+		);
+		assert.equal(
+			decideForInput({ ...input, subject: "/home/jack/git/unrelated-repo/file.ts" }),
+			"prompt",
+		);
+		assert.equal(
+			decideForInput({ ...input, subject: "/home/jack/git/routemaster-issue-234-old/file.ts" }),
+			"prompt",
+		);
+	});
+
 	it("allows safe file-tool globs outside the current working directory", () => {
 		const skills = ["Write(/home/jack/.pi/agent/skills/*)"];
 		assert.equal(

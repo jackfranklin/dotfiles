@@ -13,6 +13,7 @@ import type { AssistantMessage } from '@earendil-works/pi-ai';
 import type { ExtensionAPI } from "@earendil-works/pi-coding-agent";
 import { PermissionApprovalLog } from "./approval-log.ts";
 import { createGitProbe, planGitTrackedRm } from "./git-rm.ts";
+import { registeredGitWorktreeRoots } from "./git-worktrees.ts";
 import { analyzeDecision, suggestPattern, TOOL_LABELS } from "./matcher.ts";
 import { PermissionStore } from "./store.ts";
 
@@ -57,11 +58,16 @@ export default function (pi: ExtensionAPI) {
 		const subject = subjectFor(event.toolName, event.input as Record<string, unknown>);
 		if (subject === undefined) return undefined;
 
+		const allowedPathRoots =
+			event.toolName === "write" || event.toolName === "edit"
+				? await registeredGitWorktreeRoots(pi, ctx.cwd)
+				: [];
 		const analysis = analyzeDecision({
 			toolName: event.toolName,
 			subject,
 			rules: store,
 			cwd: ctx.cwd,
+			allowedPathRoots,
 		});
 
 		if (analysis.decision === "allow") return undefined;

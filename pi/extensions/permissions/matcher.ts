@@ -2,7 +2,7 @@
  * Risk-based matching logic: given the gated tool and its subject (bash command
  * or file path), decide whether it is safe, should prompt, or must be blocked.
  */
-import { isAbsolute, resolve } from "node:path";
+import { isAbsolute, relative, resolve, sep } from "node:path";
 import { globMatches } from "./glob.ts";
 
 /** pi tool name -> label used in permission entries. */
@@ -465,14 +465,20 @@ const SENSITIVE_PATH_PREFIXES = [
 	"/sys/",
 ];
 
-function pathPromptReason(path: string, cwd: string): string | undefined {
+function isWithinRoot(path: string, root: string): boolean {
+	const relativePath = relative(resolve(root), path);
+	return relativePath === "" || (relativePath !== ".." && !relativePath.startsWith(`..${sep}`));
+}
+
+function pathPromptReason(path: string, cwd: string, allowedPathRoots: string[]): string | undefined {
 	const absolute = isAbsolute(path) ? path : resolve(cwd, path);
 	if (isTmpPath(absolute)) return undefined;
 	if (SENSITIVE_PATH_PREFIXES.some((prefix) => absolute === prefix.slice(0, -1) || absolute.startsWith(prefix))) {
 		return `targets sensitive path ${absolute}`;
 	}
-	const root = resolve(cwd);
-	if (absolute !== root && !absolute.startsWith(`${root}/`)) return `targets path outside cwd: ${absolute}`;
+	if (![cwd, ...allowedPathRoots].some((root) => isWithinRoot(absolute, root))) {
+		return `targets path outside cwd: ${absolute}`;
+	}
 	return undefined;
 }
 
@@ -487,9 +493,17 @@ export interface DecisionInput {
 	subject: string;
 	rules: PermissionRules;
 	cwd?: string;
+	/** Additional trusted roots, such as worktrees registered to the cwd's repository. */
+	allowedPathRoots?: string[];
 }
 
-export function analyzeDecision({ toolName, subject, rules, cwd = process.cwd() }: DecisionInput): DecisionDetails {
+export function analyzeDecision({
+	toolName,
+	subject,
+	rules,
+	cwd = process.cwd(),
+	allowedPathRoots = [],
+}: DecisionInput): DecisionDetails {
 	const { safe, prompt, block = [] } = rules;
 	const label = TOOL_LABELS[toolName];
 	if (!label) {
@@ -569,7 +583,7 @@ export function analyzeDecision({ toolName, subject, rules, cwd = process.cwd() 
 	});
 
 	if ((toolName === "write" || toolName === "edit") && segments[0] && !safeSegments[0]) {
-		const reason = pathPromptReason(segments[0], cwd);
+		const reason = pathPromptReason(segments[0], cwd, allowedPathRoots);
 		if (reason) {
 			promptSegments.push(segments[0]);
 			reasons.push(reason);
