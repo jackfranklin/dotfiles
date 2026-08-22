@@ -128,16 +128,6 @@ if [ "$1" = repo ] && [ "$2" = clone ]; then
   git -C "${target}" config user.email test@example.com
   git -C "${target}" commit --allow-empty -qm initial
   printf '{}\n' > "${target}/package.json"
-  mkdir -p "${target}/node_modules/puppeteer" "${target}/node_modules/.bin"
-  cat > "${target}/node_modules/.bin/puppeteer" <<'PPTR'
-#!/usr/bin/env bash
-echo 'verbose Puppeteer download output'
-chrome_dir="${HOME}/.cache/puppeteer/chrome/linux-test/chrome-linux64"
-mkdir -p "${chrome_dir}"
-touch "${chrome_dir}/chrome"
-chmod +x "${chrome_dir}/chrome"
-PPTR
-  chmod +x "${target}/node_modules/.bin/puppeteer"
   exit 0
 fi
 if [ "$1" = issue ] && [ "$2" = view ]; then
@@ -153,7 +143,14 @@ cat > "${FAKE_BIN}/npm" <<'EOF'
 #!/usr/bin/env bash
 set -euo pipefail
 case "$1" in
-  install|run) exit 0 ;;
+  install)
+    if [ -n "${PUPPETEER_SKIP_DOWNLOAD:-}" ]; then
+      echo 'PUPPETEER_SKIP_DOWNLOAD must not be set' >&2
+      exit 1
+    fi
+    exit 0
+    ;;
+  run) exit 0 ;;
   *) echo "unexpected fake npm command: $1" >&2; exit 1 ;;
 esac
 EOF
@@ -272,11 +269,6 @@ if [ "${INTERRUPT_EXIT}" -eq 0 ]; then
   exit 1
 fi
 test "$(jq -r '.status' "${INTERRUPT_STATE}/metadata.json")" = interrupted
-grep -Fq 'verbose Puppeteer download output' "${TMPDIR}/interrupt-work/puppeteer-install.log"
-if grep -Fq 'verbose Puppeteer download output' "${TMPDIR}/interrupted-output.log"; then
-  echo 'FAIL: Puppeteer download output was printed instead of being logged' >&2
-  exit 1
-fi
 if grep -Fq 'pr list' "${FAKE_GH_LOG}"; then
   echo 'FAIL: interrupted implement run reached the fallback PR workflow' >&2
   exit 1

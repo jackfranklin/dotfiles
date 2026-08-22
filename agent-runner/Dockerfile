@@ -1,5 +1,6 @@
 FROM node:26-bookworm-slim
 
+# `unzip` is required by @puppeteer/browsers for its throwaway build-time download below.
 RUN apt-get update && apt-get install -y --no-install-recommends \
     git \
     make \

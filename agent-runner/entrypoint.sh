@@ -157,53 +157,7 @@ fi
 # Implementation, review, and test runs prepare the Node environment. Exploration
 # remains static reconnaissance and never executes repository-controlled scripts.
 if [ "${MODE}" != "investigate" ] && [ -f package.json ]; then
-  echo "==> Installing dependencies"
-  PUPPETEER_SKIP_DOWNLOAD=true npm install --dangerously-allow-all-scripts
-
-  if [ -d node_modules/puppeteer ] || [ -d node_modules/puppeteer-core ]; then
-    PUPPETEER_INSTALL_LOG="${WORK_ROOT}/puppeteer-install.log"
-    show_puppeteer_install_log() {
-      echo "==> Puppeteer install log (${PUPPETEER_INSTALL_LOG}):" >&2
-      tail -n 40 "${PUPPETEER_INSTALL_LOG}" >&2 || true
-    }
-
-    echo "==> Installing Puppeteer's Chrome (details saved to ${PUPPETEER_INSTALL_LOG})"
-    : > "${PUPPETEER_INSTALL_LOG}"
-    if [ -x ./node_modules/.bin/puppeteer ]; then
-      if ! ./node_modules/.bin/puppeteer browsers install chrome > "${PUPPETEER_INSTALL_LOG}" 2>&1; then
-        echo "==> ERROR: Puppeteer's Chrome install failed." >&2
-        show_puppeteer_install_log
-        exit 1
-      fi
-    else
-      echo "==> No local Puppeteer CLI binary found; falling back to npx"
-      if ! npx puppeteer browsers install chrome > "${PUPPETEER_INSTALL_LOG}" 2>&1; then
-        echo "==> ERROR: Puppeteer's Chrome install failed." >&2
-        show_puppeteer_install_log
-        exit 1
-      fi
-    fi
-
-    CHROME_BUILD_DIR="$(find "${HOME}/.cache/puppeteer/chrome" -maxdepth 1 -type d -name 'linux-*' 2>/dev/null | head -n1)"
-    CHROME_BIN="${CHROME_BUILD_DIR}/chrome-linux64/chrome"
-    if [ ! -x "${CHROME_BIN}" ]; then
-      CHROME_ZIP="$(find "${HOME}/.cache/puppeteer/chrome" -maxdepth 1 -name '*-chrome-linux64.zip' 2>/dev/null | head -n1)"
-      if [ -n "${CHROME_ZIP}" ] && [ -n "${CHROME_BUILD_DIR}" ]; then
-        echo "==> Chrome binary missing after puppeteer's extraction — repairing with unzip"
-        if ! unzip -o "${CHROME_ZIP}" -d "${CHROME_BUILD_DIR}" >> "${PUPPETEER_INSTALL_LOG}" 2>&1; then
-          echo "==> ERROR: Chrome repair failed." >&2
-          show_puppeteer_install_log
-          exit 1
-        fi
-      fi
-    fi
-    if [ ! -x "${CHROME_BIN}" ]; then
-      echo "==> ERROR: Chrome binary still not found at ${CHROME_BIN} after install and unzip repair." >&2
-      show_puppeteer_install_log
-      exit 1
-    fi
-    echo "==> Confirmed Chrome binary present: ${CHROME_BIN}"
-  fi
+  npm install --dangerously-allow-all-scripts
 fi
 
 run_review_validation() {
