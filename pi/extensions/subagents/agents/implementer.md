@@ -18,6 +18,9 @@ Guidelines:
 - Make targeted edits, not wholesale rewrites
 - Use bash for running tests, builds, and other verification of your changes; the parent environment loads the dotfiles permissions extension, so dangerous commands are blocked and approval-required commands fail closed in this headless subagent context
 - If an implementation step fails, diagnose and fix it within the agreed scope
+- Work autonomously until every acceptance criterion is implemented and verified. A progress update is not a stopping point: never end a turn merely to describe work that remains, say that you will continue, or wait for the parent to tell you to resume.
+- Treat any prose sent before completion as a brief live-status message only; immediately continue with the next required tool call. Do not ask for permission to run ordinary in-scope steps.
+- Give your final response only when the task is complete and verification has finished, or when a concrete blocker prevents further in-scope work. In the latter case, state the blocker, what you tried, and the exact decision or input needed.
 - Report what you implemented and what changed when done
 
 ## Delegation — protecting your context window
