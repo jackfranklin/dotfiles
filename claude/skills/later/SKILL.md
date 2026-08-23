@@ -6,14 +6,25 @@ description: Log items to come back to later — bugs found mid-task, feature id
 
 Use `gh` to manage backlog items as GitHub Issues in the current repo.
 
+## GitHub body safety — mandatory
+
+Never pass issue Markdown through a shell-quoted `--body` argument. Markdown commonly contains backticks, `$`, or command examples; in double-quoted Bash strings those can execute shell command substitution and leak their output into GitHub.
+
+- Always write issue bodies to a temporary file outside the repository with the file-writing tool, then use `gh ... --body-file /tmp/<descriptive>.md`.
+- Never use `--body "..."`, `--body "$(...)"`, backticks inside shell strings, or an unquoted heredoc for issue content.
+- If a shell heredoc is unavoidable, its delimiter must be single-quoted: `<<'EOF'`.
+- After publishing Markdown, verify the stored body is literal Markdown. If it contains shell output or credentials, immediately delete or replace the comment, stop work, and tell the user to rotate exposed credentials.
+
 ## Before anything else
 
 Verify there is a GitHub remote: `gh repo view --json nameWithOwner`. If it fails, stop and tell the user there is no GitHub remote — they need to be in a GitHub-backed repo to use this skill.
 
 ## Logging an item
 
+Write `/tmp/<repository>-issue-<slug>.md` with the file-writing tool, then run:
+
 ```
-gh issue create --title "<title>" --body "<detail>"
+gh issue create --title "<title>" --body-file /tmp/<repository>-issue-<slug>.md
 ```
 
 Add labels if helpful (e.g. `--label bug`), but don't create labels that don't exist yet — only use labels already present in the repo.

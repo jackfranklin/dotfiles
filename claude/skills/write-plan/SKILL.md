@@ -19,6 +19,14 @@ instructions, no placeholders.
 
 DRY. YAGNI. TDD. Frequent commits.
 
+## GitHub body safety — mandatory
+
+Never place a Markdown plan in a shell-quoted `gh --body` argument. Backticks, `$`, and command examples in Markdown are shell syntax inside double-quoted Bash strings and can execute commands or leak their output into GitHub.
+
+Write every issue body/comment to a temporary Markdown file outside the repository with the file-writing tool, then pass it with `--body-file`. Never use `--body "..."`, `--body "$(...)"`, backticks in a shell string, or an unquoted heredoc. If a heredoc is unavoidable, use a single-quoted delimiter: `<<'EOF'`.
+
+After publication, verify that GitHub stored literal Markdown. If shell output or credentials appear, immediately delete/replace the affected comment, stop work, and tell the user to rotate exposed credentials.
+
 ## Scope Check
 
 Before investigation, state the proposed scope in three short bullets:
@@ -205,12 +213,12 @@ Only after the user explicitly approves the complete plan:
 2. Determine the destination:
    - **Existing implementation/feature/bug issue:** when the user supplied an issue number, or the plan is clearly for an existing issue, that issue is the canonical destination. Do **not** create a separate `[PLAN]` issue. Post the full final plan as a new comment on that issue:
      ```
-     gh issue comment <issue-number> --body "<full plan content>"
+     gh issue comment <issue-number> --body-file /tmp/<repository>-issue-<issue-number>-plan.md
      ```
      Keep the issue body as a concise problem/scope summary with a link to the canonical plan comment; do not leave a second, less precise plan in the body.
    - **No existing issue:** create one standalone plan issue:
      ```
-     gh issue create --title "[PLAN] <feature-name>" --body "<full plan content>"
+     gh issue create --title "[PLAN] <feature-name>" --body-file /tmp/<repository>-plan.md
      ```
 3. Before posting to an existing issue, inspect its comments for earlier implementation plans:
    ```

@@ -59,9 +59,9 @@ For each step in the plan:
 ### 5. Finalize the Plan
 
 Once all steps have been walked through and approved:
-- If the plan was only in the conversation context (drafted in chat), create a new GitHub Issue:
+- If the plan was only in the conversation context (drafted in chat), write it to `/tmp/<repository>-plan.md` with the file-writing tool, then create a new GitHub Issue:
   ```bash
-  gh issue create --title "[PLAN] <feature-name>" --body "<full plan content>"
+  gh issue create --title "[PLAN] <feature-name>" --body-file /tmp/<repository>-plan.md
   ```
-  And tell the developer the created issue URL.
+  Never pass Markdown through a shell-quoted `--body` argument: backticks and `$` can be executed by Bash. If a heredoc is unavoidable, use `<<'EOF'`. Then tell the developer the created issue URL.
 - Summarize the final plan very briefly and ask if the developer is ready to start the implementation.
