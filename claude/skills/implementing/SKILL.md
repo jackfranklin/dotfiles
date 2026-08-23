@@ -13,7 +13,8 @@ Use this skill only to implement a defined change. Do not start source-code chan
 1. **Implement only a clear plan.** Read the plan, relevant source, tests, and repository instructions. Confirm the intended behavior, scope, constraints, affected files, and acceptance criteria. If any material detail is ambiguous, stale, contradictory, or missing, stop before editing and explain the gap with a focused question. Do not fill in requirements from guesswork.
 2. **Pause on surprises.** If implementation reveals an unexpected challenge or roadblock—such as incompatible existing behavior, a missing dependency or API, a plan assumption that is false, an unexplained test failure, a required design choice, or scope growth—stop work immediately. Explain what happened, its impact, options if useful, and ask the user how to proceed. Do not silently choose a workaround.
 3. **Never implement a feature on `main`.** Before any source or test edit, inspect the Git state. Start from a clean worktree and create/switch to a new, clearly named feature branch. If the worktree is dirty, the current branch is not suitable, or branch creation would discard/conflict with work, stop and ask for guidance. Do not commit feature work directly to `main`.
-4. **Test thoroughly by default.** Add or update focused unit tests unless the user explicitly says not to. Cover happy paths, boundaries, failure/empty states, and behavior likely to regress from the change. Follow repository test conventions; do not add redundant tests merely to increase the count.
+4. **Test thoroughly by default.** Add or update focused unit tests unless the user explicitly says not to. Cover required happy paths, meaningful boundaries, failure/empty states, and behavior likely to regress from the change. Follow repository test conventions; do not add redundant or speculative tests merely to increase the count.
+5. **Prefer the simplest clear implementation.** Make the narrowest change that meets the approved plan. Prefer direct, readable code over a new abstraction, layer, configuration option, dependency, state model, or extension point. Introduce one only when a current requirement, two real current use cases, or an established repository convention justifies it. Do not refactor nearby code merely to make the change feel cleaner.
 
 ## Workflow
 
@@ -22,7 +23,7 @@ Use this skill only to implement a defined change. Do not start source-code chan
 - Read the nearest applicable `AGENTS.md`, contributor guidance, and relevant task/issue/PR material.
 - Inspect the current implementation, related tests, existing utilities, and recent relevant changes before designing new code.
 - Check `git status --short` and the current branch.
-- Summarize the implementation understanding, including non-goals and acceptance criteria. If anything is unclear, stop and ask.
+- Summarize the implementation understanding, including non-goals and acceptance criteria. Include a brief implementation sketch: the direct change, the concepts it adds, and complexity deliberately excluded. If anything is unclear, stop and ask.
 
 ### 2. Branch safely
 
@@ -34,14 +35,14 @@ Use this skill only to implement a defined change. Do not start source-code chan
 
 Before writing tests, list the specific test cases to add or change and ask the user to approve them whenever repository guidance requires it. The list should name each behavior and expected result, including meaningful edge cases.
 
-After approval, implement tests and the smallest clear production change that satisfies the plan. Reuse existing abstractions rather than duplicating behavior, and keep unrelated cleanup out of the change.
+After approval, implement tests and the smallest clear production change that satisfies the plan. Reuse an existing abstraction when it fits; otherwise prefer local, direct code to creating a new general abstraction for one use case. Keep unrelated cleanup out of the change.
 
 ### 4. Validate continuously
 
 - Run the repository-required typecheck/lint command before tests when instructed by project guidance.
 - Run focused tests while implementing, then the required broader verification once the change is complete.
 - Treat any unexplained failure as a roadblock: stop, report it, and ask for advice rather than masking it or weakening tests.
-- Check formatting and inspect the final diff for unintended changes, missing tests, debug code, and deviations from the approved scope.
+- Check formatting and inspect the final diff for unintended changes, missing tests, debug code, deviations from the approved scope, and indirection that can be removed without losing a current requirement.
 
 ### 5. Commit logical, verified increments
 
@@ -68,4 +69,5 @@ Report:
 - tests and verification commands run, with results;
 - pull request URL when one was created or already existed, or that no GitHub remote was configured;
 - anything not run or any remaining manual checks;
-- any intentional deviations from the plan, which require prior user approval.
+- any intentional deviations from the plan, which require prior user approval;
+- complexity deliberately avoided, and any new abstraction or moving part with its present-day justification.

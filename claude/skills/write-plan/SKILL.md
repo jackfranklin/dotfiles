@@ -2,10 +2,10 @@
 disable-model-invocation: true
 name: write-plan
 description: >
-  Write a comprehensive, no-placeholder implementation plan as a series of
-  bite-sized tasks, each with exact file paths, real code, TDD steps, and
-  commit instructions. Performs a pre-planning preflight investigation and
-  Ponytail decision ladder checks before drafting the plan. Reviews the plan
+  Write a right-sized, no-placeholder implementation plan as a series of
+  focused tasks, with exact file paths, implementation details, proportionate
+  test steps, and commit instructions. Performs a pre-planning preflight
+  investigation and Ponytail decision ladder checks before drafting the plan. Reviews the plan
   with the user task by task before storing an explicitly approved plan on the
   relevant GitHub issue.
 ---
@@ -17,7 +17,7 @@ about the codebase and will execute tasks in isolation. Every step must
 contain everything they need — no references to "fill in later", no vague
 instructions, no placeholders.
 
-DRY. YAGNI. TDD. Frequent commits.
+DRY. YAGNI. TDD. Frequent commits. Prefer designs that are easy to explain, reason about locally, and change.
 
 ## GitHub body safety — mandatory
 
@@ -42,6 +42,22 @@ If the scope is ambiguous, or investigation shows the simplest approach would ma
 If the task spans multiple independent subsystems, suggest breaking it into
 separate plans — one per subsystem. Each plan should produce working,
 testable software on its own.
+
+## Simplicity Gate
+
+Before defining tasks, make the case for the smallest viable design:
+
+1. Explain the proposed design in at most two plain-English sentences.
+2. List every new moving part—file, abstraction, dependency, state model,
+   configuration option, or extension point—and the current requirement or
+   demonstrated correctness need that justifies it.
+3. Name the simpler direct alternative where one exists, and explain why it is
+   insufficient.
+4. State what is intentionally not being built. Put speculative future ideas
+   under **Out of scope**, not into the plan.
+
+A design that cannot be explained simply or justify its moving parts is not
+ready to plan. Simplify it or ask the user to approve the necessary complexity.
 
 ## Step 1: Preflight Investigation & Ponytail Ladder
 
@@ -70,7 +86,8 @@ what each is responsible for. Decomposition decisions get locked in here.
 - Files that change together should live together — split by responsibility,
   not by technical layer
 - In existing codebases, follow established patterns
-- Prefer smaller focused files over large ones that do too much
+- Prefer cohesive, easy-to-navigate files; do not split a cohesive change into
+  extra files merely to make them smaller
 
 ## Step 3: Right-size the Tasks
 
@@ -82,6 +99,9 @@ fresh reviewer's gate.
 - Split only where a reviewer could meaningfully reject one task while
   approving its neighbour
 - Each task ends with an independently testable deliverable
+- Do not split a cohesive implementation merely to create more tasks or commits
+- Specify tests for distinct required behaviours; do not add speculative cases
+  that do not follow from the requirements or the system's real boundaries
 
 ## Step 4: Write the Plan
 
@@ -93,6 +113,14 @@ fresh reviewer's gate.
 **Goal:** [One sentence describing what this builds]
 
 **Architecture:** [2-3 sentences about the approach]
+
+## Simplicity Rationale
+
+**Plain-language design:** [Explain the design in at most two sentences.]
+
+**New moving parts:** [For each new file, abstraction, dependency, state model, configuration option, or extension point: its present-day justification.]
+
+**Intentionally omitted:** [The complexity and speculative capabilities excluded from this plan.]
 
 **Tech Stack:** [Key technologies and libraries]
 
@@ -182,6 +210,9 @@ After writing the complete plan, check it against the original spec and the live
 4. **Type consistency** — do types, method signatures, and property names match
    across tasks? A function called `clearLayers()` in Task 3 but
    `clearAllLayers()` in Task 7 is a bug.
+5. **Simplicity** — can the design be explained in its two-sentence summary,
+   and does every new moving part have a present-day justification? Remove or
+   explicitly defer anything that does not.
 
 Fix issues inline. If a spec requirement has no task, add the task.
 

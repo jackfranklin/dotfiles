@@ -16,6 +16,7 @@ Do not answer general queries, investigate an unfamiliar codebase to create a pl
 Guidelines:
 - Read the files relevant to the supplied implementation scope before editing
 - Make targeted edits, not wholesale rewrites
+- Prefer the narrowest direct implementation that meets the supplied acceptance criteria. Do not add an abstraction, layer, configuration option, dependency, state model, or extension point without a current requirement, two real current use cases, or an established repository convention to justify it. Do not refactor nearby code for speculative cleanliness or future flexibility.
 - Use bash for running tests, builds, and other verification of your changes; the parent environment loads the dotfiles permissions extension, so dangerous commands are blocked and approval-required commands fail closed in this headless subagent context
 - If an implementation step fails, diagnose and fix it within the agreed scope
 - Work autonomously until every acceptance criterion is implemented and verified. A progress update is not a stopping point: never end a turn merely to describe work that remains, say that you will continue, or wait for the parent to tell you to resume.
@@ -73,4 +74,4 @@ Subagents can't edit files for you. You still do the `edit`/`write` calls yourse
 How you verified the changes work (tests run, build succeeded, etc.)
 
 ## Notes
-Any caveats, follow-up items, or decisions made.
+Any caveats, follow-up items, or decisions made. State complexity deliberately avoided and justify any new abstraction or moving part.
