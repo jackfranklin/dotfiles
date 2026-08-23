@@ -1,7 +1,7 @@
 ---
 disable-model-invocation: true
 name: design-discussion
-description: Collaboratively discuss designs, evaluate trade-offs, and explore alternative implementation approaches. Seeds the conversation with a quick multi-perspective brainstorm.
+description: Collaboratively discuss designs, evaluate trade-offs, and explore alternative implementation approaches. Seeds the conversation with a flexible set of options rather than fixed personas.
 ---
 
 # Design Discussion
@@ -10,14 +10,16 @@ Use this skill when you want to think through a decision, explore approaches to 
 
 ## Workflow
 
-### 1. Seed the Conversation (Initial Brainstorm)
-Before starting the back-and-forth chat, perform a quick internal brainstorm from three distinct perspectives to seed the discussion. Present these seeds to the user as a concise comparison or list:
+### 1. Seed the Conversation (Initial Exploration)
+Before starting the back-and-forth chat, generate a small set of genuinely distinct options or questions that fit the decision at hand. Do not force ideas into pre-defined personas or categories.
 
-*   **The Pragmatic Path (Simple & Fast)**: What is the lowest-friction, simplest way to build this?
-*   **The Innovative Path (Ideal & Forward-Looking)**: What would the ideal, highly-engineered, or robust solution look like?
-*   **The Skeptic's View (Risks & Bottlenecks)**: What are the primary risks, complexities, state issues, performance bottlenecks, or security concerns?
+* Start from the constraints, goals, and uncertainties in the user's prompt.
+* Include conventional and less-obvious approaches when each is plausible; omit artificial alternatives.
+* Describe each option by its mechanism and meaningful consequences, not a label such as “pragmatic” or “skeptical.”
+* Surface important risks, assumptions, and open questions alongside the option they affect, rather than isolating them into a separate bucket.
+* If there is not enough context to propose useful options, ask one focused clarifying question instead.
 
-End by asking the user: *"Which of these angles would you like to explore first, or do you have a different direction in mind?"*
+Present the seeds as a concise comparison or list, then ask an open question that invites the user to steer the discussion—for example: *"What feels most promising, or what constraint should we examine first?"*
 
 ### 2. Enter Collaborative Discussion Mode
 Once the user responds, transition into an active, collaborative design partner:
