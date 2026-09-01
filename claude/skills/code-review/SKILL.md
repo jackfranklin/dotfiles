@@ -1,5 +1,4 @@
 ---
-disable-model-invocation: true
 name: code-review
 description: >
   Aggressive maintainability review focused on structural simplification, deleting
