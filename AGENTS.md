@@ -1,6 +1,6 @@
 # Dotfiles Pi configuration
 
-This repository contains Jack's personal dotfiles and uses explicit Makefile-managed symlinks rather than Stow. Its Pi configuration lives under `pi/`. Run `make pi` to symlink `settings.json`, `permissions.json`, and `extensions/` into `~/.pi/agent/`; do not edit those symlinked copies directly.
+This repository contains Jack's personal dotfiles and uses explicit Makefile-managed symlinks rather than Stow. Its Pi configuration lives under `pi/`. Run `make pi` to symlink `settings.json`, `permissions.json`, `extensions/`, and the shared global `AGENTS.md` into `~/.pi/agent/`; do not edit those symlinked copies directly.
 
 Pi reads this top-level `AGENTS.md` when it starts in this repository. It also searches the current directory and its parents for `AGENTS.md` or `CLAUDE.md`; this file is repository-specific and is deliberately not installed as global Pi context.
 
@@ -8,7 +8,7 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 
 - Neovim configuration is in `nvim/`; run `make lua_specs` for its Lua tests.
 - Fish functions are in `fish/functions/`.
-- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
+- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
 - Format JavaScript/TypeScript with the repository Prettier configuration: semicolons, trailing commas, and single quotes.
 
 ## Pi configuration

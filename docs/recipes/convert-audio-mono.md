@@ -4,7 +4,7 @@
 Converts the stereo audio channel of a media file (video or audio) to mono without re-encoding the video stream.
 
 ## Script
-Run the helper script:
+Run the helper script. It analyzes both channels and preserves the active channel's volume when the other is silent:
 ```bash
 ~/dotfiles/scripts/convert-audio-mono.sh <input-file> <output-file>
 ```
