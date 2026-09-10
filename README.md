@@ -122,6 +122,62 @@ iw dev "$WIFI_IFACE" get power_save
 
 The final command should report `Power save: off`. The setting survives reboots and future NetworkManager reconnects.
 
+## PCIe ASPM throttling Wi-Fi throughput (Framework 13 AMD / MT7921)
+
+On the Framework 13 AMD (MediaTek MT7921 Wi-Fi, `mt7921e` driver), Wi-Fi power saving being off was not enough — throughput was still capped well below the negotiated PHY rate (400+ Mbps expected, ~40-120 Mbps actual, with slow ramp-up), even with a strong signal and a good link rate reported by `iw`.
+
+The cause was PCIe Active-State Power Management (ASPM): the PCIe link to the Wi-Fi card was dropping into a low-power state between bursts, and the wake-up latency on each burst throttled real-world throughput. This is a well-known interaction on Linux with the MT7921 chipset — see [ASPM on Linux (kernel.org)](https://wireless.docs.kernel.org/en/latest/en/users/documentation/aspm.html) and the [Arch Wiki power management page](https://wiki.archlinux.org/title/Power_management).
+
+### Diagnose
+
+Check current ASPM policy:
+
+```bash
+cat /sys/module/pcie_aspm/parameters/policy
+```
+
+The active policy is in `[brackets]`. `default` or `powersave` allow the link to drop to low power; `performance` disables ASPM and keeps the link fully powered.
+
+A good way to confirm a throughput problem independent of Wi-Fi power saving, browser overhead, or a specific speed test site: download a large file directly and check the reported speed.
+
+```bash
+curl -sL -o /dev/null -w "speed: %{speed_download} bytes/sec\n" "http://ipv4.download.thinkbroadband.com/100MB.zip"
+```
+
+### Fix temporarily (to test)
+
+```bash
+echo performance | sudo tee /sys/module/pcie_aspm/parameters/policy
+```
+
+Re-run the `curl` test above; it should now be close to the true link speed. This does not survive a reboot.
+
+### Fix permanently
+
+Add `pcie_aspm.policy=performance` to `GRUB_CMDLINE_LINUX_DEFAULT` in `/etc/default/grub`:
+
+```
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash pcie_aspm.policy=performance"
+```
+
+Then apply it:
+
+```bash
+sudo update-grub
+sudo reboot
+```
+
+After reboot, verify:
+
+```bash
+cat /proc/cmdline               # should include pcie_aspm.policy=performance
+cat /sys/module/pcie_aspm/parameters/policy   # should show [performance]
+```
+
+### Trade-off
+
+This disables ASPM for *all* PCIe devices (not just Wi-Fi), which means slightly higher idle power draw / heat system-wide (NVMe included) in exchange for no PCIe wake latency anywhere. In practice this is the standard fix recommended for this symptom and is low-risk: it's not force-enabling anything unsupported (that's the separate, riskier `pcie_aspm=force` flag), it's disabling ASPM that was already active and supported. A more surgical alternative is a udev rule that disables ASPM only for the Wi-Fi device's PCI address, leaving other devices on their firmware defaults — not done here, but worth considering if battery life regresses noticeably.
+
 ## Building nvim
 
 1. Clone nvim to `~/git/neovim`.
