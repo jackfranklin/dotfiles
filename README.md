@@ -16,7 +16,7 @@ Files are symlinked into the proper location, and have the `.` added. For exampl
 
 ## Pi
 
-Pi config is installed via `make pi` (symlinks `settings.json`, `extensions/`, and `permissions.json`).
+Pi config is installed via `make pi` (symlinks `settings.json`, `extensions/`, `permissions.json`, and global `AGENTS.md`).
 
 Some extensions need npm dependencies; install them with:
 
@@ -34,7 +34,7 @@ Use `/skill-metrics` to see counts for the current project, or `/skill-metrics a
 
 ## Claude / MCP servers
 
-Claude config is installed via `make claude` (symlinks `settings.json`, `CLAUDE.md`, and `skills/`).
+Claude config is installed via `make claude` (symlinks `settings.json`, `CLAUDE.md`, shared `AGENTS.md`, and `skills/`).
 
 MCP servers are tracked separately in `claude/mcp.json` and synced via:
 

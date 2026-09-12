@@ -1,7 +1,6 @@
 ---
 name: implementing
-description: Implements an approved code-change plan safely. Use when beginning a feature, bug fix, or refactor that requires source changes, tests, a dedicated branch, small logical commits, and a GitHub pull request when applicable.
-disable-model-invocation: true
+description: Implements code changes, features, bug fixes, or refactors safely. Activate ANY TIME you are about to modify source code or tests, transition from planning to execution, or implement approved changes.
 ---
 
 # Implementing an Approved Plan

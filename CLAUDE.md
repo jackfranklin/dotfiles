@@ -17,7 +17,7 @@ make neovim      # ~/dotfiles/nvim → ~/.config/nvim
 make fish        # ~/dotfiles/fish → ~/.config/fish
 make git         # gitconfig + gitignore_global → ~/.gitconfig / ~/.gitignore_global
 make kitty       # ~/dotfiles/kitty → ~/.config/kitty
-make claude      # settings.json + CLAUDE.md + skills → ~/.claude/
+make claude      # settings.json + CLAUDE.md + shared AGENTS.md + skills → ~/.claude/
 
 # Install system packages (Ubuntu/Debian)
 make ubuntu-deps
