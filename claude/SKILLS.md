@@ -48,6 +48,6 @@ Custom skills for Claude Code. Each subdirectory under `skills/` is a skill with
 ## Standalone Recipes
 
 Standalone operational guides and reference sheets are located in [`docs/recipes/`](../docs/recipes/):
-- [`ast-grep`](../docs/recipes/ast-grep.md) — Structural syntax-tree code searching cheat sheet.
 - [`convert-audio-mono`](../docs/recipes/convert-audio-mono.md) — Audio channel volume analysis and mono conversion.
+- [`steam-status`](../docs/recipes/steam-status.md) — Steam startup and client-update diagnostics.
 - [`update-neovim`](../docs/recipes/update-neovim.md) — Automated Neovim GitHub release updates.

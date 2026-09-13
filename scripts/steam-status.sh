@@ -24,7 +24,7 @@ else
   connections=0
   for pid in "${steam_pids[@]}"; do
     count=$(ss -tnpH 2>/dev/null | grep -Fc "pid=${pid}," || true)
-    ((connections += count))
+    connections=$((connections + count))
   done
   if ((connections > 0)); then
     echo "Active TCP connections: $connections"
