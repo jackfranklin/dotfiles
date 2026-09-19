@@ -1,9 +1,9 @@
 ---
-name: implementing
+name: implement-plan
 description: Implements code changes, features, bug fixes, or refactors safely. Activate ANY TIME you are about to modify source code or tests, transition from planning to execution, or implement approved changes.
 ---
 
-# Implementing an Approved Plan
+# Implement an Approved Plan
 
 Use this skill only to implement a defined change. Do not start source-code changes until the plan is clear and the user has authorized implementation.
 

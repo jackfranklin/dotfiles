@@ -17,7 +17,7 @@ Custom skills for Claude Code. Each subdirectory under `skills/` is a skill with
 - `/review-plan` — Open a plan in the browser for inline review and annotation.
 
 ### 3. Implementation & Debugging
-- `implementing` — Implement an approved plan safely with testing, continuous validation, and atomic commits. (Model-invocable)
+- `implement-plan` — Implement an approved plan safely with testing, continuous validation, and atomic commits. (Model-invocable)
 - `diagnose-and-propose` — Systematically diagnose a failing command (compilation error, test failure, runtime crash) before proposing a fix. (Model-invocable)
 - `resolve-merge-conflict` — Resolve in-progress git merge/rebase conflicts cleanly. (Model-invocable)
 - `/one-by-one` — Execute a plan step-by-step with interactive checkpoints.
