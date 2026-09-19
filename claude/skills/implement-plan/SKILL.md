@@ -57,7 +57,7 @@ After the full change passes its required verification, inspect the final Git st
 
 Inspect the branch's configured remote URL. If it is hosted on GitHub, push the implementation branch and create a pull request against the repository's default branch with `gh`. Use the branch's commit series to provide a clear PR title and description. If a pull request for that branch already exists, do not create a duplicate; report its URL instead. If the remote is not GitHub, do not push or create a pull request.
 
-Never merge the branch, modify issue state, or perform destructive remote operations.
+Do not merge branches or modify issue state unless the user explicitly requests it. Never force-push or perform destructive remote operations without explicit user authorization.
 
 ### 7. Report and hand off
 
