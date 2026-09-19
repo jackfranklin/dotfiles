@@ -11,7 +11,7 @@ Use this skill only to implement a defined change. Do not start source-code chan
 
 1. **Implement only a clear plan.** Read the plan, relevant source, tests, and repository instructions. Confirm the intended behavior, scope, constraints, affected files, and acceptance criteria. If any material detail is ambiguous, stale, contradictory, or missing, stop before editing and explain the gap with a focused question. Do not fill in requirements from guesswork.
 2. **Pause on surprises.** If implementation reveals an unexpected challenge or roadblock—such as incompatible existing behavior, a missing dependency or API, a plan assumption that is false, an unexplained test failure, a required design choice, or scope growth—stop work immediately. Explain what happened, its impact, options if useful, and ask the user how to proceed. Do not silently choose a workaround.
-3. **Never implement a feature on `main`.** Before any source or test edit, inspect the Git state. Start from a clean worktree and create/switch to a new, clearly named feature branch. If the worktree is dirty, the current branch is not suitable, or branch creation would discard/conflict with work, stop and ask for guidance. Do not commit feature work directly to `main`.
+3. **Use an implementation branch by default; honor explicit authorization to work on `main`.** Before any source or test edit, inspect the Git state. Start from a clean worktree and create/switch to a new, clearly named feature branch unless the user explicitly authorizes implementation on `main` for the current task. That authorization permits source edits and commits directly on `main`; do not require a branch or ask again. If the worktree is dirty, the current branch is not suitable, or branch creation would discard/conflict with work, stop and ask for guidance.
 4. **Test thoroughly by default.** Add or update focused unit tests unless the user explicitly says not to. Cover required happy paths, meaningful boundaries, failure/empty states, and behavior likely to regress from the change. Follow repository test conventions; do not add redundant or speculative tests merely to increase the count.
 5. **Prefer the simplest clear implementation.** Make the narrowest change that meets the approved plan. Prefer direct, readable code over a new abstraction, layer, configuration option, dependency, state model, or extension point. Introduce one only when a current requirement, two real current use cases, or an established repository convention justifies it. Do not refactor nearby code merely to make the change feel cleaner.
 
@@ -26,7 +26,7 @@ Use this skill only to implement a defined change. Do not start source-code chan
 
 ### 2. Branch safely
 
-- If currently on `main` with a clean worktree, create and switch to a descriptive branch (for example, `feature/issue-123-short-description`).
+- If currently on `main` with a clean worktree, create and switch to a descriptive branch (for example, `feature/issue-123-short-description`) unless the user explicitly authorized implementation on `main` for this task. When such authorization was given, work on `main` without requesting branch confirmation.
 - If already on an explicitly designated, clean implementation branch, confirm it is appropriate before using it.
 - Never use forceful Git operations, overwrite unrelated changes, or alter another branch's history without explicit user authorization.
 
