@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk agent-runner keyboard_layouts
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs kitty amp hunk agent-runner keyboard_layouts
 
 DIR="${HOME}/dotfiles"
 
@@ -85,6 +85,7 @@ claude:
 	@mkdir -p ~/.claude
 	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
+	@ln -sf $(DIR)/agents/AGENTS.md ~/.claude/AGENTS.md
 	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
 	@ln -sf $(DIR)/claude/statusline.sh ~/.claude/statusline.sh
 	@chmod +x $(DIR)/claude/statusline.sh
@@ -98,6 +99,7 @@ pi:
 	@ln -sf $(DIR)/pi/keybindings.json ~/.pi/agent/keybindings.json
 	@ln -nsf $(DIR)/pi/extensions ~/.pi/agent/extensions
 	@ln -sf $(DIR)/pi/permissions.json ~/.pi/agent/permissions.json
+	@ln -sf $(DIR)/agents/AGENTS.md ~/.pi/agent/AGENTS.md
 
 pi_deps:
 	cd $(DIR)/pi/extensions/web-fetch && npm install --omit=dev
@@ -113,8 +115,11 @@ symlink_windows_linux:
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
 
-pi_specs:
+pi_specs: pi_skill_metrics_specs
 	cd pi/extensions/permissions && node --test
+
+pi_skill_metrics_specs:
+	node --experimental-sqlite --test pi/extensions/skill-metrics/index.test.ts
 
 keyboard_layouts:
 	node scripts/build-keyboard-layouts.mjs

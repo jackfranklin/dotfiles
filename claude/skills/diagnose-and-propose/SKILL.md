@@ -1,5 +1,4 @@
 ---
-disable-model-invocation: true
 name: diagnose-and-propose
 description: >
   Systematically diagnose a failing command (compilation error, test failure,

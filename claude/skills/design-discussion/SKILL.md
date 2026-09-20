@@ -1,5 +1,4 @@
 ---
-disable-model-invocation: true
 name: design-discussion
 description: Collaboratively discuss designs, evaluate trade-offs, and explore alternative implementation approaches. Starts from the simplest viable option and explores justified alternatives without fixed personas.
 ---

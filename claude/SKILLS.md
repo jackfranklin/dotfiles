@@ -1,80 +1,53 @@
 # Claude Skills
 
-Custom skills for Claude Code. Each subdirectory under `skills/` is a skill with a
-`SKILL.md` manifest. The `skills/` directory is symlinked into `~/.claude/skills/`
-via `make claude`.
+Custom skills for Claude Code. Each subdirectory under `skills/` is a skill with a `SKILL.md` manifest. The `skills/` directory is symlinked into `~/.claude/skills/` via `make claude`.
 
-> **Note:** keep this file *out* of `skills/`. Claude scans that directory and treats
-> every top-level `.md` file as a skill manifest, so docs placed there produce
-> "description is required" errors.
+> **Note:** keep this file *out* of `skills/`. Claude scans that directory and treats every top-level `.md` file as a skill manifest, so docs placed there produce "description is required" errors.
 
 ---
 
-## How the skills fit together across the engineering cycle
+## Engineering Lifecycle
 
-### 1. Exploring an idea
+### 1. Exploring an Idea
+- `/design-discussion` — Collaboratively discuss designs, evaluate trade-offs, and explore alternative implementation approaches. (Model-invocable)
+- `/grill-me` — Stress-test a plan, proposal, or design through an interactive interview.
 
-Not sure if something is worth building, or how to approach it?
+### 2. Planning
+- `/write-plan` — Rigorous TDD plan with exact file paths, real code in every step, and interface contracts between tasks.
+- `/review-plan` — Open a plan in the browser for inline review and annotation.
 
-- `/ideate` — brainstorm approaches before committing to one
-- `/grill-me` — stress-test a plan or design via relentless questioning
+### 3. Implementation & Debugging
+- `implement-plan` — Implement an approved plan safely with testing, continuous validation, and atomic commits. (Model-invocable)
+- `diagnose-and-propose` — Systematically diagnose a failing command (compilation error, test failure, runtime crash) before proposing a fix. (Model-invocable)
+- `resolve-merge-conflict` — Resolve in-progress git merge/rebase conflicts cleanly. (Model-invocable)
+- `/one-by-one` — Execute a plan step-by-step with interactive checkpoints.
 
-### 2. Before implementation
+### 4. Review & Quality
+- `code-review` — Aggressive maintainability review focused on structural simplification, deleting complexity, and type safety. (Model-invocable)
+- `/fresh-eyes-amend` — Review recent local changes with a fresh perspective before amending or committing.
+- `/review-diff` — Open a git diff in the browser for visual review.
+- `/github-code-review` — Fetch and review GitHub pull requests.
 
-Run these before writing a plan or any code.
+### 5. Communication & Clarification
+- `/wtf` — Re-pitch the preceding response in clear, plain language using ASD-STE100 technical English.
 
-- `/preflight` — Ponytail ladder: is this necessary? does stdlib/a dep cover it? what's the minimum? Outputs findings and a verdict on what to build (and what not to).
-- `/verify-plan-assumptions` — if you have a spec or PRD, cross-reference it against the live codebase to catch stale assumptions before they become bugs
+### 6. Architecture, Handoff & Reference
+- `/adr` — Record an Architectural Decision Record while the reasoning is fresh.
+- `/handoff` — Summarize in-progress work as a GitHub Issue for a future session or collaborator.
+- `/later` — Log a backlog item or idea as a GitHub Issue without losing the current thread.
+- `/jack-references` — Save, search, and manage personal technical reference notes.
+- `/writing-great-skills` — Authoring guide and standards for Claude/Gemini skills.
 
-### 3. Planning
-
-- `/write-plan` — rigorous TDD plan with exact file paths, real code in every step, interface contracts between tasks. Saves as a GitHub Issue with a `[PLAN]` prefix. Use after preflight has settled scope.
-- `/review-plan` — open a plan in the browser for inline annotation before execution
-
-### 3a. Starting a fresh implementation session
-
-Open a new conversation and run this before any code is written.
-
-- `/onboard-plan <issue number or description>` — reads the plan cold via two independent sub-agents, surfaces every comprehension gap (ambiguous terms, undefined references, missing context), and resolves them with you before execution begins. Focuses on *understanding*, not critique — use `/preflight`, `/verify-plan-assumptions`, or `/design-discussion` for that.
-
-### 4. During implementation
-
-- `/verify-mechanical-change` — confirm a change is purely mechanical before treating it as safe to land without review
-- `/adr` — capture a significant architectural decision while the reasoning is fresh
-
-### 5. After implementation
-
-- `/nuclear-code-review` — aggressive review focused on deleting complexity and improving maintainability
-- `/fresh-eyes-amend` — review recent changes as if seeing them for the first time
-- `/review-diff` — straightforward diff review
-
-### 6. Understanding code
-
-- `/walkthrough` — interactive explanation of a git diff, structured by concept rather than file
-
-### 7. Documentation and handoff
-
-- `/doc-clarity-opportunity` — find opportunities to improve docs and code clarity
-- `/handoff` — summarise in-progress work as a GitHub Issue for a future session or another engineer
-- `/handoff-search` — search existing handoff and plan issues on GitHub
-
-### 8. Ongoing
-
-- `/later` — log something to come back to as a GitHub Issue without losing your current thread
-- `/jack-references` — save or search technical reference material
+### 7. Ecosystem & Framework Scaffolding
+- `/cloudflare`, `/wrangler`, `/workers-best-practices` — Cloudflare Workers architecture, bindings, and deployment workflows.
+- `/new-deno-app` — Scaffold a new Deno application.
+- `/new-lit-pwa` — Scaffold a new Lit-based Progressive Web App.
 
 ---
 
-## Inspiration
+## Standalone Recipes
 
-### Ponytail → `preflight`
-
-[`preflight`](./skills/preflight/) is inspired by the [Ponytail plugin](https://github.com/DietrichGebert/ponytail), which advocates running a minimalism decision ladder before writing any code:
-
-> Is it necessary? → stdlib? → native platform feature? → existing dep? → one-liner? → only then: minimal implementation.
-
-Rather than adopting Ponytail's lifecycle hooks, the concept is captured as a deliberate skill invoked before planning — the ladder runs, produces findings, and the verdict feeds into `write-detailed-implementation-plan` or directly into implementation.
-
-### obra/superpowers → `write-detailed-implementation-plan`
-
-[`write-detailed-implementation-plan`](./skills/write-detailed-implementation-plan/) is adapted from the [obra/superpowers writing-plans skill](https://github.com/obra/superpowers/blob/main/skills/writing-plans/SKILL.md). The core ideas are preserved — no placeholders, TDD cycle in every task, exact file paths and code in every step, interface contracts between tasks, and a self-review pass — with superpowers-specific scaffolding removed and the output path adjusted to `.jai/detailed-plans/`.
+Standalone operational guides and reference sheets are located in [`docs/recipes/`](../docs/recipes/):
+- [`convert-audio-mono`](../docs/recipes/convert-audio-mono.md) — Audio channel volume analysis and mono conversion.
+- [`steam-status`](../docs/recipes/steam-status.md) — Steam startup and client-update diagnostics.
+- [`update-neovim`](../docs/recipes/update-neovim.md) — Automated Neovim GitHub release updates.

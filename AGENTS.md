@@ -1,6 +1,6 @@
 # Dotfiles Pi configuration
 
-This repository contains Jack's personal dotfiles and uses explicit Makefile-managed symlinks rather than Stow. Its Pi configuration lives under `pi/`. Run `make pi` to symlink `settings.json`, `permissions.json`, and `extensions/` into `~/.pi/agent/`; do not edit those symlinked copies directly.
+This repository contains Jack's personal dotfiles and uses explicit Makefile-managed symlinks rather than Stow. Its Pi configuration lives under `pi/`. Run `make pi` to symlink `settings.json`, `permissions.json`, `extensions/`, and the shared global `AGENTS.md` into `~/.pi/agent/`; do not edit those symlinked copies directly.
 
 Pi reads this top-level `AGENTS.md` when it starts in this repository. It also searches the current directory and its parents for `AGENTS.md` or `CLAUDE.md`; this file is repository-specific and is deliberately not installed as global Pi context.
 
@@ -8,7 +8,7 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 
 - Neovim configuration is in `nvim/`; run `make lua_specs` for its Lua tests.
 - Fish functions are in `fish/functions/`.
-- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
+- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
 - Format JavaScript/TypeScript with the repository Prettier configuration: semicolons, trailing commas, and single quotes.
 
 ## Pi configuration
@@ -17,7 +17,7 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 - `permissions.json` is used by the permissions extension. It contains glob rules that classify commands and file operations as safe, approval-required, or blocked.
 - `extensions/` is symlinked to `~/.pi/agent/extensions/`. Pi auto-discovers a top-level `.ts` extension or a nested `index.ts` in that directory.
 - `make pi_deps` installs the production dependencies needed by `extensions/web-fetch`.
-- `make pi_specs` runs the permissions extension's Node test suite.
+- `make pi_specs` runs the Pi extensions' Node test suites.
 
 Reload or restart Pi after changing an extension, its configuration, or a subagent definition. A running subagent is not affected by later configuration changes.
 
@@ -35,7 +35,7 @@ In an interactive Pi session, approval can allow or ban an operation once or per
 
 ### `skill-metrics`
 
-Records explicit `/skill:<name>` invocations by absolute project path in `~/.pi/agent/skill-metrics.sqlite` (SQLite WAL mode). Use `/skill-metrics` for the current project or `/skill-metrics all` for every project. Extension-injected messages and unknown skill names are not recorded.
+Records user `/skill:<name>` invocations and model reads of a discovered skill's `SKILL.md`, by absolute project path in `~/.pi/agent/skill-metrics.sqlite` (SQLite WAL mode). Use `/skill-metrics` for separate user and model counts for the current project or `/skill-metrics all` for every project. Extension-injected messages and unknown skill names are not recorded.
 
 ### `watch`
 
