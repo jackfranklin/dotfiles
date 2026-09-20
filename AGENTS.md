@@ -17,7 +17,7 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 - `permissions.json` is used by the permissions extension. It contains glob rules that classify commands and file operations as safe, approval-required, or blocked.
 - `extensions/` is symlinked to `~/.pi/agent/extensions/`. Pi auto-discovers a top-level `.ts` extension or a nested `index.ts` in that directory.
 - `make pi_deps` installs the production dependencies needed by `extensions/web-fetch`.
-- `make pi_specs` runs the permissions extension's Node test suite.
+- `make pi_specs` runs the Pi extensions' Node test suites.
 
 Reload or restart Pi after changing an extension, its configuration, or a subagent definition. A running subagent is not affected by later configuration changes.
 
@@ -35,7 +35,7 @@ In an interactive Pi session, approval can allow or ban an operation once or per
 
 ### `skill-metrics`
 
-Records explicit `/skill:<name>` invocations by absolute project path in `~/.pi/agent/skill-metrics.sqlite` (SQLite WAL mode). Use `/skill-metrics` for the current project or `/skill-metrics all` for every project. Extension-injected messages and unknown skill names are not recorded.
+Records user `/skill:<name>` invocations and model reads of a discovered skill's `SKILL.md`, by absolute project path in `~/.pi/agent/skill-metrics.sqlite` (SQLite WAL mode). Use `/skill-metrics` for separate user and model counts for the current project or `/skill-metrics all` for every project. Extension-injected messages and unknown skill names are not recorded.
 
 ### `watch`
 

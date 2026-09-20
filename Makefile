@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs kitty amp hunk agent-runner keyboard_layouts
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs kitty amp hunk agent-runner keyboard_layouts
 
 DIR="${HOME}/dotfiles"
 
@@ -115,8 +115,11 @@ symlink_windows_linux:
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
 
-pi_specs:
+pi_specs: pi_skill_metrics_specs
 	cd pi/extensions/permissions && node --test
+
+pi_skill_metrics_specs:
+	node --experimental-sqlite --test pi/extensions/skill-metrics/index.test.ts
 
 keyboard_layouts:
 	node scripts/build-keyboard-layouts.mjs

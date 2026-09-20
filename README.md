@@ -28,9 +28,9 @@ The `web_search` extension requires an Exa API key. Create one at <https://dashb
 
 ### Skill metrics
 
-The `skill-metrics` extension records explicit `/skill:<name>` invocations. Metrics are stored outside this repository in `~/.pi/agent/skill-metrics.sqlite`, keyed by the absolute working directory and skill name. The database and its table are created automatically when Pi loads the extension.
+The `skill-metrics` extension records user `/skill:<name>` invocations and model reads of a discovered skill's `SKILL.md`. Metrics are stored outside this repository in `~/.pi/agent/skill-metrics.sqlite`, keyed by the absolute working directory and skill name. The database and its table are created automatically when Pi loads the extension.
 
-Use `/skill-metrics` to see counts for the current project, or `/skill-metrics all` to see every project.
+Use `/skill-metrics` to see separate user and model counts for the current project, or `/skill-metrics all` to see every project.
 
 ## Claude / MCP servers
 

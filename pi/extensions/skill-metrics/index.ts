@@ -7,7 +7,8 @@ import type { ExtensionAPI } from '@earendil-works/pi-coding-agent';
 interface SkillMetric {
   project: string;
   skill: string;
-  invocations: number;
+  userInvocations: number;
+  modelInvocations: number;
 }
 
 const databasePath =
@@ -22,10 +23,29 @@ function openDatabase(): DatabaseSync {
 		CREATE TABLE IF NOT EXISTS skill_invocations (
 			project TEXT NOT NULL,
 			skill TEXT NOT NULL,
-			invocations INTEGER NOT NULL DEFAULT 0,
+			user_invocations INTEGER NOT NULL DEFAULT 0,
+			model_invocations INTEGER NOT NULL DEFAULT 0,
 			PRIMARY KEY (project, skill)
 		)
 	`);
+
+  const columns = database
+    .prepare('PRAGMA table_info(skill_invocations)')
+    .all() as Array<{ name: string }>;
+  if (!columns.some((column) => column.name === 'user_invocations')) {
+    database.exec(`
+			ALTER TABLE skill_invocations
+			ADD COLUMN user_invocations INTEGER NOT NULL DEFAULT 0;
+			UPDATE skill_invocations SET user_invocations = invocations;
+		`);
+  }
+  if (!columns.some((column) => column.name === 'model_invocations')) {
+    database.exec(`
+			ALTER TABLE skill_invocations
+			ADD COLUMN model_invocations INTEGER NOT NULL DEFAULT 0;
+		`);
+  }
+
   return database;
 }
 
@@ -40,15 +60,19 @@ function formatMetrics(metrics: SkillMetric[]): string {
     'Skill'.length,
     ...metrics.map((metric) => metric.skill.length),
   );
-  const countWidth = Math.max(
-    'Invocations'.length,
-    ...metrics.map((metric) => String(metric.invocations).length),
+  const userWidth = Math.max(
+    'User'.length,
+    ...metrics.map((metric) => String(metric.userInvocations).length),
   );
-  const header = `${'Project'.padEnd(projectWidth)}  ${'Skill'.padEnd(skillWidth)}  ${'Invocations'.padStart(countWidth)}`;
-  const divider = `${'-'.repeat(projectWidth)}  ${'-'.repeat(skillWidth)}  ${'-'.repeat(countWidth)}`;
+  const modelWidth = Math.max(
+    'Model'.length,
+    ...metrics.map((metric) => String(metric.modelInvocations).length),
+  );
+  const header = `${'Project'.padEnd(projectWidth)}  ${'Skill'.padEnd(skillWidth)}  ${'User'.padStart(userWidth)}  ${'Model'.padStart(modelWidth)}`;
+  const divider = `${'-'.repeat(projectWidth)}  ${'-'.repeat(skillWidth)}  ${'-'.repeat(userWidth)}  ${'-'.repeat(modelWidth)}`;
   const rows = metrics.map(
     (metric) =>
-      `${metric.project.padEnd(projectWidth)}  ${metric.skill.padEnd(skillWidth)}  ${String(metric.invocations).padStart(countWidth)}`,
+      `${metric.project.padEnd(projectWidth)}  ${metric.skill.padEnd(skillWidth)}  ${String(metric.userInvocations).padStart(userWidth)}  ${String(metric.modelInvocations).padStart(modelWidth)}`,
   );
 
   return [header, divider, ...rows].join('\n');
@@ -56,22 +80,36 @@ function formatMetrics(metrics: SkillMetric[]): string {
 
 export default function skillMetricsExtension(pi: ExtensionAPI) {
   const database = openDatabase();
-  const increment = database.prepare(`
-		INSERT INTO skill_invocations (project, skill, invocations)
+  const incrementUser = database.prepare(`
+		INSERT INTO skill_invocations (project, skill, user_invocations)
 		VALUES (?, ?, 1)
 		ON CONFLICT(project, skill)
-		DO UPDATE SET invocations = invocations + 1
+		DO UPDATE SET user_invocations = user_invocations + 1
+	`);
+  const incrementModel = database.prepare(`
+		INSERT INTO skill_invocations (project, skill, model_invocations)
+		VALUES (?, ?, 1)
+		ON CONFLICT(project, skill)
+		DO UPDATE SET model_invocations = model_invocations + 1
 	`);
   const forProject = database.prepare(`
-		SELECT project, skill, invocations
+		SELECT
+			project,
+			skill,
+			user_invocations AS userInvocations,
+			model_invocations AS modelInvocations
 		FROM skill_invocations
 		WHERE project = ?
-		ORDER BY invocations DESC, skill ASC
+		ORDER BY (user_invocations + model_invocations) DESC, skill ASC
 	`);
   const allProjects = database.prepare(`
-		SELECT project, skill, invocations
+		SELECT
+			project,
+			skill,
+			user_invocations AS userInvocations,
+			model_invocations AS modelInvocations
 		FROM skill_invocations
-		ORDER BY project ASC, invocations DESC, skill ASC
+		ORDER BY project ASC, (user_invocations + model_invocations) DESC, skill ASC
 	`);
 
   pi.on('input', (event, ctx) => {
@@ -91,7 +129,27 @@ export default function skillMetricsExtension(pi: ExtensionAPI) {
       .some(
         (command) => command.source === 'skill' && command.name === commandName,
       );
-    if (exists) increment.run(resolve(ctx.cwd), skill);
+    if (exists) incrementUser.run(resolve(ctx.cwd), skill);
+  });
+
+  pi.on('tool_call', (event, ctx) => {
+    if (event.toolName !== 'read') return;
+
+    const input = event.input as { path: string };
+    const readPath = input.path.startsWith('@')
+      ? input.path.slice(1)
+      : input.path;
+    const skillPath = resolve(ctx.cwd, readPath);
+    const command = pi
+      .getCommands()
+      .find(
+        (candidate) =>
+          candidate.source === 'skill' &&
+          resolve(candidate.sourceInfo.path) === skillPath,
+      );
+    if (command) {
+      incrementModel.run(resolve(ctx.cwd), command.name.slice('skill:'.length));
+    }
   });
 
   pi.registerCommand('skill-metrics', {
