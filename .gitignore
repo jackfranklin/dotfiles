@@ -46,6 +46,23 @@ scripts/what_alias_cache*
 keyboard-layouts/viewer/layout-data.js
 
 claude/skills/later/feedback.db
+
+# Installed on demand by the load-cloudflare skill.
+claude/skills/agents-sdk/
+claude/skills/cloudflare/
+claude/skills/cloudflare-email-service/
+claude/skills/cloudflare-one/
+claude/skills/cloudflare-one-migrations/
+claude/skills/durable-objects/
+claude/skills/nextjs-on-cloudflare/
+claude/skills/sandbox-migrate-to-next/
+claude/skills/sandbox-next/
+claude/skills/sandbox-stable/
+claude/skills/turnstile-spin/
+claude/skills/web-perf/
+claude/skills/workers-best-practices/
+claude/skills/wrangler/
+
 pi/extensions/web-search/auth.json
 
 .claude/

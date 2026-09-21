@@ -39,7 +39,7 @@ Custom skills for Claude Code. Each subdirectory under `skills/` is a skill with
 - `/writing-great-skills` — Authoring guide and standards for Claude/Gemini skills.
 
 ### 7. Ecosystem & Framework Scaffolding
-- `/cloudflare`, `/wrangler`, `/workers-best-practices` — Cloudflare Workers architecture, bindings, and deployment workflows.
+- `/load-cloudflare` — Install Cloudflare's current skill bundle for Pi on demand; it does nothing when already installed.
 - `/new-deno-app` — Scaffold a new Deno application.
 - `/new-lit-pwa` — Scaffold a new Lit-based Progressive Web App.
 
