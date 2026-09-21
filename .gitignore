@@ -46,6 +46,7 @@ scripts/what_alias_cache*
 keyboard-layouts/viewer/layout-data.js
 
 claude/skills/later/feedback.db
+claude/skills/synced/
 
 # Installed on demand by the load-cloudflare skill.
 claude/skills/agents-sdk/
