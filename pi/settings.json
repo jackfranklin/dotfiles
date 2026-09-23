@@ -5,7 +5,8 @@
   "defaultProvider": "openai-codex",
   "defaultModel": "gpt-5.6-terra",
   "skills": [
-    "~/.claude/skills"
+    "~/.claude/skills",
+    "!~/.claude/skills/synced/**"
   ],
   "hideThinkingBlock": false,
   "enabledModels": [
