@@ -2,10 +2,11 @@
 disable-model-invocation: true
 name: write-plan
 description: >
-  Write a right-sized, no-placeholder implementation plan as a series of
-  focused tasks, with exact file paths, implementation details, proportionate
-  test steps, and commit instructions. Performs a pre-planning preflight
-  investigation and Ponytail decision ladder checks before drafting the plan. Reviews the plan
+  Write a right-sized, reviewable implementation plan as a series of focused
+  tasks, with exact file paths, interface contracts, behavioral test specifications,
+  and verification commands. Focuses on architectural intent and test coverage
+  without dumping raw test or implementation code. Performs pre-planning preflight
+  investigation and Ponytail ladder checks before drafting. Reviews the plan
   with the user task by task before storing an explicitly approved plan on the
   relevant GitHub issue.
 ---
@@ -17,7 +18,9 @@ about the codebase and will execute tasks in isolation. Every step must
 contain everything they need — no references to "fill in later", no vague
 instructions, no placeholders.
 
-DRY. YAGNI. TDD. Frequent commits. Prefer designs that are easy to explain, reason about locally, and change.
+DRY. YAGNI. TDD. Frequent commits. Focus on clear contracts, behavioral specs,
+and independent verification rather than premature code dumps. Prefer designs
+that are easy to explain, reason about locally, and change.
 
 ## GitHub body safety — mandatory
 
@@ -144,61 +147,43 @@ section.]
 
 **Files:**
 - Create: `exact/path/to/file.ts`
-- Modify: `exact/path/to/existing.ts:123-145`
+- Modify: `exact/path/to/existing.ts`
 - Test: `tests/exact/path/to/test.ts`
 
 **Interfaces:**
-- Consumes: [what this task uses from earlier tasks — exact signatures]
-- Produces: [what later tasks rely on — exact function names, parameter and
-  return types. A task's implementer sees only their own task; this block is
-  how they learn the names and types neighbouring tasks use.]
+- Consumes: [what this task uses from earlier tasks or existing modules — exact signatures and types]
+- Produces: [what later tasks rely on — exact function names, parameter and return types]
 
-- [ ] **Step 1: Write the failing test**
+**Key Changes & Logic:**
+- [Bullet points describing the concrete logic, algorithmic changes, or state updates]
+- [Type definitions or function signatures where relevant; omit complete method bodies]
 
-```typescript
-it('specific behaviour', () => {
-  const result = fn(input)
-  expect(result).toBe(expected)
-})
-```
+**Test Plan & Coverage:**
+- [Target test file: `tests/exact/path/to/test.ts`]
+- [Specific scenario 1: Input/condition -> Expected outcome]
+- [Specific scenario 2: Edge case or boundary condition -> Expected behavior]
+- [Specific scenario 3: Error state or failure mode -> Expected handling/rejection]
 
-- [ ] **Step 2: Run test to verify it fails**
-
-Run: `npm test -- tests/path/test.ts`
-Expected: FAIL — "fn is not defined"
-
-- [ ] **Step 3: Write minimal implementation**
-
-```typescript
-export function fn(input: string): string {
-  return expected
-}
-```
-
-- [ ] **Step 4: Run test to verify it passes**
-
-Run: `npm test -- tests/path/test.ts`
-Expected: PASS
-
-- [ ] **Step 5: Commit**
-
-```bash
-git add tests/path/test.ts src/path/file.ts
-git commit -m "feat: add specific feature"
-```
+**Verification & Commit:**
+- Run: `npm test -- tests/exact/path/to/test.ts`
+- Commit message: `feat(scope): concise description of deliverable`
 ````
 
-## No Placeholders
+## No Placeholders and No Code Dumps
 
-Every step must contain the actual content an engineer needs. These are plan
-failures — never write them:
+Every task must contain clear architectural contracts and behavioral specs an engineer needs.
 
+Avoid vague plan failures:
 - "TBD", "TODO", "implement later", "fill in details"
-- "Add appropriate error handling" / "handle edge cases" (without showing how)
-- "Write tests for the above" (without actual test code)
-- "Similar to Task N" (repeat the code — the engineer may read tasks out of order)
-- Steps that describe what to do without showing how
-- References to types or functions not defined in any task
+- "Add appropriate error handling" / "handle edge cases" (without naming specific conditions and expected behavior)
+- "Write tests for the above" (without naming concrete test scenarios, inputs, and expected outcomes)
+- "Similar to Task N" (state the specific contract — tasks may be read or reviewed independently)
+- Referencing types or functions that are neither existing nor defined in a preceding task
+
+Avoid premature code dumps:
+- Do not write full test function bodies or large fixture/mock data payloads in the plan.
+- Do not draft complete production method bodies in the plan.
+- Focus on interfaces, signatures, algorithms, and test coverage requirements. Code belongs in the implementation phase under compiler and linter enforcement.
 
 ## Step 5: Self-Review & Verification
 
