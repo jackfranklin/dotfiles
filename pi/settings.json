@@ -1,5 +1,5 @@
 {
-  "lastChangelogVersion": "0.87.1",
+  "lastChangelogVersion": "1.0.0",
   "theme": "light",
   "quietStartup": true,
   "defaultProvider": "openai-codex",
