@@ -1,6 +1,6 @@
 ---
 name: implement-plan
-description: Implements code changes, features, bug fixes, or refactors safely. Activate ANY TIME you are about to modify source code or tests, transition from planning to execution, or implement approved changes.
+description: Implements an explicitly approved, scoped code change safely and autonomously. Use when transitioning from an agreed plan to source or test changes; do not use for exploration or unresolved design decisions.
 ---
 
 # Implement an Approved Plan
@@ -10,10 +10,14 @@ Use this skill only to implement a defined change. Do not start source-code chan
 ## Non-negotiable rules
 
 1. **Implement only a clear plan.** Read the plan, relevant source, tests, and repository instructions. Confirm the intended behavior, scope, constraints, affected files, and acceptance criteria. If any material detail is ambiguous, stale, contradictory, or missing, stop before editing and explain the gap with a focused question. Do not fill in requirements from guesswork.
-2. **Pause on surprises.** If implementation reveals an unexpected challenge or roadblock—such as incompatible existing behavior, a missing dependency or API, a plan assumption that is false, an unexplained test failure, a required design choice, or scope growth—stop work immediately. Explain what happened, its impact, options if useful, and ask the user how to proceed. Do not silently choose a workaround.
+2. **Resolve ordinary implementation friction autonomously.** Continue through incomplete intermediate states, type errors caused by the current refactor, test failures that can be investigated from repository evidence, and fixture or test-harness changes required by the approved plan. Stop only when resolving the issue requires a material product decision, changes the approved scope, needs unavailable access or secrets, risks data loss, or cannot be resolved from repository evidence. When stopping is necessary, explain the concrete blocker and ask one focused question; do not merely announce a pause.
 3. **Use an implementation branch by default; honor explicit authorization to work on `main`.** Before any source or test edit, inspect the Git state. Start from a clean worktree and create/switch to a new, clearly named feature branch unless the user explicitly authorizes implementation on `main` for the current task. That authorization permits source edits and commits directly on `main`; do not require a branch or ask again. If the worktree is dirty, the current branch is not suitable, or branch creation would discard/conflict with work, stop and ask for guidance.
 4. **Test thoroughly by default.** Add or update focused unit tests unless the user explicitly says not to. Cover required happy paths, meaningful boundaries, failure/empty states, and behavior likely to regress from the change. Follow repository test conventions; do not add redundant or speculative tests merely to increase the count.
 5. **Prefer the simplest clear implementation.** Make the narrowest change that meets the approved plan. Prefer direct, readable code over a new abstraction, layer, configuration option, dependency, state model, or extension point. Introduce one only when a current requirement, two real current use cases, or an established repository convention justifies it. Do not refactor nearby code merely to make the change feel cleaner.
+
+## Working mode
+
+During an approved implementation, keep taking the next concrete investigation, edit, or verification step. Do not end a response merely to provide a progress update, announce the next step, or ask for confirmation already supplied. Return to the user only with a completed result or a genuine blocker under rule 2.
 
 ## Workflow
 
@@ -22,7 +26,7 @@ Use this skill only to implement a defined change. Do not start source-code chan
 - Read the nearest applicable `AGENTS.md`, contributor guidance, and relevant task/issue/PR material.
 - Inspect the current implementation, related tests, existing utilities, and recent relevant changes before designing new code.
 - Check `git status --short` and the current branch.
-- Summarize the implementation understanding, including non-goals and acceptance criteria. Include a brief implementation sketch: the direct change, the concepts it adds, and complexity deliberately excluded. If anything is unclear, stop and ask.
+- Establish the implementation understanding, including non-goals and acceptance criteria. Do this silently unless a material ambiguity requires a focused question.
 
 ### 2. Branch safely
 
@@ -32,15 +36,15 @@ Use this skill only to implement a defined change. Do not start source-code chan
 
 ### 3. Confirm the test plan
 
-Before writing tests, list the specific test cases to add or change and ask the user to approve them whenever repository guidance requires it. The list should name each behavior and expected result, including meaningful edge cases.
+Before writing tests, derive the specific test cases to add or change from the approved plan and repository guidance. Ask the user only when repository guidance explicitly requires test-plan approval or the expected behavior is materially ambiguous.
 
-After approval, implement tests and the smallest clear production change that satisfies the plan. Reuse an existing abstraction when it fits; otherwise prefer local, direct code to creating a new general abstraction for one use case. Keep unrelated cleanup out of the change.
+Implement tests and the smallest clear production change that satisfies the plan. Reuse an existing abstraction when it fits; otherwise prefer local, direct code to creating a new general abstraction for one use case. Keep unrelated cleanup out of the change.
 
 ### 4. Validate continuously
 
 - Run the repository-required typecheck/lint command before tests when instructed by project guidance.
 - Run focused tests while implementing, then the required broader verification once the change is complete.
-- Treat any unexplained failure as a roadblock: stop, report it, and ask for advice rather than masking it or weakening tests.
+- Investigate and fix failures attributable to the in-progress implementation. Do not weaken tests to hide a defect. Stop only for a failure that is pre-existing, unrelated, or cannot be resolved from repository evidence; report the evidence and its impact.
 - Check formatting and inspect the final diff for unintended changes, missing tests, debug code, deviations from the approved scope, and indirection that can be removed without losing a current requirement.
 
 ### 5. Commit logical, verified increments
