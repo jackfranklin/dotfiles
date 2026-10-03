@@ -3,7 +3,7 @@
   "theme": "light",
   "quietStartup": true,
   "defaultProvider": "openai-codex",
-  "defaultModel": "gpt-5.6-terra",
+  "defaultModel": "gpt-6.1-sol",
   "skills": [
     "~/.claude/skills",
     "!~/.claude/skills/synced/**"
@@ -14,7 +14,8 @@
     "anthropic/claude-sonnet-4-6",
     "anthropic/claude-sonnet-5",
     "openai-codex/gpt-5.5",
-    "openai-codex/gpt-5.6-terra"
+    "openai-codex/gpt-5.6-terra",
+    "openai-codex/gpt-6.1-sol"
   ],
   "defaultThinkingLevel": "high"
 }
