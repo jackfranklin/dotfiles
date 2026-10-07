@@ -29,7 +29,7 @@ Tool calls are otherwise classified in this order:
 2. configured `block` globs => block
 3. configured `safe` globs => allow
 4. configured `prompt` globs => prompt in the main UI, block in headless/subagent contexts
-5. write redirections to real files => prompt/block
+5. write redirections outside trusted path roots, into sensitive paths, or to unresolved shell destinations => prompt/block
 6. `write` / `edit` outside the current working directory, its Git repository's registered worktrees, or into sensitive system paths => prompt/block
 7. everything else => allow
 
@@ -118,7 +118,23 @@ Some commands are blocked even if they are not listed in `block`, including:
 Read redirections and benign write redirections to `/dev/null`, `/dev/stdout`,
 `/dev/stderr`, and `/dev/fd/*` are allowed.
 
-Write redirections to real files prompt in the main UI and block without UI.
+Write redirections to literal paths inside the current working directory, its
+Git repository's registered worktrees, or `/tmp` are allowed, just like file-tool
+writes. Other destinations prompt in the main UI and block without UI, including
+sensitive system paths and unresolved shell syntax (variables, substitutions,
+tilde expansion, globs, and escaped or concatenated shell words). Relative
+redirects also require approval when the bash call contains directory-changing
+builtins (`cd`, `pushd`, or `popd`); use an absolute trusted path instead.
+Command-level blocks and prompts still apply independently of the destination.
+Path containment is lexical, as for file tools; this guardrail is not a symlink
+sandbox.
+
+For example, this needs no approval when run from the repository:
+
+```bash
+gh issue view 6 --json body --jq .body > .wrangler/issue-6-update.md
+```
+
 A variable assigned directly from the no-argument form of `mktemp`, or directly
 to a `/tmp/...` path with a fixed first path component (for example,
 `plan="/tmp/plan-${timestamp}.md"`), is treated as a temporary-file target for
