@@ -22,6 +22,12 @@
   },
   "enabledPlugins": {},
   "effortLevel": "medium",
+  "modelSettings": {
+    "claude-opus-5-5": {
+      "effortLevel": "high"
+    }
+  },
   "tui": "fullscreen",
-  "theme": "light"
+  "theme": "light",
+  "model": "opus"
 }
