@@ -87,6 +87,7 @@ claude:
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 	@ln -sf $(DIR)/agents/AGENTS.md ~/.claude/AGENTS.md
 	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
+	@ln -nsf $(DIR)/claude/agents ~/.claude/agents
 	@ln -sf $(DIR)/claude/statusline.sh ~/.claude/statusline.sh
 	@chmod +x $(DIR)/claude/statusline.sh
 
