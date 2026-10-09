@@ -16,9 +16,9 @@ make keyboard_layouts
 
 Future keyboard profiles will add their source format and physical-layout mapping to `scripts/build-keyboard-layouts.mjs`.
 
-## Iris is out of sync with the Go60
+## Go60 and Iris layering
 
-The Go60 layout (v7) was reworked to stop layer keys misfiring when a thumb is released late, e.g. typing "let's" sent Left Arrow instead of `s`. The fix is that the symbol layers hold only symbols, with every other key transparent, and navigation lives on its own layer. The Iris still has the old arrangement, so it has the same problem: on the Iris, a late thumb release after `'` sends Down instead of `s`.
+The Go60 layout (v7) was reworked to stop layer keys misfiring when a thumb is released late, e.g. typing "let's" sent Left Arrow instead of `s`. The fix is that the symbol layers hold only symbols, with every other key transparent, and navigation lives on its own layer.
 
 What changed on the Go60:
 
@@ -30,21 +30,17 @@ What changed on the Go60:
   - N M , .: Alt+1 2 3 4
   - S: Alt, D: Ctrl (held as modifiers for Alt/Ctrl+arrows, because the pinky is busy holding Nav)
   - everything else transparent
-- **Sticky Backspace (`&kt BSPC`)** became Alt+Backspace (delete word).
+- **Backspace** on the innermost left-hand bottom-row key became Alt+Backspace (delete word).
 
-### To bring the Iris in line (not yet done)
+### Iris equivalent
 
-Positions are given as keys, with the `iris_rev__7.layout.json` index in brackets.
+The Iris mirrors this arrangement. Positions are given as keys, with the `iris_rev__7.layout.json` index in brackets.
 
-1. **Find space for a Nav layer.** The VIA backup has 4 layers (0–3), and VIA firmware usually allows only 4. Either:
-   - build QMK firmware with a higher `DYNAMIC_KEYMAP_LAYER_COUNT`, or
-   - (preferred) do what the Go60 does and move the F-keys from layer 3 onto layer 1's number row, then use layer 3 as Nav. The top-left `MO(3)` [0] is then no longer needed for F-keys. Layer 3 also has `LSA(KC_B)` [54] and `G(KC_D)` [55]; find them a new home or drop them.
-2. **Nav key:** change bottom-left `HYPR(KC_NO)` [18] to `MO(<nav layer>)`.
-3. **Nav layer contents** (everything not listed is `KC_TRNS`):
-   - Y [41] U [40] I [39] O [38]: `C(KC_1)` … `C(KC_4)`
-   - H [47] J [46] K [45] L [44]: `KC_LEFT` `KC_DOWN` `KC_UP` `KC_RGHT`
-   - N [53] M [52] , [51] . [50]: `A(KC_1)` … `A(KC_4)`
-   - S [14]: `KC_LALT`, D [15]: `KC_LCTL`
-4. **Layer 2:** set the left-hand arrow blocks to `KC_TRNS`: Alt+arrows on Q W E R [7–10], arrows on A S D F [13–16], Shift+arrows on Z X C V [19–22]. Use `KC_TRNS`, not `KC_NO`, so a late thumb release types the base letter instead of dropping it.
-5. **Layer 1:** set the right-hand Ctrl+1–4 on N M , . [50–53] to `KC_TRNS`. The Iris has no Alt+1–4 on layer 1, so there is nothing else to remove. Consider changing the other right-hand `KC_NO` keys on layers 1 and 2 to `KC_TRNS` for the same reason.
-6. **Alt+Backspace (optional):** the Iris has no sticky-Backspace key. If wanted, put `A(KC_BSPC)` on one of the spare `KC_NO` keys, e.g. [24] or [25].
+- **Layer 3 is the Nav layer**, held with bottom-left `MO(3)` [18], which replaced the unused Hyper key. It has the same contents as the Go60 Nav layer. The VIA firmware allows only 4 layers, so layer 3 was repurposed rather than added. `LSA(KC_B)` [54] and `G(KC_D)` [55] remain on its right thumbs because Nav does not use those keys.
+- **F-keys moved to layer 1's number row**, in the Go60 positions: F1–F5 on 1–5, F6–F10 on 6–0, F11 on PgUp [30] and F12 on PgDn [36]. The top-left key [0] was the F-key layer key.
+- **Media keys moved to layer 2's right outer column**, in the Go60 positions: Play/Pause on PgUp [30], Vol+ on PgDn [36], Vol− on `:` [42] and Mute on Esc [48]. Layer 1's left outer column is `KC_TRNS`.
+- **Layer 2** has no arrows; every left-hand key except the thumb keys is `KC_TRNS`.
+- **Layer 1** has no Ctrl+1–4; every right-hand key except the F-keys and the thumb keys is `KC_TRNS`.
+- **Alt+Backspace** is on the left thumb key [26], `A(KC_BSPC)`, which was Meh. Meh moved to the top-left key [0]. Both are `KC_TRNS` on every other layer, so they work on all layers.
+
+Use `KC_TRNS`, not `KC_NO`, on the same hand as the thumb holding the layer. The symbol is typed with the other hand, and the next letter often comes from the thumb's hand; for example, in "let's" the `s` follows `'`. If the thumb is released late, `KC_TRNS` falls through to the base layer and types the letter instead of a layer key or nothing.
