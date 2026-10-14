@@ -65,11 +65,15 @@ To fan out work, emit multiple independent `subagent` tool calls in the same ass
 ```json
 {
   "maxConcurrency": 4,
-  "requireImplementerConfirmation": true
+  "requireImplementerConfirmation": true,
+  "maxRetries": 1,
+  "retryDelayMs": 1000
 }
 ```
 
 `requireImplementerConfirmation` defaults to `true`. When enabled, every `implementer` invocation requires an interactive confirmation dialog. Set it to `false` only when you intentionally want to allow automatic implementer delegation.
+
+`maxRetries` defaults to `1`; `retryDelayMs` defaults to `1000`. The extension retries a child only for an unexpected exit before it used tools, or for a recognized transient provider failure. Replaying a child after tool use is disabled unless its agent definition sets `retry_after_tools: true`; only the read-only `code-reviewer` does so. This prevents an implementation that may have partially changed files from being run twice.
 
 The semaphore is process-local. A nested implementer process has its own cap, so `maxConcurrency` limits direct children of that process, not the whole tree.
 
@@ -97,6 +101,12 @@ The `subagent` tool receives Pi's abort signal. On cancellation, the extension:
 Important limitation: cancellation state and progress are in memory only. There is no durable checkpoint, transcript file, resumable job, or guaranteed handoff if the process dies abruptly. Temporary prompt/task files are cleaned up, and partial work is only whatever the child already committed through real tool side effects plus the parent UI's last observed JSON events.
 
 If a child is cancelled during a file edit or command, normal tool/process semantics apply; this extension does not roll back filesystem changes.
+
+## Transient-error recovery
+
+A provider error such as Codex's “An error occurred while processing your request” is reported as a failed child attempt, not successful prose. The parent retries it once by default after a one-second delay. The progress view shows the current attempt and retains the cumulative token/cost total. If the retry also fails, or the failure is not recognized as transient, the final error is returned normally.
+
+To avoid duplicate side effects, the extension never replays an agent after it has used tools unless that agent explicitly declares `retry_after_tools: true`. Keep that flag restricted to agents whose complete tool policy is read-only.
 
 ## Permissions and headless behavior
 
@@ -132,6 +142,7 @@ Agent frontmatter fields used by `index.ts`:
 - `model` — passed to child `pi` via `--models`.
 - `thinking` — passed via `--thinking`.
 - `subagent_agents` — optional comma-separated allowlist exposed to that child when it has the `subagent` tool.
+- `retry_after_tools` — set to `true` only for a strictly read-only agent that is safe to replay after it has used tools; omitted/false means only failures before any tool call can be retried.
 
 ## Reload requirements
 

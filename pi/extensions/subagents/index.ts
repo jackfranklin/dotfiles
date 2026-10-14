@@ -17,6 +17,7 @@ import type { ExtensionAPI, ExtensionContext } from "@earendil-works/pi-coding-a
 import { getMarkdownTheme, parseFrontmatter, truncateHead, withFileMutationQueue, DEFAULT_MAX_BYTES, DEFAULT_MAX_LINES } from "@earendil-works/pi-coding-agent";
 import { Container, Markdown, Spacer, Text, visibleWidth } from "@earendil-works/pi-tui";
 import { Type } from "typebox";
+import { shouldRetrySubagentFailure, waitForRetry } from "./retry.ts";
 
 // ── Types ──────────────────────────────────────────────────────────────
 
@@ -37,6 +38,8 @@ export interface AgentConfig {
 	 * `undefined` means no restriction (child sees every registered agent).
 	 */
 	subagentAgents?: string[];
+	/** Allow a failed attempt to be replayed after it has used tools. Safe only for read-only agents. */
+	retryAfterTools?: boolean;
 }
 
 interface ToolEvent {
@@ -75,6 +78,9 @@ interface AgentProgress {
 	tokens: number;
 	durationMs: number;
 	lastMessage: string;
+	/** Current attempt (one-based) and total permitted attempts, when retrying is enabled. */
+	attempt?: number;
+	maxAttempts?: number;
 	error?: string;
 }
 
@@ -99,7 +105,19 @@ interface ExtensionConfig {
 	maxConcurrency?: number;
 	/** Require an interactive confirmation before starting an implementer. */
 	requireImplementerConfirmation?: boolean;
+	/** Number of retries for transient child/provider failures. Defaults to one. */
+	maxRetries?: number;
+	/** Initial delay before a retry. Defaults to one second. */
+	retryDelayMs?: number;
 }
+
+interface RetryOptions {
+	maxRetries: number;
+	retryDelayMs: number;
+}
+
+const DEFAULT_MAX_RETRIES = 1;
+const DEFAULT_RETRY_DELAY_MS = 1000;
 
 const EXT_DIR = path.dirname(new URL(import.meta.url).pathname);
 const AGENTS_DIR = path.join(EXT_DIR, "agents");
@@ -192,6 +210,7 @@ function loadAgents(): AgentConfig[] {
 		const skillPaths = rawSkills
 			? rawSkills.split(",").map((p) => p.trim()).filter(Boolean).map((p) => resolveSkillPath(p, filePath))
 			: undefined;
+		const retryAfterTools = (frontmatter as Record<string, string>).retry_after_tools === "true";
 		agents.push({
 			name: frontmatter.name,
 			description: frontmatter.description || "",
@@ -202,6 +221,7 @@ function loadAgents(): AgentConfig[] {
 			filePath,
 			skillPaths,
 			subagentAgents,
+			retryAfterTools,
 		});
 	}
 	return agents;
@@ -458,6 +478,7 @@ async function runSubagent(
 	task: string,
 	cwd: string,
 	signal: AbortSignal | undefined,
+	retryOptions: RetryOptions,
 	onUpdate?: (progress: AgentProgress, usage: AgentResult["usage"]) => void,
 ): Promise<AgentResult> {
 	const { args, tempDir, childEnv } = await buildPiArgs(agent, task, cwd);
@@ -480,6 +501,8 @@ async function runSubagent(
 			tokens: 0,
 			durationMs: 0,
 			lastMessage: "",
+			attempt: 1,
+			maxAttempts: retryOptions.maxRetries + 1,
 		},
 	};
 
@@ -497,7 +520,22 @@ async function runSubagent(
 		onUpdate?.(progress, result.usage);
 	}, 150);
 
-	const exitCode = await new Promise<number>((resolve) => {
+	let exitCode = 1;
+	const maxAttempts = retryOptions.maxRetries + 1;
+	for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+		if (attempt > 1) {
+			result.output = "";
+			progress.recentTools = [];
+			progress.toolCount = 0;
+			progress.tokens = 0;
+			progress.lastMessage = "";
+			progress.error = undefined;
+		}
+		progress.status = "running";
+		progress.attempt = attempt;
+		progress.maxAttempts = maxAttempts;
+
+		exitCode = await new Promise<number>((resolve) => {
 		const proc = spawn(command, spawnArgs, {
 			cwd,
 			stdio: ["ignore", "pipe", "pipe"],
@@ -626,18 +664,27 @@ async function runSubagent(
 
 		let abortKillTimer: ReturnType<typeof setTimeout> | undefined;
 		let abortHandler: (() => void) | undefined;
+		let settled = false;
+		const finish = (code: number) => {
+			if (settled) return;
+			settled = true;
+			if (abortKillTimer) clearTimeout(abortKillTimer);
+			if (signal && abortHandler) signal.removeEventListener("abort", abortHandler);
+			resolve(code);
+		};
 
 		proc.on("close", (code) => {
 			if (buf.trim()) processLine(buf);
 			if (!cancellationRequested && code !== 0 && stderrBuf.trim() && !progress.error) {
 				progress.error = stderrBuf.trim();
 			}
-			if (abortKillTimer) clearTimeout(abortKillTimer);
-			if (signal && abortHandler) signal.removeEventListener("abort", abortHandler);
-			resolve(code ?? (cancellationRequested ? 130 : 1));
+			finish(code ?? (cancellationRequested ? 130 : 1));
 		});
 
-		proc.on("error", () => resolve(cancellationRequested ? 130 : 1));
+		proc.on("error", (error) => {
+			if (!cancellationRequested) progress.error = error.message;
+			finish(cancellationRequested ? 130 : 1);
+		});
 
 		if (signal) {
 			const kill = () => {
@@ -651,7 +698,42 @@ async function runSubagent(
 			if (signal.aborted) kill();
 			else signal.addEventListener("abort", kill, { once: true });
 		}
-	});
+		});
+
+		result.exitCode = cancellationRequested ? 130 : exitCode;
+		progress.durationMs = Date.now() - startTime;
+		if (cancellationRequested) {
+			progress.status = "cancelled";
+			progress.error = "Subagent was cancelled.";
+			result.output = result.output || buildCancellationOutput(progress);
+		} else {
+			progress.status = exitCode === 0 && !progress.error ? "completed" : "failed";
+			if (progress.error) result.output = result.output || `Error: ${progress.error}`;
+		}
+
+		if (
+			attempt === maxAttempts
+			|| !shouldRetrySubagentFailure({
+				exitCode,
+				error: progress.error,
+				output: result.output,
+				toolCount: progress.toolCount,
+				retryAfterTools: agent.retryAfterTools,
+				cancelled: cancellationRequested,
+			})
+		) {
+			break;
+		}
+
+		progress.status = "running";
+		progress.error = undefined;
+		progress.lastMessage = `Retrying after a transient failure (attempt ${attempt + 1} of ${maxAttempts})…`;
+		fireUpdate();
+		if (!(await waitForRetry(retryOptions.retryDelayMs, signal))) {
+			markCancelled();
+			break;
+		}
+	}
 
 	// Cleanup temp dir
 	try {
@@ -784,7 +866,10 @@ function renderAgentProgress(
 				: r.exitCode === 0
 					? theme.fg("success", "✓")
 					: theme.fg("error", "✗");
-	const stats = `${prog.toolCount} tools · ${formatDuration(prog.durationMs)}`;
+	const attempt = prog.maxAttempts && prog.maxAttempts > 1
+		? ` · attempt ${prog.attempt ?? 1}/${prog.maxAttempts}`
+		: "";
+	const stats = `${prog.toolCount} tools · ${formatDuration(prog.durationMs)}${attempt}`;
 	const modelStr = r.model ? theme.fg("dim", ` (${r.model})`) : "";
 	addLine(`${icon} ${theme.fg("toolTitle", theme.bold(r.agent))}${modelStr} — ${theme.fg("dim", stats)}`);
 
@@ -892,6 +977,14 @@ export default function (pi: ExtensionAPI) {
 	const config = loadConfig();
 	const semaphore = new Semaphore(config.maxConcurrency ?? DEFAULT_MAX_CONCURRENCY);
 	const requireImplementerConfirmation = config.requireImplementerConfirmation ?? true;
+	const retryOptions: RetryOptions = {
+		maxRetries: typeof config.maxRetries === "number" && Number.isFinite(config.maxRetries)
+			? Math.max(0, Math.floor(config.maxRetries))
+			: DEFAULT_MAX_RETRIES,
+		retryDelayMs: typeof config.retryDelayMs === "number" && Number.isFinite(config.retryDelayMs)
+			? Math.max(0, Math.floor(config.retryDelayMs))
+			: DEFAULT_RETRY_DELAY_MS,
+	};
 	agents = loadAgents();
 
 	// If spawned as a child by a parent subagent process, PI_SUBAGENT_ALLOWED
@@ -982,7 +1075,7 @@ export default function (pi: ExtensionAPI) {
 			};
 
 			const result = await semaphore.run(() =>
-				runSubagent(agent, params.task!, params.cwd ?? cwd, signal, (progress, usage) => {
+				runSubagent(agent, params.task!, params.cwd ?? cwd, signal, retryOptions, (progress, usage) => {
 					liveResult.progress = progress;
 					liveResult.usage = { ...usage };
 					onUpdate?.({

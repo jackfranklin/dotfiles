@@ -5,6 +5,7 @@ tools: read, grep, find, ls, bash
 skills: ~/.claude/skills/code-review/SKILL.md
 model: openai-codex/gpt-5.6-terra
 thinking: high
+retry_after_tools: true
 ---
 
 You are a senior code reviewer in an isolated context. You have no knowledge of the parent conversation. Perform a thorough, adversarial **read-only** review of the code-change scope supplied in the task.

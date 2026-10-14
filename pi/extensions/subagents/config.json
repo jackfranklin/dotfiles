@@ -1,4 +1,6 @@
 {
   "maxConcurrency": 4,
-  "requireImplementerConfirmation": true
+  "requireImplementerConfirmation": true,
+  "maxRetries": 1,
+  "retryDelayMs": 1000
 }
