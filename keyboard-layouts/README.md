@@ -36,7 +36,7 @@ What changed on the Go60:
 
 The Iris mirrors this arrangement. Positions are given as keys, with the `iris_rev__7.layout.json` index in brackets.
 
-- **Layer 3 is the Nav layer**, held with bottom-left `MO(3)` [18], which replaced the unused Hyper key. It has the same contents as the Go60 Nav layer. The VIA firmware allows only 4 layers, so layer 3 was repurposed rather than added. `LSA(KC_B)` [54] and `G(KC_D)` [55] remain on its right thumbs because Nav does not use those keys.
+- **Layer 3 is the Nav layer**, held with bottom-left `MO(3)` [18], which replaced the unused Hyper key. It has the same contents as the Go60 Nav layer. The VIA firmware allows only 4 layers, so layer 3 was repurposed rather than added. `LSA(KC_B)` [54] and `G(KC_D)` [55] remain on its right thumbs because Nav does not use those keys. Home is on PgUp [30] and End is on PgDn [36].
 - **F-keys moved to layer 1's number row**, in the Go60 positions: F1–F5 on 1–5, F6–F10 on 6–0, F11 on PgUp [30] and F12 on PgDn [36]. The top-left key [0] was the F-key layer key.
 - **Media keys moved to layer 2's right outer column**, in the Go60 positions: Play/Pause on PgUp [30], Vol+ on PgDn [36], Vol− on `:` [42] and Mute on Esc [48]. Layer 1's left outer column is `KC_TRNS`.
 - **Layer 2** has no arrows; every left-hand key except the thumb keys is `KC_TRNS`.
