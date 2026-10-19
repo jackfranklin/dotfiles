@@ -46,6 +46,8 @@ Implement tests and the smallest clear production change that satisfies the plan
 - Run focused tests while implementing, then the required broader verification once the change is complete.
 - Investigate and fix failures attributable to the in-progress implementation. Do not weaken tests to hide a defect. Stop only for a failure that is pre-existing, unrelated, or cannot be resolved from repository evidence; report the evidence and its impact.
 - Check formatting and inspect the final diff for unintended changes, missing tests, debug code, deviations from the approved scope, and indirection that can be removed without losing a current requirement.
+- Before each logical commit, if the task has untracked files in scope, use `git add -N -- <each untracked file in scope>` so they appear in the implementation diff without staging their contents. Then run `code-reviewer` as a read-only subagent against the exact implementation diff. Its task must include the intended behavior, non-goals, acceptance criteria, and review range. Verify every finding yourself; fix confirmed defects, plan violations, and missing required tests within the current scope.
+- When the diff adds or changes public APIs or conceptually non-obvious behavior, run `documentation-reviewer` alongside `code-reviewer`. Give it the same scope plus the exact review range. Apply every verified **Fix now** JSDoc, explanatory-comment, or documentation-drift finding that is in scope; defer only recommendations that are optional, speculative, or outside the approved plan. Reinspect the final diff after these edits and rerun the relevant review only when a fix materially changes behavior.
 
 ### 5. Commit logical, verified increments
 

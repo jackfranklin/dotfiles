@@ -38,6 +38,7 @@ Because subagents have no conversation context, the main agent must include all 
 | `researcher` | `web_search`, `web_fetch`                                              | `openai-codex/gpt-5.6-luna`, medium | Public-web research with sourced synthesis. Cannot inspect local files or run commands.                                                 |
 | `implementer` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.6-terra`, medium | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
 | `code-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Thorough static review of a defined diff or change scope. Explicitly loads the canonical `code-review` skill; read-only, with bash limited to static Git inspection. |
+| `documentation-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Read-only review of a defined diff for high-value JSDoc, explanatory-comment, and documentation-drift opportunities; bash is limited to static Git inspection. |
 
 Nested delegation stops at depth 2 in practice: the main agent can spawn `implementer`; `implementer` can spawn `scout`/`researcher`; the other agents do not have the `subagent` tool.
 
@@ -51,6 +52,7 @@ Use subagents when their separate context or isolation is valuable:
 - `researcher`: open-ended external research that would require multiple searches/fetches.
 - `implementer`: only after the main agent has a clear plan and needs a discrete, isolated implementation task completed. Its task must include the relevant scope, constraints, and acceptance criteria.
 - `code-reviewer`: a thorough, isolated review is useful for a defined diff or change scope. Include the review range, intended behavior, relevant constraints, and the desired finding format. It is read-only and does static inspection only.
+- `documentation-reviewer`: use alongside `code-reviewer` when a defined diff adds or changes public APIs or conceptually non-obvious behavior. Include the exact review range, intended behavior, and non-goals. It reports only high-value, in-scope JSDoc, explanatory-comment, and documentation-drift findings.
 
 Do not delegate just because a task uses tools. The main agent can read, edit, run tests, use `git`/`gh`, and make decisions itself. Never use `implementer` for general queries, initial investigation, architectural decisions, or writing the plan.
 
@@ -132,6 +134,7 @@ This keeps the interactive main session able to prompt normally while preventing
 - `pi/extensions/subagents/agents/researcher.md` — researcher frontmatter and system prompt.
 - `pi/extensions/subagents/agents/implementer.md` — implementer frontmatter/system prompt plus nested delegation guidance.
 - `pi/extensions/subagents/agents/code-reviewer.md` — read-only code-reviewer frontmatter and system prompt, based on the `code-review` skill.
+- `pi/extensions/subagents/agents/documentation-reviewer.md` — read-only documentation-reviewer frontmatter and system prompt for high-value documentation findings.
 
 Agent frontmatter fields used by `index.ts`:
 
