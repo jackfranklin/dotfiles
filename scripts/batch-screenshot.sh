@@ -3,7 +3,10 @@
 # Installs gnome-screenshot if needed, and on exit removes the hotkey and
 # uninstalls gnome-screenshot again (only if this script installed it).
 #
-# Usage: batch-screenshot.sh [output_dir] [hotkey]
+# Screenshots go to ~/Pictures/batch-screenshots/<name>/<timestamp>.
+#
+# Usage: batch-screenshot.sh [name] [hotkey]
+#   name is prompted for if omitted
 #   hotkey uses GNOME accelerator syntax, default <Ctrl><Alt>p
 set -euo pipefail
 
@@ -18,7 +21,12 @@ if [[ "${1:-}" == "--snap" ]]; then
   exit 0
 fi
 
-out_dir="$(realpath -m "${1:-$HOME/Pictures/batch-screenshots/$(date +%Y%m%d-%H%M%S)}")"
+name="${1:-}"
+while [[ -z "$name" ]]; do
+  read -rp "Folder name: " name
+  name="${name//\//-}"
+done
+out_dir="$HOME/Pictures/batch-screenshots/$name/$(date +%Y%m%d-%H%M%S)"
 hotkey="${2:-<Ctrl><Alt>p}"
 self="$(realpath "$0")"
 installed_by_us=false
