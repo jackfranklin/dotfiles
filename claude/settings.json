@@ -14,7 +14,7 @@
       "Bash(git merge-base *)"
     ]
   },
-  "model": "opus",
+  "model": "sonnet",
   "disableClaudeAiConnectors": true,
   "disableBundledSkills": true,
   "statusLine": {
