@@ -39,8 +39,6 @@ end
 config.harfbuzz_features = { "calt=0", "clig=0", "liga=0" }
 
 config.font_size = has_custom_config and custom_config.font_size or 15
--- Thicken underlines (e.g. Neovim diagnostics) relative to the font's own metric.
-config.underline_thickness = "300%"
 config.window_padding = {
   left = 0,
   right = 0,
