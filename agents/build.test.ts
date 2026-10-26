@@ -389,4 +389,60 @@ describe('repository sources', () => {
     assert.match(output('claude', skill), /SendMessage/);
     assert.doesNotMatch(output('pi', skill), /SendMessage|isolation/);
   });
+
+  const agent = (harness: string, name: string) =>
+    output(harness, `agents/${name}.md`);
+
+  it('exist for both harnesses', () => {
+    const expected = [
+      'code-reviewer.md',
+      'documentation-reviewer.md',
+      'implementer.md',
+      'researcher.md',
+      'scout.md',
+    ];
+    for (const harness of ['claude', 'pi']) {
+      assert.deepEqual(
+        fs.readdirSync(path.join(options.distDir, harness, 'agents')).sort(),
+        expected,
+      );
+    }
+  });
+
+  it('give the Claude code-reviewer read-only tools and the code-review skill', () => {
+    const output = agent('claude', 'code-reviewer');
+    assert.match(output, /^tools: Read, Grep, Glob, Bash$/m);
+    assert.match(output, /^model: sonnet$/m);
+    assert.match(output, /^skills:\n {2}- code-review$/m);
+  });
+
+  it('do not give the Claude implementer the Agent tool', () => {
+    assert.doesNotMatch(agent('claude', 'implementer'), /^tools: .*Agent/m);
+  });
+
+  it('point the Pi code-reviewer at the Pi code-review skill', () => {
+    const output = agent('pi', 'code-reviewer');
+    assert.ok(
+      output.includes(
+        `skills: "${options.targets.pi.skills}/code-review/SKILL.md"`,
+      ),
+    );
+    assert.match(output, /^retry_after_tools: true$/m);
+  });
+
+  it('let the Pi implementer delegate to scout and researcher', () => {
+    assert.match(
+      agent('pi', 'implementer'),
+      /^subagent_agents: "scout, researcher"$/m,
+    );
+  });
+
+  it('keep the implementer delegation guidance for Pi only', () => {
+    const claude = agent('claude', 'implementer');
+    const pi = agent('pi', 'implementer');
+    for (const text of ['## Delegation', 'permissions extension']) {
+      assert.ok(pi.includes(text), text);
+      assert.ok(!claude.includes(text), text);
+    }
+  });
 });

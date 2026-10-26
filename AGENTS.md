@@ -46,15 +46,17 @@ Runs confirmed, session-scoped recurring shell checks. It reports only changed o
 
 Registers the `subagent` tool, which starts isolated, headless child Pi processes. Children receive only the supplied task and working directory; they do not inherit the parent conversation or skills. The parent shows live progress and receives the child's final text as the result.
 
+Their definitions are shared with Claude Code: sources are in `agents/subagents/` and `make agents` generates the Pi copies into `~/.pi/agent/agents/`.
+
 Available agents:
 
 - `scout`: read-only local codebase reconnaissance (`read`, `grep`, `find`, `ls`).
 - `researcher`: public-web research only (`web_search`, `web_fetch`).
 - `implementer`: performs a discrete implementation task from a plan already established by the parent. It must receive scope, constraints, and acceptance criteria. Do not use it for general queries, exploration, architectural decisions, or planning. It may delegate only to `scout` and `researcher`.
-- `code-reviewer`: performs a thorough, read-only static review of a defined diff or change scope. It explicitly loads the canonical `claude/skills/code-review/SKILL.md` workflow, may use static Git inspection, and must not edit files or run tests, builds, formatters, linters, or application code.
+- `code-reviewer`: performs a thorough, read-only static review of a defined diff or change scope. It explicitly loads the shared `code-review` skill (`agents/skills/code-review/SKILL.md`), may use static Git inspection, and must not edit files or run tests, builds, formatters, linters, or application code.
 - `documentation-reviewer`: performs a read-only review of a defined diff for high-value, in-scope JSDoc, explanatory-comment, and documentation-drift findings. It may use static Git inspection and must not edit files or run tests, builds, formatters, linters, or application code.
 
-Subagents load the permissions extension. Operations that would need an interactive approval fail closed. `extensions/subagents/config.json` limits concurrent child processes; agent definitions are in `extensions/subagents/agents/`.
+Subagents load the permissions extension. Operations that would need an interactive approval fail closed. `extensions/subagents/config.json` limits concurrent child processes.
 
 ### `web-fetch`
 

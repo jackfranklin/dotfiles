@@ -6,7 +6,7 @@ This extension registers one Pi tool, `subagent`, that lets the main agent spawn
 
 ## Architecture and control flow
 
-1. The extension loads agent definitions from `pi/extensions/subagents/agents/*.md` and runtime options from `pi/extensions/subagents/config.json`.
+1. The extension loads agent definitions from `~/.pi/agent/agents/*.md` and runtime options from `pi/extensions/subagents/config.json`. The definitions are generated from the shared sources in `agents/subagents/` by `make agents` (see `agents/README.md`); an unreadable definition is skipped with a warning.
 2. Pi exposes a single `subagent` tool to the main agent. The tool schema is `{ agent, task, cwd? }`.
 3. When called, `index.ts` resolves the current `pi` binary and starts a child process in JSON print mode:
    - `--mode json -p --no-session --no-skills`
@@ -26,7 +26,7 @@ There is no file handoff protocol. Any handoff is verbal: the child must summari
 There are two separate instruction layers:
 
 - `promptGuidelines` in `index.ts` are injected into the **main agent** when the `subagent` tool is available. They tell the main agent when delegation is appropriate, how to parallelize, and what limits each child has.
-- `agents/*.md` frontmatter and body define each **child agent**. The frontmatter controls tools/model/thinking; the markdown body becomes the child's appended system prompt.
+- The generated `~/.pi/agent/agents/*.md` frontmatter and body define each **child agent**. The frontmatter controls tools/model/thinking; the markdown body becomes the child's appended system prompt.
 
 Because subagents have no conversation context, the main agent must include all required details in `task`: relevant files, goals, constraints, prior decisions, and expected output.
 
@@ -36,7 +36,7 @@ Because subagents have no conversation context, the main agent must include all 
 | ------------ | ---------------------------------------------------------------------- | ----------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
 | `scout`      | `read`, `grep`, `find`, `ls`                                           | `openai-codex/gpt-5.6-luna`, low    | Read-only codebase recon and architecture mapping. Cannot run shell commands such as `git`/`gh`, cannot edit files, cannot use the web. |
 | `researcher` | `web_search`, `web_fetch`                                              | `openai-codex/gpt-5.6-luna`, medium | Public-web research with sourced synthesis. Cannot inspect local files or run commands.                                                 |
-| `implementer` | `read`, `write`, `edit`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.6-terra`, medium | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
+| `implementer` | `read`, `write`, `edit`, `grep`, `find`, `ls`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.6-terra`, medium | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
 | `code-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Thorough static review of a defined diff or change scope. Explicitly loads the canonical `code-review` skill; read-only, with bash limited to static Git inspection. |
 | `documentation-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Read-only review of a defined diff for high-value JSDoc, explanatory-comment, and documentation-drift opportunities; bash is limited to static Git inspection. |
 
@@ -130,13 +130,9 @@ This keeps the interactive main session able to prompt normally while preventing
 
 - `pi/extensions/subagents/index.ts` — extension implementation, tool registration, prompt guidelines, process spawning, progress rendering, cancellation, concurrency, child allowlists.
 - `pi/extensions/subagents/config.json` — `maxConcurrency` for direct child processes and the implementer-confirmation setting.
-- `pi/extensions/subagents/agents/scout.md` — scout frontmatter and system prompt.
-- `pi/extensions/subagents/agents/researcher.md` — researcher frontmatter and system prompt.
-- `pi/extensions/subagents/agents/implementer.md` — implementer frontmatter/system prompt plus nested delegation guidance.
-- `pi/extensions/subagents/agents/code-reviewer.md` — read-only code-reviewer frontmatter and system prompt, based on the `code-review` skill.
-- `pi/extensions/subagents/agents/documentation-reviewer.md` — read-only documentation-reviewer frontmatter and system prompt for high-value documentation findings.
+- `agents/subagents/*.md` (repository root) — the shared, harness-agnostic sources for `scout`, `researcher`, `implementer` (including its Pi-only nested delegation guidance), `code-reviewer` (based on the `code-review` skill) and `documentation-reviewer`. Their source format is documented in `agents/README.md`; `make agents` generates the Pi definitions below into `~/.pi/agent/agents/`.
 
-Agent frontmatter fields used by `index.ts`:
+Generated agent frontmatter fields used by `index.ts`:
 
 - `name` — tool argument name.
 - `description` — parsed agent metadata for maintainers/future UI; the current tool prompt uses the hard-coded `promptGuidelines` in `index.ts`.
@@ -145,10 +141,10 @@ Agent frontmatter fields used by `index.ts`:
 - `model` — passed to child `pi` via `--models`.
 - `thinking` — passed via `--thinking`.
 - `subagent_agents` — optional comma-separated allowlist exposed to that child when it has the `subagent` tool.
-- `retry_after_tools` — set to `true` only for a strictly read-only agent that is safe to replay after it has used tools; omitted/false means only failures before any tool call can be retried.
+- `retry_after_tools` — `true` only for a strictly read-only agent that is safe to replay after it has used tools; omitted/false means only failures before any tool call can be retried. YAML parses it as a boolean, so `index.ts` compares its string form.
 
 ## Reload requirements
 
-Agent definitions and `config.json` are read when the extension module loads. After editing `index.ts`, `config.json`, or any `agents/*.md` file, restart/reload the Pi session for the main process to pick up changes.
+Agent definitions and `config.json` are read when the extension module loads. After editing `index.ts` or `config.json`, or after running `make agents` for a changed `agents/subagents/*.md` source, restart/reload the Pi session for the main process to pick up changes.
 
 A running child process has already received its prompt, tool allowlist, model, and environment; changes on disk do not affect it. Children spawned after a reload use the new configuration.
