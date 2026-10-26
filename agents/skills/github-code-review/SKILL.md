@@ -113,7 +113,7 @@ invoke the skill's trusted helper. It owns the temporary refs, worktree, state,
 and cleanup lifecycle:
 
 ```bash
-bash /home/jack/.claude/skills/github-code-review/scripts/github-code-review-worktree \
+bash {{skills_dir}}/github-code-review/scripts/github-code-review-worktree \
   start <number> <baseRefName-from-step-1> origin
 ```
 
@@ -128,7 +128,7 @@ the failure and do not silently review the active checkout instead. Always
 request cleanup when the review is finished or cannot continue:
 
 ```bash
-bash /home/jack/.claude/skills/github-code-review/scripts/github-code-review-worktree \
+bash {{skills_dir}}/github-code-review/scripts/github-code-review-worktree \
   finish "$STATE_FILE"
 ```
 

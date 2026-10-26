@@ -2,7 +2,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
-import { describe, it } from 'node:test';
+import { before, describe, it } from 'node:test';
 import { build, type BuildOptions } from './build.ts';
 import { BuildError } from './transform.ts';
 
@@ -346,5 +346,47 @@ describe('build', () => {
       fs.existsSync(path.join(options.distDir, 'claude/skills/stale')),
       false,
     );
+  });
+});
+
+describe('repository sources', () => {
+  const options = setup();
+  options.sourceDir = import.meta.dirname;
+  let result: ReturnType<typeof build>;
+  before(() => {
+    result = build(options);
+  });
+  const output = (harness: string, relative: string) =>
+    read(path.join(options.distDir, harness, relative));
+
+  it('build without errors', () => {
+    assert.ok(result.skills.includes('github-code-review'));
+  });
+
+  it('leave no template tokens in generated markdown', () => {
+    const leftovers = ['claude', 'pi'].flatMap((harness) =>
+      fs
+        .readdirSync(path.join(options.distDir, harness), { recursive: true })
+        .map(String)
+        .filter((file) => file.endsWith('.md'))
+        .filter((file) => /\{\{[#/]?[a-z_]+\}\}/.test(output(harness, file))),
+    );
+    assert.deepEqual(leftovers, []);
+  });
+
+  it('point github-code-review at each harness skills directory', () => {
+    for (const harness of ['claude', 'pi'] as const) {
+      assert.ok(
+        output(harness, 'skills/github-code-review/SKILL.md').includes(
+          `bash ${options.targets[harness].skills}/github-code-review/scripts/`,
+        ),
+      );
+    }
+  });
+
+  it('only tell Claude to resume implementers with SendMessage', () => {
+    const skill = 'skills/implement-orchestrate/SKILL.md';
+    assert.match(output('claude', skill), /SendMessage/);
+    assert.doesNotMatch(output('pi', skill), /SendMessage|isolation/);
   });
 });

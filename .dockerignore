@@ -3,7 +3,5 @@
 *
 !agent-runner/
 !agent-runner/**
-!claude/
-!claude/skills/
-!claude/skills/code-review/
-!claude/skills/code-review/**
+!agents/skills/code-review/
+!agents/skills/code-review/**

@@ -8,12 +8,13 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 
 - Neovim configuration is in `nvim/`; run `make lua_specs` for its Lua tests.
 - Fish functions are in `fish/functions/`.
-- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
+- Claude's global configuration is in `claude/`; `make claude` installs its symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`.
+- Every custom skill lives in `agents/skills/` and every subagent in `agents/subagents/`. `make agents` (run by `make claude` and `make pi`) generates Claude and Pi copies into `agents/dist/` and links them into `~/.claude/{skills,agents}` and `~/.pi/agent/{skills,agents}`; see `agents/README.md`. Never edit the generated copies. Skills installed by hand there (such as `load-cloudflare`'s bundle in `~/.pi/agent/skills`) are left alone, but must not share a name with a skill in `agents/skills/`.
 - Format JavaScript/TypeScript with the repository Prettier configuration: semicolons, trailing commas, and single quotes.
 
 ## Pi configuration
 
-- `settings.json` selects the light theme, OpenAI Codex as the default provider/model, high thinking, enabled models, and discovers skills from `~/.claude/skills`.
+- `settings.json` selects the light theme, OpenAI Codex as the default provider/model, high thinking, and enabled models. Pi loads skills from its default `~/.pi/agent/skills`, where `make agents` links them.
 - `permissions.json` is used by the permissions extension. It contains glob rules that classify commands and file operations as safe, approval-required, or blocked.
 - `extensions/` is symlinked to `~/.pi/agent/extensions/`. Pi auto-discovers a top-level `.ts` extension or a nested `index.ts` in that directory.
 - `make pi_deps` installs the production dependencies needed by `extensions/web-fetch`.

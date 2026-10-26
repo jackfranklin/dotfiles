@@ -90,6 +90,9 @@ Claude subagents cannot spawn subagents, so `subagent` is dropped for Claude.
 
 ## Template syntax
 
+`skills/code-review` must stay free of template tokens: the agent-runner
+image copies its source directly, not the generated output.
+
 - `{{skills_dir}}` becomes the absolute skills directory of the harness
   (`~/.claude/skills` or `~/.pi/agent/skills`, expanded).
 - `{{#claude}}…{{/claude}}` and `{{#pi}}…{{/pi}}` keep their content for that
@@ -108,6 +111,79 @@ Claude subagents cannot spawn subagents, so `subagent` is dropped for Claude.
 
 ## Migrating
 
+Before this build existed, `~/.claude/skills` and `~/.claude/agents` were
+symlinks to whole folders in this repository, and claude.ai wrote its synced
+skills into `claude/skills/synced/`. The build refuses to run while an install
+directory is a symlink. To migrate a machine once:
+
+1. `git status --ignored --short claude/` should list only
+   `claude/skills/synced/`. If it lists anything else, decide where that
+   belongs before continuing.
+2. Replace the skills link with a real directory and move the synced skills
+   into it:
+
+   ```bash
+   rm ~/.claude/skills   # removes the symlink only
+   mkdir ~/.claude/skills
+   mv ~/dotfiles/claude/skills/synced ~/.claude/skills/synced
+   rmdir ~/dotfiles/claude/skills/feedback ~/dotfiles/claude/skills
+   ```
+
+3. Replace the agents link: `rm ~/.claude/agents && mkdir ~/.claude/agents`.
+4. Run `make agents`.
+
 If you move this repository, the old links in the install directories point at
 the old location; the build reports them as collisions. Delete those links and
 run `make agents` again.
+
+## Skill catalogue
+
+### 1. Exploring an Idea
+
+- `/grill-me` — Stress-test a plan, proposal, or design through an interactive interview.
+
+### 2. Planning
+
+- `/write-plan` — Rigorous TDD plan with exact file paths, real code in every step, and interface contracts between tasks.
+- `/review-plan` — Open a plan in the browser for inline review and annotation.
+
+### 3. Implementation & Debugging
+
+- `implement-plan` — Implement an approved plan safely with testing, continuous validation, and atomic commits. (Model-invocable)
+- `/implement-orchestrate` — Implement an approved plan as an orchestrator: subagents implement each task, parallel subagents review it.
+- `resolve-merge-conflict` — Resolve in-progress git merge/rebase conflicts cleanly. (Model-invocable)
+- `/one-by-one` — Execute a plan step-by-step with interactive checkpoints.
+
+### 4. Review & Quality
+
+- `code-review` — Aggressive maintainability review focused on structural simplification, deleting complexity, and type safety. (Model-invocable)
+- `/fresh-eyes-amend` — Review recent local changes with a fresh perspective before amending or committing.
+- `/review-diff` — Open a git diff in the browser for visual review.
+- `/github-code-review` — Fetch and review GitHub pull requests.
+
+### 5. Communication & Clarification
+
+- `/wtf` — Re-pitch the preceding response in clear, plain language using ASD-STE100 technical English.
+
+### 6. Architecture, Handoff & Reference
+
+- `/adr` — Record an Architectural Decision Record while the reasoning is fresh.
+- `/handoff` — Summarize in-progress work as a GitHub Issue for a future session or collaborator.
+- `/later` — Log a backlog item or idea as a GitHub Issue without losing the current thread.
+- `/jack-references` — Save, search, and manage personal technical reference notes.
+- `lexicon` — Define, review, and audit a project's domain vocabulary across code and docs. (Model-invocable)
+- `/writing-great-skills` — Authoring guide and standards for Claude/Gemini skills.
+
+### 7. Ecosystem & Framework Scaffolding
+
+- `/load-cloudflare` — Install Cloudflare's current skill bundle for Pi on demand; it does nothing when already installed.
+- `/new-deno-app` — Scaffold a new Deno application.
+- `/new-lit-pwa` — Scaffold a new Lit-based Progressive Web App.
+
+### Standalone recipes
+
+Standalone operational guides and reference sheets are located in [`docs/recipes/`](../docs/recipes/):
+
+- [`convert-audio-mono`](../docs/recipes/convert-audio-mono.md) — Audio channel volume analysis and mono conversion.
+- [`steam-status`](../docs/recipes/steam-status.md) — Steam startup and client-update diagnostics.
+- [`update-neovim`](../docs/recipes/update-neovim.md) — Automated Neovim GitHub release updates.

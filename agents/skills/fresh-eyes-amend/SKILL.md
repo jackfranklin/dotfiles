@@ -25,7 +25,7 @@ Use this skill when you want to amend the previous commit and ensure the commit 
     Keep this as `FULL_DIFF`.
 
 4.  **Spawn Subagents with Zero Context**:
-    Invoke **two** parallel subagents using the `invoke_subagent` tool. Both subagents must receive the identical `FULL_DIFF` and be instructed to evaluate it with zero prior context.
+    Invoke **two** parallel subagents {{#claude}}using the Agent tool (`general-purpose`){{/claude}}{{#pi}}using the `subagent` tool with the `scout` agent{{/pi}}. Both subagents must receive the identical `FULL_DIFF` and be instructed to evaluate it with zero prior context.
 
     *   **Subagent 1** (`FreshEyesReviewer1`):
         *   **Role**: Fresh Eyes Reviewer A
@@ -34,6 +34,8 @@ Use this skill when you want to amend the previous commit and ensure the commit 
             You are a fresh-eyes code reviewer. Your only source of information is the git diff provided below. Do not use any other tools to explore the codebase or check git history. Write a high-quality commit message (following standard guidelines: imperative mood, clear summary, explanation of "why" and "how" in the body) that accurately and completely summarizes the changes in this diff. Do not assume any context outside of what is visible in the diff.
 
             CRITICAL: Do NOT include trivial, inane, or self-evident details in the message body (e.g., "added unit tests", "fixed lint errors", "updated imports", "formatted code", "updated build files"). Focus exclusively on the logical "why" and "how" of the change.
+
+            Ignore any output format from your own instructions; reply with only the commit message.
 
             Diff:
             <FULL_DIFF>

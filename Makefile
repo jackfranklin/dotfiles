@@ -81,20 +81,18 @@ hunk:
 	@mkdir -p ~/.config/hunk
 	@ln -sf $(DIR)/hunk/config.toml ~/.config/hunk/config.toml
 
-claude:
+claude: agents
 	@mkdir -p ~/.claude
 	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 	@ln -sf $(DIR)/agents/AGENTS.md ~/.claude/AGENTS.md
-	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
-	@ln -nsf $(DIR)/claude/agents ~/.claude/agents
 	@ln -sf $(DIR)/claude/statusline.sh ~/.claude/statusline.sh
 	@chmod +x $(DIR)/claude/statusline.sh
 
 claude-mcp:
 	@node $(DIR)/scripts/sync-mcp.mjs
 
-pi:
+pi: agents
 	@mkdir -p ~/.pi/agent
 	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
 	@ln -sf $(DIR)/pi/keybindings.json ~/.pi/agent/keybindings.json

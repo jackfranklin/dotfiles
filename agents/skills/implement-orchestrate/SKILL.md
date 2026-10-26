@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Orchestrate an Approved Plan
 
-Read `~/.claude/skills/implement-plan/SKILL.md` first. Every rule and workflow step in it applies unchanged; it is the single source of truth for scope, branching, testing, simplicity, commits, PRs, and the final report. This skill changes only **who does the work**: you are the orchestrator, sub-agents are the hands and the fresh eyes.
+Read `{{skills_dir}}/implement-plan/SKILL.md` first. Every rule and workflow step in it applies unchanged; it is the single source of truth for scope, branching, testing, simplicity, commits, PRs, and the final report. This skill changes only **who does the work**: you are the orchestrator, sub-agents are the hands and the fresh eyes.
 
 Invoking this skill is the user's explicit authorization to spawn sub-agents.
 
@@ -14,7 +14,7 @@ Invoking this skill is the user's explicit authorization to spawn sub-agents.
 
 1. **You own Git.** Only you branch, stage, commit, push, and open the PR. Sub-agents edit files and nothing else — tell every implementer: "Do not run any git command that changes state."
 2. **Trust nothing reported.** A sub-agent saying "tests pass" or "done" is a claim, not evidence. Before accepting a task you run the verification commands yourself and read the full diff.
-3. **Serial by default.** Implement tasks one at a time in the shared worktree. Run implementers in parallel only when the plan marks tasks independent _and_ their file sets are disjoint; give each `isolation: "worktree"` and merge their results yourself, one task at a time.
+3. **Serial by default.** Implement tasks one at a time in the shared worktree. {{#claude}}Run implementers in parallel only when the plan marks tasks independent _and_ their file sets are disjoint; give each `isolation: "worktree"` and merge their results yourself, one task at a time.{{/claude}}{{#pi}}Pi subagents cannot be isolated in separate worktrees, so never run implementers in parallel.{{/pi}}
 4. **The plan is the scope boundary — for reviewers too.** A finding is fixed now only if it is a defect, a plan violation, a missing test the plan requires, or a verified high-value documentation finding within the changed behavior. Anything else, however good, is deferred to the final report. `code-reviewer` and `documentation-reviewer` apply distinct correctness and documentation lenses; you verify their findings again in triage.
 5. **Bounded loops.** At most two review → fix rounds per task. If the third review still has fix-now findings, stop and escalate to the user with the outstanding findings.
 6. **Escalate blockers, don't absorb them.** Sub-agents cannot ask the user. When one returns `BLOCKED: <question>`, answer it only if the plan or repository evidence settles it; otherwise apply implement-plan rule 2 and ask the user.
@@ -36,9 +36,14 @@ Spawn an `implementer` sub-agent. Its brief contains:
 - relevant repository guidance paths (`AGENTS.md`, `CLAUDE.md`);
 - what to return: files changed, tests added, commands run, any deviation from the task.
 
-Keep its agent ID; you will resume it for fixes.
+{{#claude}}
+Keep its agent ID; you will resume it for fixes with SendMessage.
+{{/claude}}
+{{#pi}}
+Pi subagents cannot be resumed. Keep its brief: for fixes, start a new `implementer` with the original brief, a summary of the current diff, and the failure or fix list.
+{{/pi}}
 
-**Done when** the implementer has returned and you have run the task's verification commands yourself and they pass, and the diff contains only files within the task's scope. If not, resume the implementer with the concrete failure.
+**Done when** the implementer has returned and you have run the task's verification commands yourself and they pass, and the diff contains only files within the task's scope. If not, {{#claude}}resume the implementer{{/claude}}{{#pi}}start a new implementer as described above{{/pi}} with the concrete failure.
 
 ### 3. For each task: review in parallel
 
@@ -50,7 +55,7 @@ Each brief contains the task text verbatim, its non-goals, acceptance criteria, 
 
 ### 4. For each task: triage, fix, commit
 
-Verify every finding against the code yourself; reviewers are wrong sometimes. Sort each into **fix**, **defer** (report it), or **reject** (record one line of reasoning). A verified **Fix now** finding from documentation-reviewer is fixed when it documents changed public or non-obvious behavior and remains within the plan's scope. Resume the implementer with the **fix** list only. Re-verify (step 2's criterion), then re-review only if the fixes materially change behavior, within rule 5's limit.
+Verify every finding against the code yourself; reviewers are wrong sometimes. Sort each into **fix**, **defer** (report it), or **reject** (record one line of reasoning). A verified **Fix now** finding from documentation-reviewer is fixed when it documents changed public or non-obvious behavior and remains within the plan's scope. {{#claude}}Resume the implementer{{/claude}}{{#pi}}Start a new implementer as described in step 2{{/pi}} with the **fix** list only. Re-verify (step 2's criterion), then re-review only if the fixes materially change behavior, within rule 5's limit.
 
 Commit the task per implement-plan step 5.
 
