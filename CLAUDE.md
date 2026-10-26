@@ -17,7 +17,8 @@ make neovim      # ~/dotfiles/nvim → ~/.config/nvim
 make fish        # ~/dotfiles/fish → ~/.config/fish
 make git         # gitconfig + gitignore_global → ~/.gitconfig / ~/.gitignore_global
 make kitty       # ~/dotfiles/kitty → ~/.config/kitty
-make claude      # settings.json + CLAUDE.md + shared AGENTS.md + skills + agents → ~/.claude/
+make claude      # settings.json + CLAUDE.md + shared AGENTS.md → ~/.claude/, plus make agents
+make agents      # build agents/skills + agents/subagents and link them into ~/.claude and ~/.pi/agent
 
 # Install system packages (Ubuntu/Debian)
 make ubuntu-deps
@@ -57,7 +58,11 @@ Primary shell. Custom functions live in `fish/functions/`. Git workflow shortcut
 
 ### Claude Integration (`claude/`)
 
-`claude/CLAUDE.md` is symlinked to `~/.claude/CLAUDE.md` (global Claude Code instructions, separate from this file). Skills in `claude/skills/` each have a `SKILL.md` manifest. The feedback skill is a Deno + SQLite CLI compiled to a binary.
+`claude/CLAUDE.md` is symlinked to `~/.claude/CLAUDE.md` (global Claude Code instructions, separate from this file).
+
+### Shared skills and subagents (`agents/`)
+
+Skills (`agents/skills/`) and subagents (`agents/subagents/`) are written once for both Claude Code and Pi. `make agents` generates per-harness copies into `agents/dist/` and links each one into `~/.claude/{skills,agents}` and `~/.pi/agent/{skills,agents}`. Edit the sources, never the generated copies. See `agents/README.md`; run `make agents_specs` for the build's tests.
 
 ### Git Config (`git/`)
 
@@ -71,4 +76,4 @@ Neovim uses `conform.nvim` for format-on-save. Formatters are configured per fil
 
 ## Testing
 
-Only `nvim/lua/jack/alternate-files_spec.lua` has automated tests. Run with `make lua_specs` (requires `busted` installed via LuaRocks). There is no CI.
+`nvim/lua/jack/alternate-files_spec.lua` is tested with `make lua_specs` (requires `busted` installed via LuaRocks). The shared skills build is tested with `make agents_specs` (`agents/*.test.ts`, Node ≥ 24). There is no CI.

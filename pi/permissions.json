@@ -6,7 +6,6 @@
     "Edit(/home/jack/dotfiles/*)",
     "Write(/home/jack/.pi/agent/skills/*)",
     "Bash(cp * /tmp*)",
-    "Edit(/home/jack/.claude/skills/*)",
     "Bash(git push --force-with-lease)",
     "Bash(npm install *)"
   ],

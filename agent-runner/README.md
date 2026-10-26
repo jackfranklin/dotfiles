@@ -59,7 +59,7 @@ Claude receives a mode-specific prompt built from the issue title, body, comment
 
 In implement mode, Claude is told to commit, push, and open the PR itself (`gh pr create` with a descriptive title/body it writes, referencing `Closes #N`) rather than the entrypoint generating a generic "Fix #N" PR. The entrypoint checks afterward whether a PR now exists for the branch; if Claude made changes but didn't finish the git workflow, the entrypoint commits/pushes/opens a generic fallback PR so the work is never silently lost.
 
-The image packages `claude/skills/code-review` as the shared review standard. Its PR-context skill lives at `agent-runner/skills/agent-runner-github-code-review/` and is copied only into the image, so the host `github-code-review` skill remains focused on safely reviewing from an active local checkout.
+The image packages `agents/skills/code-review` as the shared review standard. Its PR-context skill lives at `agent-runner/skills/agent-runner-github-code-review/` and is copied only into the image, so the host `github-code-review` skill remains focused on safely reviewing from an active local checkout.
 
 ## Installing Docker
 

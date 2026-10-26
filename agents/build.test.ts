@@ -1,0 +1,455 @@
+import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
+import { before, describe, it } from 'node:test';
+import { build, type BuildOptions } from './build.ts';
+import { BuildError } from './transform.ts';
+
+function setup(): BuildOptions & { root: string } {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'agents-build-'));
+  return {
+    root,
+    sourceDir: path.join(root, 'src'),
+    distDir: path.join(root, 'dist'),
+    targets: {
+      claude: {
+        skills: path.join(root, 'claude/skills'),
+        agents: path.join(root, 'claude/agents'),
+      },
+      pi: {
+        skills: path.join(root, 'pi/skills'),
+        agents: path.join(root, 'pi/agents'),
+      },
+    },
+  };
+}
+
+function write(filePath: string, content: string, mode = 0o644): void {
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, content, { mode });
+  fs.chmodSync(filePath, mode);
+}
+
+function addSkill(
+  options: BuildOptions,
+  name: string,
+  body = 'Run {{skills_dir}}/x.',
+): void {
+  write(
+    path.join(options.sourceDir, 'skills', name, 'SKILL.md'),
+    `---\nname: ${name}\ndescription: The ${name} skill.\n---\n${body}\n`,
+  );
+}
+
+function addSubagent(
+  options: BuildOptions,
+  name: string,
+  extra: string[] = [],
+): void {
+  write(
+    path.join(options.sourceDir, 'subagents', `${name}.md`),
+    [
+      '---',
+      `name: ${name}`,
+      'description: d',
+      'tools: read, find',
+      ...extra,
+      '---',
+      'Body',
+    ].join('\n'),
+  );
+}
+
+const read = (filePath: string) => fs.readFileSync(filePath, 'utf8');
+const mode = (filePath: string) => fs.statSync(filePath).mode & 0o777;
+const linkTarget = (filePath: string) => fs.readlinkSync(filePath);
+
+describe('build', () => {
+  it('renders both harnesses and links each item', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    write(
+      path.join(options.sourceDir, 'skills/alpha/scripts/run'),
+      '#!/bin/sh\n',
+      0o755,
+    );
+    addSubagent(options, 'helper', ['skills: alpha']);
+
+    const result = build(options);
+
+    assert.deepEqual(result, {
+      skills: ['alpha'],
+      subagents: ['helper'],
+      pruned: [],
+    });
+    const claudeSkill = path.join(
+      options.distDir,
+      'claude/skills/alpha/SKILL.md',
+    );
+    const makeCommand = `then run \`make -C ${options.root} agents\``;
+    assert.ok(
+      read(claudeSkill).includes(
+        `edit ${path.join(options.sourceDir, 'skills/alpha/SKILL.md')}, ${makeCommand}`,
+      ),
+    );
+    assert.ok(
+      read(path.join(options.distDir, 'pi/agents/helper.md')).includes(
+        `edit ${path.join(options.sourceDir, 'subagents/helper.md')}, ${makeCommand}`,
+      ),
+    );
+    assert.match(
+      read(claudeSkill),
+      new RegExp(`Run ${options.targets.claude.skills}/x\\.`),
+    );
+    assert.match(
+      read(path.join(options.distDir, 'pi/skills/alpha/SKILL.md')),
+      new RegExp(`Run ${options.targets.pi.skills}/x\\.`),
+    );
+    assert.equal(mode(claudeSkill), 0o444);
+    assert.equal(
+      mode(path.join(options.distDir, 'pi/skills/alpha/scripts/run')),
+      0o555,
+    );
+    assert.match(
+      read(path.join(options.distDir, 'claude/agents/helper.md')),
+      /tools: Read, Glob/,
+    );
+    assert.match(
+      read(path.join(options.distDir, 'pi/agents/helper.md')),
+      new RegExp(`skills: "${options.targets.pi.skills}/alpha/SKILL.md"`),
+    );
+
+    assert.equal(
+      linkTarget(path.join(options.targets.claude.skills, 'alpha')),
+      path.join(options.distDir, 'claude/skills/alpha'),
+    );
+    assert.equal(
+      linkTarget(path.join(options.targets.pi.agents, 'helper.md')),
+      path.join(options.distDir, 'pi/agents/helper.md'),
+    );
+  });
+
+  it('is idempotent over read-only output', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    build(options);
+    const link = path.join(options.targets.pi.skills, 'alpha');
+    const before = linkTarget(link);
+    const result = build(options);
+    assert.deepEqual(result.pruned, []);
+    assert.equal(linkTarget(link), before);
+    assert.ok(fs.existsSync(path.join(link, 'SKILL.md')));
+  });
+
+  it('prunes links for removed sources from both harnesses', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    addSkill(options, 'beta');
+    addSubagent(options, 'helper');
+    build(options);
+
+    fs.rmSync(path.join(options.sourceDir, 'skills/beta'), { recursive: true });
+    fs.rmSync(path.join(options.sourceDir, 'subagents/helper.md'));
+    const result = build(options);
+
+    assert.deepEqual(result.pruned.sort(), [
+      'claude/agents/helper.md',
+      'claude/skills/beta',
+      'pi/agents/helper.md',
+      'pi/skills/beta',
+    ]);
+    assert.equal(
+      fs.existsSync(path.join(options.targets.claude.skills, 'beta')),
+      false,
+    );
+    assert.ok(fs.existsSync(path.join(options.targets.claude.skills, 'alpha')));
+  });
+
+  it('leaves entries it does not own untouched', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    write(
+      path.join(options.targets.claude.skills, 'synced/manifest.json'),
+      '{}',
+    );
+    fs.mkdirSync(options.targets.pi.skills, { recursive: true });
+    fs.symlinkSync(
+      options.root,
+      path.join(options.targets.pi.skills, 'elsewhere'),
+    );
+
+    build(options);
+    fs.rmSync(path.join(options.sourceDir, 'skills/alpha'), {
+      recursive: true,
+    });
+    build(options);
+
+    assert.ok(
+      fs.existsSync(
+        path.join(options.targets.claude.skills, 'synced/manifest.json'),
+      ),
+    );
+    assert.equal(
+      linkTarget(path.join(options.targets.pi.skills, 'elsewhere')),
+      options.root,
+    );
+  });
+
+  it('refuses to replace an unmanaged entry and changes nothing', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    build(options);
+    write(path.join(options.distDir, 'sentinel'), 'previous build');
+
+    addSkill(options, 'open-pr');
+    write(
+      path.join(options.targets.pi.skills, 'open-pr/SKILL.md'),
+      'hand installed',
+    );
+
+    assert.throws(() => build(options), /open-pr: already exists/);
+    assert.equal(
+      read(path.join(options.distDir, 'sentinel')),
+      'previous build',
+    );
+    assert.ok(fs.existsSync(path.join(options.targets.claude.skills, 'alpha')));
+    assert.equal(
+      fs.existsSync(path.join(options.targets.claude.skills, 'open-pr')),
+      false,
+    );
+  });
+
+  it('names the target of a foreign symlink that collides', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    fs.mkdirSync(options.targets.claude.skills, { recursive: true });
+    fs.symlinkSync(
+      '/somewhere/else',
+      path.join(options.targets.claude.skills, 'alpha'),
+    );
+
+    assert.throws(() => build(options), /a symlink to \/somewhere\/else/);
+  });
+
+  it('refuses a symlinked target directory given with a trailing slash', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    fs.mkdirSync(path.join(options.root, 'repo-skills'));
+    fs.mkdirSync(path.dirname(options.targets.claude.skills), {
+      recursive: true,
+    });
+    fs.symlinkSync(
+      path.join(options.root, 'repo-skills'),
+      options.targets.claude.skills,
+    );
+    options.targets.claude.skills += '/';
+
+    assert.throws(() => build(options), /Migrating/);
+    assert.deepEqual(
+      fs.readdirSync(path.join(options.root, 'repo-skills')),
+      [],
+    );
+  });
+
+  it('refuses a target directory that is a symlink', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    fs.mkdirSync(path.join(options.root, 'repo-skills'));
+    fs.mkdirSync(path.dirname(options.targets.claude.skills), {
+      recursive: true,
+    });
+    fs.symlinkSync(
+      path.join(options.root, 'repo-skills'),
+      options.targets.claude.skills,
+    );
+
+    assert.throws(() => build(options), /Migrating/);
+    assert.equal(fs.existsSync(options.distDir), false);
+  });
+
+  it('keeps the previous build when a template is invalid', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    build(options);
+
+    addSkill(options, 'alpha', '{{unknown}}');
+    assert.throws(() => build(options), BuildError);
+    assert.match(
+      read(path.join(options.targets.claude.skills, 'alpha/SKILL.md')),
+      /Run /,
+    );
+  });
+
+  it('rejects references to unknown skills and subagents', () => {
+    const missingSkill = setup();
+    addSubagent(missingSkill, 'helper', ['skills: nope']);
+    assert.throws(() => build(missingSkill), /unknown skill "nope"/);
+
+    const missingAgent = setup();
+    write(
+      path.join(missingAgent.sourceDir, 'subagents/helper.md'),
+      '---\nname: helper\ndescription: d\ntools: read, subagent\npi-subagent-agents: nope\n---\nBody',
+    );
+    assert.throws(() => build(missingAgent), /unknown subagent "nope"/);
+  });
+
+  it('rejects malformed source folders', () => {
+    const noManifest = setup();
+    write(path.join(noManifest.sourceDir, 'skills/alpha/notes.md'), 'notes');
+    assert.throws(() => build(noManifest), /no SKILL\.md/);
+
+    const strayFile = setup();
+    write(path.join(strayFile.sourceDir, 'skills/README.md'), 'readme');
+    assert.throws(() => build(strayFile), /expected a skill directory/);
+
+    const manifestDir = setup();
+    fs.mkdirSync(path.join(manifestDir.sourceDir, 'skills/alpha/SKILL.md'), {
+      recursive: true,
+    });
+    assert.throws(() => build(manifestDir), /no SKILL\.md/);
+
+    const linkedFile = setup();
+    addSkill(linkedFile, 'alpha');
+    fs.symlinkSync(
+      '/missing',
+      path.join(linkedFile.sourceDir, 'skills/alpha/broken'),
+    );
+    assert.throws(
+      () => build(linkedFile),
+      /alpha\/broken: sources must not be symlinks/,
+    );
+
+    const skillsFile = setup();
+    write(path.join(skillsFile.sourceDir, 'skills'), 'not a directory');
+    assert.throws(() => build(skillsFile), BuildError);
+
+    const strayAgent = setup();
+    write(path.join(strayAgent.sourceDir, 'subagents/notes.txt'), 'notes');
+    assert.throws(
+      () => build(strayAgent),
+      /expected a \.md subagent definition/,
+    );
+  });
+
+  it('builds nothing from an empty source directory', () => {
+    const options = setup();
+    assert.deepEqual(build(options), { skills: [], subagents: [], pruned: [] });
+  });
+
+  it('removes a stale temporary directory from a crashed run', () => {
+    const options = setup();
+    addSkill(options, 'alpha');
+    write(
+      `${options.distDir}.tmp/claude/skills/stale/SKILL.md`,
+      'stale',
+      0o444,
+    );
+
+    build(options);
+
+    assert.equal(fs.existsSync(`${options.distDir}.tmp`), false);
+    assert.equal(
+      fs.existsSync(path.join(options.distDir, 'claude/skills/stale')),
+      false,
+    );
+  });
+});
+
+describe('repository sources', () => {
+  const options = setup();
+  options.sourceDir = import.meta.dirname;
+  let result: ReturnType<typeof build>;
+  before(() => {
+    result = build(options);
+  });
+  const output = (harness: string, relative: string) =>
+    read(path.join(options.distDir, harness, relative));
+
+  it('build without errors', () => {
+    assert.ok(result.skills.includes('github-code-review'));
+  });
+
+  it('leave no template tokens in generated markdown', () => {
+    const leftovers = ['claude', 'pi'].flatMap((harness) =>
+      fs
+        .readdirSync(path.join(options.distDir, harness), { recursive: true })
+        .map(String)
+        .filter((file) => file.endsWith('.md'))
+        .filter((file) => /\{\{[#/]?[a-z_]+\}\}/.test(output(harness, file))),
+    );
+    assert.deepEqual(leftovers, []);
+  });
+
+  it('point github-code-review at each harness skills directory', () => {
+    for (const harness of ['claude', 'pi'] as const) {
+      assert.ok(
+        output(harness, 'skills/github-code-review/SKILL.md').includes(
+          `bash ${options.targets[harness].skills}/github-code-review/scripts/`,
+        ),
+      );
+    }
+  });
+
+  it('only tell Claude to resume implementers with SendMessage', () => {
+    const skill = 'skills/implement-orchestrate/SKILL.md';
+    assert.match(output('claude', skill), /SendMessage/);
+    assert.doesNotMatch(output('pi', skill), /SendMessage|isolation/);
+  });
+
+  const agent = (harness: string, name: string) =>
+    output(harness, `agents/${name}.md`);
+
+  it('exist for both harnesses', () => {
+    const expected = [
+      'code-reviewer.md',
+      'documentation-reviewer.md',
+      'implementer.md',
+      'researcher.md',
+      'scout.md',
+    ];
+    for (const harness of ['claude', 'pi']) {
+      assert.deepEqual(
+        fs.readdirSync(path.join(options.distDir, harness, 'agents')).sort(),
+        expected,
+      );
+    }
+  });
+
+  it('give the Claude code-reviewer read-only tools and the code-review skill', () => {
+    const output = agent('claude', 'code-reviewer');
+    assert.match(output, /^tools: Read, Grep, Glob, Bash$/m);
+    assert.match(output, /^model: sonnet$/m);
+    assert.match(output, /^skills:\n {2}- code-review$/m);
+  });
+
+  it('do not give the Claude implementer the Agent tool', () => {
+    assert.doesNotMatch(agent('claude', 'implementer'), /^tools: .*Agent/m);
+  });
+
+  it('point the Pi code-reviewer at the Pi code-review skill', () => {
+    const output = agent('pi', 'code-reviewer');
+    assert.ok(
+      output.includes(
+        `skills: "${options.targets.pi.skills}/code-review/SKILL.md"`,
+      ),
+    );
+    assert.match(output, /^retry_after_tools: true$/m);
+  });
+
+  it('let the Pi implementer delegate to scout and researcher', () => {
+    assert.match(
+      agent('pi', 'implementer'),
+      /^subagent_agents: "scout, researcher"$/m,
+    );
+  });
+
+  it('keep the implementer delegation guidance for Pi only', () => {
+    const claude = agent('claude', 'implementer');
+    const pi = agent('pi', 'implementer');
+    for (const text of ['## Delegation', 'permissions extension']) {
+      assert.ok(pi.includes(text), text);
+      assert.ok(!claude.includes(text), text);
+    }
+  });
+});

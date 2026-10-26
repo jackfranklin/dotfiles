@@ -120,7 +120,8 @@ const DEFAULT_MAX_RETRIES = 1;
 const DEFAULT_RETRY_DELAY_MS = 1000;
 
 const EXT_DIR = path.dirname(new URL(import.meta.url).pathname);
-const AGENTS_DIR = path.join(EXT_DIR, "agents");
+// Generated from agents/subagents in the dotfiles repo by `make agents`.
+const AGENTS_DIR = path.join(process.env.HOME || "~", ".pi", "agent", "agents");
 const CONFIG_PATH = path.join(EXT_DIR, "config.json");
 const DEFAULT_MAX_CONCURRENCY = 4;
 
@@ -195,8 +196,15 @@ function loadAgents(): AgentConfig[] {
 	for (const entry of fs.readdirSync(AGENTS_DIR)) {
 		if (!entry.endsWith(".md")) continue;
 		const filePath = path.join(AGENTS_DIR, entry);
-		const content = fs.readFileSync(filePath, "utf-8");
-		const { frontmatter, body } = parseFrontmatter<Record<string, string>>(content);
+		let parsed: { frontmatter: Record<string, string>; body: string };
+		try {
+			parsed = parseFrontmatter<Record<string, string>>(fs.readFileSync(filePath, "utf-8"));
+		} catch (error) {
+			// One unreadable definition (e.g. a dangling link) must not disable every agent.
+			console.warn(`subagents: skipping ${filePath}: ${(error as Error).message}`);
+			continue;
+		}
+		const { frontmatter, body } = parsed;
 		if (!frontmatter.name) continue;
 		const tools = (frontmatter.tools || "")
 			.split(",")
@@ -210,7 +218,8 @@ function loadAgents(): AgentConfig[] {
 		const skillPaths = rawSkills
 			? rawSkills.split(",").map((p) => p.trim()).filter(Boolean).map((p) => resolveSkillPath(p, filePath))
 			: undefined;
-		const retryAfterTools = (frontmatter as Record<string, string>).retry_after_tools === "true";
+		// YAML parses `true` as a boolean, so compare its string form.
+		const retryAfterTools = String((frontmatter as Record<string, string>).retry_after_tools) === "true";
 		agents.push({
 			name: frontmatter.name,
 			description: frontmatter.description || "",

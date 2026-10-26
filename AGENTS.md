@@ -8,12 +8,13 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 
 - Neovim configuration is in `nvim/`; run `make lua_specs` for its Lua tests.
 - Fish functions are in `fish/functions/`.
-- Claude's global configuration and skills are in `claude/`; `make claude` installs their symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`. Keep every custom skill in `claude/skills/`; Pi discovers this directory through `~/.claude/skills`. Do not create or edit standalone skills in `~/.pi/agent/skills/`, as duplicate skill names collide.
+- Claude's global configuration is in `claude/`; `make claude` installs its symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`.
+- Every custom skill lives in `agents/skills/` and every subagent in `agents/subagents/`. `make agents` (run by `make claude` and `make pi`) generates Claude and Pi copies into `agents/dist/` and links them into `~/.claude/{skills,agents}` and `~/.pi/agent/{skills,agents}`; see `agents/README.md`. Never edit the generated copies. Skills installed by hand there (such as `load-cloudflare`'s bundle in `~/.pi/agent/skills`) are left alone, but must not share a name with a skill in `agents/skills/`.
 - Format JavaScript/TypeScript with the repository Prettier configuration: semicolons, trailing commas, and single quotes.
 
 ## Pi configuration
 
-- `settings.json` selects the light theme, OpenAI Codex as the default provider/model, high thinking, enabled models, and discovers skills from `~/.claude/skills`.
+- `settings.json` selects the light theme, OpenAI Codex as the default provider/model, high thinking, and enabled models. Pi loads skills from its default `~/.pi/agent/skills`, where `make agents` links them.
 - `permissions.json` is used by the permissions extension. It contains glob rules that classify commands and file operations as safe, approval-required, or blocked.
 - `extensions/` is symlinked to `~/.pi/agent/extensions/`. Pi auto-discovers a top-level `.ts` extension or a nested `index.ts` in that directory.
 - `make pi_deps` installs the production dependencies needed by `extensions/web-fetch`.
@@ -45,15 +46,17 @@ Runs confirmed, session-scoped recurring shell checks. It reports only changed o
 
 Registers the `subagent` tool, which starts isolated, headless child Pi processes. Children receive only the supplied task and working directory; they do not inherit the parent conversation or skills. The parent shows live progress and receives the child's final text as the result.
 
+Their definitions are shared with Claude Code: sources are in `agents/subagents/` and `make agents` generates the Pi copies into `~/.pi/agent/agents/`.
+
 Available agents:
 
 - `scout`: read-only local codebase reconnaissance (`read`, `grep`, `find`, `ls`).
 - `researcher`: public-web research only (`web_search`, `web_fetch`).
 - `implementer`: performs a discrete implementation task from a plan already established by the parent. It must receive scope, constraints, and acceptance criteria. Do not use it for general queries, exploration, architectural decisions, or planning. It may delegate only to `scout` and `researcher`.
-- `code-reviewer`: performs a thorough, read-only static review of a defined diff or change scope. It explicitly loads the canonical `claude/skills/code-review/SKILL.md` workflow, may use static Git inspection, and must not edit files or run tests, builds, formatters, linters, or application code.
+- `code-reviewer`: performs a thorough, read-only static review of a defined diff or change scope. It explicitly loads the shared `code-review` skill (`agents/skills/code-review/SKILL.md`), may use static Git inspection, and must not edit files or run tests, builds, formatters, linters, or application code.
 - `documentation-reviewer`: performs a read-only review of a defined diff for high-value, in-scope JSDoc, explanatory-comment, and documentation-drift findings. It may use static Git inspection and must not edit files or run tests, builds, formatters, linters, or application code.
 
-Subagents load the permissions extension. Operations that would need an interactive approval fail closed. `extensions/subagents/config.json` limits concurrent child processes; agent definitions are in `extensions/subagents/agents/`.
+Subagents load the permissions extension. Operations that would need an interactive approval fail closed. `extensions/subagents/config.json` limits concurrent child processes.
 
 ### `web-fetch`
 

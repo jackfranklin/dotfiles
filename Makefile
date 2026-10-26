@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs pi_subagent_specs kitty amp hunk agent-runner keyboard_layouts
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin agents agents_specs claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs pi_subagent_specs kitty amp hunk agent-runner keyboard_layouts
 
 DIR="${HOME}/dotfiles"
 
@@ -81,20 +81,18 @@ hunk:
 	@mkdir -p ~/.config/hunk
 	@ln -sf $(DIR)/hunk/config.toml ~/.config/hunk/config.toml
 
-claude:
+claude: agents
 	@mkdir -p ~/.claude
 	@ln -sf $(DIR)/claude/settings.json ~/.claude/settings.json
 	@ln -sf $(DIR)/claude/CLAUDE.md ~/.claude/CLAUDE.md
 	@ln -sf $(DIR)/agents/AGENTS.md ~/.claude/AGENTS.md
-	@ln -nsf $(DIR)/claude/skills ~/.claude/skills
-	@ln -nsf $(DIR)/claude/agents ~/.claude/agents
 	@ln -sf $(DIR)/claude/statusline.sh ~/.claude/statusline.sh
 	@chmod +x $(DIR)/claude/statusline.sh
 
 claude-mcp:
 	@node $(DIR)/scripts/sync-mcp.mjs
 
-pi:
+pi: agents
 	@mkdir -p ~/.pi/agent
 	@ln -sf $(DIR)/pi/settings.json ~/.pi/agent/settings.json
 	@ln -sf $(DIR)/pi/keybindings.json ~/.pi/agent/keybindings.json
@@ -115,6 +113,12 @@ symlink_windows_linux:
 
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
+
+agents:
+	@node $(DIR)/agents/build.ts
+
+agents_specs:
+	node --test 'agents/*.test.ts'
 
 pi_specs: pi_skill_metrics_specs pi_subagent_specs
 	cd pi/extensions/permissions && node --test
