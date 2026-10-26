@@ -11,7 +11,8 @@
       "Bash(gh issue view *)",
       "Bash(git log *)",
       "Bash(git diff *)",
-      "Bash(git merge-base *)"
+      "Bash(git merge-base *)",
+      "Bash(gh pr merge *)"
     ]
   },
   "model": "sonnet",
