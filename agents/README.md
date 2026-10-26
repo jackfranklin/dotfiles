@@ -103,11 +103,32 @@ image copies its source directly, not the generated output.
   alone. An unknown name, a nested or unclosed block, or a stray closing tag
   stops the build with the file and line.
 
-## Adding a skill or subagent
+## Adding or changing a skill or subagent
 
-1. Create `skills/<name>/SKILL.md` or `subagents/<name>.md`.
-2. Run `make agents`.
-3. Restart or `/reload` the harness to pick it up.
+Always edit the source in this folder, never a copy in `~/.claude`,
+`~/.pi/agent` or `dist/`. Every generated `SKILL.md` and subagent file has a
+comment just below its frontmatter naming its source.
+
+| To change                                   | Edit                             |
+| ------------------------------------------- | -------------------------------- |
+| A skill's instructions or supporting files  | `skills/<name>/`                 |
+| A subagent's prompt, tools or models        | `subagents/<name>.md`            |
+| How canonical tools map to each harness     | `TOOL_NAMES` in `transform.ts`   |
+| The template syntax or subagent frontmatter | `transform.ts` (and this README) |
+| Where output is written or linked           | `build.ts` (and this README)     |
+
+1. Create or edit the source. When wording must differ between Claude Code and
+   Pi (tool names, paths, features only one harness has), wrap each version in
+   `{{#claude}}…{{/claude}}` and `{{#pi}}…{{/pi}}`, and use `{{skills_dir}}`
+   for paths to a skill's own files.
+2. Run `make -C ~/dotfiles agents`. It reports any validation error with the
+   file and line.
+3. If you changed `transform.ts` or `build.ts`, run
+   `make -C ~/dotfiles agents_specs`.
+4. Reload the harness: Claude Code usually picks up changes within the session
+   after a short delay; start a new session if it does not. In Pi, run
+   `/reload` or restart.
+5. To check a result, read the generated copy in `dist/claude/` or `dist/pi/`.
 
 ## Migrating
 
