@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs pi_subagent_specs kitty amp hunk agent-runner keyboard_layouts
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin agents agents_specs claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs pi_subagent_specs kitty amp hunk agent-runner keyboard_layouts
 
 DIR="${HOME}/dotfiles"
 
@@ -115,6 +115,12 @@ symlink_windows_linux:
 
 lua_specs:
 	cd nvim/lua/jack && busted "alternate-files_spec.lua"
+
+agents:
+	@node $(DIR)/agents/build.ts
+
+agents_specs:
+	node --test 'agents/*.test.ts'
 
 pi_specs: pi_skill_metrics_specs pi_subagent_specs
 	cd pi/extensions/permissions && node --test
