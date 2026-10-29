@@ -30,6 +30,7 @@ const FONTS_IN_ROTATION = [
   'Maple Mono NL',
   'Lilex',
   'Geist Mono',
+  'Google Sans Code',
 ];
 
 const argv = yargs(hideBin(process.argv))
