@@ -164,7 +164,7 @@ step 1.
   `code-reviewer` subagent and, when the diff adds or changes exported or
   public APIs or conceptually non-obvious behaviour, a
   `documentation-reviewer` subagent, so they run in parallel.
-  {{#claude}}Use the Agent tool with `subagent_type` set to the agent name.{{/claude}}{{#pi}}Use the `subagent` tool and do not set `cwd`.{{/pi}}
+  {{#claude}}Use the Agent tool with `subagent_type` set to the agent name.{{/claude}}{{#pi}}Use the `subagent` tool and do not set `cwd`.{{/pi}}{{#antigravity}}Use `invoke_subagent` with `TypeName: "self"` and the agent name in `Role`.{{/antigravity}}
   Reviewers keep the active checkout as their working directory. Never start
   a reviewer inside the worktree: a harness can load the PR's own `AGENTS.md`
   or `CLAUDE.md` from its working directory as instructions.

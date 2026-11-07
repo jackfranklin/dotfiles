@@ -1,13 +1,14 @@
 # Shared skills and subagents
 
 Every custom skill and subagent is written once in this folder and generated
-for both Claude Code and Pi. Do not edit `~/.claude/skills`, `~/.claude/agents`,
-`~/.pi/agent/skills`, `~/.pi/agent/agents` or `agents/dist/` — they are
-generated, read-only, and overwritten by the next build.
+for Claude Code, Pi, and Antigravity. Do not edit `~/.claude/skills`,
+`~/.claude/agents`, `~/.pi/agent/skills`, `~/.pi/agent/agents`,
+`~/.gemini/config/skills` or `agents/dist/` — they are generated, read-only, and
+overwritten by the next build.
 
 ```
 agents/
-  AGENTS.md            shared global instructions (linked by make claude / make pi)
+  AGENTS.md            shared global instructions (linked by make claude / make pi / make antigravity)
   skills/<name>/       skill sources: SKILL.md plus any supporting files
   subagents/<name>.md  subagent sources
   transform.ts         pure rendering and validation
@@ -34,12 +35,15 @@ The build needs Node ≥ 24 (native TypeScript).
    read-only; edits to them fail instead of being lost.
 4. Links each item into its install directory with an absolute symlink:
 
-   | Output                         | Linked into           |
-   | ------------------------------ | --------------------- |
-   | `dist/claude/skills/<name>/`   | `~/.claude/skills/`   |
-   | `dist/claude/agents/<name>.md` | `~/.claude/agents/`   |
-   | `dist/pi/skills/<name>/`       | `~/.pi/agent/skills/` |
-   | `dist/pi/agents/<name>.md`     | `~/.pi/agent/agents/` |
+   | Output                             | Linked into                |
+   | ---------------------------------- | -------------------------- |
+   | `dist/claude/skills/<name>/`       | `~/.claude/skills/`        |
+   | `dist/claude/agents/<name>.md`     | `~/.claude/agents/`        |
+   | `dist/pi/skills/<name>/`           | `~/.pi/agent/skills/`      |
+   | `dist/pi/agents/<name>.md`         | `~/.pi/agent/agents/`      |
+   | `dist/antigravity/skills/<name>/`  | `~/.gemini/config/skills/` |
+
+   *(Antigravity uses built-in or session-defined subagents or packaged plugins rather than loose markdown files in an agents directory, so only its skills are generated and linked).*
 
 5. Removes links that point into `dist/` but whose source is gone. Anything
    else in the install directories (claude.ai's `synced/` skills, skills
@@ -48,7 +52,7 @@ The build needs Node ≥ 24 (native TypeScript).
 ## Skills
 
 A skill is `skills/<name>/SKILL.md` plus any supporting files. Its frontmatter
-is [Agent Skills](https://agentskills.io/specification) frontmatter, which both
+is [Agent Skills](https://agentskills.io/specification) frontmatter, which all
 harnesses read, and is copied unchanged. `name` must equal the directory name
 (lowercase words joined by hyphens) and `description` is required.
 
@@ -94,9 +98,10 @@ Claude subagents cannot spawn subagents, so `subagent` is dropped for Claude.
 image copies its source directly, not the generated output.
 
 - `{{skills_dir}}` becomes the absolute skills directory of the harness
-  (`~/.claude/skills` or `~/.pi/agent/skills`, expanded).
-- `{{#claude}}…{{/claude}}` and `{{#pi}}…{{/pi}}` keep their content for that
-  harness only. Blocks may span lines but may not nest.
+  (`~/.claude/skills`, `~/.pi/agent/skills`, or `~/.gemini/config/skills`, expanded).
+- `{{#claude}}…{{/claude}}`, `{{#pi}}…{{/pi}}`, and
+  `{{#antigravity}}…{{/antigravity}}` keep their content for that harness only.
+  Blocks may span lines but may not nest.
 - A block tag that is alone on its line is removed together with that line.
 - Only `{{`, an optional `#` or `/`, a lowercase name and `}}` is template
   syntax; other text containing `{{`, such as `${{ secrets.X }}`, is left
@@ -106,7 +111,7 @@ image copies its source directly, not the generated output.
 ## Adding or changing a skill or subagent
 
 Always edit the source in this folder, never a copy in `~/.claude`,
-`~/.pi/agent` or `dist/`. Every generated `SKILL.md` and subagent file has a
+`~/.pi/agent`, `~/.gemini/config` or `dist/`. Every generated `SKILL.md` and subagent file has a
 comment just below its frontmatter naming its source.
 
 | To change                                   | Edit                             |
@@ -117,18 +122,22 @@ comment just below its frontmatter naming its source.
 | The template syntax or subagent frontmatter | `transform.ts` (and this README) |
 | Where output is written or linked           | `build.ts` (and this README)     |
 
-1. Create or edit the source. When wording must differ between Claude Code and
-   Pi (tool names, paths, features only one harness has), wrap each version in
-   `{{#claude}}…{{/claude}}` and `{{#pi}}…{{/pi}}`, and use `{{skills_dir}}`
-   for paths to a skill's own files.
+1. Create or edit the source. When wording must differ between Claude Code,
+   Pi, or Antigravity (tool names, paths, features only one harness has), wrap
+   each version in `{{#claude}}…{{/claude}}`, `{{#pi}}…{{/pi}}`, and
+   `{{#antigravity}}…{{/antigravity}}`, and use `{{skills_dir}}` for paths to
+   a skill's own files.
 2. Run `make -C ~/dotfiles agents`. It reports any validation error with the
    file and line.
 3. If you changed `transform.ts` or `build.ts`, run
    `make -C ~/dotfiles agents_specs`.
-4. Reload the harness: Claude Code usually picks up changes within the session
-   after a short delay; start a new session if it does not. In Pi, run
-   `/reload` or restart.
-5. To check a result, read the generated copy in `dist/claude/` or `dist/pi/`.
+4. Reload the harness:
+   - Claude Code usually picks up changes within the session after a short
+     delay; start a new session if it does not.
+   - In Pi, run `/reload` or restart.
+   - In Antigravity, changes take effect on the next conversation turn or
+     after restarting.
+5. To check a result, read the generated copy in `dist/<harness>/`.
 
 ## Migrating
 
@@ -166,7 +175,6 @@ run `make agents` again.
 ### 2. Planning
 
 - `/write-plan` — Rigorous TDD plan with exact file paths, real code in every step, and interface contracts between tasks.
-- `/review-plan` — Open a plan in the browser for inline review and annotation.
 
 ### 3. Implementation & Debugging
 
@@ -178,28 +186,22 @@ run `make agents` again.
 ### 4. Review & Quality
 
 - `code-review` — Aggressive maintainability review focused on structural simplification, deleting complexity, and type safety. (Model-invocable)
-- `/fresh-eyes-amend` — Review recent local changes with a fresh perspective before amending or committing.
-- `/review-diff` — Open a git diff in the browser for visual review.
 - `/github-code-review` — Fetch and review GitHub pull requests.
 
 ### 5. Communication & Clarification
 
 - `/wtf` — Re-pitch the preceding response in clear, plain language using ASD-STE100 technical English.
 
-### 6. Architecture, Handoff & Reference
+### 6. Architecture & Reference
 
 - `/adr` — Record an Architectural Decision Record while the reasoning is fresh.
-- `/handoff` — Summarize in-progress work as a GitHub Issue for a future session or collaborator.
 - `/later` — Log a backlog item or idea as a GitHub Issue without losing the current thread.
-- `/jack-references` — Save, search, and manage personal technical reference notes.
 - `lexicon` — Define, review, and audit a project's domain vocabulary across code and docs. (Model-invocable)
-- `/writing-great-skills` — Authoring guide and standards for Claude/Gemini skills.
+- `writing-great-skills` — Authoring guide and standards for agent skills. (Model-invocable)
 
-### 7. Ecosystem & Framework Scaffolding
+### 7. Ecosystem & Bundles
 
 - `/load-cloudflare` — Install Cloudflare's current skill bundle for Pi on demand; it does nothing when already installed.
-- `/new-deno-app` — Scaffold a new Deno application.
-- `/new-lit-pwa` — Scaffold a new Lit-based Progressive Web App.
 
 ### Standalone recipes
 

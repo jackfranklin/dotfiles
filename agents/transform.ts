@@ -3,8 +3,10 @@
  * Source formats and template syntax are documented in agents/README.md.
  */
 
-export type Harness = 'claude' | 'pi';
-export const HARNESSES: readonly Harness[] = ['claude', 'pi'];
+export type Harness = 'claude' | 'pi' | 'antigravity';
+export const HARNESSES: readonly Harness[] = ['claude', 'pi', 'antigravity'];
+
+export type SubagentHarness = 'claude' | 'pi';
 
 export type CanonicalTool =
   | 'read'
@@ -18,7 +20,7 @@ export type CanonicalTool =
   | 'subagent';
 
 // Claude subagents cannot spawn subagents, so `subagent` maps to nothing there.
-const TOOL_NAMES: Record<CanonicalTool, Record<Harness, string[]>> = {
+const TOOL_NAMES: Record<CanonicalTool, Record<SubagentHarness, string[]>> = {
   read: { claude: ['Read'], pi: ['read'] },
   write: { claude: ['Write'], pi: ['write'] },
   edit: { claude: ['Edit'], pi: ['edit'] },
@@ -91,7 +93,7 @@ export function renderTemplate(
       if (name !== 'skills_dir') fail('unknown template variable');
       if (visible) output += text.slice(cursor, spanStart) + skillsDir;
     } else {
-      if (name !== 'claude' && name !== 'pi') fail('unknown template block');
+      if (!HARNESSES.includes(name as Harness)) fail('unknown template block');
       if (sigil === '#') {
         if (openBlock)
           fail(`blocks cannot nest; {{#${openBlock.name}}} is still open`);
@@ -191,7 +193,7 @@ function parseList(value: string): string[] {
     .filter(Boolean);
 }
 
-function mapTools(tools: CanonicalTool[], harness: Harness): string[] {
+function mapTools(tools: CanonicalTool[], harness: SubagentHarness): string[] {
   return [...new Set(tools.flatMap((tool) => TOOL_NAMES[tool][harness]))];
 }
 

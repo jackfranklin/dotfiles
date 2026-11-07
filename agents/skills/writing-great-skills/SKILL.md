@@ -1,7 +1,10 @@
 ---
 name: writing-great-skills
-description: Reference for writing and editing skills well — the vocabulary and principles that make a skill predictable.
-disable-model-invocation: true
+description: >-
+  Reference for authoring, editing, or auditing skills well — the vocabulary,
+  information hierarchy, and principles that make a skill predictable. Use when
+  creating or refining a skill, or when the user asks about skill design or
+  best practices.
 ---
 
 A skill exists to wrangle determinism out of a stochastic system. **Predictability** — the agent taking the same _process_ every run, not producing the same output — is the root virtue; every lever below serves it.

@@ -1,4 +1,4 @@
-.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin agents agents_specs claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs pi_subagent_specs kitty amp hunk agent-runner keyboard_layouts
+.PHONY: all neovim fish tmux tmux_deps tmux_latest git bin agents agents_specs claude claude-mcp pi pi_deps pi_specs pi_skill_metrics_specs pi_subagent_specs antigravity kitty amp hunk agent-runner keyboard_layouts
 
 DIR="${HOME}/dotfiles"
 
@@ -99,6 +99,10 @@ pi: agents
 	@ln -nsf $(DIR)/pi/extensions ~/.pi/agent/extensions
 	@ln -sf $(DIR)/pi/permissions.json ~/.pi/agent/permissions.json
 	@ln -sf $(DIR)/agents/AGENTS.md ~/.pi/agent/AGENTS.md
+
+antigravity: agents
+	@mkdir -p ~/.gemini/config
+	@ln -sf $(DIR)/agents/AGENTS.md ~/.gemini/config/AGENTS.md
 
 pi_deps:
 	cd $(DIR)/pi/extensions/web-fetch && npm install --omit=dev

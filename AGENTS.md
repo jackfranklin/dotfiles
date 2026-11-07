@@ -8,8 +8,8 @@ Pi reads this top-level `AGENTS.md` when it starts in this repository. It also s
 
 - Neovim configuration is in `nvim/`; run `make lua_specs` for its Lua tests.
 - Fish functions are in `fish/functions/`.
-- Claude's global configuration is in `claude/`; `make claude` installs its symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude and Pi; Claude imports them from its global `CLAUDE.md`.
-- Every custom skill lives in `agents/skills/` and every subagent in `agents/subagents/`. `make agents` (run by `make claude` and `make pi`) generates Claude and Pi copies into `agents/dist/` and links them into `~/.claude/{skills,agents}` and `~/.pi/agent/{skills,agents}`; see `agents/README.md`. Never edit the generated copies. Skills installed by hand there (such as `load-cloudflare`'s bundle in `~/.pi/agent/skills`) are left alone, but must not share a name with a skill in `agents/skills/`.
+- Claude's global configuration is in `claude/`; `make claude` installs its symlinks. Shared global agent instructions are in `agents/AGENTS.md`, installed for Claude, Pi, and Antigravity (`make claude`, `make pi`, `make antigravity`); Claude imports them from its global `CLAUDE.md`.
+- Every custom skill lives in `agents/skills/` and every subagent in `agents/subagents/`. `make agents` (run by `make claude`, `make pi`, and `make antigravity`) generates Claude, Pi, and Antigravity copies into `agents/dist/` and links them into `~/.claude/{skills,agents}`, `~/.pi/agent/{skills,agents}`, and `~/.gemini/config/skills`; see `agents/README.md`. Never edit the generated copies. Skills installed by hand there (such as `load-cloudflare`'s bundle in `~/.pi/agent/skills`) are left alone, but must not share a name with a skill in `agents/skills/`.
 - Format JavaScript/TypeScript with the repository Prettier configuration: semicolons, trailing commas, and single quotes.
 
 ## Pi configuration

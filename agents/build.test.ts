@@ -4,7 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import { before, describe, it } from 'node:test';
 import { build, type BuildOptions } from './build.ts';
-import { BuildError } from './transform.ts';
+import { BuildError, HARNESSES } from './transform.ts';
 
 function setup(): BuildOptions & { root: string } {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'agents-build-'));
@@ -20,6 +20,9 @@ function setup(): BuildOptions & { root: string } {
       pi: {
         skills: path.join(root, 'pi/skills'),
         agents: path.join(root, 'pi/agents'),
+      },
+      antigravity: {
+        skills: path.join(root, 'antigravity/skills'),
       },
     },
   };
@@ -66,7 +69,7 @@ const mode = (filePath: string) => fs.statSync(filePath).mode & 0o777;
 const linkTarget = (filePath: string) => fs.readlinkSync(filePath);
 
 describe('build', () => {
-  it('renders both harnesses and links each item', () => {
+  it('renders all harnesses and links each item', () => {
     const options = setup();
     addSkill(options, 'alpha');
     write(
@@ -87,9 +90,18 @@ describe('build', () => {
       options.distDir,
       'claude/skills/alpha/SKILL.md',
     );
+    const antigravitySkill = path.join(
+      options.distDir,
+      'antigravity/skills/alpha/SKILL.md',
+    );
     const makeCommand = `then run \`make -C ${options.root} agents\``;
     assert.ok(
       read(claudeSkill).includes(
+        `edit ${path.join(options.sourceDir, 'skills/alpha/SKILL.md')}, ${makeCommand}`,
+      ),
+    );
+    assert.ok(
+      read(antigravitySkill).includes(
         `edit ${path.join(options.sourceDir, 'skills/alpha/SKILL.md')}, ${makeCommand}`,
       ),
     );
@@ -106,9 +118,18 @@ describe('build', () => {
       read(path.join(options.distDir, 'pi/skills/alpha/SKILL.md')),
       new RegExp(`Run ${options.targets.pi.skills}/x\\.`),
     );
+    assert.match(
+      read(antigravitySkill),
+      new RegExp(`Run ${options.targets.antigravity.skills}/x\\.`),
+    );
     assert.equal(mode(claudeSkill), 0o444);
+    assert.equal(mode(antigravitySkill), 0o444);
     assert.equal(
       mode(path.join(options.distDir, 'pi/skills/alpha/scripts/run')),
+      0o555,
+    );
+    assert.equal(
+      mode(path.join(options.distDir, 'antigravity/skills/alpha/scripts/run')),
       0o555,
     );
     assert.match(
@@ -123,6 +144,10 @@ describe('build', () => {
     assert.equal(
       linkTarget(path.join(options.targets.claude.skills, 'alpha')),
       path.join(options.distDir, 'claude/skills/alpha'),
+    );
+    assert.equal(
+      linkTarget(path.join(options.targets.antigravity.skills, 'alpha')),
+      path.join(options.distDir, 'antigravity/skills/alpha'),
     );
     assert.equal(
       linkTarget(path.join(options.targets.pi.agents, 'helper.md')),
@@ -142,7 +167,7 @@ describe('build', () => {
     assert.ok(fs.existsSync(path.join(link, 'SKILL.md')));
   });
 
-  it('prunes links for removed sources from both harnesses', () => {
+  it('prunes links for removed sources from all harnesses', () => {
     const options = setup();
     addSkill(options, 'alpha');
     addSkill(options, 'beta');
@@ -154,6 +179,7 @@ describe('build', () => {
     const result = build(options);
 
     assert.deepEqual(result.pruned.sort(), [
+      'antigravity/skills/beta',
       'claude/agents/helper.md',
       'claude/skills/beta',
       'pi/agents/helper.md',
@@ -161,6 +187,10 @@ describe('build', () => {
     ]);
     assert.equal(
       fs.existsSync(path.join(options.targets.claude.skills, 'beta')),
+      false,
+    );
+    assert.equal(
+      fs.existsSync(path.join(options.targets.antigravity.skills, 'beta')),
       false,
     );
     assert.ok(fs.existsSync(path.join(options.targets.claude.skills, 'alpha')));
@@ -371,7 +401,7 @@ describe('repository sources', () => {
   });
 
   it('leave no template tokens in generated markdown', () => {
-    const leftovers = ['claude', 'pi'].flatMap((harness) =>
+    const leftovers = HARNESSES.flatMap((harness) =>
       fs
         .readdirSync(path.join(options.distDir, harness), { recursive: true })
         .map(String)
@@ -382,7 +412,7 @@ describe('repository sources', () => {
   });
 
   it('point github-code-review at each harness skills directory', () => {
-    for (const harness of ['claude', 'pi'] as const) {
+    for (const harness of HARNESSES) {
       assert.ok(
         output(harness, 'skills/github-code-review/SKILL.md').includes(
           `bash ${options.targets[harness].skills}/github-code-review/scripts/`,
@@ -391,10 +421,13 @@ describe('repository sources', () => {
     }
   });
 
-  it('only tell Claude to resume implementers with SendMessage', () => {
+  it('only tell Claude to resume implementers with SendMessage and Antigravity with send_message', () => {
     const skill = 'skills/implement-orchestrate/SKILL.md';
     assert.match(output('claude', skill), /SendMessage/);
-    assert.doesNotMatch(output('pi', skill), /SendMessage|isolation/);
+    assert.doesNotMatch(output('claude', skill), /send_message/);
+    assert.match(output('antigravity', skill), /send_message/);
+    assert.doesNotMatch(output('antigravity', skill), /SendMessage|isolation/);
+    assert.doesNotMatch(output('pi', skill), /SendMessage|send_message|isolation/);
   });
 
   const agent = (harness: string, name: string) =>

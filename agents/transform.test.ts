@@ -8,13 +8,16 @@ import {
   renderPiSubagent,
   renderTemplate,
   validateSkillManifest,
+  type Harness,
 } from './transform.ts';
 
-const render = (text: string, harness: 'claude' | 'pi') =>
+const render = (text: string, harness: Harness) =>
   renderTemplate(
     text,
     harness,
-    `/home/u/.${harness}/skills`,
+    harness === 'antigravity'
+      ? '/home/u/.gemini/config/skills'
+      : `/home/u/.${harness}/skills`,
     'skills/x/SKILL.md',
   );
 
@@ -36,19 +39,25 @@ describe('renderTemplate', () => {
       render('run {{skills_dir}}/x/run.sh', 'pi'),
       'run /home/u/.pi/skills/x/run.sh',
     );
+    assert.equal(
+      render('run {{skills_dir}}/x/run.sh', 'antigravity'),
+      'run /home/u/.gemini/config/skills/x/run.sh',
+    );
   });
 
   it('keeps only the inline block for the current harness', () => {
-    const text = 'a {{#claude}}X{{/claude}}{{#pi}}Y{{/pi}} b';
+    const text = 'a {{#claude}}X{{/claude}}{{#pi}}Y{{/pi}}{{#antigravity}}Z{{/antigravity}} b';
     assert.equal(render(text, 'claude'), 'a X b');
     assert.equal(render(text, 'pi'), 'a Y b');
+    assert.equal(render(text, 'antigravity'), 'a Z b');
   });
 
   it('removes the lines of tags that stand alone, leaving no blank lines', () => {
     const text =
-      'before\n{{#claude}}\nclaude only\n{{/claude}}\n  {{#pi}}\npi only\n{{/pi}}\nafter\n';
+      'before\n{{#claude}}\nclaude only\n{{/claude}}\n  {{#pi}}\npi only\n{{/pi}}\n{{#antigravity}}\nantigravity only\n{{/antigravity}}\nafter\n';
     assert.equal(render(text, 'claude'), 'before\nclaude only\nafter\n');
     assert.equal(render(text, 'pi'), 'before\npi only\nafter\n');
+    assert.equal(render(text, 'antigravity'), 'before\nantigravity only\nafter\n');
   });
 
   it('applies the line rule to each tag independently', () => {

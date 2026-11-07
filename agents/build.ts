@@ -21,7 +21,7 @@ import {
 
 export interface InstallTargets {
   skills: string;
-  agents: string;
+  agents?: string;
 }
 
 export interface BuildOptions {
@@ -57,6 +57,9 @@ export function defaultOptions(): BuildOptions {
       pi: {
         skills: path.join(home, '.pi', 'agent', 'skills'),
         agents: path.join(home, '.pi', 'agent', 'agents'),
+      },
+      antigravity: {
+        skills: path.join(home, '.gemini', 'config', 'skills'),
       },
     },
   };
@@ -146,6 +149,7 @@ function renderAll(options: BuildOptions) {
         );
       }
       for (const harness of HARNESSES) {
+        if (!options.targets[harness]) continue;
         const outputPath = path.join(harness, 'skills', entry.name, file);
         if (!file.endsWith('.md')) {
           outputs.set(outputPath, {
@@ -200,28 +204,32 @@ function renderAll(options: BuildOptions) {
         throw new BuildError(label, `unknown subagent "${name}"`);
     }
     const generatedHeader = header(options.sourceDir, label);
-    outputs.set(path.join('claude', 'agents', `${agent.name}.md`), {
-      content: renderClaudeSubagent(
-        agent,
-        renderTemplate(
-          agent.body,
-          'claude',
-          options.targets.claude.skills,
-          label,
+    if (options.targets.claude?.agents) {
+      outputs.set(path.join('claude', 'agents', `${agent.name}.md`), {
+        content: renderClaudeSubagent(
+          agent,
+          renderTemplate(
+            agent.body,
+            'claude',
+            options.targets.claude.skills,
+            label,
+          ),
+          generatedHeader,
         ),
-        generatedHeader,
-      ),
-      mode: 0o444,
-    });
-    outputs.set(path.join('pi', 'agents', `${agent.name}.md`), {
-      content: renderPiSubagent(
-        agent,
-        renderTemplate(agent.body, 'pi', options.targets.pi.skills, label),
-        generatedHeader,
-        options.targets.pi.skills,
-      ),
-      mode: 0o444,
-    });
+        mode: 0o444,
+      });
+    }
+    if (options.targets.pi?.agents) {
+      outputs.set(path.join('pi', 'agents', `${agent.name}.md`), {
+        content: renderPiSubagent(
+          agent,
+          renderTemplate(agent.body, 'pi', options.targets.pi.skills, label),
+          generatedHeader,
+          options.targets.pi.skills,
+        ),
+        mode: 0o444,
+      });
+    }
   }
 
   const items: Record<Kind, string[]> = {
@@ -251,7 +259,8 @@ function preflight(
 ): void {
   for (const harness of HARNESSES) {
     for (const kind of KINDS) {
-      const targetDir = options.targets[harness][kind];
+      const targetDir = options.targets[harness]?.[kind];
+      if (!targetDir) continue;
       const stats = lstatOrUndefined(targetDir);
       if (!stats) continue;
       if (stats.isSymbolicLink()) {
@@ -281,7 +290,11 @@ function preflight(
 }
 
 /** Writes all output to a temporary directory, then swaps it in place of `distDir`. */
-function writeDist(distDir: string, outputs: Map<string, OutputFile>): void {
+function writeDist(
+  distDir: string,
+  outputs: Map<string, OutputFile>,
+  options: BuildOptions,
+): void {
   const tmpDir = `${distDir}.tmp`;
   const oldDir = `${distDir}.old`;
   fs.rmSync(tmpDir, { recursive: true, force: true });
@@ -293,8 +306,11 @@ function writeDist(distDir: string, outputs: Map<string, OutputFile>): void {
     fs.chmodSync(filePath, file.mode);
   }
   for (const harness of HARNESSES) {
-    for (const kind of KINDS)
-      fs.mkdirSync(path.join(tmpDir, harness, kind), { recursive: true });
+    for (const kind of KINDS) {
+      if (options.targets[harness]?.[kind]) {
+        fs.mkdirSync(path.join(tmpDir, harness, kind), { recursive: true });
+      }
+    }
   }
   const hadDist = fs.existsSync(distDir);
   if (hadDist) fs.renameSync(distDir, oldDir);
@@ -316,7 +332,8 @@ function linkAndPrune(
   const pruned: string[] = [];
   for (const harness of HARNESSES) {
     for (const kind of KINDS) {
-      const targetDir = options.targets[harness][kind];
+      const targetDir = options.targets[harness]?.[kind];
+      if (!targetDir) continue;
       const ownedDir = path.join(distDir, harness, kind);
       fs.mkdirSync(targetDir, { recursive: true });
 
@@ -344,24 +361,27 @@ function linkAndPrune(
 
 export function build(input: BuildOptions): BuildResult {
   // Resolving drops trailing slashes, which would make lstat follow a symlinked target.
+  const targets = {} as Record<Harness, InstallTargets>;
+  for (const harness of HARNESSES) {
+    const harnessTargets = input.targets[harness];
+    if (harnessTargets) {
+      targets[harness] = {
+        skills: path.resolve(harnessTargets.skills),
+        ...(harnessTargets.agents
+          ? { agents: path.resolve(harnessTargets.agents) }
+          : {}),
+      };
+    }
+  }
   const options: BuildOptions = {
     sourceDir: path.resolve(input.sourceDir),
     distDir: path.resolve(input.distDir),
-    targets: {
-      claude: {
-        skills: path.resolve(input.targets.claude.skills),
-        agents: path.resolve(input.targets.claude.agents),
-      },
-      pi: {
-        skills: path.resolve(input.targets.pi.skills),
-        agents: path.resolve(input.targets.pi.agents),
-      },
-    },
+    targets,
   };
   const { distDir } = options;
   const { outputs, items, skillNames, subagentNames } = renderAll(options);
   preflight(options, distDir, items);
-  writeDist(distDir, outputs);
+  writeDist(distDir, outputs, options);
   const pruned = linkAndPrune(options, distDir, items);
   return { skills: skillNames, subagents: subagentNames, pruned };
 }
@@ -370,7 +390,7 @@ if (import.meta.main) {
   try {
     const result = build(defaultOptions());
     console.log(
-      `Built ${result.skills.length} skills and ${result.subagents.length} subagents for ${HARNESSES.join(' and ')}.`,
+      `Built ${result.skills.length} skills for ${HARNESSES.join(', ')} and ${result.subagents.length} subagents for claude and pi.`,
     );
     for (const name of result.pruned) console.log(`Pruned ${name}`);
   } catch (error) {
