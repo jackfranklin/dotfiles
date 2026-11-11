@@ -32,10 +32,6 @@ vim.keymap.set({ "n", "t", "i" }, "<S-Down>", ":resize+5<CR>")
 -- Mapping a single Esc messes up Neovim within a terminal which is useful
 -- sometimes for Git based things
 vim.keymap.set("t", "<Esc><Esc>", [[<C-\><C-n>]])
-vim.keymap.set("t", "<C-h>", [[<Cmd>wincmd h<CR>]])
-vim.keymap.set("t", "<C-j>", [[<Cmd>wincmd j<CR>]])
-vim.keymap.set("t", "<C-k>", [[<Cmd>wincmd k<CR>]])
-vim.keymap.set("t", "<C-l>", [[<Cmd>wincmd l<CR>]])
 vim.keymap.set("t", "<C-w>", [[<C-\><C-n><C-w>]])
 vim.keymap.set("n", "<Esc>", ":noh<CR>")
 
