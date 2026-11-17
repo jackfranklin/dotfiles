@@ -15,7 +15,7 @@
       "Bash(gh pr merge *)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus",
   "disableClaudeAiConnectors": true,
   "disableBundledSkills": true,
   "statusLine": {
