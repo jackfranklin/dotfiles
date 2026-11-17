@@ -398,6 +398,7 @@ describe('repository sources', () => {
 
   it('build without errors', () => {
     assert.ok(result.skills.includes('github-code-review'));
+    assert.ok(result.skills.includes('accretion-bouncer'));
   });
 
   it('leave no template tokens in generated markdown', () => {
@@ -435,6 +436,7 @@ describe('repository sources', () => {
 
   it('exist for both harnesses', () => {
     const expected = [
+      'accretion-bouncer.md',
       'code-reviewer.md',
       'documentation-reviewer.md',
       'implementer.md',

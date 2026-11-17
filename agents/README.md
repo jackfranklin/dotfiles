@@ -186,6 +186,7 @@ run `make agents` again.
 ### 4. Review & Quality
 
 - `code-review` — Aggressive maintainability review focused on structural simplification, deleting complexity, and type safety. (Model-invocable)
+- `/accretion-bouncer` — Audit recent changes or a branch diff for additive code bloat using the `accretion-bouncer` subagent.
 - `/github-code-review` — Fetch and review GitHub pull requests.
 
 ### 5. Communication & Clarification

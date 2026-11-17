@@ -55,6 +55,7 @@ Available agents:
 - `researcher`: public-web research only (`web_search`, `web_fetch`).
 - `implementer`: performs a discrete implementation task from a plan already established by the parent. It must receive scope, constraints, and acceptance criteria. Do not use it for general queries, exploration, architectural decisions, or planning. It may delegate only to `scout` and `researcher`.
 - `code-reviewer`: performs a thorough, read-only static review of a defined diff or change scope. It explicitly loads the shared `code-review` skill (`agents/skills/code-review/SKILL.md`), may use static Git inspection, and must not edit files or run tests, builds, formatters, linters, or application code.
+- `accretion-bouncer`: performs a read-only complexity review of a defined diff to challenge additive code bloat, wrong data representations, round-trip conversions, multi-pass cleanup loops, and single-caller helpers, proposing concrete structural reframings. It may use static Git inspection and must not edit files or run tests, builds, formatters, linters, or application code.
 - `documentation-reviewer`: performs a read-only review of a defined diff for high-value, in-scope JSDoc, explanatory-comment, and documentation-drift findings. It may use static Git inspection and must not edit files or run tests, builds, formatters, linters, or application code.
 
 Subagents load the permissions extension. Operations that would need an interactive approval fail closed. `extensions/subagents/config.json` limits concurrent child processes.

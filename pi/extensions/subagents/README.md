@@ -38,6 +38,7 @@ Because subagents have no conversation context, the main agent must include all 
 | `researcher` | `web_search`, `web_fetch`                                              | `openai-codex/gpt-5.6-luna`, medium | Public-web research with sourced synthesis. Cannot inspect local files or run commands.                                                 |
 | `implementer` | `read`, `write`, `edit`, `grep`, `find`, `ls`, `bash`, `web_search`, `web_fetch`, `subagent` | `openai-codex/gpt-5.6-terra`, medium | Implements a discrete, already-planned change. May spawn only `scout` and `researcher` via `subagent_agents: scout, researcher`.         |
 | `code-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Thorough static review of a defined diff or change scope. Explicitly loads the canonical `code-review` skill; read-only, with bash limited to static Git inspection. |
+| `accretion-bouncer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Read-only review of a defined diff for additive code bloat, wrong data representations, round-trip conversions, multi-pass cleanup loops, and single-caller helpers; bash is limited to static Git inspection. |
 | `documentation-reviewer` | `read`, `grep`, `find`, `ls`, `bash` | `openai-codex/gpt-5.6-terra`, high | Read-only review of a defined diff for high-value JSDoc, explanatory-comment, and documentation-drift opportunities; bash is limited to static Git inspection. |
 
 Nested delegation stops at depth 2 in practice: the main agent can spawn `implementer`; `implementer` can spawn `scout`/`researcher`; the other agents do not have the `subagent` tool.
@@ -52,6 +53,7 @@ Use subagents when their separate context or isolation is valuable:
 - `researcher`: open-ended external research that would require multiple searches/fetches.
 - `implementer`: only after the main agent has a clear plan and needs a discrete, isolated implementation task completed. Its task must include the relevant scope, constraints, and acceptance criteria.
 - `code-reviewer`: a thorough, isolated review is useful for a defined diff or change scope. Include the review range, intended behavior, relevant constraints, and the desired finding format. It is read-only and does static inspection only.
+- `accretion-bouncer`: use alongside `code-reviewer` when a defined diff touches code to challenge additive code bloat and propose structural reframings that delete whole helpers or layers. It is read-only and does static inspection only.
 - `documentation-reviewer`: use alongside `code-reviewer` when a defined diff adds or changes public APIs or conceptually non-obvious behavior. Include the exact review range, intended behavior, and non-goals. It reports only high-value, in-scope JSDoc, explanatory-comment, and documentation-drift findings.
 
 Do not delegate just because a task uses tools. The main agent can read, edit, run tests, use `git`/`gh`, and make decisions itself. Never use `implementer` for general queries, initial investigation, architectural decisions, or writing the plan.
@@ -75,7 +77,7 @@ To fan out work, emit multiple independent `subagent` tool calls in the same ass
 
 `requireImplementerConfirmation` defaults to `true`. When enabled, every `implementer` invocation requires an interactive confirmation dialog. Set it to `false` only when you intentionally want to allow automatic implementer delegation.
 
-`maxRetries` defaults to `1`; `retryDelayMs` defaults to `1000`. The extension retries a child only for an unexpected exit before it used tools, or for a recognized transient provider failure. Replaying a child after tool use is disabled unless its agent definition sets `retry_after_tools: true`; only the read-only `code-reviewer` does so. This prevents an implementation that may have partially changed files from being run twice.
+`maxRetries` defaults to `1`; `retryDelayMs` defaults to `1000`. The extension retries a child only for an unexpected exit before it used tools, or for a recognized transient provider failure. Replaying a child after tool use is disabled unless its agent definition sets `retry_after_tools: true`; only read-only reviewers such as `code-reviewer` and `accretion-bouncer` do so. This prevents an implementation that may have partially changed files from being run twice.
 
 The semaphore is process-local. A nested implementer process has its own cap, so `maxConcurrency` limits direct children of that process, not the whole tree.
 
@@ -130,7 +132,7 @@ This keeps the interactive main session able to prompt normally while preventing
 
 - `pi/extensions/subagents/index.ts` — extension implementation, tool registration, prompt guidelines, process spawning, progress rendering, cancellation, concurrency, child allowlists.
 - `pi/extensions/subagents/config.json` — `maxConcurrency` for direct child processes and the implementer-confirmation setting.
-- `agents/subagents/*.md` (repository root) — the shared, harness-agnostic sources for `scout`, `researcher`, `implementer` (including its Pi-only nested delegation guidance), `code-reviewer` (based on the `code-review` skill) and `documentation-reviewer`. Their source format is documented in `agents/README.md`; `make agents` generates the Pi definitions below into `~/.pi/agent/agents/`.
+- `agents/subagents/*.md` (repository root) — the shared, harness-agnostic sources for `scout`, `researcher`, `implementer` (including its Pi-only nested delegation guidance), `code-reviewer` (based on the `code-review` skill), `accretion-bouncer`, and `documentation-reviewer`. Their source format is documented in `agents/README.md`; `make agents` generates the Pi definitions below into `~/.pi/agent/agents/`.
 
 Generated agent frontmatter fields used by `index.ts`:
 

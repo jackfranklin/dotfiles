@@ -1,7 +1,7 @@
 /**
  * Minimal subagents extension.
  *
- * Registers a single `subagent` tool with scout, researcher, implementer, code-reviewer, and documentation-reviewer agents.
+ * Registers a single `subagent` tool with scout, researcher, implementer, code-reviewer, accretion-bouncer, and documentation-reviewer agents.
  * Supports single and parallel execution. Output is verbal only (no file handoff).
  *
  * Dotfiles adaptation:
@@ -1045,6 +1045,7 @@ export default function (pi: ExtensionAPI) {
 			"researcher has only web_search and web_fetch. Use researcher only for public-web research; it cannot inspect the local repo or run CLI commands.",
 			"implementer has bash plus file and web tools. Use it only for the bounded implementation work described above, not as a general-purpose agent.",
 			"code-reviewer is a read-only, static-review agent with Git inspection tools. Use it for a thorough review of a defined diff or change scope; it must not edit files or run tests, builds, formatters, linters, or application code.",
+			"accretion-bouncer is a read-only, static-review agent with Git inspection tools that challenges additive code bloat and proposes concrete structural reframings that delete whole helpers or layers. Use it alongside code-reviewer on code diffs; it must not edit files or run tests, builds, formatters, linters, or application code.",
 			"documentation-reviewer is a read-only, static-review agent for high-value JSDoc, explanatory-comment, and documentation-drift findings in a defined diff. Give it the intended behavior, non-goals, and exact review range; it must not edit files or run tests, builds, formatters, linters, or application code.",
 			"When the user explicitly asks to use subagents, prefer using the subagent tool rather than doing the work yourself.",
 			"When the user lists multiple independent subagent tasks, launch ALL of them immediately by emitting multiple subagent tool calls in the same assistant turn. Do not wait for one subagent to finish before starting another independent one.",
